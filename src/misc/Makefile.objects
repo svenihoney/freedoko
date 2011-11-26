@@ -1,0 +1,10 @@
+# All object-files
+OBJECTS = \
+	translation.o \
+	  translator.o \
+	setting.o \
+	  setting.theme.o \
+	  setting.cardsorder.o \
+	bug_report.o \
+	references_check.o
+

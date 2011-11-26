@@ -1,0 +1,9 @@
+# All object-files
+OBJECTS = \
+	stock_button.o \
+	rotations.o \
+	scaled_pixbuf.o \
+	pixbuf_rotations.o \
+	scaled_pixbuf_rotations.o \
+	filemenu.o \
+	sticky_dialog.o

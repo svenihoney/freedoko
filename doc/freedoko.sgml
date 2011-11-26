@@ -1,0 +1,282 @@
+<!doctype refentry PUBLIC "-//OASIS//DTD DocBook V4.1//EN" [
+
+<!-- Process this file with docbook-to-man to generate an nroff manual
+     page: `docbook-to-man manpage.sgml > manpage.1'.  You may view
+     the manual page with: `docbook-to-man manpage.sgml | nroff -man |
+     less'.  A typical entry in a Makefile or Makefile.am is:
+
+manpage.1: manpage.sgml
+	docbook-to-man $< > $@
+  -->
+
+  <!-- Fill in your name for FIRSTNAME and SURNAME. -->
+  <!ENTITY dhfirstname "<firstname>Diether</firstname>">
+  <!ENTITY dhsurname   "<surname>Knof</surname>">
+  <!-- Please adjust the date whenever revising the manpage. -->
+  <!ENTITY dhdate      "<date>May 25, 2003</date>">
+  <!-- SECTION should be 1-8, maybe w/ subsection other parameters are
+       allowed: see man(7), man(1). -->
+  <!ENTITY dhsection   "<manvolnum>6</manvolnum>">
+  <!ENTITY dhemail     "<email>dknof@gmx.de</email>">
+  <!ENTITY dhusername  "Diether Knof">
+  <!ENTITY dhucpackage "<refentrytitle>FREEDOKO</refentrytitle>">
+  <!ENTITY dhpackage   "freedoko">
+  <!ENTITY progname    "FreeDoko">
+
+  <!ENTITY debian      "<productname>Debian GNU/Linux</productname>">
+  <!ENTITY gnu         "<acronym>GNU</acronym>">
+]>
+
+<refentry>
+  <refentryinfo>
+    <address>
+      &dhemail;
+    </address>
+    <author>
+      &dhfirstname;
+      &dhsurname;
+    </author>
+    <copyright>
+      <year>2001</year>
+      <holder>&dhusername;</holder>
+    </copyright>
+    &dhdate;
+  </refentryinfo>
+  <refmeta>
+    &dhucpackage;
+
+    &dhsection;
+  </refmeta>
+  <refnamediv>
+    <refname>&progname;</refname>
+
+    <refpurpose>a Doppelkopf (card) game</refpurpose>
+  </refnamediv>
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>&progname;</command>
+
+      <arg>options</arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+  <refsect1>
+    <title>DESCRIPTION</title>
+
+    <para>
+      With <command>&progname;</command> you can play Doppelkopf against the computer.
+      In the future, we will support multiplayer over a network.
+    </para>
+
+    <para>
+      The game `Doppelkopf' is a card game for four or more Players similar to``Skat' (like <command>xskat</command>).
+      One game will be played by four players.
+      Doppelkopf originates probably from the mostly in south germany played game `Schafkopf'.
+      The game is written with GTK+ for Linux and Windows.
+    </para>
+
+  </refsect1>
+  <refsect1>
+    <title>OPTIONS</title>
+
+    <para>
+      These programs follow the usual GNU command line syntax,
+      with long options starting with two dashes (`-').  A summary of
+      options is included below or can be get with <command>&progname; -?</command>.
+    </para>
+
+    <variablelist>
+      <varlistentry>
+        <term>
+	  <option>-?</option>
+	  <option>-h</option>
+          <option>--help</option>
+        </term>
+        <listitem>
+          <para>Show the summary of the options.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>
+	  <option>-v</option>
+          <option>--version</option>
+        </term>
+        <listitem>
+          <para>Show the version.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>
+	  <option>-L</option>
+          <option>--license</option>
+        </term>
+        <listitem>
+          <para>Show the license.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>
+	  <option>-u string</option>
+          <option>--ui string</option>
+        </term>
+        <listitem>
+          <para>
+	    Set the user interface.
+	    Til now, only 'gtk' is implemented.
+	  </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>
+	  <option>-s string</option>
+          <option>--settings string</option>
+        </term>
+        <listitem>
+          <para>
+	    Load the settings from given file.
+	  </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>
+	  <option>-n string</option>
+          <option>--name string</option>
+        </term>
+        <listitem>
+          <para>
+	    Set the name of the human player.
+	  </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>
+	  <option>-l string</option>
+          <option>--language string</option>
+        </term>
+        <listitem>
+          <para>
+	    Load the given language.
+	    Till now, we do have 'english' and 'german'.
+	  </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>
+	  <option>--seed unsigned</option>
+        </term>
+        <listitem>
+          <para>
+	  Start with the given seed.
+	  </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>
+	  <option>--startplayer unsigned</option>
+        </term>
+        <listitem>
+          <para>
+	  Start with the given startplayer (1, 2, 3, 4).
+	  </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>
+	  <option>-C string</option>
+          <option>--cardsset string</option>
+        </term>
+        <listitem>
+          <para>
+	    Load the given cardset.
+	  </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>
+	  <option>-H number</option>
+          <option>--cards_height number</option>
+        </term>
+        <listitem>
+          <para>
+	    Set the height of the cards.
+	  </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>
+	  <option>-b string</option>
+          <option>--bug_report string</option>
+        </term>
+        <listitem>
+          <para>
+	    Replay the given bug report.
+	    This is not fully implemented, yet.
+	  </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>
+	  <option>string</option>
+        </term>
+        <listitem>
+          <para>
+	  Continue the party from the given file ('-' for not taking the default one).
+	  </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
+  <refsect1>
+    <title>BUGS</title>
+
+    <para>
+      Much of the documentation is still lacking.
+    </para>
+    <para>
+      We haven't finished the program, yet
+    </para>
+    <para>
+      Surely many other bugs.
+    </para>
+  </refsect1>
+  <refsect1>
+    <title>SEE ALSO</title>
+
+    <para>xskat (6).</para>
+
+    <para>
+      The programs will be documented fully by the files in the documentation directory.
+      You will also have a context sensitive manual in the game.
+    </para>
+  </refsect1>
+  <refsect1>
+    <title>AUTHOR</title>
+
+    <para>
+      This manual page was written by &dhusername; &dhemail;.
+    </para>
+    <para>
+      FreeDoko is written by Borg Enders benders@borgsoft.de and Diether Knof dknof@gmx.de.
+    </para>
+    <para>
+      The homepage is http://free-doko.sourceforge.net/
+    </para>
+
+  </refsect1>
+</refentry>
+
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: sgml
+sgml-omittag:t
+sgml-shorttag:t
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:t
+sgml-parent-document:nil
+sgml-default-dtd-file:nil
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->

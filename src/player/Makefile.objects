@@ -1,0 +1,7 @@
+# All object-files
+OBJECTS = \
+	namegen.o \
+	player.o \
+	playersDb.o \
+	aiconfig.o \
+	heuristicsmap.o

@@ -1,0 +1,74 @@
+# FreeDoko translation: help
+# language: deutsch
+# version: 0.7.5
+
+
+# help menu
+license					= Lizenz
+License::of cardset '%scardset%'	= Lizenz des Kartensatzes '%scardset%'
+
+cardset license				= Kartensatzlizenz
+
+version					= Version
+Version::%sversion% %tabout%		= \
+	Version: %sversion%\n\n%tabout%
+
+ChangeLog				= Änderungsliste
+
+help				= Hilfe
+online help			= Onlinehilfe
+Help::not found			= Hilfeseite nicht lokal gefunden
+Help::not found: %slocation% = \
+	Die gesuchte Hilfeseite wurde nicht auf dem Recher gefunden. \
+	Sie könnnen sich die Seite im Internet ansehen unter der folgenden Adresse:\n\
+	%slocation%
+
+support					= Unterstützung
+Version::%sversion% %tsupport%		= \
+	Version: %sversion%\n\n%tsupport%
+Support::support			= \
+	Bitte unterstützen Sie das FreeDoko-Team, damit wir FreeDoko weiter verbessern können. \
+	Dazu gibt es viele Möglichkeiten:\n\
+	\n\
+	* Spende\n\
+	\  Als PayPal-Kunde können Sie dem FreeDoko-Team und dem Hoster sourceforge.net eine Geldspende zukommen lassen. Informationen dazu finden Sie unter https://sourceforge.net/donate/index.php?group_id=38051\n\
+	\n\
+	* Fehlerberichte\n\
+	\  Wenn der Computer schlecht spielt oder einen schlechten Kartenvorschlag hat, erstellen Sie einen Fehlerbericht und schicken Sie ihn uns. Genauere Informationen zum Fehlerbericht (was, wie, wohin) finden Sie im Handbuch unter http://free-doko.sourceforge.net/doc/manual/de/bug_report.html.\n\
+	\n\
+	* Dokumentation\n\
+	\  Schreiben Sie mit an der Dokumentation zu FreeDoko. Je mehr Sie uns schreiben, desto mehr Zeit haben wir, am Programm zu arbeiten. \n\
+	\n\
+	* Themen\n\
+        \ Wenn Sie gerne Graphiken erstellen können Sie uns mit eigenen Themen für FreeDoko beglücken. Spendieren Sie uns einen neuen Kartensatz, einen neuen Symbolsatz, weitere Hintergründe oder einen neuen Soundsatz
+
+about					= über
+About::about				= \
+	FreeDoko ist ein Doppelkopfspiel, programmiert von Borg Enders, Diether Knof und Florian Sundermann.\n\
+	Dieses Programm steht unter der GPL.\n\n\
+	Internetseite: http://free-doko.sourceforge.net/\n\
+	E-Mail: freedoko@users.sourceforge.net\n\n\n\
+	Programmierung:\n\
+	Borg Enders\n\
+	Diether Knof\n\
+	Florian Sundermann\n\
+	\n\
+	Ports\n\
+	HPUX: Rainer Dörntge\n\
+	FreeBSD: Thomas Gellekum\n\
+	gentoo: Rafael Kolless\n\
+	SuSE: Toni\n\
+	\n\
+	Übersetzungen:\n\
+	Französisch: Yves Caubarrus
+
+visit homepage 				= \
+	Internetseite besuchen
+cardset internet page			= \
+	Kartensätze im Internet
+
+
+License: Altenburg expired =\
+	Die Nutzung des Kartensatz 'Altenburg' ist nur bis zum 31. Dezember 2009 gestattet. Andere Kartensätze finden Sie unter http://free-doko.sourceforge.net/de/Dateien.html.
+License: InnoCard expired =\
+	Die Nutzung des Kartensatz 'InnoCard' ist nur bis zum 31. Dezember 2009 gestattet. Andere Kartensätze finden Sie unter http://free-doko.sourceforge.net/de/Dateien.html.

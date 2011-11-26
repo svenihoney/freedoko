@@ -1,0 +1,41 @@
+https://sourceforge.net/tracker/?func=detail&aid=2832534&group_id=38051&atid=421200
+
+Refactoring BEST_WINNING_CARD
+
+* Monte Carlo: In den ersten Stichen nur zwei Karten durchgehen:
+  1) Karte zum stechen
+  2) Karte zum abwerfen
+
+* einfache Heuristiken auch für das Endspiel
+  - nicht einstellbar, da *immer* gut
+  - immer zuerst prüfen
+  - serve color (wenn nur noch eine Farbe da ist: kleinste Farbkarte - beachte Doppelkopf)
+  - draw trump (wenn die höchsten Trümpfe auf der Hand sind: von oben herunter ziehen; beachte Doppelkopf, Karlchen, Fuchs letzter Stich
+  - nur noch eine Farbe, kein Trumpf mehr (also für Soli): wie draw trump
+  - nur noch zwei Farbkarten: wenn gleichwertig, nehme die, unter der keine andere ist; wenn Gegner Stich hat (also letzter Spieler): nehme die kleinere, wenn darunter keine andere ist
+  - nur noch gleiche Karten (z.B. zwei Damen, kein anderer Spieler hat Karten dazwischen): kleinere nehmen
+
+
+DK
+* new Heuristics 123901
+* Heuristics: 001042 (Fleischlos)
+* Heuristics: 016746 (Damensolo)
+* Statistiken in Dokumentation (Hochzeit, ...)
+* Kartenvorschlag: gleich selber Karte wählen düfen (mehrere Threads)
+* ai/091528: Heuristik "von oben ziehen" (für Endspiel!)
+* CardsInformation/TeamInformation: Gewichtung immer wieder neu, um alle Informationen einfließen lassen zu können (z.B. hat nur Kreuz Zehn, daher ist das kein Pfund)
+* Bug report: Teams der Spieler in Übersicht
+* Bug report: beim Erstellen im game replay: betrachteten Stich markieren
+* Kompilieren unter Windows: mit der Command-Shell kompilieren, aber eine sh.exe noch im Pfad
+* gnet: Auf gtkmm umstellen
+* "best winning card" überarbeiten
+  - Wichtig: wir brauchen zwei Funktionen: eine für die Heuristik und eine, die immer eine Karte zum Spielen zurückliefert (siehe Fehlerbericht 041095)
+* Im Tunier darauf achten, dass ein seed nicht ein zweites Mal verwendet wird. Wenn er schon verwendet wurde, um eins erhöhen.
+* CardsInformation::higher_cards_no()
+* CardsInformation: Hochzeitler im Klärungsstich gibt seine höchsten Punkte
+  ../Bugreports/ai/Heuristics/best_winning_card/259093.BugReport.FreeDoko
+* KI generell: restliche Stiche gehen an den Gegner (z.B. Schweine): pfunde noch dem eigenen Team (auch Herz Zehn). Beispiel: ../Bugreports/ai/Choosebestcard/GameTree/111096.BugReport.FreeDoko
+  Sollte vor allen Heuristiken greifen. Dabei auch prüfen, wie früh ich meine Punkte vergeben muss (bei drei Zehnen).
+* Spiel überspringen (Tunier fortsetzen)
+  über Crash-Log, darin den seed speichern
+* Vorbehalt: verbleibende Spiele + Runden anzeigen

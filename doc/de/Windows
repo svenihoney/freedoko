@@ -1,0 +1,12 @@
+Für die Ausführung von FreeDoko werden die gtkmm- und die gnet-Bibliotheken benötigt.
+Diese können auf unserer sourceforge-Seite heruntergeladen werden (http://prdownloads.sourceforge.net/free-doko/gtkmm.dll.zip?download sowie http://prdownloads.sourceforge.net/free-doko/gnet.dll.zip?download).
+Die Bibliotheken müssen im Unterverzeichnis 'gtkmm.dll' bzw. 'gnet.dll' von FreeDoko sein.
+
+Die aktuelle Version der gtkmm-Bibliothek unterstützt nicht mehr Microsoft Windows 98. Daher muß unter dem System FreeDoko selber kompiliert werden, eine Anleitung dafür befindet sich in der Datei 'Windows.kompilieren'.
+
+Wer unter Windows das Programm selber kompilieren möchte, der kann das mit mingw32 (www.mingw.org), der gtkmm-Bibliothek (http://www.gtkmm.org) und der gnet-Bibliothek (http://live.gnome.org/GNetLibrary) machen.
+Anschließend müssen noch 'mingw32/bin' und 'mingw32/lib' in den Pfad eingetragen werden.
+Im Makefile.os muß eventuel noch der folgende Pfad angepaßt werden (im Bereich für Windows, ziemlich weit unten): 
+	MINGW_DIR ?= C:/MinGW32
+
+Kompiliert wird mit 'make' im 'src'-Verzeichnis von FreeDoko, eine Anleitung dazu befindet sich in der Datei 'compiling.Windows'.

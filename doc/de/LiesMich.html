@@ -1,0 +1,179 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+
+<html lang="de">
+
+  <head>
+    <title>FreeDoko LIESMICH</title>
+
+    <meta name="author" content="Diether Knof, Borg Enders">
+    <link rev="made" href="mailto:freedoko@users.sourceforge.net">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+
+    <h1>FreeDoko LIESMICH</h1>
+
+
+    <h2><a name="Inhaltsverzeichnis">Inhaltsverzeichnis</a></h2>
+
+    <ol>
+      <li><a href="#Inhaltsverzeichnis">Inhaltsverzeichnis</a></li>
+      <li><a href="#Installation">Installation</a></li>
+      <li><a href="#Programmstart">Programmstart</a>
+      <ul>
+	<li><a href="#Programmstart_Linux">Linux</a></li>
+	<li><a href="#Programmstart_Windows">Windows</a></li>
+      </ul>
+      </li>
+      <li><a href="#Einstellungen">Einstellungen</a>
+      <ul>
+	<li><a href="#Einstellungen::Sprache">Sprache</a></li>
+      </ul>
+      </li>
+      <li><a href="#Dateien">Dateien</a></li>
+      <li><a href="#Bemerkungen">Bemerkungen</a></li>
+    </ol>
+
+
+    <h2><a name="Installation">Installation</a></h2>
+
+    <p>
+    Dieser Teil ist nur für die Leute gedacht, die sich das Programm kompilieren wollen, die mit dem vorkompilierten Programm können direkt zu <a href="#Programmstart">Programmstart</a> weitergehen.
+    </p>
+
+    <p>
+    Zum Kompilieren einfach im Verzeichnis <var>src</var> <var>make</var> aufrufen.
+    Wenn unter Linux eine Fehlermeldung mit <code>no-cygwin</code> oder <code>ms-bitfields</code> erscheint, dann hat die automatische Erkennung nicht funktioniert.
+    Geben Sie in der Shell <kbd>export OSTYPE=linux-gnu</kbd> ein und starten Sie <kbd>make</kbd> noch einmal.
+    </p>
+
+    <p>
+    Für SuSE bitte <a href="SuSE">SuSE</a> anschauen (Probleme mit DOS-Zeilenende).
+    </p>
+
+    <p>
+    Für Windows bitte <a href="Windows">Windows</a> anschauen (dlls).
+    </p>
+
+
+
+    <h2><a name="Programmstart">Programmstart</a></h2>
+
+    <p>
+    FreeDoko unterstützt einige Kommandozeilenargumente, diese lassen sich mit '--help' anschauen.
+    </p>
+
+    <h3><a name="Programmstart_Linux">Linux</a></h3>
+    <p>
+    Das Programm <var>FreeDoko</var> starten.
+    </p>
+    <p>
+    Um FreeDoko nutzen zu dürfen, müssen Sie Mitglied der Gruppe <var>games</var> sein.
+    </p>
+
+    <h3><a name="Programmstart_Windows">Windows</a></h3>
+    <p>
+    Die Batch-Datei <var>FreeDoko.bat</var> starten.
+    </p>
+
+
+    <h2><a name="Einstellungen">Einstellungen</a></h2>
+
+    <p>
+    In der Ressourcendatei <var>FreeDokorc</var> stehen die Einstellungen für das Programm.
+    <br>
+    Das Format ist wie folgt:
+    Leerzeilen und Zeilen, die mit einem <code>'#'</code> beginnen werden ignoriert, Einstellungen beginnen mit dem Schlüsselwort, gefolgt von einem <code>'='</code> und dem Wert ('1' steht fuer 'ja', '0' fuer 'nein');
+    </p>
+    <p>
+    Alle Einstellungen können wärend des Spiels geändert werden und werden <em>sofort</em> aktiv.
+    </p>
+
+    <h3><a name="Einstellungen::Sprache">Sprache</a></h3>
+    <p>
+    Um die Sprache von FreeDoko zu ändern also einfach mit <kbd>F2</kbd> das Einstellungsfenster öffnen und dann auch die angezeigte Sprache <var>Standard</var> klicken und eine andere auswählen.
+    </p>
+
+
+    <h2><a name="Dateien">Dateien</a></h2>
+
+    <p>
+    Zu FreeDoko gehöhren folgende Dateien:
+    </p>
+    <dl>
+      <dt>Programmdatei</dt>
+      <dd>Unter Linux ist dies <var>FreeDoko</var>, unter Windows <var>FreeDoko.exe</var>.</dd>
+
+      <dt>Bibliotheken (nur Windows) (Unterverzeichnisse <var>gtkmm-2.4-dll</var> und <var>gnet.dll</var>)</dt>
+      <dd>Die GTKMM- und gnet-Bibliotheken müssen beim <a href="#Programmstart_Windows">Programmstart</a> im Pfad liegen.
+      <br>
+      Diese Dateien stammen von <a href="http://www.pcpm.ucl.ac.be/~gustin/win32_ports/">http://www.pcpm.ucl.ac.be/~gustin/win32_ports/</a>, <a href="http://gladewin32.sourceforge.net/modules/wfdownloads/">http://gladewin32.sourceforge.net/modules/wfdownloads/</a> sowie <a href="http://live.gnome.org/GNetLibrary">http://live.gnome.org/GNetLibrary</a> (siehe <a href="compiling.Windows">compiling.Windows</a>).
+      </dd>
+
+      <dt>Einstellungen (Datei <var>FreeDokorc</var>)</dt>
+      <dd>In dieser Datei stehen die <a href="#Einstellungen">Einstellungen</a> für FreeDoko.</dd>
+
+      <dt>Graphiken (Unterverzeichnis <var>graphics</var>)</dt>
+      <dd>
+      <dl>
+	<dt>Altenburg-Karten (Unterverzeichnis <var>Altenburg/french</var>)</dt>
+	<dd>
+	<dl>
+	  <dt>Kartengraphiken (Unterverzeichnis <var>cards</var>)</dt>
+	  <dd>
+	  Dieses Verzeichnis besteht aus den Verzeichnissen <var>club</var>, <var>spade</var>, <var>hearts</var> und <var>diamond</var>.
+	  <br>
+	  In den Verzeichnissen <var>club</var>, <var>spade</var>, <var>hearts</var> und <var>diamond</var> befinden sich die Graphiken für die entsprechenden Karten <var>nine.xpm</var>, <var>jack.xpm</var>, <var>queen.xpm</var>, <var>king.xpm</var>, <var>ten.xpm</var> sowie <var>ace.xpm</var>.
+	  </dd>
+
+	  <dt>Kartenrückseite (Unterverzeichnis <var>backs</var>)</dt>
+	  <dd>Im Verzeichnis <var>backs</var> befinden sich Kartenhintergründe.</dd>
+
+	  <dt>Symbole (Unterverzeichnis <var>icons</var>)</dt>
+	  <dd>Im Verzeichnis <var>icons</var> befinden sich die Symbole.</dd>
+	</dl>
+	</dd>
+
+	<dt>Hintergründe (Unterverzeichnis <var>backgrounds</var>)</dt>
+	<dd>Dieses Verzeichnis enthält die Hintergründe für die Spielfläche.</dd>
+      </dl>
+      </dd>
+
+      <dt>Sounds (Unterverzeichnis <var>sounds</var>)</dt>
+      <dd>Hier befinden sich die Sounds (noch zu machen).</dd>
+
+      <dt>Textdateien (Unterverzeichnis <var>translations</var>)</dt>
+      <dd>In den Unterverzeichnissen (bisher <var>de</var> und <var>en</var>) befinden sich in der Datei <var>text</var> (fast) alle Texte, die das Programm benötigt.</dd>
+
+      <dt>Dokumentation (Unterverzeichnis <var>doc</var>)</dt>
+      <dd>Dieses Verzeichnis enthält verschiedene Dokumentation:
+      <dl>
+	<dt><var>GPL</var></dt>
+	<dd>Die GNU GPL (GNU GENERAL PUBLIC LICENSE), die Lizens, unter der FreeDoko steht (der Altenburg-Kartensatz steht <em>nicht</em> unter der GPL, siehe <var>data/cardsets/Altenburg/License</var>).</dd>
+
+	<dt><var>Bugs</var></dt>
+	<dd>Bekannte Fehler (siehe auch auf die Sourceforge-Seite <a href="http://sourceforge.net/tracker/?atid=421197&amp;group_id=38051&amp;func=browse">http://sourceforge.net/tracker/?atid=421197&amp;group_id=38051&amp;func=browse</a> und <a href="http://free-doko.sourceforge.net/de/doc/manual/de/bugs.html">http://free-doko.sourceforge.net/de/doc/manual/de/bugs.html</a>).</dd>
+
+	<dt>deutsche Dokumentation (Unterverzeichnis <var>de</var>)</dt>
+	<dd>Verzeichnis mit deutscher Dokumentation</dd>
+
+	<dt>englische Dokumentation (Unterverzeichnis <var>en</var>)</dt>
+	<dd>Verzeichnis mit englischer Dokumentation</dd>
+
+	<dt>Handbuch (Unterverzeichnis <var>manual</var>)</dt>
+	<dd>Dieses Verzeichnis enthält das Handbuch in den Sprachen deutsch und englisch.</dd>
+      </dl>
+      </dd>
+    </dl>
+
+    <h2><a name="Bemerkungen">Bemerkungen</a></h2>
+
+    <ul>
+      <li>Diese Version ist noch alpha, das heißt sie ist noch nicht vollständig.</li>
+      <li>Bei Fehlern bitte eine E-Mail an <a href="mailto:freedoko@users.sourceforge.net">freedoko@users.sourceforge.net</a> schicken.</li>
+    </ul>
+
+  </body>
+
+</html>

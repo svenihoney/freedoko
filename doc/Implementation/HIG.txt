@@ -1,0 +1,49 @@
+Diether Knof <dknof@gmx.de>, 2004-04-06
+
+Abweichungen von den HIG (1.0) (GNOME Human Interface Guidelines, siehe 'http://developer.gnome.org/projects/gup/hig/') bezueglich der gtkmm-Oberflaeche
+
+
+* Tastaturkuerzel
+  - Strg-l (Tunier laden)
+    Die HIG geben nur ein 'Strg-o' vor um ein neues Dokument (in einem neuen Fenster, siehe 'the file menu') zu oeffnen. 
+    Da bei FreeDoko mit 'Tunier laden' das aktuelle Tunier ersetzt wird, insbesondere also kein neues Fenster geoffnet wird, finde ich, dass 'Strg-o' nicht passt.
+   'Strg-l' waehle ich fuer 'load' (laden), analog zu 'Strg-s' fuer 'save' (speichern).
+
+  - F2 (Einstellungen)
+    Laut HIG ist 'F2' da um etwas zu aendern (z.B. der Name einer ausgewaehlten Datei).
+    Mit 'F2' (als Ergaenzung zu 'F1', Hilfe) werden bei FreeDoko die Einstellungen aufgerufen.
+    Analog zu 'Shift-F1' (kontextsensitive Hilfe) werden mit 'Shift-F2' kontextsensitive Einstellungen aufgerufen 
+
+
+* Symbole
+  - Neues Tunier
+    Das 'StockItem' 'Gtk::Stock::NEW' zeigt ein leeres Blatt. Das finde ich nicht passed fuer ein neues Tunier.
+
+
+* Menu
+  - Das Hilfe-Menue ist rechts ausgerichtet, die HIG sagen, dass das schlechter Stil ist.
+    Ich finde, dass das Menue dort den Spielfluss nicht so sehr stoert (fuer das normale Spielen brauche ich das Menu nicht, moechte es also nicht im Blickfeld habe), ausserdem kann ich es dort leichter finden (anstatt erst das Ende der Menueintraege zu suchen).
+  - Der 'Fehlermeldung'-Knopf ist direkt auf dem Hauptmenue (nach HIG soll nichts direkt auf dem Hauptmenue eine Aktion veranlassen).
+    Der Hauptgrund ist, dass der Knopf gut sichtbar sein soll, damit wie Benutzer viele Fehlerberichte erstellen.
+    Ausserdem wuesste ich keinen guten Platz dafuer (am passendsten ist das 'Hilfe'-Menue, aber der Fehlerbericht ist keine Hilfe fuer den Benutzer).
+
+
+* Aenderungen
+  - Aenderungen im Schriftarten-Dialog werden nicht sofort ueberommen sondern erst, wenn der Dialog geschlossen wird.
+    Der Grund ist, dass ich das Ereignis der Aenderung der gewaehlten Schriftart nicht abgefangen bekomme (bei der Farbauswahl gibt es ein entsprechendes Signal).
+
+
+* Uebersetzung
+  Die Uebersetzung wird mit Programminternen Routinen ('misc/language.*') getaetigt (nicht Pango, wie in den HIG empfohlen wird).
+  Gruende dafuer sind (u.a.):
+    - Die Sprache kann ohne Neustart des Programms geaendert werden (wie bei den anderen Einstellungen auch).
+    - Die Implementation ist unabhaengig von GTK, d.h. eine Portierung zu einer anderem Benutzerschnittstelle (z.B. QT, Windows-API, Text) kann dieselbe Uebersetzungsroutine nutzen ohne die Pango-Bibliotheken zu brauchen
+    - Die Textdateien sind mit einem normalen Texteditor bearbeitbar, es sind keine 'po'-Dateien (fuer gettext).
+
+
+* Grossschreibung
+  Der Part ist noch nicht umgesetzt, dazu muss ich alles nochmal durchgehen.
+
+
+* Navigation mit Tastatur
+  noch zu tun.

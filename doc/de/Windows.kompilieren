@@ -1,0 +1,83 @@
+Um FreeDoko unter Microsoft Windows selbst kompilieren und nutzen zu können sind folgende vier Schritte notwendig:
+1) Dateien herunteladen
+2) Dateien installieren
+3) FreeDoko kompilieren
+4) FreeDoko starten
+
+
+
+1) Dateien herunterladen
+   in eckigen Klammern steht die von uns genutzte Datei
+
+* http://www.mingw.org/
+  MinGW herunterladen (unter 'download', Binärdateien):
+    GCC Version 3       [gcc-core-3.4.5-20060117-3.tar.gz]
+    GCC Version 3       [gcc-g++-3.4.5-20060117-3.tar.gz]
+    MinGW Runtime       [mingwrt-3.15.1-mingw32.tar.gz]
+    MinGW API for MS-Windows [w32api-3.12-mingw32-dev.tar.gz]
+    GNU Binutils        [binutils-2.19-mingw32-rc1-bin.tar.gz]
+    GNU make            [mingw32-make-3.81-20080326-3.tar.gz]
+
+* http://live.gnome.org/gtkmm/MSWindows
+  Installer herunterladen
+  [http://ftp.gnome.org/pub/GNOME/binaries/win32/gtkmm/2.14/gtkmm-win32-devel-2.14.1-3.exe]
+
+* http://www.gtk.org/download-windows.html
+  Bundle herunterladen
+  [http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.14/gtk+-bundle_2.14.4-20081108_win32.zip]
+
+* http://live.gnome.org/GNetLibrary
+
+* FreeDoko
+  Den Quelltext der akuellen Release von der Internetseite http://free-doko.sourceforge.net/de/Dateien.html#Quelltext, oder die aktuelle Entwicklerversion mittels subversion (siehe Dokumentation in 'subversion') oder als Archiv von 'http://svn.gna.org/daily/freedoko-snapshot.tar.gz'.
+
+
+
+2) Dateien installieren
+
+* Alle .tar.gz-Dateien und die .zip-Datei in das Verzeichnis 'C:\MinGW32' entpacken (z.B. mit 7zip) (doppelte Dateien überschreiben)
+
+* 'mingw32-make.exe' in 'make.exe' umbenennen (Verzeichnis 'C:\MinGW32\bin')
+
+* 'gtkmm-devel' installieren (volle Installation). Das Verzeichnis wird von der GTK-Installation übernommen.
+
+* gnet:
+  - 'gnet-src'-zip-Archiv entpacken
+  - ins Verzeichnis 'gnet/' wechseln
+  - die Datei 'makefile' editieren:
+    o in der 3. Zeile ('INCLUDE =') '`pkg-config --cflags glib-2.0`' durch die Ausgabe von 'pkg-config --cflags glib-2.0' ersetzen, also z.B.
+        INCLUDE = -I./ -IC:/MinGW32/include/glib-2.0 -IC:/MinGW32/lib/glib-2.0/include
+    o analog in der 4. Zeile ('LIBS =') '`pkg-config --libs glib-2.0`' durch die Ausgabe von 'pkg-config --libs glib-2.0' ersetzen, also z.B.
+        LIBS = -LC:/MinGW32/lib -lglib-2.0 -lintl -liconv -lws2_32
+  - in der Datei 'gnet-private.h' in der Zeile 24 die spitzen Klammern durch doppelte Anführungszeichen ersetzen:
+      #include "config.h"
+  - in der Datei 'gnetconfig.h' eine Leerzeile am Ende einfügen
+  - gnet mit 'make' kompilieren
+  - folgende Dateien kopieren:
+    o alle Header-Dateien '*.h' in ein neues Verzeichnis 'C:\MinGW\include\gnet\'
+    o libgnet-2.0.a  ->  C:\MinGW\lib\
+    o gnet-2.0.dll   ->  C:\MinGW\bin\
+
+* FreeDoko-Quelltext entpacken
+    
+
+
+3) FreeDoko kompilieren
+
+* Ins src-Unterverzeichnis von FreeDoko wechseln
+
+* 'compile.bat' starten
+  Ein einfaches 'make' geht auch, wenn die von MinGW angelegt Umgebungsvariable 'INCLUDE' gelöscht/umbenannt ist (Systemsteuerung -> System -> Erweitert -> Umgebungsvariablen)
+
+
+
+4) FreeDoko starten
+
+* FreeDoko startet nach 'compile' automatisch.
+
+* FreeDoko.exe starten
+  Wenn FreeDoko einige Dateien nicht findet (Kartensatz, Hintergrund, Übersetzungen, ...) das Programm ins 'data/'-Verzeichnis kopieren und von dort starten.
+
+* Tip: Ein schöneres Aussehen bekommt FreeDoko, wenn in der Datei 'C:\MinGW\etc\gtk-2.0\gtkrc' als Thema 'Default' gewählt wird:
+    gtk-theme-name = "Default"
+  Weitere Themen sind im Verzeichnis 'C:\MinGW\share\themes'.

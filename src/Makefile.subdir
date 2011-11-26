@@ -1,0 +1,5 @@
+# private use
+# see 'Makefile' in the main directory (above 'src')
+.PHONY : zip_copy src.zip_copy usb_copy src.usb_copy Windows_copy Windows_update backup tgz src.tgz src.tbz
+zip_copy src.zip_copy usb_copy src.usb_copy Windows_copy Windows_update backup tgz src.tgz src.tbz :
+	$(MAKE) -C $(DEPTH)/.. $@

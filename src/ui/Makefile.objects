@@ -1,0 +1,6 @@
+# All object-files
+OBJECTS = \
+	ui.o \
+	ui.dummy.o \
+	ui.wrap.o \
+	help.o
