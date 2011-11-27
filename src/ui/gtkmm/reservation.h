@@ -114,7 +114,12 @@ namespace UI_GTKMM_NS {
       vector<Gtk::RadioButton*> gametype_buttons;
       vector<Gtk::RadioButton*> marriage_selector_buttons;
 
-      Gtk::Table* duty_soli_container;
+      Gtk::Label* remaining_rounds_label;
+      Gtk::Label* remaining_rounds_number;
+      Gtk::Label* remaining_games_label;
+      Gtk::Label* remaining_games_number;
+      Gtk::Label* remaining_points_label;
+      Gtk::Label* remaining_points_number;
       Gtk::Label* duty_free_soli_label;
       Gtk::Label* duty_free_soli_number;
       Gtk::Label* duty_color_soli_label;

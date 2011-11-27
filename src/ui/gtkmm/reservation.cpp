@@ -80,7 +80,12 @@ namespace UI_GTKMM_NS {
     solo_hyperswines_button(NULL),
     gametype_buttons(),
     marriage_selector_buttons(),
-    duty_soli_container(NULL),
+    remaining_rounds_label(NULL),
+    remaining_rounds_number(NULL),
+    remaining_games_label(NULL),
+    remaining_games_number(NULL),
+    remaining_points_label(NULL),
+    remaining_points_number(NULL),
     duty_free_soli_label(NULL),
     duty_free_soli_number(NULL),
     duty_color_soli_label(NULL),
@@ -124,7 +129,7 @@ namespace UI_GTKMM_NS {
    **
    ** @author    Diether Knof
    **
-   ** @version   0.5.4
+   ** @version   0.7.11
    **/
   void
     Reservation::init()
@@ -295,29 +300,29 @@ namespace UI_GTKMM_NS {
             table->set_col_spacings(10);
             alignment->add(*table);
 
-            table->attach(*(this->gametype_buttons[GAMETYPE::SOLO_CLUB]),
+            table->attach(*this->gametype_buttons[GAMETYPE::SOLO_CLUB],
                           0, 2, 0, 1);
-            table->attach(*(this->gametype_buttons[GAMETYPE::SOLO_SPADE]),
+            table->attach(*this->gametype_buttons[GAMETYPE::SOLO_SPADE],
                           0, 2, 1, 2);
-            table->attach(*(this->gametype_buttons[GAMETYPE::SOLO_HEART]),
+            table->attach(*this->gametype_buttons[GAMETYPE::SOLO_HEART],
                           0, 2, 2, 3);
-            table->attach(*(this->gametype_buttons[GAMETYPE::SOLO_DIAMOND]),
+            table->attach(*this->gametype_buttons[GAMETYPE::SOLO_DIAMOND],
                           0, 2, 3, 4);
-            table->attach(*(this->gametype_buttons[GAMETYPE::SOLO_MEATLESS]),
+            table->attach(*this->gametype_buttons[GAMETYPE::SOLO_MEATLESS],
                           2, 4, 0, 1);
-            table->attach(*(this->gametype_buttons[GAMETYPE::SOLO_JACK]),
+            table->attach(*this->gametype_buttons[GAMETYPE::SOLO_JACK],
                           2, 4, 1, 2);
-            table->attach(*(this->gametype_buttons[GAMETYPE::SOLO_QUEEN]),
+            table->attach(*this->gametype_buttons[GAMETYPE::SOLO_QUEEN],
                           2, 4, 2, 3);
-            table->attach(*(this->gametype_buttons[GAMETYPE::SOLO_KING]),
+            table->attach(*this->gametype_buttons[GAMETYPE::SOLO_KING],
                           2, 4, 3, 4);
-            table->attach(*(this->gametype_buttons[GAMETYPE::SOLO_QUEEN_JACK]),
+            table->attach(*this->gametype_buttons[GAMETYPE::SOLO_QUEEN_JACK],
                           4, 6, 0, 1);
-            table->attach(*(this->gametype_buttons[GAMETYPE::SOLO_KING_JACK]),
+            table->attach(*this->gametype_buttons[GAMETYPE::SOLO_KING_JACK],
                           4, 6, 1, 2);
-            table->attach(*(this->gametype_buttons[GAMETYPE::SOLO_KING_QUEEN]),
+            table->attach(*this->gametype_buttons[GAMETYPE::SOLO_KING_QUEEN],
                           4, 6, 2, 3);
-            table->attach(*(this->gametype_buttons[GAMETYPE::SOLO_KOEHLER]),
+            table->attach(*this->gametype_buttons[GAMETYPE::SOLO_KOEHLER],
                           4, 6, 3, 4);
             table->attach(*this->solo_swines_button,
                           1, 3, 5, 6);
@@ -341,45 +346,119 @@ namespace UI_GTKMM_NS {
           } // Solo
         } // set the pages of the notebook
       } // the notebook
-      { // duty soli
-        Gtk::Table* table = Gtk::manage(new Gtk::Table(3, 2));
-        this->duty_soli_container = table;
+      { // tournament info
+        Gtk::Table* table = Gtk::manage(new Gtk::Table(1, 2));
+        { // remaining games/rounds/points
+          Gtk::Alignment* alignment = Gtk::manage(new Gtk::Alignment(Gtk::ALIGN_CENTER,
+                                                                     Gtk::ALIGN_CENTER,
+                                                                     0, 0));
+          Gtk::Table* table2 = Gtk::manage(new Gtk::Table(3, 1));
 
-        this->duty_free_soli_label
-          = Gtk::manage(new Gtk::Label);
-        this->ui->translations->add(*this->duty_free_soli_label,
-                                    ::translation("duty free soli"));
-        this->duty_free_soli_number
-          = Gtk::manage(new Gtk::Label("0"));
-        this->duty_color_soli_label
-          = Gtk::manage(new Gtk::Label);
-        this->ui->translations->add(*this->duty_color_soli_label,
-                                    ::translation("duty color soli"));
-        this->duty_color_soli_number
-          = Gtk::manage(new Gtk::Label("0"));
-        this->duty_picture_soli_label
-          = Gtk::manage(new Gtk::Label);
-        this->ui->translations->add(*this->duty_picture_soli_label,
-                                    ::translation("duty picture soli"));
-        this->duty_picture_soli_number
-          = Gtk::manage(new Gtk::Label("0"));
+          this->remaining_rounds_label
+            = Gtk::manage(new Gtk::Label);
+          this->ui->translations->add(*this->remaining_rounds_label,
+                                      ::translation("remaining rounds") + ":");
+          this->remaining_rounds_number
+            = Gtk::manage(new Gtk::Label);
+          this->remaining_rounds_number->set_label("0");
+          this->remaining_games_label
+            = Gtk::manage(new Gtk::Label);
+          this->ui->translations->add(*this->remaining_games_label,
+                                      ::translation("remaining games") + ":");
+          this->remaining_games_number
+            = Gtk::manage(new Gtk::Label);
+          this->remaining_games_number->set_label("0");
+          this->remaining_points_label
+            = Gtk::manage(new Gtk::Label);
+          this->ui->translations->add(*this->remaining_points_label,
+                                      ::translation("remaining points") + ":");
+          this->remaining_points_number
+            = Gtk::manage(new Gtk::Label);
+          this->remaining_points_number->set_label("0");
 
-        table->attach(*this->duty_free_soli_label,
-                      0, 1, 0, 1);
-        table->attach(*this->duty_free_soli_number,
-                      0, 1, 1, 2);
-        table->attach(*this->duty_color_soli_label,
-                      1, 2, 0, 1);
-        table->attach(*this->duty_color_soli_number,
-                      1, 2, 1, 2);
-        table->attach(*this->duty_picture_soli_label,
-                      2, 3, 0, 1);
-        table->attach(*this->duty_picture_soli_number,
-                      2, 3, 1, 2);
+          this->remaining_rounds_label->set_alignment(0, 0);
+          this->remaining_rounds_number->set_alignment(1, 0);
+          this->remaining_games_label->set_alignment(0, 0);
+          this->remaining_games_number->set_alignment(1, 0);
+          this->remaining_points_label->set_alignment(0, 0);
+          this->remaining_points_number->set_alignment(1, 0);
+          table2->attach(*this->remaining_rounds_label,
+                         0, 1, 0, 1);
+          table2->attach(*this->remaining_rounds_number,
+                         1, 2, 0, 1);
+          table2->attach(*this->remaining_games_label,
+                         0, 1, 1, 2);
+          table2->attach(*this->remaining_games_number,
+                         1, 2, 1, 2);
+          table2->attach(*this->remaining_points_label,
+                         0, 1, 2, 3);
+          table2->attach(*this->remaining_points_number,
+                         1, 2, 2, 3);
 
+          table2->set_row_spacings(1 ex);
+          table2->set_col_spacings(0.5 em);
+          table2->set_homogeneous(false);
+
+          alignment->add(*table2);
+          table->attach(*alignment, 0, 1, 0, 1);
+        } // remaining games/rounds/points
+        { // duty soli
+          Gtk::Alignment* alignment = Gtk::manage(new Gtk::Alignment(Gtk::ALIGN_CENTER,
+                                                                     Gtk::ALIGN_CENTER,
+                                                                     0, 0));
+          Gtk::Table* table2 = Gtk::manage(new Gtk::Table(3, 1));
+
+          this->duty_free_soli_label
+            = Gtk::manage(new Gtk::Label);
+          this->ui->translations->add(*this->duty_free_soli_label,
+                                      ::translation("duty free soli") + ":");
+          this->duty_free_soli_number
+            = Gtk::manage(new Gtk::Label);
+          this->duty_free_soli_number->set_label("0");
+          this->duty_color_soli_label
+            = Gtk::manage(new Gtk::Label);
+          this->ui->translations->add(*this->duty_color_soli_label,
+                                      ::translation("duty color soli") + ":");
+          this->duty_color_soli_number
+            = Gtk::manage(new Gtk::Label);
+          this->duty_color_soli_number->set_label("0");
+          this->duty_picture_soli_label
+            = Gtk::manage(new Gtk::Label);
+          this->ui->translations->add(*this->duty_picture_soli_label,
+                                      ::translation("duty picture soli") + ":");
+          this->duty_picture_soli_number
+            = Gtk::manage(new Gtk::Label);
+          this->duty_picture_soli_number->set_label("0");
+
+          this->duty_free_soli_label->set_alignment(0, 0);
+          this->duty_free_soli_number->set_alignment(1, 0);
+          this->duty_color_soli_label->set_alignment(0, 0);
+          this->duty_color_soli_number->set_alignment(1, 0);
+          this->duty_picture_soli_label->set_alignment(0, 0);
+          this->duty_picture_soli_number->set_alignment(1, 0);
+          table2->attach(*this->duty_free_soli_label,
+                         0, 1, 0, 1);
+          table2->attach(*this->duty_free_soli_number,
+                         1, 2, 0, 1);
+          table2->attach(*this->duty_color_soli_label,
+                         0, 1, 1, 2);
+          table2->attach(*this->duty_color_soli_number,
+                         1, 2, 1, 2);
+          table2->attach(*this->duty_picture_soli_label,
+                         0, 1, 2, 3);
+          table2->attach(*this->duty_picture_soli_number,
+                         1, 2, 2, 3);
+
+          table2->set_row_spacings(1 ex);
+          table2->set_col_spacings(0.5 em);
+          table2->set_homogeneous(false);
+
+          alignment->add(*table2);
+          table->attach(*alignment, 1, 2, 0, 1);
+        } // duty soli
         table->set_border_width(1 ex);
-        this->get_vbox()->add(*this->duty_soli_container);
-      } // duty soli
+        this->get_vbox()->add(*table);
+      } // tournament info
 
       { // signals
         this->announce_button->signal_clicked().connect(sigc::mem_fun(*this,
@@ -420,7 +499,16 @@ namespace UI_GTKMM_NS {
       this->set_default();
       this->sensitivity_update();
 
-      { // adjust some translations
+      { // adjust some translations because of changed points
+        this->remaining_rounds_number->set_label(DK::Utils::String::to_string(this->ui->party().remaining_rounds()));
+        this->remaining_games_number->set_label(DK::Utils::String::to_string(this->ui->party().remaining_normal_games()));
+        this->remaining_points_number->set_label(DK::Utils::String::to_string(this->ui->party().remaining_points()));
+
+        this->duty_free_soli_number->set_label(DK::Utils::String::to_string(this->player->remaining_duty_free_soli()));
+        this->duty_color_soli_number->set_label(DK::Utils::String::to_string(this->player->remaining_duty_color_soli()));
+        this->duty_picture_soli_number->set_label(DK::Utils::String::to_string(this->player->remaining_duty_picture_soli()));
+
+
         this->ui->translations->change(*this->bock_label,
                                        ::translation("bock: %umultiplier%",
                                                      this->ui->party().current_bock_multiplier()));
@@ -637,10 +725,6 @@ namespace UI_GTKMM_NS {
         this->solo_hyperswines_button->set_sensitive(false);
       } // if (::setting(Setting::ANNOUNCE_SWINES_AUTOMATICALLY))
 
-      this->duty_free_soli_number->set_label(DK::Utils::String::to_string(player.remaining_duty_free_soli()));
-      this->duty_color_soli_number->set_label(DK::Utils::String::to_string(player.remaining_duty_color_soli()));
-      this->duty_picture_soli_number->set_label(DK::Utils::String::to_string(player.remaining_duty_picture_soli()));
-
       for (vector<Gtk::RadioButton*>::iterator widget
            = this->gametype_buttons.begin();
            widget != this->gametype_buttons.end();
@@ -723,41 +807,48 @@ namespace UI_GTKMM_NS {
           } // for (widget)
         } // if (duty solo)
 
-        if (this->ui->party().rule()(Rule::OFFER_DUTY_SOLO)
+        if (rule(Rule::OFFER_DUTY_SOLO)
             && game.is_duty_solo()
             && (game.startplayer() == player))
           this->offer_duty_solo_button->show();
         else
           this->offer_duty_solo_button->hide();
 
-        if (this->ui->party().rule()(Rule::NUMBER_OF_DUTY_SOLI)) {
-          this->duty_soli_container->show();
-          if (  this->ui->party().rule()(Rule::NUMBER_OF_DUTY_SOLI)
-              - this->ui->party().rule()(Rule::NUMBER_OF_DUTY_COLOR_SOLI)
-              - this->ui->party().rule()(Rule::NUMBER_OF_DUTY_PICTURE_SOLI)
-              > 0) {
-            this->duty_free_soli_label->show();
-            this->duty_free_soli_number->show();
-          } else {
-            this->duty_free_soli_label->hide();
-            this->duty_free_soli_number->hide();
-          }
-          if (this->ui->party().rule()(Rule::NUMBER_OF_DUTY_COLOR_SOLI)) {
-            this->duty_color_soli_label->show();
-            this->duty_color_soli_number->show();
-          } else {
-            this->duty_color_soli_label->hide();
-            this->duty_color_soli_number->hide();
-          }
-          if (this->ui->party().rule()(Rule::NUMBER_OF_DUTY_PICTURE_SOLI)) {
-            this->duty_picture_soli_label->show();
-            this->duty_picture_soli_number->show();
-          } else {
-            this->duty_picture_soli_label->hide();
-            this->duty_picture_soli_number->hide();
-          }
+        if (rule(Rule::NUMBER_OF_ROUNDS_LIMITED)) {
+          this->remaining_rounds_label->show();
+          this->remaining_games_label->show();
         } else {
-          this->offer_duty_solo_button->hide();
+          this->remaining_rounds_label->hide();
+          this->remaining_games_label->hide();
+        }
+        if (rule(Rule::POINTS_LIMITED)) {
+          this->remaining_points_label->show();
+        } else {
+          this->remaining_points_label->hide();
+        }
+        if (  rule(Rule::NUMBER_OF_DUTY_SOLI)
+            - rule(Rule::NUMBER_OF_DUTY_COLOR_SOLI)
+            - rule(Rule::NUMBER_OF_DUTY_PICTURE_SOLI)
+            > 0) {
+          this->duty_free_soli_label->show();
+          this->duty_free_soli_number->show();
+        } else {
+          this->duty_free_soli_label->hide();
+          this->duty_free_soli_number->hide();
+        }
+        if (rule(Rule::NUMBER_OF_DUTY_COLOR_SOLI)) {
+          this->duty_color_soli_label->show();
+          this->duty_color_soli_number->show();
+        } else {
+          this->duty_color_soli_label->hide();
+          this->duty_color_soli_number->hide();
+        }
+        if (rule(Rule::NUMBER_OF_DUTY_PICTURE_SOLI)) {
+          this->duty_picture_soli_label->show();
+          this->duty_picture_soli_number->show();
+        } else {
+          this->duty_picture_soli_label->hide();
+          this->duty_picture_soli_number->hide();
         }
       } // duty soli
 
@@ -894,7 +985,7 @@ namespace UI_GTKMM_NS {
         return ;
 
       ::Reservation& reservation
-          = this->ui->game().player(this->player->no()).reservation();
+        = this->ui->game().player(this->player->no()).reservation();
 
       bool differ = (   (reservation.swines
                          != (GAMETYPE::is_solo(this->ui->game().type())
@@ -963,7 +1054,7 @@ namespace UI_GTKMM_NS {
         return ;
 
       ::Reservation& reservation
-          = this->ui->game().player(this->player->no()).reservation();
+        = this->ui->game().player(this->player->no()).reservation();
 
       for (vector<Gtk::RadioButton*>::iterator widget
            = this->gametype_buttons.begin();

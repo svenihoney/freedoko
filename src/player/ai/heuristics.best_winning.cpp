@@ -321,7 +321,7 @@ Heuristics::best_winning_card(Trick const& trick,
     // not many trumps
     if (   (hi.hand().numberoftrumps() * 2 <= hi.hand().cardsnumber())
         && (hi.cards_information().higher_cards_no_of_others(hi.hand().highest_trump())
-            >= 2* hi.hand().numberoftrumps()) ) {
+            >= 2 * hi.hand().numberoftrumps()) ) {
       DEBUG_BWC_OSTR << "   get a trick with few and low trumps\n";
       return card;
     }

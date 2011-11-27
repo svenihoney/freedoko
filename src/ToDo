@@ -30,8 +30,6 @@ DK
 * gnet: Auf gtkmm umstellen
 * "best winning card" überarbeiten
   - Wichtig: wir brauchen zwei Funktionen: eine für die Heuristik und eine, die immer eine Karte zum Spielen zurückliefert (siehe Fehlerbericht 041095)
-* Im Tunier darauf achten, dass ein seed nicht ein zweites Mal verwendet wird. Wenn er schon verwendet wurde, um eins erhöhen.
-* CardsInformation::higher_cards_no()
 * CardsInformation: Hochzeitler im Klärungsstich gibt seine höchsten Punkte
   ../Bugreports/ai/Heuristics/best_winning_card/259093.BugReport.FreeDoko
 * KI generell: restliche Stiche gehen an den Gegner (z.B. Schweine): pfunde noch dem eigenen Team (auch Herz Zehn). Beispiel: ../Bugreports/ai/Choosebestcard/GameTree/111096.BugReport.FreeDoko

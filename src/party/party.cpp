@@ -561,7 +561,7 @@ Party::set_random_seed()
  **
  ** @author    Diether Knof
  **
- ** @version   0.6.7
+ ** @version   0.7.11
  **/
 unsigned
 Party::seed_next()
@@ -590,6 +590,29 @@ Party::seed_next()
 
     tested[this->seed()] = true;
   } // if (FAST_PLAY & FAST_NS::SEED_INFO)
+
+  { // check whether the seed was already used and skip it then
+    bool already_used = false;
+    do { // while (already_used) ;
+      already_used = false;
+      for (unsigned g = 0; g < this->game_summaries().size(); ++g) {
+        unsigned seed = this->game_summary(g).seed();
+        ::pseudo_rand_set(seed);
+        for (unsigned i = 0; i < 49; i++) {
+          if (this->seed() == seed) {
+            already_used = true;
+            break;
+          }
+          seed = ::pseudo_rand_next();
+        }
+      if (already_used)
+        break;
+      } // for (g < this->game_summries().size())
+
+      if (already_used)
+        this->seed_ += 1;
+    } while (already_used) ;
+  } // check whether the seed was already used
 
   return this->seed();
 } // unsigned Party::seed_next()
@@ -744,7 +767,8 @@ Party::remaining_rounds() const
     return 0;
 
   return (this->rule()(Rule::NUMBER_OF_ROUNDS)
-          - this->roundno());
+          - this->roundno()
+          - (this->starts_new_round(this->gameno()) ? 0 : 1));
 } // unsigned Party::remaining_rounds() const
 
 /**
@@ -764,7 +788,8 @@ Party::remaining_normal_games() const
   if (!this->rule()(Rule::NUMBER_OF_ROUNDS_LIMITED))
     return 0;
 
-  return (  (this->remaining_rounds()
+  return (  ((this->remaining_rounds()
+              - (this->starts_new_round(this->gameno()) ? 1 : 0))
              * this->rule()(Rule::NUMBER_OF_GAMES_PER_ROUND))
           + ( this->playerno()
              - ( (this->finished_games() + this->playerno()

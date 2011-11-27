@@ -1029,7 +1029,7 @@ CardsInformation::higher_cards_no_of_others(HandCard const& card) const
 
   unsigned n = 0;
   for (vector<Card>::const_iterator c = this->game().rule().cards().begin();
-       c != this->game().rule().cards().begin();
+       c != this->game().rule().cards().end();
        ++c) {
     if (card.less(*c))
       n += this->remaining_others(*c);

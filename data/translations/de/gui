@@ -262,13 +262,17 @@ collapse rounds			= Runden zusammenfalten
 expand rounds			= Runden auffalten
 table				= Tabelle
 graph				= Graph
-remaining rounds: %urounds%	= verbleibende Runden: %urounds%
-remaining points: %upoints%	= verbleibende Punkte: %upoints%
+remaining rounds		= verbleibende Runden
+remaining games			= verbleibende Spiele
+remaining points		= verbleibende Punkte
 bock                            = Bock
 duty free soli 			= freie Pflichtsoli
 duty color soli 		= Farb-Pflichtsoli
 duty picture soli 		= Bild-Pflichtsoli
 duty soli round 		= Pflichtsolorunde
+duty free soli: %usoli% 	= freie Pflichtsoli: %usoli%
+duty color soli: %usoli% 	= Farb-Pflichtsoli: %usoli%
+duty picture soli: %usoli% 	= Bild-Pflichtsoli: %usoli%
 
 # game overview
 show game overview		= zeige Spielübersicht
