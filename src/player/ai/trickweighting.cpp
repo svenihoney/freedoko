@@ -41,7 +41,7 @@
 #ifdef BENDERS
 #ifndef RELEASE
 // whether to print some weighting informations
-#define PLAYERCHECK 3
+#define PLAYERCHECK 2
 
   // Playernumber for which to produce output
   unsigned playerCheck;
@@ -195,6 +195,7 @@ int TrickWeighting::modi_dolle_swines(VirtualGamesInterface const& vgi,
        t += trick.card( i );
      }
 
+
      if (   trick.cardno_of_player(card.player()) == 3 )
      {
        modi -= 21; // previous 18, 20, 24
@@ -203,6 +204,7 @@ int TrickWeighting::modi_dolle_swines(VirtualGamesInterface const& vgi,
        if (t.winnerplayer().team() == vgi.team()) { // reference 43530
          modi -= 9; // previous
        }
+
      }
 
 
@@ -333,6 +335,10 @@ int TrickWeighting::modi_queen(VirtualGamesInterface const& vgi,
           && vgi.game().announcement_of_team( ai.team() ).announcement == ANNOUNCEMENT::NOANNOUNCEMENT )
         modi += 12; // previous
     }
+
+    if(    trick.cardno_of_player( ai ) == 3
+        && trick.winnerplayer().team() != vgi.team() )
+      modi -= 3; // reference 234467
   }
 
 #ifdef PLAYERCHECK
@@ -773,7 +779,12 @@ int TrickWeighting::modi_no_trump(VirtualGamesInterface const& vgi,
   {
     modi -= 9; //previous 6, 16, 14, 8
     // 9 : Reference 001236
-  }
+
+    if(    trick.cardno_of_player( ai ) == 3
+        && card.value() >= 10 ) // reference 234467
+      modi -= 29;
+
+      }
 
   bool allmyteam=true;
 

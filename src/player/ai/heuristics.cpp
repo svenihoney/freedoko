@@ -7515,6 +7515,8 @@ Heuristics::make_announcement( HeuristicInterface const& hi, const Game& g )
         && hi.game().soloplayer().no() == hi.game().swines_owner()->no() )
     {
       value +=2 + 2*hi.hand().numberofdolle();
+      if( hi.game().hyperswines_owner() == NULL)
+        value +=1;
     }
     if ( hi.game().hyperswines_owner() != NULL
         && hi.game().soloplayer().no() == hi.game().hyperswines_owner()->no() )
