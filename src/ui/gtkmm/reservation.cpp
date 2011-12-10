@@ -816,15 +816,21 @@ namespace UI_GTKMM_NS {
 
         if (rule(Rule::NUMBER_OF_ROUNDS_LIMITED)) {
           this->remaining_rounds_label->show();
+          this->remaining_rounds_number->show();
           this->remaining_games_label->show();
+          this->remaining_games_number->show();
         } else {
           this->remaining_rounds_label->hide();
+          this->remaining_rounds_number->hide();
           this->remaining_games_label->hide();
+          this->remaining_games_number->hide();
         }
         if (rule(Rule::POINTS_LIMITED)) {
           this->remaining_points_label->show();
+          this->remaining_points_number->show();
         } else {
           this->remaining_points_label->hide();
+          this->remaining_points_number->hide();
         }
         if (  rule(Rule::NUMBER_OF_DUTY_SOLI)
             - rule(Rule::NUMBER_OF_DUTY_COLOR_SOLI)

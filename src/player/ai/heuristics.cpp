@@ -568,11 +568,11 @@ Heuristics::play_to_get_married( Trick const& trick,
     if( trick.isempty() ) 
     {
       vector<Card> cards;
-      if (!hi.game().rule()(Rule::DOLLEN))
+      if (!HandCard(hi.hand(), Card(color, Card::TEN)).is_special())
         cards.push_back(Card(color, Card::TEN));
       cards.push_back(Card(color, Card::KING));
       cards.push_back(Card(color, Card::NINE));
-      //      cards.push_back(Card(color, Card::ACE)); // With Ace I will probably win the trick bad decision
+      cards.push_back(Card(color, Card::ACE)); // With Ace I will probably win the trick bad decision
       for( vector<Card>::const_iterator c = cards.begin();
           c != cards.end();
           ++c )
@@ -4146,11 +4146,11 @@ Heuristics::serve_trump_trick(Trick const& trick,
      &&  (trick.cardno_of_player( player ) < trick.cardno_of_player( game.soloplayer()) ) )
     return Card::EMPTY; 
 
+  // @heuristic::condition   one cannot get the trick or has only 1/2 cards over the winnercard and over trump limit
+  if (hand.higher_card_exists(trick.winnercard())) {
   // @heuristic::condition   there is no extrapoint in the trick
   if (trick.contains_possible_extrapoint(game))
     return Card::EMPTY;
-  // @heuristic::condition   one cannot get the trick or has only 1/2 cards over the winnercard and over trump limit
-  if (hand.higher_card_exists(trick.winnercard())) {
     if (game.is_solo())
       return Card::EMPTY;
     // not many more trumps
@@ -4205,13 +4205,13 @@ Heuristics::serve_trump_trick(Trick const& trick,
   } // if (hand.highest_value(Card::TRUMP) > Card::KING)
 #endif
 
-  // heuristic::condition   the player has no trump or the lowest card has at max 4 points or is a jack (diamond/heart)
+  // heuristic::condition   the player has no trump or the lowest card has at max 4 points or is a jack (diamond/heart/spade)
   // @heuristic::action   play the lowest card
   Card const c = Heuristics::lowest_card(trick, hand);
   if (HandCard(hand, c).possible_genscher())
     return Card::EMPTY;
   if (   (c != hand.lowest_trump())
-      && !HandCard(hand, c).less(hi.lowest_trump_card_limit()))
+      && hi.lowest_trump_card_limit().less(HandCard(hand, c)))
     return Card::EMPTY;
   if (!hand.hastrump()
       || (   c.istrump(trick.game())
@@ -4223,6 +4223,9 @@ Heuristics::serve_trump_trick(Trick const& trick,
   else if (hand.contains(Card::HEART_JACK)
            && Card::HEART_JACK.istrump(game))
     return Card::HEART_JACK;
+  else if (hand.contains(Card::SPADE_JACK)
+           && Card::SPADE_JACK.istrump(game))
+    return Card::SPADE_JACK;
 
   return Card::EMPTY;
 } // Card Heuristics::serve_trump_trick(Trick const& trick, HeuristicInterface const& hi)

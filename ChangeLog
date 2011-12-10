@@ -1,3 +1,7 @@
+2011-12-10 Diether Knof
+	- fixed bug in heuristic "play to get married"
+	- added cards information heuristic "first player played club queen"
+
 2011-12-04 Borg Enders
 	- fixed announcement reference
 	- improved trickweighting => reference 234467

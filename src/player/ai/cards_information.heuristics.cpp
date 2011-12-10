@@ -98,6 +98,8 @@ namespace CardsInformationHeuristics {
 
   // the first player has played a pfund
   CARD_PLAYED_HEURISTIC(first_player_played_pfund);
+  // the first player has played a club queen
+  CARD_PLAYED_HEURISTIC(first_player_played_club_queen);
 
   // the player has no second diamond ace because he has not announced swines
   CARD_PLAYED_HEURISTIC(no_swines);
@@ -213,6 +215,7 @@ namespace CardsInformationHeuristics {
       heuristic_list.push_back(served_trump);
       heuristic_list.push_back(threw_trump_in_color_trick);
       heuristic_list.push_back(first_player_played_pfund);
+      heuristic_list.push_back(first_player_played_club_queen);
       heuristic_list.push_back(no_swines);
       heuristic_list.push_back(no_silent_marriage);
       heuristic_list.push_back(both_dollen);
@@ -1112,6 +1115,97 @@ namespace CardsInformationHeuristics {
     } // void first_player_played_pfund(...)
 
   /**
+   ** the first player has played a club queen
+   **
+   ** @param     played_card    the card played by the player
+   ** @param     trick          the current trick
+   ** @param     ai             the ai that analyses
+   ** @param     weightings     the card weightings
+   **
+   ** @return    -
+   **
+   ** @author    Diether Knof
+   **
+   ** @version   0.7.11
+   **/
+  void
+    first_player_played_club_queen(HandCard const& played_card,
+                                   Trick const& trick,
+                                   Ai const& ai,
+                                   map<Card, int>& weightings)
+    {
+      /* Idea:
+       * If the first player has played a club queen, he will have all higher
+       * cards and -- if the other club queen has not been played -- no trump
+       * pfund.
+       */
+
+      // the name of the heuristic
+      char const* const heuristic_name = "first player played club queen";
+
+      // the player of the card
+      Player const& player = played_card.player();
+      // the game
+      Game const& game = trick.game();
+
+      // normal game
+      if (game.type() != GAMETYPE::NORMAL)
+        return ;
+
+      // the first player in the trick
+      if (trick.actcardno() != 1)
+        return ;
+
+      // club queen played
+      if (played_card != Card::CLUB_QUEEN)
+        return ;
+
+      // another player has swines / hyperswines
+      if (   game.hyperswines_announced()
+          && (game.hyperswines_owner()->no() != player.no()) )
+        return ;
+      if (   game.swines_announced()
+          && (game.swines_owner()->no() != player.no()) )
+        return ;
+
+      // the re partner is not the last player
+      if (ai.team_information().guessed_team(trick.lastplayer()) == TEAM::RE)
+        return ;
+
+      // the player has all higher trumps from the club queen ...
+      list<Card> const higher_trumps
+        = trick.game().higher_cards(Card(Card::SPADE, Card::QUEEN));
+
+      // ... if the ai does not have it
+      for (list<Card>::const_iterator c = higher_trumps.begin();
+           c != higher_trumps.end();
+           ++c)
+        // ToDo: check for announced swines/hyperswines, ...
+        if (   ((*c) != Card::CLUB_QUEEN)
+            && (ai.hand().contains(*c)) )
+          return ;
+
+      for (list<Card>::const_iterator c = higher_trumps.begin();
+           c != higher_trumps.end();
+           ++c)
+        CHANGE_WEIGHTING(*c, 1000); // *Value*
+
+      // there is a club queen remaining -> the player does not have a trump pfund
+      if (ai.cards_information().played(Card::CLUB_QUEEN)
+          + ai.cards_information().of_player(ai).must_have(Card::CLUB_QUEEN)
+          < game.rule()(Rule::NUMBER_OF_SAME_CARDS)) {
+        if (!HandCard(ai.hand(), Card::DIAMOND_ACE).is_special())
+          CHANGE_WEIGHTING(Card::DIAMOND_ACE, -500);
+        if (!HandCard(ai.hand(), Card::DIAMOND_TEN).is_special())
+          CHANGE_WEIGHTING(Card::DIAMOND_TEN, -400);
+        if (!HandCard(ai.hand(), Card::DIAMOND_KING).is_special())
+          CHANGE_WEIGHTING(Card::DIAMOND_KING, -100);
+      }
+
+      return ;
+    } // void first_player_played_club_queen(...)
+
+  /**
    ** the player has no second diamond ace because he has not announced swines
    **
    ** @param     played_card    the card played by the player
@@ -1352,7 +1446,7 @@ namespace CardsInformationHeuristics {
              c != game.trumps().end();
              ++c) {
 #ifdef POSTPONED
- // ToDo: change the information of the poverty player
+          // ToDo: change the information of the poverty player
           CHANGE_WEIGHTING(*c, -70); // *Value*
 #else
           (void)heuristic_name;
