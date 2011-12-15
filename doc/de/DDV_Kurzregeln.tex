@@ -2,52 +2,20 @@
 
 \usepackage[german]{babel}
 
-% Index im Inhaltsverzeichnis ausweisen
-%\KOMAoptions{toc=index}
-% Zwischen Absätzen eine Zeile Abstand
-\KOMAoptions{parskip=full}
+\usepackage{FreeDoko}
 
-% Eingabe in UTF-8
-\usepackage[utf8x]{inputenc}
-% Sonderzeichen richtig in der Ausgabe darstellen
-\usepackage[T1]{fontenc}
-
-% intelligentes Leerzeichen
-\usepackage{xspace}
-
-% optischer Randausgleich
-%\usepackage{microtype}
-% Leerraum um Auslassungspunkte
-%\usepackage{ellipsis}
-
-% Hyperlinks
-\usepackage[pdftex,%
-colorlinks=true,%
-linkcolor=black,%
-urlcolor=black,%
-bookmarks=true,%
-bookmarksnumbered=true,
-]{hyperref}
-
-\newcommand{\kreuz}{$\clubsuit$\xspace}
-\newcommand{\pik}{$\spadesuit$\xspace}
-\newcommand{\herz}{$\heartsuit$\xspace}
-\newcommand{\karo}{$\diamondsuit$\xspace}
-\newcommand{\optional}{\textit{optional}\xspace}
-\newcommand{\Optional}{\textit{Optional}\xspace}
-
+\title{Einfache Doppelkopf-Spielregeln}
+\author{Borg Enders, Dr. Diether Knof}
+\date{15.~Dezember 2011}
 
 \begin{document}
 
-\thispagestyle{empty}
-\begin{titlepage}
-  \begin{center}
-    \LARGE \textbf{Einfache Doppelkopf-Spielregeln}
-  \end{center}
-\tableofcontents
-\end{titlepage}
+\maketitle
 
-Dies ist eine vereinfachte Fassung der Turnierspielregeln des Deutschen Doppelkopf Verbandes e.V. (DDV) für den täglichen Gebrauch und zur Einweisung von SpielerInnen, die das Spiel grundsätzlich kennen, in die Spielregeln des DDV.
+\noindent
+Dies ist eine vereinfachte Fassung der Turnierspielregeln des Deutschen Doppelkopf Verbandes e.V. (DDV) für den täglichen Gebrauch und zur Einweisung von Spielern, die das Spiel grundsätzlich kennen, in die Spielregeln des DDV.
+
+\tableofcontents
 
 \section{Das Doppelkopfblatt}
 Dieses besteht aus je 12 Karten der vier Farben Kreuz (\kreuz), Pik (\pik), Herz (\herz) und Karo (\karo), nämlich (Zählwert in Klammern) pro Farbe je zwei Asse (11), zwei Zehnen (10), zwei Könige (4), zwei Damen (3), zwei
@@ -93,15 +61,16 @@ Mit der Ansage "`Re"' (Re-Partei) oder "`Kontra"' (Kontra-Partei) zeigt der Anas
 
 \subsection{Absagen}
 Ausschließlich nach erfolgter Ansage können die Partner durch Absagen den Wert des Spieles erhöhen.
-Absagen sind:
-\begin{center}
+\begin{table}[htbp]
+  \centering
   \begin{tabular}{ll}
     "`Keine 90"' & mit 10 (9, 8) Karten auf der Hand\\
     "`Keine 60"' & mit 9 (8, 7) Karten auf der Hand\\
     "`Keine 30"' & mit 8 (7, 6) Karten auf der Hand\\
     "`Schwarz"' & mit 7 (6, 5) Karten auf der Hand
   \end{tabular}
-\end{center}
+  \caption{Absagen}
+\end{table}
 Die Angaben in Klammern gelten für die Hochzeit mit Klärung im zweiten bzw. dritten Stich. Die Absage bedeutet, daß die Gegenpartei keine 90 (60, 30 oder 0) Punkte erreichen wird. Absagen können auch frühzeitig erfolgen. Es darf aber keine ausgelassen werden. Auf eine Ansage oder Absage kann mit jeweils einer Karte weniger auf der Hand als für die An-/Absage erforderlich ist "`Re"' oder "`Kontra"' erwidert werden.
 
 \section{Spielende und Wertung}
@@ -112,7 +81,8 @@ Es sind insgesamt 240 Punkte im Spiel. Die Re-Partei hat gewonnen, wenn sie 121 
 
 \subsection{Wertung}
 Es wird nach der Plus-Minus-Wertung gewertet: Im Normalspiel erhalten die Spieler der Siegerpartei folgende Spielpunkte mit positivem, die Spieler der Verliererpartei mit negativem Vorzeichen.
-\begin{center}
+\begin{table}[htbp]
+  \centering
   \begin{tabular}{lll}
     1. & Gewonnen & 1 Punkt \\
     2. & Ansage (Kontra/Re) & 2 Punkte\\
@@ -126,7 +96,8 @@ Es wird nach der Plus-Minus-Wertung gewertet: Im Normalspiel erhalten die Spiele
     & \karo As (Fuchs) der Gegenpartei gefangen & 1 Punkt\\
     & \kreuz Bube (Karlchen) macht letzten Stich & 1 Punkt
   \end{tabular}
-\end{center}
+  \caption{Wertung des Spiels}
+\end{table}
 Falls beide Parteien ihr abgesagtes Ziel nicht erreichen, so hat keine Partei gewonnen und es werden nur die Punkte unter 3., 5. und 6. vergeben.
 
 Bei einem Solo werden Sonderpunkte nicht gewertet. Diese Punktzahl wird für den Solospieler verdreifacht und ihm bei Gewinn gutgeschrieben, bei Niederlage abgezogen. Den drei Mitspielern der Gegenpartei wird die einfache Punktzahl mit umgekehrtem Vorzeichen angeschrieben.

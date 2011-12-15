@@ -1,3 +1,9 @@
+2011-12-15 Diether Knof
+	- improved documentation layout ("Kurzregeln" and "DDV_Kurzregeln")
+
+2011-12-13 Diether Knof
+	- fixed some compilation bugs
+
 2011-12-10 Diether Knof
 	- fixed bug in heuristic "play to get married"
 	- added cards information heuristic "first player played club queen"
