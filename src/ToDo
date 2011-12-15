@@ -36,4 +36,5 @@ DK
   Sollte vor allen Heuristiken greifen. Dabei auch prüfen, wie früh ich meine Punkte vergeben muss (bei drei Zehnen).
 * Spiel überspringen (Tunier fortsetzen)
   über Crash-Log, darin den seed speichern
-* Vorbehalt: verbleibende Spiele + Runden anzeigen
+* Windows: aktuelle boost-Bibliothek
+* Kompilieren der .src.zip testen

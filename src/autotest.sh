@@ -24,7 +24,9 @@ fi
 
 
 # create program in release version
-make --always-make release_bin && cd ../data
+CXXFLAGS="-Wall -Werror -Wno-parentheses -pipe -O0 -ggdb" \
+  make --always-make release_bin \
+  && cd ../data
 #rm ./FreeDoko; make "CXXFLAGS=-Wall -Werror -Wno-parentheses -pipe -O0 -ggdb" "USE_UI_GTKMM=false" "FREEDOKO_WORKING_DIRECTORY=/tmp/${LOGNAME}/FreeDoko.autotest/src"
 
 # start from ../data, so that all data files are found

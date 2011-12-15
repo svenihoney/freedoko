@@ -162,11 +162,14 @@ main(int argc, char* argv[])
     ::all_versions.push_back(new Version(0,7,8,     Date(2010,  3, 13), true));
     ::all_versions.push_back(new Version(0,7,9,     Date(2011,  3,  6), true));
     ::all_versions.push_back(new Version(0,7,10,    Date(2011,  8, 14), true));
+    ::all_versions.push_back(new Version(0,7,11,'z',Date(2011, 12, 13), true));
+#if 0
     ::all_versions.push_back(new Version(0,7,11
 #ifdef VERSION_DESCRIPTION
                                          , VERSION_DESCRIPTION
 #endif
                                         ));
+#endif
     ::version = ::all_versions.back();
 
     // initialisation for random functions

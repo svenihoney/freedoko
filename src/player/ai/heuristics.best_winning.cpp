@@ -31,11 +31,13 @@
 #include "heuristics.h"
 
 // debugging information
+#ifndef RELEASE
 #ifdef DKNOF
 // best jabbing card (card selection)
 #define DEBUG_BJC_OSTR cout << "[#" << __LINE__ << "] "
 // best winning card (decision, whether to take the card)
 #define DEBUG_BWC_OSTR cout << "[#" << __LINE__ << "] "
+#endif
 #endif
 #ifndef DEBUG_BJC_OSTR
 #define DEBUG_BJC_OSTR null_ostr
@@ -1176,7 +1178,7 @@ Heuristics::best_jabbing_card(Trick const& trick,
        ) {
       card = hi.hand().next_lower_card(card);
       if (!trick.isjabbed(card))
-        card = hi.hand().next_higher_card(card);
+        card = Card::DOLLE;
     }
   } // special case: dolle
 

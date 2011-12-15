@@ -241,6 +241,7 @@ ifeq ($(OPERATING_SYSTEM), Windows)
 	  "USE_UI_TEXT=false" \
 	  "USE_UI_GTKMM=true" \
 	  "USE_NETWORK=true" \
+	  "USE_BOOST=false" \
 	  "USE_SOUND_ALUT=false" \
 	  "USE_SOUND_COMMAND=false" \
 	  "USE_SOUND_PLAYSOUND=true" \
@@ -255,6 +256,7 @@ else
 	  "USE_UI_TEXT=false" \
 	  "USE_UI_GTKMM=true" \
 	  "USE_NETWORK=true" \
+	  "USE_BOOST=false" \
 	  "USE_SOUND_ALUT=true" \
 	  "USE_SOUND_COMMAND=false" \
 	  "USE_SOUND_PLAYSOUND=false" \

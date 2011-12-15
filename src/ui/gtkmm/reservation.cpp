@@ -396,7 +396,7 @@ namespace UI_GTKMM_NS {
                          1, 2, 2, 3);
 
           table2->set_row_spacings(1 ex);
-          table2->set_col_spacings(0.5 em);
+          table2->set_col_spacings(static_cast<int>(0.5 em));
           table2->set_homogeneous(false);
 
           alignment->add(*table2);
@@ -450,7 +450,7 @@ namespace UI_GTKMM_NS {
                          1, 2, 2, 3);
 
           table2->set_row_spacings(1 ex);
-          table2->set_col_spacings(0.5 em);
+          table2->set_col_spacings(static_cast<int>(0.5 em));
           table2->set_homogeneous(false);
 
           alignment->add(*table2);

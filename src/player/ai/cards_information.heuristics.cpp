@@ -599,7 +599,8 @@ namespace CardsInformationHeuristics {
         if (played_card == card->first)
           break;
         else if (former_winnercard.less(card->first))
-          CHANGE_WEIGHTING(card->first, weighting * card->second);
+          CHANGE_WEIGHTING(card->first,
+                           static_cast<int>(weighting * card->second));
       }
 
       return ;
