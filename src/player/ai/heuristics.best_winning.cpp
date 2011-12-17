@@ -382,7 +382,12 @@ Heuristics::best_winning_card(Trick const& trick,
         }
         if (   (static_cast<int>(trick.points())
                 >= hi.value(Aiconfig::LIMITQUEEN))
-            && trick.isjabbed(Card::DIAMOND_QUEEN)) {
+            && (   trick.isjabbed(Card::DIAMOND_QUEEN)
+                || (hi.hand().rel_pos_trump(card) <= 0.4)
+                || (hi.hand().higher_cards_no(card) + hi.hand().numberof(card)
+                    >= (hi.hand().numberoftrumps() / 2
+                    + (hi.value(Aiconfig::AGGRESSIVE) ? 0 : 1))
+                   ) ) ) {
           DEBUG_BWC_OSTR << "  jab limitqueen\n";
           return card;
         }

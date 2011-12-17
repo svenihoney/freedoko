@@ -38,3 +38,4 @@ DK
   über Crash-Log, darin den seed speichern
 * Windows: aktuelle boost-Bibliothek
 * Kompilieren der .src.zip testen
+* msi-Datei erstellen: Mit WiX?

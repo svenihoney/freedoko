@@ -867,15 +867,20 @@ namespace UI_GTKMM_NS {
         = (   (game_summary.bock_multiplier() != 1)
            ? DK::Utils::String::to_string(game_summary.bock_multiplier())
            : "");
-      row[this->party_points_model->gamepoints_str]
-        = DK::Utils::String::to_string(game_summary.points());
+      if (this->add_up_points->get_active()) {
+        row[this->party_points_model->gamepoints_str]
+          = DK::Utils::String::to_string(party.pointsum_till_game(gameno));
+      } else {
+        row[this->party_points_model->gamepoints_str]
+          = DK::Utils::String::to_string(game_summary.points());
+      }
 #ifdef POSTPONED
       if (game_summary.game_type() == GAMETYPE::NORMAL)
         ;
       //row[this->party_points_model->gametype] = NULL;
       else {
         Glib::RefPtr<Gdk::Pixbuf> pixbuf
-          = this->ui->icons->icon(g_ame_points.game_type());
+          = this->ui->icons->icon(game_points.game_type());
         int const height = 20;
         row[this->party_points_model->gametype]
           = pixbuf->scale_simple(pixbuf->get_width() * height / pixbuf->get_height(),
