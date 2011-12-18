@@ -110,7 +110,7 @@ ifeq ($(SHELLTYPE), sh)
 .PHONY: clean
 clean :
 	rm -f *~
-	@for d in *; \
+	-@for d in *; \
 	do	if test -d $$d; \
 		then	if test -e $$d/Makefile; \
 			then	$(MAKE) -C $$d clean; \

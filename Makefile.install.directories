@@ -48,7 +48,7 @@ DESKTOP_FILE_DIRECTORY = $(MAIN_DIRECTORY)/share/applications
 #ICON_DIRECTORY         = $(MAIN_DIRECTORY)/share/pixmaps/
 #DESKTOP_FILE_DIRECTORY = $(MAIN_DIRECTORY)/share/applications
 
-#arch linus
+#arch linux
 #MAIN_DIRECTORY         = /usr
 #BIN_DIRECTORY = $(MAIN_DIRECTORY)/bin
 #DATA_DIRECTORY = $(MAIN_DIRECTORY)/share/freedoko
