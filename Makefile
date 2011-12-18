@@ -152,8 +152,8 @@ endif
 ifeq ($(OPERATING_SYSTEM), Linux)
 .PHONY: release
 release : clean
-	chmod -R +w $(RELEASE_DEST)
-	rm -r $(RELEASE_DEST)
+	-chmod -R +w $(RELEASE_DEST)
+	-rm -r $(RELEASE_DEST)
 	mkdir -p $(RELEASE_DEST)
 #	source
 	$(MAKE) release_source
@@ -178,7 +178,9 @@ release_debian:
 	$(MAKE) debian_packages
 	cd $(RELEASE_DEST) \
 	  && rm -rf debian/ \
+	  && mkdir -p debian/pool/main/FreeDoko/ \
 	  && cp -a /home/install/mirrors/FreeDoko/pool/main/FreeDoko/*$(VERSION)*.deb debian/pool/main/FreeDoko/ \
+	  && mkdir -p debian/pool/non-free/FreeDoko/ \
 	  && cp -a /home/install/mirrors/FreeDoko/pool/non-free/FreeDoko/*$(VERSION)*.deb debian/pool/non-free/FreeDoko/
 	cd $(RELEASE_DEST) \
 	  && cp debian/pool/non-free/FreeDoko/freedoko-nonfree_$(VERSION)*.deb .
@@ -283,7 +285,7 @@ release_source :
 	$(MAKE) release_directory
 	$(MAKE) release_data
 #	source (only svn files)
-	for f in `svn status -v Makefile* src/ | grep -v "^[?D]" | awk '{print $$NF}'`; do \
+	for f in `svn status -v Makefile* src/ | awk '/^[?D]/ {print $$NF}'`; do \
 	  if [ -d $$f ]; then \
 	    mkdir $(RELEASE_TMP)/FreeDoko_$(VERSION)/$$f; \
 	  else \

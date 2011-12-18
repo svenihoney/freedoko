@@ -1,33 +1,10 @@
 \documentclass{scrartcl}
 
-\usepackage[german]{babel}
+\usepackage{FreeDoko}
 
-% Index im Inhaltsverzeichnis ausweisen
-%\KOMAoptions{toc=index}
-% Zwischen Absätzen eine Zeile Abstand
-\KOMAoptions{parskip=full}
+%\renewcommand{\thesection}{\Roman{section}}
 
-% Eingabe in UTF-8
-\usepackage[utf8x]{inputenc}
-% Sonderzeichen richtig in der Ausgabe darstellen
-\usepackage[T1]{fontenc}
-
-% intelligentes Leerzeichen
-\usepackage{xspace}
-
-% optischer Randausgleich
-%\usepackage{microtype}
-% Leerraum um Auslassungspunkte
-%\usepackage{ellipsis}
-
-% Hyperlinks
-\usepackage[pdftex,%
-colorlinks=true,%
-linkcolor=black,%
-urlcolor=black,%
-bookmarks=true,%
-bookmarksnumbered=true,
-]{hyperref}
+%\setkomafont{sectioning}{\normalfont\bfseries}
 
 \hypersetup{
   pdftitle   ={FreeDoko Regeln},
@@ -35,27 +12,14 @@ bookmarksnumbered=true,
   pdfauthor  ={Borg Enders, Dr. Diether Knof},
   pdfkeywords={FreeDoko Doppelkopf Regeln}
 }
-\usepackage[pdftex]{graphicx}
-
-\newcommand{\kreuz}{$\clubsuit$\xspace}
-\newcommand{\pik}{$\spadesuit$\xspace}
-\newcommand{\herz}{$\heartsuit$\xspace}
-\newcommand{\karo}{$\diamondsuit$\xspace}
-\newcommand{\optional}{\textit{optional}\xspace}
-\newcommand{\Optional}{\textit{Optional}\xspace}
-\newcommand{\NotYet}{\textit{Noch nicht unterstützt.\\}}
-
-\renewcommand{\thesection}{\Roman{section}}
-
-%\setkomafont{sectioning}{\normalfont\bfseries}
-
-
-\begin{document}
 
 \title{FreeDoko}
 \subtitle{Spielregeln}
 \author{Borg Enders \and Dr. Diether Knof}
-\date{\today}
+\date{16. Dezember 2011}
+
+
+\begin{document}
 
 \maketitle
 
@@ -65,8 +29,6 @@ bookmarksnumbered=true,
 
 Im folgenden werden alle von FreeDoko (\href{http://free-doko.sourceforge.net/de/}{http://free-doko.sourceforge.net/de/}) unterstützten Spielregeln
 detailiert erläutert.
-
-Stand: 14.~April 2011
 
 Hinweis: In diesem Dokument sind noch nicht alle Sonderregeln beschrieben.
 Die Regeln sind auch im Handbuch in der Rubrik \href{http://free-doko.sourceforge.net/doc/manual/de/operation/rules_config.html}{Regeln} beschrieben.

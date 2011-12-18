@@ -196,5 +196,6 @@ ChangeLog::0.7.10        = \
 
 # 0.7.11
 ChangeLog::0.7.11        = \
+	* expanded license of the altenburg cardsets\n\
 	* bug fixes\n\
 	* ai improvements, especially jabbing of tricks
