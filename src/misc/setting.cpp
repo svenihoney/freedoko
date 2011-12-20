@@ -555,13 +555,13 @@ Setting::operator()(TypeString const type) const
 #ifdef WINDOWS
 #ifdef USE_REGISTRY
       {
-    	  TCHAR  infoBuf[1001];
-    	  infoBuf[1000] = 0;
-     	  DWORD  bufCharCount =1000;
-     	  if( !GetUserName( infoBuf, &bufCharCount ))
-        	  value = "Player";
-     	  else
-       	    value = infoBuf;
+        TCHAR  infoBuf[1001];
+        infoBuf[1000] = 0;
+        DWORD  bufCharCount =1000;
+        if( !GetUserName( infoBuf, &bufCharCount ))
+          value = "Player";
+        else
+          value = infoBuf;
       }
 #ifdef OUTDATED
       // 2010-01-24
@@ -1963,35 +1963,35 @@ Setting::set(TypeString const type, string const& value)
               && this->cardset_license_.empty());
              license++) {
 
-		if (DK::Utils::File::isfile(directory + "/"
-					+ *license)) {
-			this->cardset_license_ = DK::Utils::String::getfile(directory + "/"
-					+ *license);
-		} else if (DK::Utils::File::isfile(directory + "/../"
-					+ *license)) {
-			this->cardset_license_ = DK::Utils::String::getfile(directory + "/../"
-					+ *license);
-	} // if (license found)
-      } // for (license \in license_files)
+          if (DK::Utils::File::isfile(directory + "/"
+                                      + *license)) {
+            this->cardset_license_ = DK::Utils::String::getfile(directory + "/"
+                                                                + *license);
+          } else if (DK::Utils::File::isfile(directory + "/../"
+                                             + *license)) {
+            this->cardset_license_ = DK::Utils::String::getfile(directory + "/../"
+                                                                + *license);
+          } // if (license found)
+        } // for (license \in license_files)
 
-      if (this->cardset_license_.empty())
-	      // no license found
-	      this->cardset_license_ = "license not found :-(";
+        if (this->cardset_license_.empty())
+          // no license found
+          this->cardset_license_ = "license not found :-(";
 
-    } // read the license
+      } // read the license
 
-    this->search_cards_back();
-    break;
+      this->search_cards_back();
+      break;
 
-	  default:
-    break;
-  } // switch(type)
+    default:
+      break;
+    } // switch(type)
 
-  if (ui)
-	  ::ui->setting_changed(type, &old_value);
-} // if (this == &::setting)
+    if (ui)
+      ::ui->setting_changed(type, &old_value);
+  } // if (this == &::setting)
 
-return ;
+  return ;
 } // void Setting::set(const TypeString type, string const& value)
 
 /**
@@ -2006,31 +2006,31 @@ return ;
  **
  ** @version	0.7.0
  **/
-	void
+void
 Setting::set(TypeCardsOrder const type, CardsOrder const& value)
 {
-	if (this->value(type) == value) {
-		return ;
-	}
+  if (this->value(type) == value) {
+    return ;
+  }
 
-	CardsOrder const old_value = *this->cards_order_;
+  CardsOrder const old_value = *this->cards_order_;
 
-	// the following code keeps the sorting order when the cards are mixed,
-	if (!value.sorted()) {
-		this->cards_order_->sorted_set(value.sorted());
-	} else { // if !(!value.sorted())
-		*this->cards_order_ = value;
+  // the following code keeps the sorting order when the cards are mixed,
+  if (!value.sorted()) {
+    this->cards_order_->sorted_set(value.sorted());
+  } else { // if !(!value.sorted())
+    *this->cards_order_ = value;
 
-		if (this == &::setting) {
-			if (game_status & GAMESTATUS::GAME)
-				::party.game().players_hands_sort();
+    if (this == &::setting) {
+      if (game_status & GAMESTATUS::GAME)
+        ::party.game().players_hands_sort();
 
-			if (ui)
-				::ui->setting_changed(type, &old_value);
-		} // if (this == &::setting)
-	} // if !(!value.sorted())
+      if (ui)
+        ::ui->setting_changed(type, &old_value);
+    } // if (this == &::setting)
+  } // if !(!value.sorted())
 
-	return ;
+  return ;
 } // void Setting::set(TypeCardsOrder type, CardsOrder value)
 
 /**
@@ -2045,11 +2045,11 @@ Setting::set(TypeCardsOrder const type, CardsOrder const& value)
  **
  ** @version	0.7.0
  **/
-	void
+void
 Setting::set(TypeCardsOrder const type, string const& value)
 {
-	this->set(type, CardsOrder(value));
-	return ;
+  this->set(type, CardsOrder(value));
+  return ;
 } // void Setting::set(TypeCardsOrder type, string value)
 
 /**
@@ -2065,38 +2065,38 @@ Setting::set(TypeCardsOrder const type, string const& value)
  **
  ** @version	0.7.0
  **/
-	bool
+bool
 Setting::set(string const& type, string const& value)
 {
-	for (int i = Setting::BOOL_FIRST; i <= Setting::BOOL_LAST; i++) {
-		if ((type == ::name(Setting::TypeBool(i)))
-				|| (type == ::translation(Setting::TypeBool(i)))) {
-			this->set(Setting::TypeBool(i), value);
-			return true;
-		}
-	}
-	for (int i = Setting::UNSIGNED_FIRST; i <= Setting::UNSIGNED_LAST; i++) {
-		if ((type == ::name(Setting::TypeUnsigned(i)))
-				|| (type == ::translation(Setting::TypeUnsigned(i)))) {
-			this->set(Setting::TypeUnsigned(i), value);
-			return true;
-		}
-	}
-	for (int i = Setting::STRING_FIRST; i <= Setting::STRING_LAST; i++) {
-		if ((type == ::name(Setting::TypeString(i)))
-				|| (type == ::translation(Setting::TypeString(i)))) {
-			this->set(Setting::TypeString(i), value);
-			return true;
-		}
-	}
+  for (int i = Setting::BOOL_FIRST; i <= Setting::BOOL_LAST; i++) {
+    if ((type == ::name(Setting::TypeBool(i)))
+        || (type == ::translation(Setting::TypeBool(i)))) {
+      this->set(Setting::TypeBool(i), value);
+      return true;
+    }
+  }
+  for (int i = Setting::UNSIGNED_FIRST; i <= Setting::UNSIGNED_LAST; i++) {
+    if ((type == ::name(Setting::TypeUnsigned(i)))
+        || (type == ::translation(Setting::TypeUnsigned(i)))) {
+      this->set(Setting::TypeUnsigned(i), value);
+      return true;
+    }
+  }
+  for (int i = Setting::STRING_FIRST; i <= Setting::STRING_LAST; i++) {
+    if ((type == ::name(Setting::TypeString(i)))
+        || (type == ::translation(Setting::TypeString(i)))) {
+      this->set(Setting::TypeString(i), value);
+      return true;
+    }
+  }
 
-	if ((type == ::name(Setting::CARDS_ORDER))
-			|| (type == ::translation(Setting::CARDS_ORDER))) {
-		this->set(CARDS_ORDER, value);
-		return true;
-	}
+  if ((type == ::name(Setting::CARDS_ORDER))
+      || (type == ::translation(Setting::CARDS_ORDER))) {
+    this->set(CARDS_ORDER, value);
+    return true;
+  }
 
-	return false;
+  return false;
 } // bool Setting::set(string const& type, string const& value)
 
 /**
@@ -2110,23 +2110,23 @@ Setting::set(string const& type, string const& value)
  **
  ** @version   0.7.4
  **/
-	void
+void
 Setting::set(Theme const& theme)
 {
-	for (map<TypeBool, bool>::const_iterator t = theme.bool_.begin();
-			t != theme.bool_.end();
-			++t)
-		this->set(t->first, t->second);
-	for (map<TypeUnsigned, unsigned>::const_iterator t = theme.unsigned_.begin();
-			t != theme.unsigned_.end();
-			++t)
-		this->set(t->first, t->second);
-	for (map<TypeString, string>::const_iterator t = theme.string_.begin();
-			t != theme.string_.end();
-			++t)
-		this->set(t->first, t->second);
+  for (map<TypeBool, bool>::const_iterator t = theme.bool_.begin();
+       t != theme.bool_.end();
+       ++t)
+    this->set(t->first, t->second);
+  for (map<TypeUnsigned, unsigned>::const_iterator t = theme.unsigned_.begin();
+       t != theme.unsigned_.end();
+       ++t)
+    this->set(t->first, t->second);
+  for (map<TypeString, string>::const_iterator t = theme.string_.begin();
+       t != theme.string_.end();
+       ++t)
+    this->set(t->first, t->second);
 
-	return ;
+  return ;
 } // void Setting::set(Theme theme)
 
 /**
@@ -2140,15 +2140,15 @@ Setting::set(Theme const& theme)
  **
  ** @version   0.7.4
  **/
-	bool
+bool
 Setting::set_theme(string const& name)
 {
-	Theme const* theme = this->theme(name);
-	if (!theme)
-		return false;
+  Theme const* theme = this->theme(name);
+  if (!theme)
+    return false;
 
-	this->set(*theme);
-	return true;
+  this->set(*theme);
+  return true;
 } // bool Setting::set_theme(string const& name)
 
 /**
@@ -2165,30 +2165,30 @@ Setting::set_theme(string const& name)
 Position
 Setting::position(Player const& player) const
 {
-	int const rotation
-		= ( (   ::setting(Setting::OWN_HAND_ON_TABLE_BOTTOM)
-					&& (::party.humanno() == 1) )
-				? ::party.human_player()->no()
-				: ::setting(Setting::TABLE_ROTATION) );
+  int const rotation
+    = ( (   ::setting(Setting::OWN_HAND_ON_TABLE_BOTTOM)
+         && (::party.humanno() == 1) )
+       ? ::party.human_player()->no()
+       : ::setting(Setting::TABLE_ROTATION) );
 
-	switch ( (player.no() + 4 - rotation) % 4) {
-		case 0:
-			return SOUTH;
-		case 1:
-			return WEST;
-		case 2:
-			return NORTH;
-		case 3:
-			return EAST;
-		default:
-			DEBUG_ASSERTION(false,
-					"Table::position(player):\n"
-					"  player number " << player.no()
-					<< " invalid.");
-			break;
-	} // switch(player.no())
+  switch ( (player.no() + 4 - rotation) % 4) {
+  case 0:
+    return SOUTH;
+  case 1:
+    return WEST;
+  case 2:
+    return NORTH;
+  case 3:
+    return EAST;
+  default:
+    DEBUG_ASSERTION(false,
+                    "Table::position(player):\n"
+                    "  player number " << player.no()
+                    << " invalid.");
+    break;
+  } // switch(player.no())
 
-	return NORTH;
+  return NORTH;
 } // Position Table::position(Player player) const
 
 /**
@@ -2202,14 +2202,14 @@ Setting::position(Player const& player) const
  **
  ** @version	0.7.0
  **/
-	void
+void
 Setting::load()
 {
-	this->load((*this)(PUBLIC_DATA_DIRECTORY) + "/" + this->value(SETTINGS_FILE),
-			false);
-	this->load((*this)(SETTINGS_FILE), false);
+  this->load((*this)(PUBLIC_DATA_DIRECTORY) + "/" + this->value(SETTINGS_FILE),
+             false);
+  this->load((*this)(SETTINGS_FILE), false);
 
-	return ;
+  return ;
 } // void Setting::load()
 
 /**
@@ -2225,64 +2225,64 @@ Setting::load()
  **
  ** @version	0.7.0
  **/
-	void
+void
 Setting::load(string const& filename, bool filename_not_exists_output)
 {
-	ifstream istr(filename.c_str());
+  ifstream istr(filename.c_str());
 
-	if (istr.fail()) {
-		if (filename_not_exists_output)
-			cerr << "Setting::load(" << filename << "):\n"
-								    << "  Error while opening the file"
-												       << endl;
-		return ;
-	}
+  if (istr.fail()) {
+    if (filename_not_exists_output)
+      cerr << "Setting::load(" << filename << "):\n"
+        << "  Error while opening the file"
+        << endl;
+    return ;
+  }
 
-	// load the settings
-	while (istr.good()) {
-		Config config;
-		istr >> config;
+  // load the settings
+  while (istr.good()) {
+    Config config;
+    istr >> config;
 
-		// finished with the config file
-		if ((config.name == "") && (config.value == ""))
-			break;
+    // finished with the config file
+    if ((config.name == "") && (config.value == ""))
+      break;
 
-		if (config.separator) {
-			// a setting
-			if (!set(config.name, config.value)) {
-				cerr << "setting file:	"
-					<< "ignoring unknown setting '" << config.name << "'."
-					<< endl;
-			}
-		} else { // if (config.separator)
-			// a setting
-			// if the value is in parentencies, remove both
-			if (config.name == "!input") {
-				// include the given file
-				this->load((DK::Utils::File::dirname(filename) + "/"
-							+ config.value));
-			} else if (config.name == "!end") {
-				// ignore the rest of the file
-				break;
-			} else if (config.name == "!stdout") {
-				// output of the data to 'stdout'
-				cout << config.value << endl;
-			} else if (config.name == "!stderr") {
-				// output of the data to 'stderr'
-				cerr << config.value << endl;
-			} else if (config.name == "") {
-				cerr << "Setting file \'" << filename << "\':	"
-					<< "Ignoring line \'" << config.value << "\'.\n";
-			} else {
-				cerr << "Setting file \'" << filename << "\':	"
-					<< "Setting '" << config.name << "' unknown.\n"
-					<< "Ignoring it.\n";
-			} // if (config.name == .)
-		} // config.separator
+    if (config.separator) {
+      // a setting
+      if (!set(config.name, config.value)) {
+        cerr << "setting file:	"
+          << "ignoring unknown setting '" << config.name << "'."
+          << endl;
+      }
+    } else { // if (config.separator)
+      // a setting
+      // if the value is in parentencies, remove both
+      if (config.name == "!input") {
+        // include the given file
+        this->load((DK::Utils::File::dirname(filename) + "/"
+                    + config.value));
+      } else if (config.name == "!end") {
+        // ignore the rest of the file
+        break;
+      } else if (config.name == "!stdout") {
+        // output of the data to 'stdout'
+        cout << config.value << endl;
+      } else if (config.name == "!stderr") {
+        // output of the data to 'stderr'
+        cerr << config.value << endl;
+      } else if (config.name == "") {
+        cerr << "Setting file \'" << filename << "\':	"
+          << "Ignoring line \'" << config.value << "\'.\n";
+      } else {
+        cerr << "Setting file \'" << filename << "\':	"
+          << "Setting '" << config.name << "' unknown.\n"
+          << "Ignoring it.\n";
+      } // if (config.name == .)
+    } // config.separator
 
-	} // while (istr.good())
+  } // while (istr.good())
 
-	return ;
+  return ;
 } // void Setting::load(string const& filename, bool filename_not_exists_output)
 
 /**
@@ -2299,7 +2299,7 @@ Setting::load(string const& filename, bool filename_not_exists_output)
 bool
 Setting::save() const
 {
-	return this->save((*this)(SETTINGS_FILE));
+  return this->save((*this)(SETTINGS_FILE));
 } // bool Setting::save() const
 
 /**
@@ -2316,33 +2316,33 @@ Setting::save() const
 bool
 Setting::save(string const& filename) const
 {
-	string filename_tmp = filename + ".tmp";
-	ofstream ostr(filename_tmp.c_str());
-	if (!ostr.good()) {
-		::ui->information(::translation("Error::Setting::save: Error opening temporary file %stmpfile%. Aborting saving.", filename_tmp), INFORMATION::PROBLEM);
-		return false;
-	}
+  string filename_tmp = filename + ".tmp";
+  ofstream ostr(filename_tmp.c_str());
+  if (!ostr.good()) {
+    ::ui->information(::translation("Error::Setting::save: Error opening temporary file %stmpfile%. Aborting saving.", filename_tmp), INFORMATION::PROBLEM);
+    return false;
+  }
 
-	ostr << "#!FreeDoko -s\n"
-		<< "# FreeDoko settings file (version " << *::version << ")\n"
-		<< '\n';
-	this->write(ostr);
+  ostr << "#!FreeDoko -s\n"
+    << "# FreeDoko settings file (version " << *::version << ")\n"
+    << '\n';
+  this->write(ostr);
 
-	if (!ostr.good()) {
-		::ui->information(::translation("Error::Setting::save: Error saving in temporary file %stmpfile%. Keeping temporary file (for bug tracking).", filename_tmp), INFORMATION::PROBLEM);
-		return false;
-	}
-	ostr.close();
+  if (!ostr.good()) {
+    ::ui->information(::translation("Error::Setting::save: Error saving in temporary file %stmpfile%. Keeping temporary file (for bug tracking).", filename_tmp), INFORMATION::PROBLEM);
+    return false;
+  }
+  ostr.close();
 
 #ifdef WINDOWS
-	unlink(filename.c_str());
+  unlink(filename.c_str());
 #endif
-	if (rename(filename_tmp.c_str(), filename.c_str())) {
-		::ui->information(::translation("Error::Setting::save: Could not rename temporary file %stmpfile% to requested file %sfile%. Keeping temporary file.", filename_tmp, filename), INFORMATION::PROBLEM);
-		return false;
-	}
+  if (rename(filename_tmp.c_str(), filename.c_str())) {
+    ::ui->information(::translation("Error::Setting::save: Could not rename temporary file %stmpfile% to requested file %sfile%. Keeping temporary file.", filename_tmp, filename), INFORMATION::PROBLEM);
+    return false;
+  }
 
-	return true;
+  return true;
 } // bool Setting::save(string const& filename)
 
 /**
@@ -2356,22 +2356,22 @@ Setting::save(string const& filename) const
  **
  ** @version	0.7.0
  **/
-	void
+void
 Setting::update_all()
 {
-	if (this == &::setting) {
-		::translator.load();
+  if (this == &::setting) {
+    ::translator.load();
 
-		for (int i = BOOL_FIRST; i <= BOOL_LAST; i++)
-			::ui->setting_changed(i, &(this->value(TypeBool(i))));
-		for (int i = UNSIGNED_FIRST; i <= UNSIGNED_LAST; i++)
-			::ui->setting_changed(i, &(this->value(TypeUnsigned(i))));
-		for (int i = STRING_FIRST; i <= STRING_LAST; i++)
-			::ui->setting_changed(i, &(this->value(TypeString(i))));
-		::ui->setting_changed(CARDS_ORDER, &(this->value(CARDS_ORDER)));
-	} // if (this == &::setting)
+    for (int i = BOOL_FIRST; i <= BOOL_LAST; i++)
+      ::ui->setting_changed(i, &(this->value(TypeBool(i))));
+    for (int i = UNSIGNED_FIRST; i <= UNSIGNED_LAST; i++)
+      ::ui->setting_changed(i, &(this->value(TypeUnsigned(i))));
+    for (int i = STRING_FIRST; i <= STRING_LAST; i++)
+      ::ui->setting_changed(i, &(this->value(TypeString(i))));
+    ::ui->setting_changed(CARDS_ORDER, &(this->value(CARDS_ORDER)));
+  } // if (this == &::setting)
 
-	return ;
+  return ;
 } // void Setting::update_all()
 
 /**
@@ -2385,54 +2385,54 @@ Setting::update_all()
  **
  ** @version   0.7.4
  **/
-	void
+void
 Setting::create_themes_list()
 {
-	this->clear_themes_list();
+  this->clear_themes_list();
 
-	Theme* theme;
-	{ // Altenburg french
-		theme = new Theme("französisch (Altenburg)");
-		theme->set(CARDSET, "Altenburg/french");
-		theme->set(CARDS_BACK, "penguin");
-		theme->set(LANGUAGE, "de");
-		this->themes_.push_back(theme);
-	} // Altenburg french
-	{ // Altenburg german
-		theme = new Theme("deutsch (Altenburg)");
-		theme->set(CARDSET, "Altenburg/german");
-		theme->set(CARDS_BACK, "penguin");
-		theme->set(LANGUAGE, "de-alt");
-		this->themes_.push_back(theme);
-	} // Altenburg german
-	{ // Altenburg english
-		theme = new Theme("english (Altenburg)");
-		theme->set(CARDSET, "Altenburg/english");
-		theme->set(CARDS_BACK, "penguin");
-		theme->set(LANGUAGE, "en");
-		this->themes_.push_back(theme);
-	} // Altenburg german
-	{ // dondorf english
-		theme = new Theme("english (dondorf)");
-		theme->set(CARDSET, "dondorf");
-		theme->set(CARDS_BACK, "penguin");
-		theme->set(LANGUAGE, "en");
-		this->themes_.push_back(theme);
-	} // dondorf english
-	{ // autumn
-		theme = new Theme(::translation("Setting::Theme::autumn"));
-		theme->set(CARDS_BACK, "leaves");
-		theme->set(BACKGROUND, "grass-with-leaves");
-		this->themes_.push_back(theme);
-	} // autumn
-	{ // christmas
-		theme = new Theme(::translation("Setting::Theme::christmas"));
-		theme->set(CARDS_BACK, "christmas/candle");
-		theme->set(BACKGROUND, "additional/christmas/sky");
-		this->themes_.push_back(theme);
-	} // christmas
+  Theme* theme;
+  { // Altenburg french
+    theme = new Theme("französisch (Altenburg)");
+    theme->set(CARDSET, "Altenburg/french");
+    theme->set(CARDS_BACK, "penguin");
+    theme->set(LANGUAGE, "de");
+    this->themes_.push_back(theme);
+  } // Altenburg french
+  { // Altenburg german
+    theme = new Theme("deutsch (Altenburg)");
+    theme->set(CARDSET, "Altenburg/german");
+    theme->set(CARDS_BACK, "penguin");
+    theme->set(LANGUAGE, "de-alt");
+    this->themes_.push_back(theme);
+  } // Altenburg german
+  { // Altenburg english
+    theme = new Theme("english (Altenburg)");
+    theme->set(CARDSET, "Altenburg/english");
+    theme->set(CARDS_BACK, "penguin");
+    theme->set(LANGUAGE, "en");
+    this->themes_.push_back(theme);
+  } // Altenburg german
+  { // dondorf english
+    theme = new Theme("english (dondorf)");
+    theme->set(CARDSET, "dondorf");
+    theme->set(CARDS_BACK, "penguin");
+    theme->set(LANGUAGE, "en");
+    this->themes_.push_back(theme);
+  } // dondorf english
+  { // autumn
+    theme = new Theme(::translation("Setting::Theme::autumn"));
+    theme->set(CARDS_BACK, "leaves");
+    theme->set(BACKGROUND, "grass-with-leaves");
+    this->themes_.push_back(theme);
+  } // autumn
+  { // christmas
+    theme = new Theme(::translation("Setting::Theme::christmas"));
+    theme->set(CARDS_BACK, "christmas/candle");
+    theme->set(BACKGROUND, "additional/christmas/sky");
+    this->themes_.push_back(theme);
+  } // christmas
 
-	return ;
+  return ;
 } // void Setting::create_themes_list()
 
 /**
@@ -2446,16 +2446,16 @@ Setting::create_themes_list()
  **
  ** @version   0.7.4
  **/
-	void
+void
 Setting::clear_themes_list()
 {
-	for (list<Theme*>::iterator t = this->themes_.begin();
-			t != this->themes_.end();
-			++t)
-		delete *t;
-	this->themes_.clear();
+  for (list<Theme*>::iterator t = this->themes_.begin();
+       t != this->themes_.end();
+       ++t)
+    delete *t;
+  this->themes_.clear();
 
-	return ;
+  return ;
 } // void Setting::clear_themes_list()
 
 /**
@@ -2469,154 +2469,154 @@ Setting::clear_themes_list()
  **
  ** @version   0.7.5
  **/
-	void
+void
 Setting::update_path(TypeString const type)
 {
-	string const path_bak = this->string_path_[type - STRING_FIRST];
+  string const path_bak = this->string_path_[type - STRING_FIRST];
 
-	switch(type) {
-		case NAME:
-		case NAME_FONT:
-		case NAME_FONT_COLOR:
-		case NAME_ACTIVE_FONT_COLOR:
-		case NAME_RESERVATION_FONT_COLOR:
-		case TRICKPILE_POINTS_FONT:
-		case TRICKPILE_POINTS_FONT_COLOR:
-		case POVERTY_SHIFT_ARROW_COLOR:
-			break;
-		case LANGUAGE: {
-				       // @todo   all (use the vectors in 'Translator')
-				       this->string_path_[type - STRING_FIRST] = (*this)(LANGUAGE_FILE);
-				       break;
-			       } // case LANGUAGE:
+  switch(type) {
+  case NAME:
+  case NAME_FONT:
+  case NAME_FONT_COLOR:
+  case NAME_ACTIVE_FONT_COLOR:
+  case NAME_RESERVATION_FONT_COLOR:
+  case TRICKPILE_POINTS_FONT:
+  case TRICKPILE_POINTS_FONT_COLOR:
+  case POVERTY_SHIFT_ARROW_COLOR:
+    break;
+  case LANGUAGE: {
+    // @todo   all (use the vectors in 'Translator')
+    this->string_path_[type - STRING_FIRST] = (*this)(LANGUAGE_FILE);
+    break;
+  } // case LANGUAGE:
 
-		case CARDSET: {
-				      // search the directory
-				      list<string> subdir;
-				      subdir.push_back((*this)(CARDSET));
-				      list<string> const datadir = this->data_directories();
+  case CARDSET: {
+    // search the directory
+    list<string> subdir;
+    subdir.push_back((*this)(CARDSET));
+    list<string> const datadir = this->data_directories();
 
-				      for (list<string>::const_iterator sd = subdir.begin();
-						      sd != subdir.end();
-						      sd++) {
+    for (list<string>::const_iterator sd = subdir.begin();
+         sd != subdir.end();
+         sd++) {
 #ifdef WORKAROUND
-					      // check for Altenburg cardset
-					      if (   (ALTENBURG_EXPIRATION_DATE < DK::Utils::Date() )
-							      && (sd->find("Altenburg") != string::npos) ) {
-						      ::ui->information(::translation("License: Altenburg expired"),
-								      INFORMATION::WARNING);
-						      continue;
-					      } // if (Altenburg license expired)
-					      // check for InnoCard cardset
-					      if (   (INNOCARD_EXPIRATION_DATE < DK::Utils::Date() )
-							      && (sd->find("InnoCard") != string::npos) ) {
-						      ::ui->information(::translation("License: InnoCard expired"),
-								      INFORMATION::WARNING);
-						      continue;
-					      } // if (InnoCard license expired)
-					      // check for Elite cardset
-					      if (   (ELITE_EXPIRATION_DATE < DK::Utils::Date() )
-							      && (sd->find("Elite") != string::npos) ) {
-						      ::ui->information(::translation("License: Elite expired"),
-								      INFORMATION::WARNING);
-						      continue;
-					      } // if (Elite license expired)
+      // check for Altenburg cardset
+      if (   (ALTENBURG_EXPIRATION_DATE < DK::Utils::Date() )
+          && (sd->find("Altenburg") != string::npos) ) {
+        ::ui->information(::translation("License: Altenburg expired"),
+                          INFORMATION::WARNING);
+        continue;
+      } // if (Altenburg license expired)
+      // check for InnoCard cardset
+      if (   (INNOCARD_EXPIRATION_DATE < DK::Utils::Date() )
+          && (sd->find("InnoCard") != string::npos) ) {
+        ::ui->information(::translation("License: InnoCard expired"),
+                          INFORMATION::WARNING);
+        continue;
+      } // if (InnoCard license expired)
+      // check for Elite cardset
+      if (   (ELITE_EXPIRATION_DATE < DK::Utils::Date() )
+          && (sd->find("Elite") != string::npos) ) {
+        ::ui->information(::translation("License: Elite expired"),
+                          INFORMATION::WARNING);
+        continue;
+      } // if (Elite license expired)
 #endif
-					      for (list<string>::const_iterator dd = datadir.begin();
-							      dd != datadir.end();
-							      dd++) {
-						      string const directory = *dd + "/" + *sd;
-						      // check for the file
-						      if (DK::Utils::File::isfile(directory + "/"
-									      + this->value(CARDS_DIRECTORY) + "/"
-									      + ::name(Card::CLUB) + "/"
-									      + ::name(Card::ACE)
-									      + "." + (*this)(GRAPHIC_EXTENSION)
-									      )) {
-							      this->string_path_[type - STRING_FIRST] = directory;
-							      break;
-						      }
-					      } // for (dd \in datadir)
-					      if (!this->string_path_[type - STRING_FIRST].empty())
-						      break;
-				      } // for (sd \in subdir)
+      for (list<string>::const_iterator dd = datadir.begin();
+           dd != datadir.end();
+           dd++) {
+        string const directory = *dd + "/" + *sd;
+        // check for the file
+        if (DK::Utils::File::isfile(directory + "/"
+                                    + this->value(CARDS_DIRECTORY) + "/"
+                                    + ::name(Card::CLUB) + "/"
+                                    + ::name(Card::ACE)
+                                    + "." + (*this)(GRAPHIC_EXTENSION)
+                                   )) {
+          this->string_path_[type - STRING_FIRST] = directory;
+          break;
+        }
+      } // for (dd \in datadir)
+      if (!this->string_path_[type - STRING_FIRST].empty())
+        break;
+    } // for (sd \in subdir)
 
-				      this->update_path(CARDS_BACK);
-				      break;
-			      } // case CARDSET: 
+    this->update_path(CARDS_BACK);
+    break;
+  } // case CARDSET: 
 
-		case CARDS_BACK: {
+  case CARDS_BACK: {
 
-					 string const file = (this->path(CARDSET) + "/"
-							 + this->value(CARDS_BACK_DIRECTORY) + "/"
-							 + this->value(CARDS_BACK)
-							 + "." + (*this)(GRAPHIC_EXTENSION));
-					 // check for the file
-					 // check for the file
-					 ifstream istr(file.c_str());
-					 if (istr.good()) {
-						 this->string_path_[type - STRING_FIRST] = file;
-						 break;
-					 }
+    string const file = (this->path(CARDSET) + "/"
+                         + this->value(CARDS_BACK_DIRECTORY) + "/"
+                         + this->value(CARDS_BACK)
+                         + "." + (*this)(GRAPHIC_EXTENSION));
+    // check for the file
+    // check for the file
+    ifstream istr(file.c_str());
+    if (istr.good()) {
+      this->string_path_[type - STRING_FIRST] = file;
+      break;
+    }
 
 
-					 list<string> const datadir = this->data_directories();
+    list<string> const datadir = this->data_directories();
 
-					 for (list<string>::const_iterator dd = datadir.begin();
-							 dd != datadir.end();
-							 dd++) {
-						 string const file = (*dd + "/" + (*this)(CARDSET) + "/"
-								 + this->value(CARDS_BACK_DIRECTORY) + "/"
-								 + this->value(CARDS_BACK)
-								 + "." + (*this)(GRAPHIC_EXTENSION));
-						 // check for the file
-						 ifstream istr(file.c_str());
-						 if (istr.good()) {
-							 this->string_path_[type - STRING_FIRST] = file;
-							 break;
-						 }
-					 } // for (dd \in datadir)
+    for (list<string>::const_iterator dd = datadir.begin();
+         dd != datadir.end();
+         dd++) {
+      string const file = (*dd + "/" + (*this)(CARDSET) + "/"
+                           + this->value(CARDS_BACK_DIRECTORY) + "/"
+                           + this->value(CARDS_BACK)
+                           + "." + (*this)(GRAPHIC_EXTENSION));
+      // check for the file
+      ifstream istr(file.c_str());
+      if (istr.good()) {
+        this->string_path_[type - STRING_FIRST] = file;
+        break;
+      }
+    } // for (dd \in datadir)
 
-					 break;
-				 } // case CARDS_BACK:
+    break;
+  } // case CARDS_BACK:
 
-		case BACKGROUND: {
-					 // search the directory
+  case BACKGROUND: {
+    // search the directory
 
-					 list<string> const datadir = this->data_directories();
+    list<string> const datadir = this->data_directories();
 
-					 for (list<string>::const_iterator dd = datadir.begin();
-							 dd != datadir.end();
-							 dd++) {
-						 string const file = (*dd + "/" + (*this)(BACKGROUNDS_DIRECTORY) + "/"
-								 + this->value(BACKGROUND)
-								 + "." + (*this)(GRAPHIC_EXTENSION)
-								 );
-						 // check for the file
-						 ifstream istr(file.c_str());
-						 if (istr.good()) {
-							 this->string_path_[type - STRING_FIRST] = file;
-							 break;
-						 }
-					 } // for (dd \in datadir)
+    for (list<string>::const_iterator dd = datadir.begin();
+         dd != datadir.end();
+         dd++) {
+      string const file = (*dd + "/" + (*this)(BACKGROUNDS_DIRECTORY) + "/"
+                           + this->value(BACKGROUND)
+                           + "." + (*this)(GRAPHIC_EXTENSION)
+                          );
+      // check for the file
+      ifstream istr(file.c_str());
+      if (istr.good()) {
+        this->string_path_[type - STRING_FIRST] = file;
+        break;
+      }
+    } // for (dd \in datadir)
 
-					 break;
-				 } // case BACKGROUND:
+    break;
+  } // case BACKGROUND:
 
 #ifdef USE_SOUND_COMMAND
-		case USE_SOUND_COMMAND:
-				 this->string_path_[type - STRING_FIRST] = (*this)(type);
-				 break ;
+  case USE_SOUND_COMMAND:
+    this->string_path_[type - STRING_FIRST] = (*this)(type);
+    break ;
 #endif
-		case BROWSER_COMMAND:
-				 this->string_path_[type - STRING_FIRST] = (*this)(type);
-				 break ;
-	} // switch(type)
+  case BROWSER_COMMAND:
+    this->string_path_[type - STRING_FIRST] = (*this)(type);
+    break ;
+  } // switch(type)
 
-	if (this->string_path_[type - STRING_FIRST].empty())
-		this->string_path_[type - STRING_FIRST] = path_bak;
+  if (this->string_path_[type - STRING_FIRST].empty())
+    this->string_path_[type - STRING_FIRST] = path_bak;
 
-	return ;
+  return ;
 } // void Setting::update_path(TypeString type)
 
 /**
@@ -2633,232 +2633,232 @@ Setting::update_path(TypeString const type)
 ostream&
 Setting::write(ostream& ostr) const
 {
-	ios_base::fmtflags const flags = ostr.flags();
-	ostr << boolalpha;
+  ios_base::fmtflags const flags = ostr.flags();
+  ostr << boolalpha;
 
-	ostr << ::name(NAME) << " = "
-		<< this->value(NAME) << "\n"
+  ostr << ::name(NAME) << " = "
+    << this->value(NAME) << "\n"
 
-		<< ::name(LANGUAGE) << " = "
-		<< this->value(LANGUAGE) << "\n"
+    << ::name(LANGUAGE) << " = "
+    << this->value(LANGUAGE) << "\n"
 
-		<< ::name(SOUND) << " = "
-		<< this->value(SOUND) << "\n"
+    << ::name(SOUND) << " = "
+    << this->value(SOUND) << "\n"
 
 #ifdef USE_SOUND_COMMAND
-		<< ::name(USE_SOUND_COMMAND) << " = "
-		<< this->value(USE_SOUND_COMMAND) << "\n"
+    << ::name(USE_SOUND_COMMAND) << " = "
+    << this->value(USE_SOUND_COMMAND) << "\n"
 #endif
 
-		<< ::name(BROWSER_COMMAND) << " = "
-		<< this->value(BROWSER_COMMAND) << "\n"
+    << ::name(BROWSER_COMMAND) << " = "
+    << this->value(BROWSER_COMMAND) << "\n"
 
-		<< ::name(SHOW_BUG_REPORT_BUTTON_IN_GAME_FINISHED_WINDOW) << " = "
-		<< this->value(SHOW_BUG_REPORT_BUTTON_IN_GAME_FINISHED_WINDOW) << "\n"
+    << ::name(SHOW_BUG_REPORT_BUTTON_IN_GAME_FINISHED_WINDOW) << " = "
+    << this->value(SHOW_BUG_REPORT_BUTTON_IN_GAME_FINISHED_WINDOW) << "\n"
 
-		<< ::name(SAVE_BUG_REPORTS_ON_DESKTOP) << " = "
-		<< this->value(SAVE_BUG_REPORTS_ON_DESKTOP) << "\n"
+    << ::name(SAVE_BUG_REPORTS_ON_DESKTOP) << " = "
+    << this->value(SAVE_BUG_REPORTS_ON_DESKTOP) << "\n"
 
 #ifdef USE_THREADS
-		<< ::name(THREADS_MAX) << " = "
-		<< this->value(THREADS_MAX) << "\n"
+    << ::name(THREADS_MAX) << " = "
+    << this->value(THREADS_MAX) << "\n"
 #endif
 
-		<< "\n"
-		<< "# information and delay\n"
+    << "\n"
+    << "# information and delay\n"
 
-		<< ::name(CARD_PLAY_DELAY) << " = "
-		<< ((this->value(CARD_PLAY_DELAY) == UINT_MAX)
-				? "-1"
-				: DK::Utils::String::to_string(this->value(CARD_PLAY_DELAY)).c_str())
-		<< "\n"
+    << ::name(CARD_PLAY_DELAY) << " = "
+    << ((this->value(CARD_PLAY_DELAY) == UINT_MAX)
+        ? "-1"
+        : DK::Utils::String::to_string(this->value(CARD_PLAY_DELAY)).c_str())
+    << "\n"
 
-		<< ::name(AUTOMATIC_CARD_SUGGESTION) << " = "
-		<< this->value(AUTOMATIC_CARD_SUGGESTION) << "\n"
+    << ::name(AUTOMATIC_CARD_SUGGESTION) << " = "
+    << this->value(AUTOMATIC_CARD_SUGGESTION) << "\n"
 
-		<< ::name(ANNOUNCE_SWINES_AUTOMATICALLY) << " = "
-		<< this->value(ANNOUNCE_SWINES_AUTOMATICALLY) << "\n"
+    << ::name(ANNOUNCE_SWINES_AUTOMATICALLY) << " = "
+    << this->value(ANNOUNCE_SWINES_AUTOMATICALLY) << "\n"
 
-		<< ::name(SHOW_IF_VALID) << " = "
-		<< this->value(SHOW_IF_VALID) << "\n"
+    << ::name(SHOW_IF_VALID) << " = "
+    << this->value(SHOW_IF_VALID) << "\n"
 
-		<< ::name(EMPHASIZE_VALID_CARDS) << " = "
-		<< this->value(EMPHASIZE_VALID_CARDS) << "\n"
+    << ::name(EMPHASIZE_VALID_CARDS) << " = "
+    << this->value(EMPHASIZE_VALID_CARDS) << "\n"
 
-		<< ::name(ANNOUNCE_IN_TABLE) << " = "
-		<< this->value(ANNOUNCE_IN_TABLE) << "\n"
+    << ::name(ANNOUNCE_IN_TABLE) << " = "
+    << this->value(ANNOUNCE_IN_TABLE) << "\n"
 
-		<< ::name(SHOW_FULL_TRICK_WINDOW) << " = "
-		<< this->value(SHOW_FULL_TRICK_WINDOW) << "\n"
+    << ::name(SHOW_FULL_TRICK_WINDOW) << " = "
+    << this->value(SHOW_FULL_TRICK_WINDOW) << "\n"
 
-		<< ::name(SHOW_FULL_TRICK_WINDOW_IF_SPECIAL_POINTS) << " = "
-		<< this->value(SHOW_FULL_TRICK_WINDOW_IF_SPECIAL_POINTS) << "\n"
+    << ::name(SHOW_FULL_TRICK_WINDOW_IF_SPECIAL_POINTS) << " = "
+    << this->value(SHOW_FULL_TRICK_WINDOW_IF_SPECIAL_POINTS) << "\n"
 
-		<< ::name(CLOSE_FULL_TRICK_AUTOMATICALLY) << " = "
-		<< this->value(CLOSE_FULL_TRICK_AUTOMATICALLY) << "\n"
+    << ::name(CLOSE_FULL_TRICK_AUTOMATICALLY) << " = "
+    << this->value(CLOSE_FULL_TRICK_AUTOMATICALLY) << "\n"
 
-		<< ::name(FULL_TRICK_CLOSE_DELAY) << " = "
-		<< this->value(FULL_TRICK_CLOSE_DELAY) << "\n"
+    << ::name(FULL_TRICK_CLOSE_DELAY) << " = "
+    << this->value(FULL_TRICK_CLOSE_DELAY) << "\n"
 
 
-		<< ::name(SHOW_GAMETYPE_WINDOW) << " = "
-		<< this->value(SHOW_GAMETYPE_WINDOW) << "\n"
+    << ::name(SHOW_GAMETYPE_WINDOW) << " = "
+    << this->value(SHOW_GAMETYPE_WINDOW) << "\n"
 
-		<< ::name(CLOSE_GAMETYPE_WINDOW_AUTOMATICALLY) << " = "
-		<< this->value(CLOSE_GAMETYPE_WINDOW_AUTOMATICALLY) << "\n"
+    << ::name(CLOSE_GAMETYPE_WINDOW_AUTOMATICALLY) << " = "
+    << this->value(CLOSE_GAMETYPE_WINDOW_AUTOMATICALLY) << "\n"
 
-		<< ::name(GAMETYPE_WINDOW_CLOSE_DELAY) << " = "
-		<< this->value(GAMETYPE_WINDOW_CLOSE_DELAY) << "\n"
+    << ::name(GAMETYPE_WINDOW_CLOSE_DELAY) << " = "
+    << this->value(GAMETYPE_WINDOW_CLOSE_DELAY) << "\n"
 
 
-		<< ::name(SHOW_MARRIAGE_WINDOW) << " = "
-		<< this->value(SHOW_MARRIAGE_WINDOW) << "\n"
+    << ::name(SHOW_MARRIAGE_WINDOW) << " = "
+    << this->value(SHOW_MARRIAGE_WINDOW) << "\n"
 
-		<< ::name(CLOSE_MARRIAGE_WINDOW_AUTOMATICALLY) << " = "
-		<< this->value(CLOSE_MARRIAGE_WINDOW_AUTOMATICALLY) << "\n"
+    << ::name(CLOSE_MARRIAGE_WINDOW_AUTOMATICALLY) << " = "
+    << this->value(CLOSE_MARRIAGE_WINDOW_AUTOMATICALLY) << "\n"
 
-		<< ::name(MARRIAGE_WINDOW_CLOSE_DELAY) << " = "
-		<< this->value(MARRIAGE_WINDOW_CLOSE_DELAY) << "\n"
+    << ::name(MARRIAGE_WINDOW_CLOSE_DELAY) << " = "
+    << this->value(MARRIAGE_WINDOW_CLOSE_DELAY) << "\n"
 
 
-		<< ::name(SHOW_GENSCHER_WINDOW) << " = "
-		<< this->value(SHOW_GENSCHER_WINDOW) << "\n"
+    << ::name(SHOW_GENSCHER_WINDOW) << " = "
+    << this->value(SHOW_GENSCHER_WINDOW) << "\n"
 
-		<< ::name(CLOSE_GENSCHER_WINDOW_AUTOMATICALLY) << " = "
-		<< this->value(CLOSE_GENSCHER_WINDOW_AUTOMATICALLY) << "\n"
+    << ::name(CLOSE_GENSCHER_WINDOW_AUTOMATICALLY) << " = "
+    << this->value(CLOSE_GENSCHER_WINDOW_AUTOMATICALLY) << "\n"
 
-		<< ::name(GENSCHER_WINDOW_CLOSE_DELAY) << " = "
-		<< this->value(GENSCHER_WINDOW_CLOSE_DELAY) << "\n"
+    << ::name(GENSCHER_WINDOW_CLOSE_DELAY) << " = "
+    << this->value(GENSCHER_WINDOW_CLOSE_DELAY) << "\n"
 
 
-		<< ::name(SHOW_ANNOUNCEMENT_WINDOW) << " = "
-		<< this->value(SHOW_ANNOUNCEMENT_WINDOW) << "\n"
+    << ::name(SHOW_ANNOUNCEMENT_WINDOW) << " = "
+    << this->value(SHOW_ANNOUNCEMENT_WINDOW) << "\n"
 
-		<< ::name(CLOSE_ANNOUNCEMENT_WINDOW_AUTOMATICALLY) << " = "
-		<< this->value(CLOSE_ANNOUNCEMENT_WINDOW_AUTOMATICALLY) << "\n"
+    << ::name(CLOSE_ANNOUNCEMENT_WINDOW_AUTOMATICALLY) << " = "
+    << this->value(CLOSE_ANNOUNCEMENT_WINDOW_AUTOMATICALLY) << "\n"
 
-		<< ::name(ANNOUNCEMENT_WINDOW_CLOSE_DELAY) << " = "
-		<< this->value(ANNOUNCEMENT_WINDOW_CLOSE_DELAY) << "\n"
+    << ::name(ANNOUNCEMENT_WINDOW_CLOSE_DELAY) << " = "
+    << this->value(ANNOUNCEMENT_WINDOW_CLOSE_DELAY) << "\n"
 
 
-		<< ::name(SHOW_SWINES_WINDOW) << " = "
-		<< this->value(SHOW_SWINES_WINDOW) << "\n"
+    << ::name(SHOW_SWINES_WINDOW) << " = "
+    << this->value(SHOW_SWINES_WINDOW) << "\n"
 
-		<< ::name(CLOSE_SWINES_WINDOW_AUTOMATICALLY) << " = "
-		<< this->value(CLOSE_SWINES_WINDOW_AUTOMATICALLY) << "\n"
+    << ::name(CLOSE_SWINES_WINDOW_AUTOMATICALLY) << " = "
+    << this->value(CLOSE_SWINES_WINDOW_AUTOMATICALLY) << "\n"
 
-		<< ::name(SWINES_WINDOW_CLOSE_DELAY) << " = "
-		<< this->value(SWINES_WINDOW_CLOSE_DELAY) << "\n"
+    << ::name(SWINES_WINDOW_CLOSE_DELAY) << " = "
+    << this->value(SWINES_WINDOW_CLOSE_DELAY) << "\n"
 
 
-		<< ::name(NETWORK_CONNECTIONS_URGENCY_HINT) << " = "
-		<< this->value(NETWORK_CONNECTIONS_URGENCY_HINT) << "\n"
+    << ::name(NETWORK_CONNECTIONS_URGENCY_HINT) << " = "
+    << this->value(NETWORK_CONNECTIONS_URGENCY_HINT) << "\n"
 
-		<< ::name(NETWORK_CHAT_URGENCY_HINT) << " = "
-		<< this->value(NETWORK_CHAT_URGENCY_HINT) << "\n"
+    << ::name(NETWORK_CHAT_URGENCY_HINT) << " = "
+    << this->value(NETWORK_CHAT_URGENCY_HINT) << "\n"
 
 
-		<< ::name(SHOW_TRICKPILES_POINTS) << " = "
-		<< this->value(SHOW_TRICKPILES_POINTS) << "\n"
+    << ::name(SHOW_TRICKPILES_POINTS) << " = "
+    << this->value(SHOW_TRICKPILES_POINTS) << "\n"
 
-		<< ::name(SHOW_KNOWN_TEAMS_IN_GAME) << " = "
-		<< this->value(SHOW_KNOWN_TEAMS_IN_GAME) << "\n"
+    << ::name(SHOW_KNOWN_TEAMS_IN_GAME) << " = "
+    << this->value(SHOW_KNOWN_TEAMS_IN_GAME) << "\n"
 
-		<< ::name(SHOW_SOLOPLAYER_IN_GAME) << " = "
-		<< this->value(SHOW_SOLOPLAYER_IN_GAME) << "\n"
+    << ::name(SHOW_SOLOPLAYER_IN_GAME) << " = "
+    << this->value(SHOW_SOLOPLAYER_IN_GAME) << "\n"
 
-		<< ::name(SHOW_ALL_HANDS) << " = "
-		<< this->value(SHOW_ALL_HANDS) << "\n"
+    << ::name(SHOW_ALL_HANDS) << " = "
+    << this->value(SHOW_ALL_HANDS) << "\n"
 
-		<< ::name(SHOW_AI_INFORMATION_HANDS) << " = "
-		<< this->value(SHOW_AI_INFORMATION_HANDS) << "\n"
+    << ::name(SHOW_AI_INFORMATION_HANDS) << " = "
+    << this->value(SHOW_AI_INFORMATION_HANDS) << "\n"
 
-		<< ::name(SHOW_AI_INFORMATION_TEAMS) << " = "
-		<< this->value(SHOW_AI_INFORMATION_TEAMS) << "\n"
+    << ::name(SHOW_AI_INFORMATION_TEAMS) << " = "
+    << this->value(SHOW_AI_INFORMATION_TEAMS) << "\n"
 
-		<< "\n";
+    << "\n";
 
-	// so the sorting is saved, even if the mixed modus is aktivated
+  // so the sorting is saved, even if the mixed modus is aktivated
 
-	if (!this->value(CARDS_ORDER).sorted()) {
-		CardsOrder cards_order_tmp(this->value(CARDS_ORDER));
+  if (!this->value(CARDS_ORDER).sorted()) {
+    CardsOrder cards_order_tmp(this->value(CARDS_ORDER));
 
-		cards_order_tmp.sorted_set(true);
+    cards_order_tmp.sorted_set(true);
 
-		ostr << ::name(CARDS_ORDER) << " = "
-			<< cards_order_tmp << "\n";
-	} // if (this->value(CARDS_ORDER).mixed())
+    ostr << ::name(CARDS_ORDER) << " = "
+      << cards_order_tmp << "\n";
+  } // if (this->value(CARDS_ORDER).mixed())
 
-	ostr << ::name(CARDS_ORDER) << " = "
-		<< this->value(CARDS_ORDER) << "\n";
+  ostr << ::name(CARDS_ORDER) << " = "
+    << this->value(CARDS_ORDER) << "\n";
 
-	ostr << "# appearance\n"
+  ostr << "# appearance\n"
 
-		<< "#   table\n"
+    << "#   table\n"
 
-		<< ::name(OWN_HAND_ON_TABLE_BOTTOM) << " = "
-		<< this->value(OWN_HAND_ON_TABLE_BOTTOM) << "\n"
+    << ::name(OWN_HAND_ON_TABLE_BOTTOM) << " = "
+    << this->value(OWN_HAND_ON_TABLE_BOTTOM) << "\n"
 
-		<< ::name(TABLE_ROTATION) << " = "
-		<< this->value(TABLE_ROTATION) << "\n"
+    << ::name(TABLE_ROTATION) << " = "
+    << this->value(TABLE_ROTATION) << "\n"
 
-		<< ::name(ROTATE_TRICK_CARDS) << " = "
-		<< this->value(ROTATE_TRICK_CARDS) << "\n"
+    << ::name(ROTATE_TRICK_CARDS) << " = "
+    << this->value(ROTATE_TRICK_CARDS) << "\n"
 
-		<< "#   cards\n"
+    << "#   cards\n"
 
-		<< ::name(ORIGINAL_CARDS_SIZE) << " = "
-		<< this->value(ORIGINAL_CARDS_SIZE) << "\n"
+    << ::name(ORIGINAL_CARDS_SIZE) << " = "
+    << this->value(ORIGINAL_CARDS_SIZE) << "\n"
 
-		<< ::name(CARDS_HEIGHT) << " = "
-		<< this->value(CARDS_HEIGHT) << "\n"
+    << ::name(CARDS_HEIGHT) << " = "
+    << this->value(CARDS_HEIGHT) << "\n"
 
-		<< "#   theme\n"
+    << "#   theme\n"
 
-		<< ::name(CARDSET) << " = "
-		<< this->value(CARDSET) << "\n"
+    << ::name(CARDSET) << " = "
+    << this->value(CARDSET) << "\n"
 
-		<< ::name(CARDS_BACK) << " = "
-		<< this->value(CARDS_BACK) << "\n"
+    << ::name(CARDS_BACK) << " = "
+    << this->value(CARDS_BACK) << "\n"
 
-		<< ::name(BACKGROUND) << " = "
-		<< this->value(BACKGROUND) << "\n"
+    << ::name(BACKGROUND) << " = "
+    << this->value(BACKGROUND) << "\n"
 
-		<< "#   fonts and colors\n"
+    << "#   fonts and colors\n"
 
-		<< ::name(NAME_FONT) << " = "
-		<< this->value(NAME_FONT) << "\n"
+    << ::name(NAME_FONT) << " = "
+    << this->value(NAME_FONT) << "\n"
 
-		<< ::name(NAME_FONT_COLOR) << " = "
-		<< this->value(NAME_FONT_COLOR) << "\n"
+    << ::name(NAME_FONT_COLOR) << " = "
+    << this->value(NAME_FONT_COLOR) << "\n"
 
-		<< ::name(NAME_ACTIVE_FONT_COLOR) << " = "
-		<< this->value(NAME_ACTIVE_FONT_COLOR) << "\n"
+    << ::name(NAME_ACTIVE_FONT_COLOR) << " = "
+    << this->value(NAME_ACTIVE_FONT_COLOR) << "\n"
 
-		<< ::name(NAME_RESERVATION_FONT_COLOR) << " = "
-		<< this->value(NAME_RESERVATION_FONT_COLOR) << "\n"
+    << ::name(NAME_RESERVATION_FONT_COLOR) << " = "
+    << this->value(NAME_RESERVATION_FONT_COLOR) << "\n"
 
-		<< ::name(TRICKPILE_POINTS_FONT) << " = "
-		<< this->value(TRICKPILE_POINTS_FONT) << "\n"
+    << ::name(TRICKPILE_POINTS_FONT) << " = "
+    << this->value(TRICKPILE_POINTS_FONT) << "\n"
 
-		<< ::name(TRICKPILE_POINTS_FONT_COLOR) << " = "
-		<< this->value(TRICKPILE_POINTS_FONT_COLOR) << "\n"
+    << ::name(TRICKPILE_POINTS_FONT_COLOR) << " = "
+    << this->value(TRICKPILE_POINTS_FONT_COLOR) << "\n"
 
-		<< ::name(POVERTY_SHIFT_ARROW_COLOR) << " = "
-		<< this->value(POVERTY_SHIFT_ARROW_COLOR) << "\n"
+    << ::name(POVERTY_SHIFT_ARROW_COLOR) << " = "
+    << this->value(POVERTY_SHIFT_ARROW_COLOR) << "\n"
 
-		<< "#   splash screen\n"
+    << "#   splash screen\n"
 
-		<< ::name(SHOW_SPLASH_SCREEN) << " = "
-		<< this->value(SHOW_SPLASH_SCREEN) << "\n"
+    << ::name(SHOW_SPLASH_SCREEN) << " = "
+    << this->value(SHOW_SPLASH_SCREEN) << "\n"
 
-		<< ::name(SPLASH_SCREEN_TRANSPARENT) << " = "
-		<< this->value(SPLASH_SCREEN_TRANSPARENT) << "\n";
+    << ::name(SPLASH_SCREEN_TRANSPARENT) << " = "
+    << this->value(SPLASH_SCREEN_TRANSPARENT) << "\n";
 
-	ostr << "\n";
+  ostr << "\n";
 
-	ostr.flags(flags);
-	return ostr;
+  ostr.flags(flags);
+  return ostr;
 } // ostream& Setting::write(ostream& ostr) const
 
 /**
@@ -2872,85 +2872,85 @@ Setting::write(ostream& ostr) const
  **
  ** @version	0.7.0
  **/
-	string
+string
 name(Setting::TypeBool const& type)
 {
-	switch(type) {
-		case Setting::AUTOMATIC_SAVINGS:
-			return "automatic savings";
-		case Setting::SAVE_PARTY_CHANGES:
-			return "save party changes";
-		case Setting::SHOW_SPLASH_SCREEN:
-			return "show splash screen";
-		case Setting::SPLASH_SCREEN_TRANSPARENT:
-			return "splash screen transparent";
-		case Setting::SHOW_BUG_REPORT_BUTTON_IN_GAME_FINISHED_WINDOW:
-			return "show bug report button in game finished window";
-		case Setting::SAVE_BUG_REPORTS_ON_DESKTOP:
-			return "save bug reports on desktop";
-		case Setting::SOUND:
-			return "sound";
-		case Setting::AUTOMATIC_CARD_SUGGESTION:
-			return "automatic card suggestion";
-		case Setting::ANNOUNCE_SWINES_AUTOMATICALLY:
-			return "announce swines automatically";
-		case Setting::SHOW_IF_VALID:
-			return "show if valid";
-		case Setting::EMPHASIZE_VALID_CARDS:
-			return "emphasize valid cards";
-		case Setting::ANNOUNCE_IN_TABLE:
-			return "announce in table";
-		case Setting::SHOW_ALL_HANDS:
-			return "show all hands";
-		case Setting::SHOW_AI_INFORMATION_HANDS:
-			return "show ai information hands";
-		case Setting::SHOW_AI_INFORMATION_TEAMS:
-			return "show ai information teams";
-		case Setting::SHOW_TRICKPILES_POINTS:
-			return "show trickpiles points";
-		case Setting::SHOW_KNOWN_TEAMS_IN_GAME:
-			return "show known teams in game";
-		case Setting::SHOW_SOLOPLAYER_IN_GAME:
-			return "show soloplayer in game";
-		case Setting::SHOW_FULL_TRICK_WINDOW:
-			return "show full trick window";
-		case Setting::SHOW_FULL_TRICK_WINDOW_IF_SPECIAL_POINTS:
-			return "show full trick window if special points";
-		case Setting::CLOSE_FULL_TRICK_AUTOMATICALLY:
-			return "close full trick automatically";
-		case Setting::SHOW_GAMETYPE_WINDOW:
-			return "show gametype window";
-		case Setting::CLOSE_GAMETYPE_WINDOW_AUTOMATICALLY:
-			return "close gametype window automatically";
-		case Setting::SHOW_MARRIAGE_WINDOW:
-			return "show marriage window";
-		case Setting::CLOSE_MARRIAGE_WINDOW_AUTOMATICALLY:
-			return "close marriage window automatically";
-		case Setting::SHOW_GENSCHER_WINDOW:
-			return "show genscher window";
-		case Setting::CLOSE_GENSCHER_WINDOW_AUTOMATICALLY:
-			return "close genscher window automatically";
-		case Setting::SHOW_ANNOUNCEMENT_WINDOW:
-			return "show announcement window";
-		case Setting::CLOSE_ANNOUNCEMENT_WINDOW_AUTOMATICALLY:
-			return "close announcement window automatically";
-		case Setting::SHOW_SWINES_WINDOW:
-			return "show swines window";
-		case Setting::CLOSE_SWINES_WINDOW_AUTOMATICALLY:
-			return "close swines window automatically";
-		case Setting::NETWORK_CONNECTIONS_URGENCY_HINT:
-			return "network connections urgency hint";
-		case Setting::NETWORK_CHAT_URGENCY_HINT:
-			return "network chat urgency hint";
-		case Setting::ROTATE_TRICK_CARDS:
-			return "rotate trick cards";
-		case Setting::OWN_HAND_ON_TABLE_BOTTOM:
-			return "own hand on table bottom";
-		case Setting::ORIGINAL_CARDS_SIZE:
-			return "original cards size";
-	} // switch(type)
+  switch(type) {
+  case Setting::AUTOMATIC_SAVINGS:
+    return "automatic savings";
+  case Setting::SAVE_PARTY_CHANGES:
+    return "save party changes";
+  case Setting::SHOW_SPLASH_SCREEN:
+    return "show splash screen";
+  case Setting::SPLASH_SCREEN_TRANSPARENT:
+    return "splash screen transparent";
+  case Setting::SHOW_BUG_REPORT_BUTTON_IN_GAME_FINISHED_WINDOW:
+    return "show bug report button in game finished window";
+  case Setting::SAVE_BUG_REPORTS_ON_DESKTOP:
+    return "save bug reports on desktop";
+  case Setting::SOUND:
+    return "sound";
+  case Setting::AUTOMATIC_CARD_SUGGESTION:
+    return "automatic card suggestion";
+  case Setting::ANNOUNCE_SWINES_AUTOMATICALLY:
+    return "announce swines automatically";
+  case Setting::SHOW_IF_VALID:
+    return "show if valid";
+  case Setting::EMPHASIZE_VALID_CARDS:
+    return "emphasize valid cards";
+  case Setting::ANNOUNCE_IN_TABLE:
+    return "announce in table";
+  case Setting::SHOW_ALL_HANDS:
+    return "show all hands";
+  case Setting::SHOW_AI_INFORMATION_HANDS:
+    return "show ai information hands";
+  case Setting::SHOW_AI_INFORMATION_TEAMS:
+    return "show ai information teams";
+  case Setting::SHOW_TRICKPILES_POINTS:
+    return "show trickpiles points";
+  case Setting::SHOW_KNOWN_TEAMS_IN_GAME:
+    return "show known teams in game";
+  case Setting::SHOW_SOLOPLAYER_IN_GAME:
+    return "show soloplayer in game";
+  case Setting::SHOW_FULL_TRICK_WINDOW:
+    return "show full trick window";
+  case Setting::SHOW_FULL_TRICK_WINDOW_IF_SPECIAL_POINTS:
+    return "show full trick window if special points";
+  case Setting::CLOSE_FULL_TRICK_AUTOMATICALLY:
+    return "close full trick automatically";
+  case Setting::SHOW_GAMETYPE_WINDOW:
+    return "show gametype window";
+  case Setting::CLOSE_GAMETYPE_WINDOW_AUTOMATICALLY:
+    return "close gametype window automatically";
+  case Setting::SHOW_MARRIAGE_WINDOW:
+    return "show marriage window";
+  case Setting::CLOSE_MARRIAGE_WINDOW_AUTOMATICALLY:
+    return "close marriage window automatically";
+  case Setting::SHOW_GENSCHER_WINDOW:
+    return "show genscher window";
+  case Setting::CLOSE_GENSCHER_WINDOW_AUTOMATICALLY:
+    return "close genscher window automatically";
+  case Setting::SHOW_ANNOUNCEMENT_WINDOW:
+    return "show announcement window";
+  case Setting::CLOSE_ANNOUNCEMENT_WINDOW_AUTOMATICALLY:
+    return "close announcement window automatically";
+  case Setting::SHOW_SWINES_WINDOW:
+    return "show swines window";
+  case Setting::CLOSE_SWINES_WINDOW_AUTOMATICALLY:
+    return "close swines window automatically";
+  case Setting::NETWORK_CONNECTIONS_URGENCY_HINT:
+    return "network connections urgency hint";
+  case Setting::NETWORK_CHAT_URGENCY_HINT:
+    return "network chat urgency hint";
+  case Setting::ROTATE_TRICK_CARDS:
+    return "rotate trick cards";
+  case Setting::OWN_HAND_ON_TABLE_BOTTOM:
+    return "own hand on table bottom";
+  case Setting::ORIGINAL_CARDS_SIZE:
+    return "original cards size";
+  } // switch(type)
 
-	return "";
+  return "";
 } // string name(Setting::TypeBool const& type)
 
 /**
@@ -2964,35 +2964,35 @@ name(Setting::TypeBool const& type)
  **
  ** @version	0.7.0
  **/
-	string
+string
 name(Setting::TypeUnsigned const& type)
 {
-	switch(type) {
+  switch(type) {
 #ifdef USE_THREADS
-		case Setting::THREADS_MAX:
-			return "max threads";
+  case Setting::THREADS_MAX:
+    return "max threads";
 #endif
-		case Setting::CARD_PLAY_DELAY:
-			return "card play delay";
-		case Setting::FULL_TRICK_CLOSE_DELAY:
-			return "full trick close delay";
-		case Setting::GAMETYPE_WINDOW_CLOSE_DELAY:
-			return "gametype window close delay";
-		case Setting::MARRIAGE_WINDOW_CLOSE_DELAY:
-			return "marriage window close delay";
-		case Setting::GENSCHER_WINDOW_CLOSE_DELAY:
-			return "genscher window close delay";
-		case Setting::ANNOUNCEMENT_WINDOW_CLOSE_DELAY:
-			return "announcement window close delay";
-		case Setting::SWINES_WINDOW_CLOSE_DELAY:
-			return "swines window close delay";
-		case Setting::TABLE_ROTATION:
-			return "table rotation";
-		case Setting::CARDS_HEIGHT:
-			return "cards height";
-	} // switch(type)
+  case Setting::CARD_PLAY_DELAY:
+    return "card play delay";
+  case Setting::FULL_TRICK_CLOSE_DELAY:
+    return "full trick close delay";
+  case Setting::GAMETYPE_WINDOW_CLOSE_DELAY:
+    return "gametype window close delay";
+  case Setting::MARRIAGE_WINDOW_CLOSE_DELAY:
+    return "marriage window close delay";
+  case Setting::GENSCHER_WINDOW_CLOSE_DELAY:
+    return "genscher window close delay";
+  case Setting::ANNOUNCEMENT_WINDOW_CLOSE_DELAY:
+    return "announcement window close delay";
+  case Setting::SWINES_WINDOW_CLOSE_DELAY:
+    return "swines window close delay";
+  case Setting::TABLE_ROTATION:
+    return "table rotation";
+  case Setting::CARDS_HEIGHT:
+    return "cards height";
+  } // switch(type)
 
-	return "";
+  return "";
 } // string name(Setting::TypeUnsigned const& type)
 
 /**
@@ -3006,43 +3006,43 @@ name(Setting::TypeUnsigned const& type)
  **
  ** @version	0.7.0
  **/
-	string
+string
 name(Setting::TypeString const& type)
 {
-	switch(type) {
-		case Setting::NAME:
-			return "name";
-		case Setting::LANGUAGE:
-			return "language";
-		case Setting::CARDSET:
-			return "cardset";
-		case Setting::CARDS_BACK:
-			return "cards back";
-		case Setting::BACKGROUND:
-			return "background";
-		case Setting::NAME_FONT:
-			return "name font";
-		case Setting::NAME_FONT_COLOR:
-			return "name font color";
-		case Setting::NAME_ACTIVE_FONT_COLOR:
-			return "name active font color";
-		case Setting::NAME_RESERVATION_FONT_COLOR:
-			return "name reservation font color";
-		case Setting::TRICKPILE_POINTS_FONT:
-			return "trickpile points font";
-		case Setting::TRICKPILE_POINTS_FONT_COLOR:
-			return "trickpile points font color";
-		case Setting::POVERTY_SHIFT_ARROW_COLOR:
-			return "poverty shift arrow color";
+  switch(type) {
+  case Setting::NAME:
+    return "name";
+  case Setting::LANGUAGE:
+    return "language";
+  case Setting::CARDSET:
+    return "cardset";
+  case Setting::CARDS_BACK:
+    return "cards back";
+  case Setting::BACKGROUND:
+    return "background";
+  case Setting::NAME_FONT:
+    return "name font";
+  case Setting::NAME_FONT_COLOR:
+    return "name font color";
+  case Setting::NAME_ACTIVE_FONT_COLOR:
+    return "name active font color";
+  case Setting::NAME_RESERVATION_FONT_COLOR:
+    return "name reservation font color";
+  case Setting::TRICKPILE_POINTS_FONT:
+    return "trickpile points font";
+  case Setting::TRICKPILE_POINTS_FONT_COLOR:
+    return "trickpile points font color";
+  case Setting::POVERTY_SHIFT_ARROW_COLOR:
+    return "poverty shift arrow color";
 #ifdef USE_SOUND_COMMAND
-		case Setting::PLAY_SOUND_COMMAND:
-			return "play sound command";
+  case Setting::PLAY_SOUND_COMMAND:
+    return "play sound command";
 #endif
-		case Setting::BROWSER_COMMAND:
-			return "browser command";
-	} // switch(type)
+  case Setting::BROWSER_COMMAND:
+    return "browser command";
+  } // switch(type)
 
-	return "";
+  return "";
 } // string name(Setting::TypeString const& type)
 
 /**
@@ -3056,55 +3056,55 @@ name(Setting::TypeString const& type)
  **
  ** @version	0.7.0
  **/
-	string
+string
 name(Setting::TypeStringConst const& type)
 {
-	switch(type) {
-		case Setting::CARDSET_LICENSE:
-			return "cardset license";
-		case Setting::PUBLIC_DATA_DIRECTORY:
-			return "public data directory";
-		case Setting::PRIVATE_DATA_DIRECTORY:
-			return "private data directory";
-		case Setting::SETTINGS_FILE:
-			return "settings file";
-		case Setting::LOGO_FILE:
-			return "logo file";
-		case Setting::ICON_FILE:
-			return "icon file";
-		case Setting::LANGUAGES_DIRECTORY:
-			return "languages directory";
-		case Setting::LANGUAGE_FILE:
-			return "language file";
-		case Setting::GRAPHIC_EXTENSION:
-			return "graphic extension";
-		case Setting::SOUND_EXTENSION:
-			return "sound extension";
-		case Setting::CARDSETS_DIRECTORY:
-			return "cardsets directory";
-		case Setting::CARDS_DIRECTORY:
-			return "cards directory";
-		case Setting::CARDS_BACK_DIRECTORY:
-			return "cards back directory";
-		case Setting::ICONS_DIRECTORY:
-			return "icons directory";
-		case Setting::BACKGROUNDS_DIRECTORY:
-			return "backgrounds directory";
-		case Setting::SOUNDS_DIRECTORY:
-			return "sounds directory";
-		case Setting::AI_DIRECTORY:
-			return "ai directory";
-		case Setting::PARTIES_DIRECTORY:
-			return "parties directory";
-		case Setting::RULES_DIRECTORY:
-			return "rules directory";
-		case Setting::SETTINGS_DIRECTORY:
-			return "settings directory";
-		case Setting::MANUAL_DIRECTORY:
-			return "manual directory";
-	} // switch(type)
+  switch(type) {
+  case Setting::CARDSET_LICENSE:
+    return "cardset license";
+  case Setting::PUBLIC_DATA_DIRECTORY:
+    return "public data directory";
+  case Setting::PRIVATE_DATA_DIRECTORY:
+    return "private data directory";
+  case Setting::SETTINGS_FILE:
+    return "settings file";
+  case Setting::LOGO_FILE:
+    return "logo file";
+  case Setting::ICON_FILE:
+    return "icon file";
+  case Setting::LANGUAGES_DIRECTORY:
+    return "languages directory";
+  case Setting::LANGUAGE_FILE:
+    return "language file";
+  case Setting::GRAPHIC_EXTENSION:
+    return "graphic extension";
+  case Setting::SOUND_EXTENSION:
+    return "sound extension";
+  case Setting::CARDSETS_DIRECTORY:
+    return "cardsets directory";
+  case Setting::CARDS_DIRECTORY:
+    return "cards directory";
+  case Setting::CARDS_BACK_DIRECTORY:
+    return "cards back directory";
+  case Setting::ICONS_DIRECTORY:
+    return "icons directory";
+  case Setting::BACKGROUNDS_DIRECTORY:
+    return "backgrounds directory";
+  case Setting::SOUNDS_DIRECTORY:
+    return "sounds directory";
+  case Setting::AI_DIRECTORY:
+    return "ai directory";
+  case Setting::PARTIES_DIRECTORY:
+    return "parties directory";
+  case Setting::RULES_DIRECTORY:
+    return "rules directory";
+  case Setting::SETTINGS_DIRECTORY:
+    return "settings directory";
+  case Setting::MANUAL_DIRECTORY:
+    return "manual directory";
+  } // switch(type)
 
-	return "";
+  return "";
 } // string name(Setting::TypeStringConst const& type)
 
 /**
@@ -3118,15 +3118,15 @@ name(Setting::TypeStringConst const& type)
  **
  ** @version	0.7.0
  **/
-	string
+string
 name(Setting::TypeCardsOrder const& type)
 {
-	switch(type) {
-		case Setting::CARDS_ORDER:
-			return "cards order";
-	} // switch(type)
+  switch(type) {
+  case Setting::CARDS_ORDER:
+    return "cards order";
+  } // switch(type)
 
-	return "";
+  return "";
 } // string name(Setting::TypeCardsOrder const& type)
 
 /**
@@ -3141,12 +3141,12 @@ name(Setting::TypeCardsOrder const& type)
  **
  ** @version	0.7.0
  **/
-	ostream&
+ostream&
 operator<<(ostream& ostr, Setting const& setting)
 {
-	setting.write(ostr);
+  setting.write(ostr);
 
-	return ostr;
+  return ostr;
 } // ostream& operator<<(ostream& ostr, Setting const& setting)
 
 /**
@@ -3161,29 +3161,29 @@ operator<<(ostream& ostr, Setting const& setting)
  **
  ** @version	0.6.6
  **/
-	bool
+bool
 operator==(Setting const& setting1, Setting const& setting2)
 {
-	for (int i = Setting::BOOL_FIRST; i <= Setting::BOOL_LAST; ++i)
-		if (setting1.value(static_cast<Setting::TypeBool>(i))
-				!= setting2.value(static_cast<Setting::TypeBool>(i)))
-			return false;
+  for (int i = Setting::BOOL_FIRST; i <= Setting::BOOL_LAST; ++i)
+    if (setting1.value(static_cast<Setting::TypeBool>(i))
+        != setting2.value(static_cast<Setting::TypeBool>(i)))
+      return false;
 
-	for (int i = Setting::UNSIGNED_FIRST; i <= Setting::UNSIGNED_LAST; ++i)
-		if (setting1.value(static_cast<Setting::TypeUnsigned>(i))
-				!= setting2.value(static_cast<Setting::TypeUnsigned>(i)))
-			return false;
+  for (int i = Setting::UNSIGNED_FIRST; i <= Setting::UNSIGNED_LAST; ++i)
+    if (setting1.value(static_cast<Setting::TypeUnsigned>(i))
+        != setting2.value(static_cast<Setting::TypeUnsigned>(i)))
+      return false;
 
-	for (int i = Setting::STRING_FIRST; i <= Setting::STRING_LAST; ++i)
-		if (setting1.value(static_cast<Setting::TypeString>(i))
-				!= setting2.value(static_cast<Setting::TypeString>(i)))
-			return false;
+  for (int i = Setting::STRING_FIRST; i <= Setting::STRING_LAST; ++i)
+    if (setting1.value(static_cast<Setting::TypeString>(i))
+        != setting2.value(static_cast<Setting::TypeString>(i)))
+      return false;
 
-	if (setting1.value(Setting::CARDS_ORDER)
-			!= setting2.value(Setting::CARDS_ORDER))
-		return false;
+  if (setting1.value(Setting::CARDS_ORDER)
+      != setting2.value(Setting::CARDS_ORDER))
+    return false;
 
-	return true;
+  return true;
 } // bool operator==(Setting const& setting1, Setting const& setting2)
 
 /**
@@ -3198,8 +3198,8 @@ operator==(Setting const& setting1, Setting const& setting2)
  **
  ** @version	0.6.6
  **/
-	bool
+bool
 operator!=(Setting const& setting1, Setting const& setting2)
 {
-	return !(setting1 == setting2);
+  return !(setting1 == setting2);
 } // bool operator!=(Setting const& setting1, Setting const& setting2)

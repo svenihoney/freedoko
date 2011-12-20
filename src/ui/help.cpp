@@ -152,14 +152,16 @@ Help::manual_location(string const& page)
     for (list<string>::const_iterator d = datadir.begin();
          d != datadir.end();
          d++)
-      directories.push_back(*d + "/"
+      directories.push_back((::setting(Setting::MANUAL_DIRECTORY)[0] == '/'
+                            ? "" : *d + "/")
                             + ::setting(Setting::MANUAL_DIRECTORY) + "/"
                             + ::translator.token());
     if (::translator.token() != ::setting(Setting::LANGUAGE))
       for (list<string>::const_iterator d = datadir.begin();
            d != datadir.end();
            d++)
-        directories.push_back(*d + "/"
+      directories.push_back((::setting(Setting::MANUAL_DIRECTORY)[0] == '/'
+                            ? "" : *d + "/")
                               + ::setting(Setting::MANUAL_DIRECTORY) + "/"
                               + ::setting(Setting::LANGUAGE));
   } // fill the directories list
