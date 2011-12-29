@@ -7679,6 +7679,8 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
         && hi.game().hyperswines_owner() == NULL ) {
       value += 7*hi.hand().numberofdolle(); // reference 123343
     }
+
+    value += 1; // reference 139722_1
   }
 
 
@@ -7740,6 +7742,17 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
   {
     value -= 5 - hi.hand().numberofdolle() - hi.hand().numberofclubqueens();
   }
+
+  Trick const t = (game_status < GAMESTATUS::GAME_PLAY
+                    ? Trick(g.startplayer())
+                    : g.trick_current());
+   if (   hi.teamofplayer(t.winnerplayer()) != hi.team()
+       ||  oppositeTeamCanWinTrick( t, hi ) )
+     value -= 2;
+
+   if (   hi.teamofplayer(t.winnerplayer()) == hi.team()
+        &&  !oppositeTeamCanWinTrick( t, hi ) )
+      value += 1;
 
 #ifdef ANNOUNCE_DEBUG
   if( !g.isvirtual() )
