@@ -6112,11 +6112,26 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
     {
       value += v_ace;
       if (::in_running_game()
-          && (hi.game().trick_current().cardno_of_player( player ) == 0 )
-          && (hi.hand().numberof( hi.hand().card(i).color() ) == 1) )
-      {
-        value += 1;
-      }
+          && (hi.game().trick_current().cardno_of_player( player ) == 0 ) )
+        {
+        if (hi.hand().numberof( hi.hand().card(i).color() ) == 1)
+          {
+          value += v_ace;
+          if( hi.color_runs( hi.hand().card(i).color() ) == 0 )
+            {
+            value += v_ace;
+            }
+
+          } else
+            {
+            value += 1;
+            if( hi.color_runs( hi.hand().card(i).color() ) == 0 )
+              {
+              value += v_ace;
+              }
+            }
+
+        }
       if ( hi.hand().card(i).color() == Card::HEART
           && hi.hand().numberof( hi.hand().card(i).color() ) > 1
           && hi.game().rule()(Rule::DOLLEN))

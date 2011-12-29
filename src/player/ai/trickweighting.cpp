@@ -41,7 +41,7 @@
 #ifdef BENDERS
 #ifndef RELEASE
 // whether to print some weighting informations
-#define PLAYERCHECK 2
+#define PLAYERCHECK 10
 
   // Playernumber for which to produce output
   unsigned playerCheck;
