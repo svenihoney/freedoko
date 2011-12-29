@@ -7506,7 +7506,7 @@ Heuristics::make_announcement( HeuristicInterface const& hi, const Game& g )
 
   value = CalcHandValue( hi, g );
 
-  value += calcPointsOfOwnTeam( hi, g ) / 25;
+  value += own_p / 20; // previous 25
 
   if (   !hi.game().is_solo()
       && (hi.game().swines_owner() == NULL)
@@ -7515,7 +7515,7 @@ Heuristics::make_announcement( HeuristicInterface const& hi, const Game& g )
     value += ((hi.hand().numberofclubqueens()+1)*hi.hand().numberofdolle())*calcPointsOfOwnTeam( hi, g ) / 25;
   }
 
-  value -= opp_p / 20;
+  value -= opp_p / 15; // previous 20
 
 
   if( ( hi.team() == TEAM::CONTRA
@@ -7553,6 +7553,10 @@ Heuristics::make_announcement( HeuristicInterface const& hi, const Game& g )
   if (   hi.teamofplayer(t.winnerplayer()) != hi.team()
       ||  oppositeTeamCanWinTrick( t, hi ) )
     value -= 1;
+
+  if (   hi.teamofplayer(t.winnerplayer()) == hi.team()
+       &&  !oppositeTeamCanWinTrick( t, hi ) )
+     value += 2;
 
   if (   (hi.game().type() == GAMETYPE::MARRIAGE)
       && (hi.game().marriage_selector() == MARRIAGE_SELECTOR::TEAM_SET)
