@@ -6344,14 +6344,52 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
       value += 2;
   }
 
-  if (hi.hand().numberoftrumps() >= 9 )
-    value += 1;
-  if (hi.hand().numberoftrumps() >= hi.game().trickno() - 1 )
-    value += 2;
-  if (hi.hand().numberoftrumps() >= hi.game().trickno() )
-    value += 1;
-  if (hi.hand().numberoftrumps() == hi.hand().cardsnumber() )
-    value += 2;
+  if (::in_running_game()
+       && (hi.game().trick_current().cardno_of_player( player ) == 0 ) )
+    { // count aces like trumps, if I serve
+      unsigned cardno = hi.hand().numberoftrumps();
+
+      for( vector<Card::Color>::const_iterator
+              c = hi.game().rule().card_colors().begin();
+              c != hi.game().rule().card_colors().end();
+              ++c )
+          {
+            Card::Color color = *c;
+
+            if( color == hi.game().trumpcolor() )
+              continue;
+
+            if(  ((hi.color_runs( color ) == 0)
+                  || hi.jabbedbyownteam(color) )
+                && (hi.hand().numberof( color ) <= 1 + hi.hand().numberof( Card( color, Card::ACE ) ) )
+              )
+              {
+               cardno += hi.hand().numberof( Card( color, Card::ACE ) );
+
+              }
+
+          }
+
+          if (cardno >= 9 )
+            value += 1;
+          if (cardno >= hi.game().trickno() - 1 )
+            value += 2;
+          if (cardno >= hi.game().trickno() )
+            value += 1;
+          if (cardno == hi.hand().cardsnumber() )
+            value += 2;
+    } else
+    {
+      if (hi.hand().numberoftrumps() >= 9 )
+         value += 1;
+       if (hi.hand().numberoftrumps() >= hi.game().trickno() - 1 )
+         value += 2;
+       if (hi.hand().numberoftrumps() >= hi.game().trickno() )
+         value += 1;
+       if (hi.hand().numberoftrumps() == hi.hand().cardsnumber() )
+         value += 2;
+    }
+
 
 
   if (hi.hand().numberoftrumps() -1 < (hi.hand().cardsnumber()+1) / 2 )
