@@ -7746,6 +7746,7 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
   Trick const t = (game_status < GAMESTATUS::GAME_PLAY
                     ? Trick(g.startplayer())
                     : g.trick_current());
+
    if (   hi.teamofplayer(t.winnerplayer()) != hi.team()
        ||  oppositeTeamCanWinTrick( t, hi ) )
      value -= 2;
@@ -7825,6 +7826,18 @@ Heuristics::say_no60( HeuristicInterface const& hi, const Game& g )
 
   own_p += 3 * hi.hand().numberoftrumps() * hi.hand().numberofswines();
   own_p += 3 * hi.hand().numberoftrumps() * hi.hand().numberofhyperswines();
+
+  Trick const t = (game_status < GAMESTATUS::GAME_PLAY
+                    ? Trick(g.startplayer())
+                    : g.trick_current());
+
+  if (   hi.teamofplayer(t.winnerplayer()) != hi.team()
+      ||  oppositeTeamCanWinTrick( t, hi ) )
+    value -= 2;
+
+  if (   hi.teamofplayer(t.winnerplayer()) == hi.team()
+       &&  !oppositeTeamCanWinTrick( t, hi ) )
+     value += 1;
 
   if (   (hi.game().type() == GAMETYPE::POVERTY)
       && (hi.no() == hi.game().poverty_partner().no()) )
