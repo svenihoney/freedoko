@@ -57,7 +57,7 @@
 
 
 // the date of the exipration of the Altenburg cardset
-DK::Utils::Date const Setting::ALTENBURG_EXPIRATION_DATE(2013, 12, 31);
+DK::Utils::Date const Setting::ALTENBURG_EXPIRATION_DATE(2011, 12, 31);
 // the date of the exipration of the InnoCard cardset
 DK::Utils::Date const Setting::INNOCARD_EXPIRATION_DATE(2009, 12, 31);
 // the date of the exipration of the Elite cardset

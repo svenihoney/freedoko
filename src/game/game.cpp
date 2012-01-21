@@ -582,6 +582,23 @@ Game::is_solo() const
  **
  ** @param	-
  **
+ ** @return	whether this is a real solo (solo, but no silent marriage)
+ **
+ ** @author	Diether Knof
+ **
+ ** @version	0.7.11
+ **/
+bool
+Game::is_real_solo() const
+{
+  return GAMETYPE::is_real_solo(this->type());
+} // bool Game::is_real_solo()
+
+/**
+ ** -> result
+ **
+ ** @param	-
+ **
  ** @return	whether this is a duty solo
  **
  ** @author	Diether Knof
@@ -595,7 +612,7 @@ Game::is_duty_solo() const
       && (::game_status <= GAMESTATUS::GAME_RESERVATION))
     return true;
 
-  if (!this->is_solo())
+  if (!this->is_real_solo())
     return false;
 
   Player const& soloplayer = (  (::game_status <= GAMESTATUS::GAME_RESERVATION)

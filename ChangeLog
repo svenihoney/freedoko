@@ -1,6 +1,9 @@
+2012-01-21 Diether Knof
+	- fixed bug in best winning card
+	- fixed bug: a silent marriage was counted as duty solo
+
 2012-01-08 Borg Enders
 	- current trick winner especially considered for no60
-
 
 2011-12-29 Borg Enders
 	- improved announcements based on aces

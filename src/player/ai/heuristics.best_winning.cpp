@@ -1169,6 +1169,7 @@ Heuristics::best_jabbing_card(Trick const& trick,
         && hi.hand().contains(Card::DOLLE))
       card = Card::DOLLE;
 
+    Card const card_bak = card;
     // do not play a dolle / swine if the opposite player can overjab
     if ( (  (card == Card::DOLLE)
           || HandCard(hi.hand(), card).isswine())
@@ -1183,7 +1184,7 @@ Heuristics::best_jabbing_card(Trick const& trick,
        ) {
       card = hi.hand().next_lower_card(card);
       if (!trick.isjabbed(card))
-        card = Card::DOLLE;
+        card = card_bak;
     }
   } // special case: dolle
 

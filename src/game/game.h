@@ -100,6 +100,8 @@ class Game {
   void set_type(GameType const type);
   // whether this is a solo
   bool is_solo() const;
+  // whether this is a real solo
+  bool is_real_solo() const;
   // whether this is a duty solo
   bool is_duty_solo() const;
   // whether it is a marriage and still undetermined

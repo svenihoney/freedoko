@@ -53,8 +53,8 @@ new party			= new party
 continue party			= continue party
 Gamenumber: %ugameno%		= game %ugameno%
 Roundnumber: %uroundno%		= round %uroundno%
-Remaining rounds: %urounds%	= remaining rounds: %urounds%
-Remaining points: %ipoints%	= remaining points: %ipoints%
+remaining rounds: %urounds%	= remaining rounds: %urounds%
+remaining points: %ipoints%	= remaining points: %ipoints%
 Next startplayer: %sname%	= next startplayer: %sname%
 duty soli			= duty soli
 
