@@ -1,3 +1,7 @@
+2012-01-22 Diether Knof
+	- fixed bug: unannounced swines/hyperswines were taken as pfund
+	- updated date to 2012 in the head of the source files
+
 2012-01-21 Diether Knof
 	- fixed bug in best winning card
 	- fixed bug: a silent marriage was counted as duty solo

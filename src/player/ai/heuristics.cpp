@@ -2,7 +2,7 @@
  *
  *   FreeDoko a Doppelkopf-Game
  *
- *   Copyright (C) 2001-2011  by Diether Knof and Borg Enders
+ *   Copyright (C) 2001-2012  by Diether Knof and Borg Enders
  *
  *   This program is free software; you can redistribute it and/or 
  *   modify it under the terms of the GNU General Public License as 
@@ -2989,7 +2989,7 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
   for( unsigned i = 0; i < ha.cardsnumber(); i++ )
     if(   ha.card(i).value() == Card::ACE 
        && ha.card(i).istrump() 
-       && !ha.card(i).isswine()
+       && !ha.card(i).possible_swine()
       )
     {
       return ha.card(i);
@@ -3018,13 +3018,10 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
 
   // or a king of trump
   for( unsigned i = 0; i < ha.cardsnumber(); i++ )
-    if(    ha.card(i).value() == Card::KING
-       && !ha.card(i).ishyperswine()
+    if(   (ha.card(i).value() == Card::KING)
        && ha.card(i).istrump()
-       && hi.game().type() != GAMETYPE::SOLO_KING 
-       && hi.game().type() != GAMETYPE::SOLO_KING_QUEEN
-       && hi.game().type() != GAMETYPE::SOLO_KING_JACK
-       && hi.game().type() != GAMETYPE::SOLO_KOEHLER
+       && !ha.card(i).possible_hyperswine()
+       && !is_picture_solo(hi.game().type())
       )
     {
       return ha.card(i);
@@ -3085,6 +3082,7 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
       return best_jack;
   } // or a small jack of trump
 
+  CLOG << c << endl;
   return c;
 } // Card Heuristics::choose_pfund_card( Trick trick, HeuristicInterface hi )
 

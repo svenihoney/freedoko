@@ -40,3 +40,5 @@ DK
 * Kompilieren der .src.zip testen
 * msi-Datei erstellen: Mit WiX?
 * arch linux: Erstellen der man page
+* Fehler Logo laden: Verzeichnisse ausgeben
+* Laden: auch Programmverzeichnis (neben aktuellem Verzeichnis) verwenden
