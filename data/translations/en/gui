@@ -51,11 +51,9 @@ fonts				= fonts
 party summary			= party summary
 new party			= new party
 continue party			= continue party
-Gamenumber: %ugameno%		= game %ugameno%
-Roundnumber: %uroundno%		= round %uroundno%
-remaining rounds: %urounds%	= remaining rounds: %urounds%
-remaining points: %ipoints%	= remaining points: %ipoints%
-Next startplayer: %sname%	= next startplayer: %sname%
+gamenumber: %ugameno%		= game %ugameno%
+roundnumber: %uroundno%		= round %uroundno%
+next startplayer: %sname%	= next startplayer: %sname%
 duty soli			= duty soli
 
 # settings of the party

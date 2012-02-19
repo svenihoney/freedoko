@@ -29,7 +29,6 @@ DK
 * Kompilieren unter Windows: mit der Command-Shell kompilieren, aber eine sh.exe noch im Pfad
 * gnet: Auf gtkmm umstellen
 * "best winning card" überarbeiten
-  - Wichtig: wir brauchen zwei Funktionen: eine für die Heuristik und eine, die immer eine Karte zum Spielen zurückliefert (siehe Fehlerbericht 041095)
 * CardsInformation: Hochzeitler im Klärungsstich gibt seine höchsten Punkte
   ../Bugreports/ai/Heuristics/best_winning_card/259093.BugReport.FreeDoko
 * KI generell: restliche Stiche gehen an den Gegner (z.B. Schweine): pfunde noch dem eigenen Team (auch Herz Zehn). Beispiel: ../Bugreports/ai/Choosebestcard/GameTree/111096.BugReport.FreeDoko
@@ -40,5 +39,3 @@ DK
 * Kompilieren der .src.zip testen
 * msi-Datei erstellen: Mit WiX?
 * arch linux: Erstellen der man page
-* Fehler Logo laden: Verzeichnisse ausgeben
-* Laden: auch Programmverzeichnis (neben aktuellem Verzeichnis) verwenden

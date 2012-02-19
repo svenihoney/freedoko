@@ -1,3 +1,10 @@
+2012-02-19 Diether Knof
+	- fixed limiting of the main window to the screen size
+	- small improvement in cards information heuristic 'served color'
+
+2012-01-25 Diether Knof
+	- the program path is added to the data directories
+
 2012-01-22 Diether Knof
 	- fixed bug: unannounced swines/hyperswines were taken as pfund
 	- updated date to 2012 in the head of the source files

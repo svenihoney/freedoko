@@ -393,12 +393,19 @@ namespace CardsInformationHeuristics {
         return ;
 
       // the winnerplayer is not of the team as the player
+      // or a higher card (an ace) then the winnercard exists
       // note: 'TeamInfo' makes the opposite assumption:
       //       a high card played is a sign for the same team
-      if (ai.teaminfo(trick.winnerplayer()) != ::TEAM::UNKNOWN)
-        if (maybe_to_team(ai.teaminfo(trick.winnerplayer()))
-            == maybe_to_team(ai.teaminfo(player)))
-          return ;
+      if (   (ai.teaminfo(trick.winnerplayer()) != ::TEAM::UNKNOWN)
+        && (maybe_to_team(ai.teaminfo(trick.winnerplayer()))
+            == maybe_to_team(ai.teaminfo(player))) 
+        && (   trick.winnercard().istrump()
+            || (trick.winnercard() == Card(played_card.tcolor(), Card::ACE))
+            || (ai.cards_information().played(played_card.tcolor(),
+                                              Card::ACE)
+                < game.rule()(Rule::NUMBER_OF_SAME_CARDS)) )
+        )
+        return ;
 
       // special case: undetermined marriage
       if (   game.is_undetermined_marriage()
@@ -413,9 +420,11 @@ namespace CardsInformationHeuristics {
         return ;
       }
 
-      // no team of the players behind is known
+      // no team of the players behind is known to be of the own team
       for (unsigned c = game.playerno() - 1; c > trick.actcardno(); --c)
-        if (ai.teaminfo(trick.player_of_card(c)) != TEAM::UNKNOWN)
+        if (   (ai.team_information().guessed_team(trick.player_of_card(c))
+                == ai.team_information().guessed_team(player))
+            && ai.handofplayer(trick.player_of_card(c)).can_jab(trick))
           return ;
 
       switch (game.type()) {
@@ -524,10 +533,10 @@ namespace CardsInformationHeuristics {
           && !trick.isfull())
         return ;
 
-     // no (following) player has played/thrown the color
-     for (unsigned c = trick.actcardno() + 1; c < game.playerno(); ++c)
-       if (ai.cards_information().of_player(trick.player_of_card(c)).played(color))
-         return ;
+      // no (following) player has played/thrown the color
+      for (unsigned c = trick.actcardno() + 1; c < game.playerno(); ++c)
+        if (ai.cards_information().of_player(trick.player_of_card(c)).played(color))
+          return ;
 
       // color trick jabbed
       if (!played_card.istrump())
@@ -562,35 +571,35 @@ namespace CardsInformationHeuristics {
       // the former winnercard
       HandCard const& former_winnercard = former_trick.winnercard();
 
-       // the weighting
-       double weighting = 1;
-       // there must be at least one more card remaining
-       switch (ai.cards_information().remaining(color)
-               - (trick.remainingcardno() - 1)) {
-       case 0:
-       case 1:
-         weighting = 0;
-         break;
-       case 2:
-         switch (trick.remainingcardno()) {
-         case 0:
-           weighting = 1;
-           break;
-         case 1:
-           weighting = 0.9;
-           break;
-         case 2:
-           weighting = 0.7;
-           break;
-         default:
-           weighting = 1;
-           break;
-         } // switch (trick.remainingcardno())
-         break;
-       default:
-         weighting = 1;
-         break;
-       } // switch(free color cards)
+      // the weighting
+      double weighting = 1;
+      // there must be at least one more card remaining
+      switch (ai.cards_information().remaining(color)
+              - (trick.remainingcardno() - 1)) {
+      case 0:
+      case 1:
+        weighting = 0;
+        break;
+      case 2:
+        switch (trick.remainingcardno()) {
+        case 0:
+          weighting = 1;
+          break;
+        case 1:
+          weighting = 0.9;
+          break;
+        case 2:
+          weighting = 0.7;
+          break;
+        default:
+          weighting = 1;
+          break;
+        } // switch (trick.remainingcardno())
+        break;
+      default:
+        weighting = 1;
+        break;
+      } // switch(free color cards)
 
       for (list<pair<Card, int> >::const_iterator
            card = cards.begin();

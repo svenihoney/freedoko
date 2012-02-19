@@ -1750,6 +1750,25 @@ CardsInformation::played(Card const& card) const
 /**
  ** -> result
  **
+ ** @param     color   color of the card
+ ** @param     value   color of the card
+ **
+ ** @return    how many of 'Card(color, value)' have been played
+ **
+ ** @author    Diether Knof
+ **
+ ** @version   0.7.12
+ **/
+unsigned
+CardsInformation::played(Card::Color const& color,
+                         Card::Value const& value) const
+{
+  return this->played(Card(color, value));
+} // unsigned CardsInformation::played(Card::Color color, Card::Value value) const
+
+/**
+ ** -> result
+ **
  ** @param     tcolor   tcolor to look at
  **
  ** @return    how many cards of 'tcolor' have been played

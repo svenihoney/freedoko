@@ -167,6 +167,8 @@ class CardsInformation {
   unsigned played_cards_no() const;
   // how many of 'card' have been played
   unsigned played(Card const& card) const;
+  // how many of 'Card(color, value)' have been played
+  unsigned played(Card::Color const& color, Card::Value const& value) const;
   // how many cards of 'tcolor' have been played
   unsigned played(Card::TColor const& tcolor) const;
   // how many cards the player still has to play

@@ -137,13 +137,19 @@ namespace UI_GTKMM_NS {
                                   (  ::setting.path(Setting::LOGO_FILE).empty()
                                    ? ::setting.value(Setting::LOGO_FILE)
                                    : ::setting.path(Setting::LOGO_FILE))
-                                 ).translation());
+                                 ).translation()
+                    + "\n"
+                    + ::translation("searched paths:").translation() + "\n"
+                    + ::setting.data_directories_string("  "));
       } catch (Gdk::PixbufError pixbuf_error) {
         ::ui->error(::translation("Error::loading logo (%sfile%)",
                                   (  ::setting.path(Setting::LOGO_FILE).empty()
                                    ? ::setting.value(Setting::LOGO_FILE)
                                    : ::setting.path(Setting::LOGO_FILE))
-                                 ).translation());
+                                 ).translation()
+                    + "\n"
+                    + ::translation("searched paths:").translation() + "\n"
+                    + ::setting.data_directories_string("  "));
       } // try
     } // the logo
     { // the icon
@@ -154,13 +160,19 @@ namespace UI_GTKMM_NS {
                                   (  ::setting.path(Setting::ICON_FILE).empty()
                                    ? ::setting.value(Setting::ICON_FILE)
                                    : ::setting.path(Setting::ICON_FILE))
-                                 ).translation());
+                                 ).translation()
+                    + "\n"
+                    + ::translation("searched paths:").translation() + "\n"
+                    + ::setting.data_directories_string("  "));
       } catch (Gdk::PixbufError pixbuf_error) {
         ::ui->error(::translation("Error::loading icon (%sfile%)",
                                   (  ::setting.path(Setting::ICON_FILE).empty()
                                    ? ::setting.value(Setting::ICON_FILE)
                                    : ::setting.path(Setting::ICON_FILE))
-                                 ).translation());
+                                 ).translation()
+                    + "\n"
+                    + ::translation("searched paths:").translation() + "\n"
+                    + ::setting.data_directories_string("  "));
       } // try
     } // the icon
 #else
@@ -168,11 +180,17 @@ namespace UI_GTKMM_NS {
     this->logo = Gdk::Pixbuf::create_from_file(::setting.path(Setting::LOGO_FILE), error);
     if (error.get())
       ::ui->error(::translation("Error::loading logo (%sfile%)",
-                                ::setting.path(Setting::LOGO_FILE)).translation());
+                                ::setting.path(Setting::LOGO_FILE)).translation()
+                  + "\n"
+                  + ::translation("searched paths:").translation() + "\n"
+                  + ::setting.data_directories_string("  "));
     this->icon = Gdk::Pixbuf::create_from_file(::setting.path(Setting::ICON_FILE), error);
     if (error.get())
       ::ui->error(::translation("Error::loading icon (%sfile%)",
-                                ::setting.path(Setting::ICON_FILE)).translation());
+                                ::setting.path(Setting::ICON_FILE)).translation()
+                  + "\n"
+                  + ::translation("searched paths:").translation() + "\n"
+                  + ::setting.data_directories_string("  "));
 #endif
 
     return ;
@@ -313,16 +331,13 @@ namespace UI_GTKMM_NS {
 
       { // set the size of the main window
         int const width_hint = static_cast<int>(7 * this->cards->height());
-        int height_hint = width_hint + 2 ex - 1 * this->cards->height();
-#if !defined(RELEASE) && defined(BENDERS)
-        height_hint += 1 * this->cards->height();
-#endif
+        int const height_hint = static_cast<int>(6 * this->cards->height());
         int const width = std::min(width_hint,
-                                   Gdk::Screen::get_default()->get_width());
+                                   Gdk::Screen::get_default()->get_width() - 2 em);
         int const height = std::min(height_hint,
-                                    Gdk::Screen::get_default()->get_height());
-        this->main_window->set_default_size(width - 1 em, height - 1 ex);
-        this->main_window->set_default_size(width_hint - 1 em, height_hint - 1 ex);
+                                    Gdk::Screen::get_default()->get_height() - 2 ex);
+        this->main_window->set_default_size(width, height);
+        //this->main_window->set_default_size(width_hint - 1 em, height_hint - 1 ex);
       } // set the size of the main window
 
       Gtk::Window::set_auto_startup_notification(true);

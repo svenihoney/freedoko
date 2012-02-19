@@ -425,11 +425,11 @@ Setting::set_to_hardcoded()
 } // void Setting::set_to_hardcoded()
 
 /**
- ** -> result
+ ** sets the data diretories
  **
  ** @param	-
  **
- ** @return	a vector with all data directories
+ ** @return	-
  **
  ** @author	Diether Knof
  **
@@ -484,9 +484,73 @@ Setting::set_data_directories()
     else
       ++d;
 
-
   return ;
 } // Setting::set_data_directories()
+
+/**
+ ** adds the given directory to the data directories
+ **
+ ** @param	path   directory to add
+ **
+ ** @return	-
+ **
+ ** @author	Diether Knof
+ **
+ ** @version	0.7.12
+ **/
+void
+Setting::add_data_directory(string const& path)
+{
+  if (std::find(this->data_directories_.begin(),
+                this->data_directories_.end(), path)
+      == this->data_directories_.end())
+    this->data_directories_.push_back(path);
+  return ;
+} // void Setting::add_data_directory(string const& path)
+
+/**
+ ** write the data diretories in the stream, separated by newlines
+ **
+ ** @param	ostr     stream to write into
+ ** @param	indent   indention of each line, default: ""
+ **
+ ** @return	stream
+ **
+ ** @author	Diether Knof
+ **
+ ** @version	0.7.12
+ **/
+ostream&
+Setting::write_data_directories(ostream& ostr, string const& indent) const
+{
+  for (list<string>::const_iterator d = this->data_directories_.begin();
+       d != this->data_directories_.end();
+      ++d)
+    ostr << indent << *d << '\n';
+  return ostr;
+} // ostream& Setting::write_data_directories(ostream& ostr, string const& indent)
+
+/**
+ ** -> result
+ **
+ ** @param	indent   indention of each line, default: ""
+ **
+ ** @return	the public directories as string, separated by newlines
+ **
+ ** @author	Diether Knof
+ **
+ ** @version	0.7.12
+ **/
+string
+Setting::data_directories_string(string const& indent) const
+{
+  string l;
+  for (list<string>::const_iterator d = this->data_directories_.begin();
+       d != this->data_directories_.end();
+      ++d)
+    l += indent + *d + "\n";
+  return l;
+} // string Setting::data_directories_string(string const& indent)
 
 /**
  ** -> result

@@ -118,7 +118,7 @@ clean :
 		fi \
 	done
 	-find . -name "core" -exec rm -f \{\} \;
-	-find . -name ".thumbnails" -exec rm -rf \{\} \;
+#	-find . -name ".thumbnails" -exec rm -rf \{\} \;
 endif
 
 # fixes the permission flags
@@ -494,13 +494,7 @@ Windows_update :
 # private target
 # has absolute paths
 .PHONY: backup
-backup : tgz
-
-# create a backup of the whole directory
-# private target
-# has absolute paths
-.PHONY: tgz
-tgz : clean chmod
+backup : clean chmod
 	@echo tar czf  /Sicherung/FreeDoko/$(VERSION)/FreeDoko_$(VERSION)_`date +%Y-%m-%d_%0k`.dk.tgz FreeDoko
 	@cd -P ..;\
 	mkdir -p /Sicherung/FreeDoko/$(VERSION);\
@@ -508,6 +502,13 @@ tgz : clean chmod
 		--exclude "FreeDoko/src/Makefile.local" \
 		FreeDoko
 	@chmod a+r-w /Sicherung/FreeDoko/$(VERSION)/FreeDoko_$(VERSION)_`date +%Y-%m-%d_%0k`.dk.tgz
+
+# create a backup of the whole directory
+# private target
+# has absolute paths
+.PHONY: tgz
+tgz : clean chmod
+	tar -C .. -czf FreeDoko.tgz FreeDoko
 
 # create a backup of the source
 # private target

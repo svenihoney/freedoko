@@ -3082,7 +3082,6 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
       return best_jack;
   } // or a small jack of trump
 
-  CLOG << c << endl;
   return c;
 } // Card Heuristics::choose_pfund_card( Trick trick, HeuristicInterface hi )
 

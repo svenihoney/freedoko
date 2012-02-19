@@ -206,6 +206,13 @@ class Setting {
 
     // set the directories to search for the data
     void set_data_directories();
+    // add a path to the data diretories
+    void add_data_directory(string const& path);
+    // write the data diretories in the stream
+    ostream& write_data_directories(ostream& ostr,
+                                   string const& indent = "") const;
+    // a string containing the data directories
+    string data_directories_string(string const& indent = "") const;
 
 
     // returns, whether the setting is activ or not (or the value)

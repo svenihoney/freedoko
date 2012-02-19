@@ -51,11 +51,11 @@ fonts				= Schriftarten
 party summary			= Turnierzusammenfassung
 new party			= neues Turnier
 continue party			= Turnier fortfahren
-Gamenumber: %ugameno%		= Spiel %ugameno%
-Roundnumber: %uroundno%		= Runde %uroundno%
+gamenumber: %ugameno%		= Spiel %ugameno%
+roundnumber: %uroundno%		= Runde %uroundno%
 remaining rounds: %urounds%	= verbleibende Runden: %urounds%
 remaining points: %ipoints%	= verbleibende Punkte: %ipoints%
-Next startplayer: %sname%	= Nächster Startspieler: %sname%
+next startplayer: %sname%	= nächster Startspieler: %sname%
 points				= Punkte
 duty soli			= Pflichtsoli
 

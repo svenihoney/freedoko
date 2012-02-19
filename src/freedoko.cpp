@@ -186,6 +186,7 @@ main(int argc, char* argv[])
       // It includes what arguments you can use.
 
       // load the settings
+      ::setting.add_data_directory(DK::Utils::File::dirname(argv[0]));
       ::setting.load();
 
       ::party.set_seed(SEED_START);
