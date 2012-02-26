@@ -1,41 +1,6 @@
 \documentclass[12pt]{scrartcl}
 
-\usepackage[german]{babel}
-
-% Index im Inhaltsverzeichnis ausweisen
-%\KOMAoptions{toc=index}
-% Zwischen Absätzen eine Zeile Abstand
-\KOMAoptions{parskip=full}
-
-% Eingabe in UTF-8
-\usepackage[utf8x]{inputenc}
-% Sonderzeichen richtig in der Ausgabe darstellen
-\usepackage[T1]{fontenc}
-
-% intelligentes Leerzeichen
-\usepackage{xspace}
-
-% optischer Randausgleich
-%\usepackage{microtype}
-% Leerraum um Auslassungspunkte
-%\usepackage{ellipsis}
-
-% Hyperlinks
-\usepackage[pdftex,%
-colorlinks=true,%
-linkcolor=black,%
-urlcolor=black,%
-bookmarks=true,%
-bookmarksnumbered=true,
-]{hyperref}
-
-\newcommand{\kreuz}{$\clubsuit$\xspace}
-\newcommand{\pik}{$\spadesuit$\xspace}
-\newcommand{\herz}{$\heartsuit$\xspace}
-\newcommand{\karo}{$\diamondsuit$\xspace}
-\newcommand{\optional}{\textit{optional}\xspace}
-\newcommand{\Optional}{\textit{Optional}\xspace}
-
+\usepackage{FreeDoko}
 
 \begin{document}
 
@@ -74,10 +39,10 @@ ergibt sich folgende Darstellung der Karten:
 \\
 \begin{tabular}{lcccccccccccc}
   &As     &As     &10     &10     &König &König &Dame   &Dame   &Bube   &Bube   &9   &9\\
-  Kreuz &\kreuz &\kreuz &\kreuz &\kreuz &\kreuz &\kreuz &\kreuz &\kreuz &\kreuz &\kreuz &\kreuz &\kreuz \\
-  Pik   &\pik   &\pik   &\pik   &\pik   &\pik   &\pik   &\pik   &\pik   &\pik   &\pik   &\pik   &\pik \\
-  Herz  &\herz  &\herz  &\herz  &\herz  &\herz  &\herz  &\herz  &\herz  &\herz  &\herz  &\herz  &\herz  \\
-  Karo  &\karo  &\karo  &\karo  &\karo  &\karo  &\karo  &\karo  &\karo  &\karo  &\karo  &\karo  &\karo  \\
+  Kreuz &\Kreuz &\Kreuz &\Kreuz &\Kreuz &\Kreuz &\Kreuz &\Kreuz &\Kreuz &\Kreuz &\Kreuz &\Kreuz &\Kreuz \\
+  Pik   &\Pik   &\Pik   &\Pik   &\Pik   &\Pik   &\Pik   &\Pik   &\Pik   &\Pik   &\Pik   &\Pik   &\Pik \\
+  Herz  &\Herz  &\Herz  &\Herz  &\Herz  &\Herz  &\Herz  &\Herz  &\Herz  &\Herz  &\Herz  &\Herz  &\Herz  \\
+  Karo  &\Karo  &\Karo  &\Karo  &\Karo  &\Karo  &\Karo  &\Karo  &\Karo  &\Karo  &\Karo  &\Karo  &\Karo  \\
   Augen & 11    &  11   & 10    &  10   &  4    & 4     &  3    & 3     &  2    &  2    &  0    &  0   \\
 \end{tabular}\\
 In jeder Farbe sind daher 60 Augen vorhanden, so daß das Doppelkopfblatt insgesamt 240 Augen enthält.
@@ -95,9 +60,9 @@ Bubensolo, Fleischloser (Assesolo).
 
 \subsubsection{Rangfolge beim Normalspiel:}
 Die absteigende Rangfolge der 13 jeweils zweifach im Spiel
-vorhandenen Trumpfkarten ist: \herz Zehn, \kreuz Dame, \pik Dame,
-\herz Dame, \karo Dame, \kreuz Bube, \pik Bube, \herz Bube, \karo
-Bube, \karo As, \karo Zehn, \karo König, \karo Neun. In den drei
+vorhandenen Trumpfkarten ist: \Herz\ Zehn, \Kreuz\ Dame, \Pik\ Dame,
+\Herz\ Dame, \Karo\ Dame, \Kreuz\ Bube, \Pik\ Bube, \Herz\ Bube, \Karo
+Bube, \Karo\ As, \Karo\ Zehn, \Karo\ König, \Karo\ Neun. In den drei
 Fehlfarben ist die absteigende Rangfolge der ebenfalls doppelt
 vorhanden Karten: In Kreuz und Pik: As, Zehn, König, Neun. In
 Herz: As, König, 9. Beim Normalspiel gibt es damit 26
@@ -106,24 +71,24 @@ Trumpfkarten und 22 Fehlkarten.
 \subsubsection{Rangfolge beim Farbsolo:}
 Beim Farbsolo werden 4 Varianten unterschieden, da jede der 4
 Farben als Trumpffarbe gewählt werden kann. Gegenüber dem
-Normalspiel ersetzen die Trumpfkarten (As, Zehn (außer \herz
+Normalspiel ersetzen die Trumpfkarten (As, Zehn (außer \Herz
 -Solo), König, Neun) der gewählten Trumpffarbe die Trumpfkarten
 der Farbe Karo. Damit ergibt sich folgende absteigende Rangfolge
 der jeweils zweifach im Spiel vorhandenen Trumpfkarten: Wie beim
-Normalspiel: \herz Zehn, \kreuz Dame, \pik Dame, \herz Dame, \karo
-Dame, \kreuz Bube, \pik Bube, \herz Bube, \karo Bube. Zusätzlich
-aus der gewählten Trumpffarbe: As, Zehn (außer \herz Zehn),
+Normalspiel: \Herz\ Zehn, \Kreuz\ Dame, \Pik\ Dame, \Herz\ Dame, \Karo
+Dame, \Kreuz\ Bube, \Pik\ Bube, \Herz\ Bube, \Karo\ Bube. Zusätzlich
+aus der gewählten Trumpffarbe: As, Zehn (außer \Herz\ Zehn),
 König, Neun. In den drei Fehlfarben ist die absteigende
 Rangfolge der ebenfalls doppelt vorhanden Karten: As, Zehn (außer
-\herz Zehn), König, Neun. Beim Farbsolo in Kreuz, Pik und Karo
+\Herz\ Zehn), König, Neun. Beim Farbsolo in Kreuz, Pik und Karo
 gibt es jeweils 26 Trumpfkarten und 22 Fehlkarten, und beim
 Farbsolo in Herz
 gibt es 24 Trumpfkarten und 24 Fehlkarten.\\
 Rangfolge beim Damensolo und beim Bubensolo:\\
 Die absteigende Rangfolge der 4 jeweils zweifach im Spiel
-vorhanden Trumpfkarten ist: Beim Damensolo: \kreuz Dame, \pik
-Dame, \herz Dame, \karo Dame. Beim Bubensolo: \kreuz Bube, \pik
-Bube, \herz Bube, \karo Bube. In den Vier Fehlfarben ist die
+vorhanden Trumpfkarten ist: Beim Damensolo: \Kreuz\ Dame, \Pik
+Dame, \Herz\ Dame, \Karo\ Dame. Beim Bubensolo: \Kreuz\ Bube, \Pik
+Bube, \Herz\ Bube, \Karo\ Bube. In den Vier Fehlfarben ist die
 absteigende Rangfolge der ebenfalls doppelt vorhandenen Karten:
 Beim Damensolo: As, Zehn, König, Bube, Neun. Beim Bubensolo: As,
 Zehn, König, Dame, Neun. Beim Damensolo und beim Bubensolo gibt

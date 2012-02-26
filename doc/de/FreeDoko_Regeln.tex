@@ -1,9 +1,8 @@
 \documentclass{scrartcl}
 
-\usepackage{svninfo}
-\svnInfo $Id$
-
 \usepackage{FreeDoko}
+
+\svnInfo $Id$
 
 %\renewcommand{\thesection}{\Roman{section}}
 
@@ -19,10 +18,11 @@ pdfkeywords={FreeDoko Doppelkopf Regeln}
 \title{FreeDoko}
 \subtitle{Spielregeln}
 \author{Borg Enders \and Dr. Diether Knof}
-\date{16. Dezember 2011}
+\date{\svnInfoLongDate, Revision \svnInfoRevision}
 
 
 \begin{document}
+\pagestyle{plain}
 
 \maketitle
 
@@ -39,7 +39,7 @@ Die Regeln sind auch im Handbuch in der Rubrik \href{http://free-doko.sourceforg
 
 \section{Das Doppelkopfblatt}
 Das Blatt besteht aus je 12 Karten der vier Farben Kreuz
-(\kreuz), Pik (\pik), Herz (\herz) und Karo (\karo), nämlich
+(\Kreuz), Pik (\Pik), Herz (\Herz) und Karo (\Karo), nämlich
 (Zählwert(Augen) in Klammern) pro Farbe je zwei Asse (11), zwei
 Zehnen (10), zwei Könige (4), zwei Damen (3), zwei Buben (2) und
 zwei Neunen (0). \Optional kann bei FreeDoko auch ohne Neunen
@@ -54,12 +54,12 @@ Die Rangfolge beim Solo wird im Kapitel Solo (siehe \ref{solo}) erklärt.
 
 Die Rangfolge der Karten beim Normalspiel ist wie folgt:
 
-Die absteigende Reihenfolge der jeweils zweifach im Spiel vorhandenen Trumpfkarten ist: (\herz Zehn,) \kreuz Dame, \pik Dame, \herz Dame, \karo Dame, \kreuz Bube, \pik Bube, \herz Bube, \karo Bube, \karo As, \karo Zehn, \karo König und \karo Neun. In den drei Fehlfarben ist die absteigende Rangfolge der ebenfalls doppelt vorhandenen Karten: As, Zehn, König und Neun.
+Die absteigende Reihenfolge der jeweils zweifach im Spiel vorhandenen Trumpfkarten ist: (\Herz\ Zehn,) \Kreuz\ Dame, \Pik\ Dame, \Herz\ Dame, \Karo\ Dame, \Kreuz\ Bube, \Pik\ Bube, \Herz\ Bube, \Karo\ Bube, \Karo\ As, \Karo\ Zehn, \Karo\ König und \Karo\ Neun. In den drei Fehlfarben ist die absteigende Rangfolge der ebenfalls doppelt vorhandenen Karten: As, Zehn, König und Neun.
 
 Grundsätzlich besteht Bedienpflicht. Wenn eine angespielte Karte nicht bedient werden kann, darf getrumpft oder abgeworfen werden.  Bei zwei gleichen Karten in einem Stich ist die zuerst gespielte höher als die zweite.
 
 \subsection{Herz Zehnen}
-In der Regel sind die \herz Zehnen Trümpfe, können aber \optional bei FreeDoko auch normale Farbkarten sein. Wenn diese Trümpfe sind, stehen die \herz Zehnen in der Rangfolge der Karten über den \kreuz Damen. Allerdings gibt es \optional zwei Formen der Rangfolge der \herz Zehnen in einem Stich:
+In der Regel sind die \Herz\ Zehnen Trümpfe, können aber \optional bei FreeDoko auch normale Farbkarten sein. Wenn diese Trümpfe sind, stehen die \Herz\ Zehnen in der Rangfolge der Karten über den \Kreuz\ Damen. Allerdings gibt es \optional zwei Formen der Rangfolge der \Herz\ Zehnen in einem Stich:
 \begin{enumerate}
   \item Die zweite schlägt immer die erste.
     \begin{itemize}
@@ -72,7 +72,7 @@ In der Regel sind die \herz Zehnen Trümpfe, können aber \optional bei FreeDoko
 \end{enumerate}
 
 \subsection{Schweine}
-Bei FreeDoko gibt es \optional noch die Möglichkeit höhere Trümpfe als die \kreuz Damen und, wenn vorhanden, die \herz Zehnen zu erlauben. Diese Trümpfe heißen Schweine und Hyperschweine. Schweine sind zwei \karo Asse auf einer Hand und müssen angesagt werden. Diese Karten sind die höchstens Trümpfe im Spiel, solange keine Hyperschweine angesagt werden. Hyperschweine sind zwei \karo Neunen auf einer Hand, wenn bereits Schweine angesagt wurden und auch nur dann.
+Bei FreeDoko gibt es \optional noch die Möglichkeit höhere Trümpfe als die \Kreuz\ Damen und, wenn vorhanden, die \Herz\ Zehnen zu erlauben. Diese Trümpfe heißen Schweine und Hyperschweine. Schweine sind zwei \Karo\ Asse auf einer Hand und müssen angesagt werden. Diese Karten sind die höchstens Trümpfe im Spiel, solange keine Hyperschweine angesagt werden. Hyperschweine sind zwei \Karo\ Neunen auf einer Hand, wenn bereits Schweine angesagt wurden und auch nur dann.
 
 Für die Ansagezeitpunkte von Schweinen und Hyperschweinen gibt es \optional verschiedene Möglichkeiten:
 \begin{itemize}
@@ -81,7 +81,7 @@ Für die Ansagezeitpunkte von Schweinen und Hyperschweinen gibt es \optional ver
       \item Ansage vor dem Spiel.
       \item Ansage, wenn das erstes Schwein gespielt wird.
       \item Wenn das erste As von der eigenen Partei gewonnen wurde, wird das
-	zweite \karo As zum Schwein und angesagt.
+	zweite \Karo\ As zum Schwein und angesagt.
 	In diesem Spezialfall sind keine Hyperschweine erlaubt.
     \end{itemize}
   \item Für Hyperschweine:
@@ -94,7 +94,7 @@ Für die Ansagezeitpunkte von Schweinen und Hyperschweinen gibt es \optional ver
 Außerdem kann angegeben werden, ob es Schweine und Hyperschweine auch im Solospiel gibt.
 
 \section{Parteien}
-Doppelkopf wird mit vier Spielern gespielt. Im Normalspiel spielen die Spieler, die die \kreuz Damen besitzen (Re-Partei) gegen die beiden anderen (Kontra-Partei). Es ist allerdings auch möglich, daß ein Spieler gegen die drei anderen ein Solo spielt.  Bei diesen ist dann der Solospieler die Re-Partei.
+Doppelkopf wird mit vier Spielern gespielt. Im Normalspiel spielen die Spieler, die die \Kreuz\ Damen besitzen (Re-Partei) gegen die beiden anderen (Kontra-Partei). Es ist allerdings auch möglich, daß ein Spieler gegen die drei anderen ein Solo spielt.  Bei diesen ist dann der Solospieler die Re-Partei.
 
 \section{Spielziel}
 Jede Partei versucht mehr "`Augen"' als die Gegenpartei zu erspielen und dabei einen möglichst hohen Punktwert des Spieles bei der Abrechnung zu erreichen.
@@ -122,54 +122,54 @@ Ein Solospiel ist ein Spiel bei dem ein Spieler alleine gegen die drei anderen S
 
 \begin{description}
   \item[Farbsolo:]
-    (\herz Zehnen), alle
-    Damen und alle Buben sind wie im Normalspiel Trumpf. \karo As,
-    \karo Zehn, \karo König und \karo Neun werden durch die
-    entsprechenden Karten der gewählten Trumpffarbe (\kreuz, \pik,
-    \herz\ oder \karo) ersetzt. Wichtig: beim \herz-Solo bleiben die
-    Dollen (die \herz Zehnen als Trumpf) hoch. Es gibt also 26 bzw.
+    (\Herz\ Zehnen), alle
+    Damen und alle Buben sind wie im Normalspiel Trumpf. \Karo\ As,
+    \Karo\ Zehn, \Karo\ König und \Karo\ Neun werden durch die
+    entsprechenden Karten der gewählten Trumpffarbe (\Kreuz, \Pik,
+    \Herz\ oder \Karo) ersetzt. Wichtig: beim \Herz-Solo bleiben die
+    Dollen (die \Herz\ Zehnen als Trumpf) hoch. Es gibt also 26 bzw.
     24 Trümpfe. Falls ohne Neunen gespielt wird gibt es natürlich
     zwei Trümpfe weniger.
   \item[Fleischloser:]
     Es gibt keine Trümpfe. Die Karten gelten in der Reihenfolge As,
     Zehn, König, Dame, Bube, Neun.
   \item[Damen-Solo:]
-    Alle Damen sind Trumpf in der Reihenfolge \kreuz, \pik, \herz,
-    \karo. Es gibt also acht Trumpf. Alle anderen Karten gehören zur
+    Alle Damen sind Trumpf in der Reihenfolge \Kreuz, \Pik, \Herz,
+    \Karo. Es gibt also acht Trumpf. Alle anderen Karten gehören zur
     Fehlfarbe in der Reihenfolge As, Zehn, König, Bube, Neun.
   \item[Buben-Solo:]
-    Alle Buben sind Trumpf in der Reihenfolge \kreuz, \pik, \herz,
-    \karo. Es gibt also acht Trumpf. Alle anderen Karten gehören zur
+    Alle Buben sind Trumpf in der Reihenfolge \Kreuz, \Pik, \Herz,
+    \Karo. Es gibt also acht Trumpf. Alle anderen Karten gehören zur
     Fehlfarbe in der Reihenfolge As, Zehn, König, Dame, Neun.
   \item[Damen-Buben-Solo:]
-    Alle Damen und Buben sind Trumpf in der Reihenfolge \kreuz Dame,
-    \pik Dame, \herz Dame, \karo Dame, \kreuz Bube, \pik Bube, \herz
-    Bube, \karo Bube. Es gibt also 16 Trumpf. Alle anderen Karten
+    Alle Damen und Buben sind Trumpf in der Reihenfolge \Kreuz\ Dame,
+    \Pik\ Dame, \Herz\ Dame, \Karo\ Dame, \Kreuz\ Bube, \Pik\ Bube, \Herz
+    Bube, \Karo\ Bube. Es gibt also 16 Trumpf. Alle anderen Karten
     gehören zur Fehlfarbe in der Reihenfolge As, Zehn, König, Neun.
   \item[Köhler:]
     Alle Könige, Damen und Buben sind Trumpf in der Reihenfolge
-    \kreuz König, \pik König, \herz König, \karo König,
-    \kreuz Dame, \pik Dame, \herz Dame, \karo Dame,
-    \kreuz Bube, \pik Bube, \herz Bube, \karo Bube.
+    \Kreuz\ König, \Pik\ König, \Herz\ König, \Karo\ König,
+    \Kreuz\ Dame, \Pik\ Dame, \Herz\ Dame, \Karo\ Dame,
+    \Kreuz\ Bube, \Pik\ Bube, \Herz\ Bube, \Karo\ Bube.
   \item[Königen-Solo:]
-    Alle Könige sind Trumpf in der Reihenfolge \kreuz, \pik, \herz,
-    \karo. Es gibt also acht Trumpf. Alle anderen Karten gehören zur
+    Alle Könige sind Trumpf in der Reihenfolge \Kreuz, \Pik, \Herz,
+    \Karo. Es gibt also acht Trumpf. Alle anderen Karten gehören zur
     Fehlfarbe in der Reihenfolge As, Zehn, Dame, Bube, Neun.
   \item[Königen-Damen-Solo:]
-    Alle Könige und Damen sind Trumpf in der Reihenfolge \kreuz
-    König, \pik König, \herz König, \karo König, \kreuz Dame, \pik
-    Dame, \herz Dame, \karo Dame. Es gibt also 16 Trumpf. Alle anderen
+    Alle Könige und Damen sind Trumpf in der Reihenfolge \Kreuz
+    König, \Pik\ König, \Herz\ König, \Karo\ König, \Kreuz\ Dame, \Pik
+    Dame, \Herz\ Dame, \Karo\ Dame. Es gibt also 16 Trumpf. Alle anderen
     Karten gehören zur Fehlfarbe in der Reihenfolge As, Zehn, Bube,
     Neun.
   \item[Königen-Buben-Solo:]
-    Alle Könige und Buben sind Trumpf in der Reihenfolge \kreuz
-    König, \pik König, \herz König, \karo König, \kreuz Bube, \pik
-    Bube, \herz Bube, \karo Bube. Es gibt also 16 Trumpf. Alle anderen
+    Alle Könige und Buben sind Trumpf in der Reihenfolge \Kreuz
+    König, \Pik\ König, \Herz\ König, \Karo\ König, \Kreuz\ Bube, \Pik
+    Bube, \Herz\ Bube, \Karo\ Bube. Es gibt also 16 Trumpf. Alle anderen
     Karten gehören zur Fehlfarbe in der Reihenfolge As, Zehn, Dame,
     Neun. Alle Könige, Damen und Buben sind Trumpf in der Reihenfolge
-    \kreuz König, \pik König, \herz König, \karo König, \kreuz
-    Dame, \pik Dame, \herz Dame, \karo Dame, \kreuz Bube, \pik Bube,
-    \herz Bube, \karo Bube. Es gibt also 24 Trumpf. Alle anderen
+    \Kreuz\ König, \Pik\ König, \Herz\ König, \Karo\ König, \Kreuz
+    Dame, \Pik\ Dame, \Herz\ Dame, \Karo\ Dame, \Kreuz\ Bube, \Pik\ Bube,
+    \Herz\ Bube, \Karo\ Bube. Es gibt also 24 Trumpf. Alle anderen
     Karten gehören zur Fehlfarbe in der Reihenfolge As, Zehn, Neun.
 \end{description}
 
@@ -180,16 +180,16 @@ Ein Solospiel ist ein Spiel bei dem ein Spieler alleine gegen die drei anderen S
 Sobald ein Spieler alle seine Pflichtsoli absolviert hat, darf er Lustsoli spielen. Als Lustsolo kann jede Soloart gespielt werden.  Beim Lustsolo spielt der linke Nachbar des Kartengebers aus und es wird auch nicht nachgegeben. \Optional \ kann allerdings auch bei einem Lustsolo der Spieler selber ausspielen, in diesem Fall wird allerdings auch nachgegeben.
 
 \subsection{Hochzeit}
-Wenn ein Spieler beide \kreuz Damen auf der Hand hat, kann er sich, falls kein Solo und keine Armut vorliegt, zwei Spieltypen entscheiden. Er kann entweder die Hochzeit anmelden oder eine "`Stille Hochzeit"' (Farbsolo in \karo) spielen. Falls der Spieler mit den beiden \kreuz Damen kein Solo spielen möchte, meldet er in der Vorbehaltsfrage einen "`Vorbehalt"' an. Bei der angemeldeten Hochzeit hat der Spieler verschiedene Möglichkeiten seinen Mitspieler zu finden. Hierzu wählt er eine der folgenden Möglichkeiten:
+Wenn ein Spieler beide \Kreuz\ Damen auf der Hand hat, kann er sich, falls kein Solo und keine Armut vorliegt, zwei Spieltypen entscheiden. Er kann entweder die Hochzeit anmelden oder eine "`Stille Hochzeit"' (Farbsolo in \Karo) spielen. Falls der Spieler mit den beiden \Kreuz\ Damen kein Solo spielen möchte, meldet er in der Vorbehaltsfrage einen "`Vorbehalt"' an. Bei der angemeldeten Hochzeit hat der Spieler verschiedene Möglichkeiten seinen Mitspieler zu finden. Hierzu wählt er eine der folgenden Möglichkeiten:
 \begin{itemize}
   \item Erster fremder Stich entscheidet
   \item Erster fremder Trumpfstich entscheidet
   \item Erster fremder Farbstich entscheidet
-  \item Erster fremder \herz Stich entscheidet
-  \item Erster fremder \pik Stich entscheidet
-  \item Erster fremder \kreuz Stich entscheidet
+  \item Erster fremder \Herz\ Stich entscheidet
+  \item Erster fremder \Pik\ Stich entscheidet
+  \item Erster fremder \Kreuz\ Stich entscheidet
 \end{itemize}
-Der Spieler, der als erster einen Stich gewinnt, der dem geforderten Kriterium entspricht und der nicht die beiden \kreuz Damen hat, spielt mit dem Hochzeitler zusammen. \Optional kann auch ein letzter Klärungsstiches festgelegt werden, das heißt, wenn der Hochzeitler bis zu diesem Zeitpunkt keinen Partner gefunden hat, wird das Spiel als \karo Solo des Hochzeitlers
+Der Spieler, der als erster einen Stich gewinnt, der dem geforderten Kriterium entspricht und der nicht die beiden \Kreuz\ Damen hat, spielt mit dem Hochzeitler zusammen. \Optional kann auch ein letzter Klärungsstiches festgelegt werden, das heißt, wenn der Hochzeitler bis zu diesem Zeitpunkt keinen Partner gefunden hat, wird das Spiel als \Karo\ Solo des Hochzeitlers
 fortgesetzt.
 
 \subsection{Armut}
@@ -219,7 +219,7 @@ Zu dieser Armut kommt es, wenn ein Spieler weniger als vier Trümpfe hat. In die
     beliebige Karten zurück und sagt dabei an, wieviele Trümpfe er
     zurückgegeben hat. Der Spieler, der die Karten aufgenohmen hat,
     bildet beim Spiel zusammen mit dem Spieler mit der Armut die
-    Re-Partei. Die Verteilung der \kreuz Damen ist für die weitere
+    Re-Partei. Die Verteilung der \Kreuz\ Damen ist für die weitere
     Parteienbildung nicht mehr relevant. Ansonsten wird das Spiel
     jetzt wie ein Normalspiel gespielt. Wenn allerdings ein Spieler
     lieber ein Solo spielen möchte, geht dieses vor und der Spieler
@@ -258,7 +258,7 @@ Bei Doppelkopf gibt es folgende Absagen mit ihrer jeweiligen Bedeutung:
 Bei FreeDoko kann \optional konfiguriert werden, bis wann und wieviele Absagen erlaubt sind. Es dürfen auch Absagen übersprungen werden, wenn vorher nötige Absagen noch erlaubt sind. Diese gelten dann als abgesagt. Auf jede Absage darf \optional ein Re oder Kontra, sofern nicht bereits erfolgt, erwidert werden. Bei einer Hochzeit verschiebt der Klärungsstich alle Absagezeitpunkte entsprechend, das heißt, wenn der dritte Stich der Klärungsstich ist, dürfen alle Absagen zwei Stiche später erfolgen.
 
 \section{Genscher}
-\Optional gibt es bei FreeDoko eine Sonderegel für alle, die etwas Unfairnis ins Spiel bringen möchten. Diese Regel heißt Genscher und tritt dann in Kraft, wenn ein Spieler beide \karo Könige auf seiner Hand hat. In diesem Fall darf dieser Spieler beim Ausspielen des ersten \karo Königs (Genscher) völlig frei entscheiden, wer sein Mitspieler sein soll. Allerdings kann der Spieler den Genscher auch spielen ohne von ihm Gebrauch zu machen.  Beim Gebrauch des Genschers werden alle Absagen aufgehoben, und es bleiben nur gemachte Ansagen bestehen.
+\Optional gibt es bei FreeDoko eine Sonderegel für alle, die etwas Unfairnis ins Spiel bringen möchten. Diese Regel heißt Genscher und tritt dann in Kraft, wenn ein Spieler beide \Karo\ Könige auf seiner Hand hat. In diesem Fall darf dieser Spieler beim Ausspielen des ersten \Karo\ Königs (Genscher) völlig frei entscheiden, wer sein Mitspieler sein soll. Allerdings kann der Spieler den Genscher auch spielen ohne von ihm Gebrauch zu machen.  Beim Gebrauch des Genschers werden alle Absagen aufgehoben, und es bleiben nur gemachte Ansagen bestehen.
 
 Diese Sonderregeln gilt nicht bei einem Solospiel oder einer Armut.
 
@@ -348,21 +348,21 @@ Die Spielwerte der Einzelspiele werden in Spielpunkten (Punkten) ausgedrückt.
 
 Sonderpunkte können von beiden Parteien nur beim Normalspiel gewonnen werden.  Sie werden gegebenenfalls zuerst miteinander und danach mit den unter (1 - 6) ermittelten Punkten verrechnet.  Es werden folgende Sonderpunkte vergeben:
 \begin{itemize}
-  \item Gegen die \kreuz Damen gewonnen: 1 Sonderpunkt
+  \item Gegen die \Kreuz\ Damen gewonnen: 1 Sonderpunkt
   \item Doppelkopf (ein Stich mit 40 oder mehr Augen): 1 Sonderpunkt
-  \item \karo As (Fuchs) der Gegenpartei gefangen: 1 Sonderpunkt
-  \item \optional \kreuz Bube (Karlchen) macht den letzten Stich: 1 Sonderpunkt
+  \item \Karo\ As (Fuchs) der Gegenpartei gefangen: 1 Sonderpunkt
+  \item \optional \Kreuz\ Bube (Karlchen) macht den letzten Stich: 1 Sonderpunkt
     \begin{itemize}
-      \item \optional 2 Sonderpunkte für Doppel-Karlchen: beide \kreuz Buben einer Partei im letzten Stich
-      \item \optional 1 Sonderpunkt für Karlchen fangen: wenn \kreuz Bube im letzten Stich von Gegenpartei überstochen wird und
+      \item \optional 2 Sonderpunkte für Doppel-Karlchen: beide \Kreuz\ Buben einer Partei im letzten Stich
+      \item \optional 1 Sonderpunkt für Karlchen fangen: wenn \Kreuz\ Bube im letzten Stich von Gegenpartei überstochen wird und
 	die Gegenpartei den Stich macht
-      \item \optional 2 Sonderpunkte für Doppel-Karlchen fangen: wenn beide \kreuz Buben im letzten Stich von Gegenpartei überstochen werden
+      \item \optional 2 Sonderpunkte für Doppel-Karlchen fangen: wenn beide \Kreuz\ Buben im letzten Stich von Gegenpartei überstochen werden
     \end{itemize}
-  \item \optional 1 Sonderpunkt für Fuchs im letzten Stich: Letzter Stich wird mit \karo As (kein Schwein) gewonnen
+  \item \optional 1 Sonderpunkt für Fuchs im letzten Stich: Letzter Stich wird mit \Karo\ As (kein Schwein) gewonnen
     \begin{itemize}
-      \item \optional zwei Sonderpunkte für Doppel-Fuchs im letzten Stich: letzter Stich wird durch zwei \karo Asse einer Partei gewonnen
+      \item \optional zwei Sonderpunkte für Doppel-Fuchs im letzten Stich: letzter Stich wird durch zwei \Karo\ Asse einer Partei gewonnen
     \end{itemize}
-  \item \optional 1 Sonderpunkt für Dollenschlag, wenn eine \herz Zehn die andere schlägt
+  \item \optional 1 Sonderpunkt für Dollenschlag, wenn eine \Herz\ Zehn die andere schlägt
   \item \optional 1 Sonderpunkt für Herzstich, wenn eine Herz
     durchläuft ohne gestochen zu werden.
 \end{itemize}
