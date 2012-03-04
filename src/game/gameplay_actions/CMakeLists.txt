@@ -1,0 +1,13 @@
+set(LOCAL_SOURCES
+  pure.cpp
+  player1.cpp
+  base_cards.cpp
+  reservation.cpp
+  marriage.cpp
+  genscher.cpp
+  announcement.cpp
+  card_played.cpp
+  trick_full.cpp
+  check.cpp
+)
+toglobalsources(${LOCAL_SOURCES})
