@@ -2074,7 +2074,7 @@ Heuristics::best_winning_card_triple_picture( Trick const& t,
  **/
 Card
 Heuristics::best_winning_card_old(Trick const& t, HeuristicInterface const& hi,
-                              unsigned pointmodi )
+                                  unsigned pointmodi )
 {
   // @heuristic::name   best winning card
   // @heuristic::idea   Tries to find the best card to win a trick depending on different values like Aiconfig::LIMITQUEEN
@@ -3239,10 +3239,10 @@ Heuristics::choose_for_color_trick( Trick const& t,
     pred = pred || allmyteam;
 
     if( game.type() == GAMETYPE::POVERTY ) {
-      pred &= (   (hi.no() == game.poverty_partner().no())
-               && (  (   !game.rule()(Rule::DOLLEN)
-                      || t.startcard().color() != Card::HEART)
-                   || allmyteam));
+      pred &=    (hi.no() == game.poverty_partner().no())
+        && (  (   !game.rule()(Rule::DOLLEN)
+               || t.startcard().color() != Card::HEART)
+            || allmyteam);
     }
 
     if (   pred
@@ -6371,33 +6371,6 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
 
       }
 
-          }
-
-          if (cardno >= 9 )
-            value += 1;
-          if (cardno >= hi.game().trickno() - 1 )
-            value += 2;
-          if (cardno >= hi.game().trickno() )
-            value += 1;
-          if (cardno == hi.hand().cardsnumber() )
-            value += 2;
-          if ( g.is_solo()
-              && cardno >= 9 )
-            value += 1;
-    } else
-    {
-      if (hi.hand().numberoftrumps() >= 9 )
-         value += 1;
-       if (hi.hand().numberoftrumps() >= hi.game().trickno() - 1 )
-         value += 2;
-       if (hi.hand().numberoftrumps() >= hi.game().trickno() )
-         value += 1;
-       if (hi.hand().numberoftrumps() == hi.hand().cardsnumber() )
-         value += 2;
-
-       if ( g.is_solo()
-           && hi.hand().numberoftrumps() >= 9 )
-                   value += 1;
     }
 
     if (cardno >= 9 )
@@ -6408,6 +6381,9 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
       value += 1;
     if (cardno == hi.hand().cardsnumber() )
       value += 2;
+    if ( g.is_solo()
+        && cardno >= 9 )
+      value += 1;
   } else
   {
     if (hi.hand().numberoftrumps() >= 9 )
@@ -6418,6 +6394,10 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
       value += 1;
     if (hi.hand().numberoftrumps() == hi.hand().cardsnumber() )
       value += 2;
+
+    if ( g.is_solo()
+        && hi.hand().numberoftrumps() >= 9 )
+      value += 1;
   }
 
 
