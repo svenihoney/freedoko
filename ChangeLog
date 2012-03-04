@@ -1,4 +1,7 @@
 2012-03-04 Diether Knof
+	- best winning card: do not jab a marriage decision trick as bride
+
+2012-03-04 Diether Knof
 	- heuristic 'choose for color trick': added a check in a poverty, that the poverty player can jab the trick
 
 2012-02-26 Diether Knof

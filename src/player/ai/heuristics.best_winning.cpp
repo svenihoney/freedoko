@@ -184,7 +184,13 @@ Heuristics::best_winning_card(Trick const& trick,
                : BestWinningCard::poverty_re(trick, hi) )
             : BestWinningCard::poverty_contra(trick, hi) );
   case GAMETYPE::GENSCHER:
+    break;
   case GAMETYPE::MARRIAGE:
+    // do not jab a decision trick as bride
+    if (   (hi.no() == game.soloplayer().no())
+        && is_selector(trick.startcard().tcolor(),
+                    game.marriage_selector()) )
+      return Card::EMPTY;
     break;
   case GAMETYPE::MARRIAGE_SOLO:
     return ( (hi.team() == TEAM::RE)
