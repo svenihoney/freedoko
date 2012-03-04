@@ -31,9 +31,6 @@ endif(CMAKE_SYSTEM_NAME MATCHES Linux.*)
 link_directories(
 	    ${GTKMM_LIBRARY_DIRS} ${GNET_LIBRARY_DIRS} ${ALUT_LIBRARY_DIRS} )
 
-message(STATUS ${GNET_INCLUDE_DIRS})
-                                                                           
-
 ADD_CUSTOM_COMMAND(
   OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/logo.png
   COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/logo.free.png ${CMAKE_CURRENT_BINARY_DIR}/logo.png
@@ -41,6 +38,16 @@ ADD_CUSTOM_COMMAND(
   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/logo.free.png
 )
 ADD_CUSTOM_TARGET(copy_logos DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/logo.png)
+
+macro(toglobalsources LOCAL_SOURCES)
+  foreach(SRC ${ARGV})
+    list(APPEND GLOBAL_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${SRC})
+  endforeach(SRC)
+  set(FREEDOKO_SOURCES ${FREEDOKO_SOURCES} ${GLOBAL_SOURCES} PARENT_SCOPE)
+endmacro(toglobalsources)
+
+add_subdirectory(card)
+add_subdirectory(game)
 
 add_executable(FreeDoko
   basistypes.cpp  
@@ -50,45 +57,10 @@ add_executable(FreeDoko
   runtime.cpp
   utils.cpp
 
-card/card.color.cpp
-card/card_counter.cpp
-card/card.cpp
-card/card.value.cpp
-card/hand_card.cpp
-card/hand_cards.cpp
-card/hand.cpp
-card/sorted_hand.cpp
-card/tcolor_counter.cpp
-card/trick.cpp
-card/weighted_card_list.cpp
+${FREEDOKO_SOURCES}
 class/getopt/getopt.cpp
 class/getopt/option.cpp
 class/readconfig/readconfig.cpp
-game/game.announcement.cpp
-game/game.cpp
-game/game.gameplay.cpp
-game/game.marriage.cpp
-game/gameplay_action.cpp
-game/gameplay_actions/announcement.cpp
-game/gameplay_actions/base_cards.cpp
-game/gameplay_actions/card_played.cpp
-game/gameplay_actions/check.cpp
-game/gameplay_actions/genscher.cpp
-game/gameplay_actions/marriage.cpp
-game/gameplay_actions/player1.cpp
-game/gameplay_actions/pure.cpp
-game/gameplay_actions/reservation.cpp
-game/gameplay_actions/trick_full.cpp
-game/gameplay.cpp
-game/game.info.cpp
-game/game.player.cpp
-game/game_summary.cpp
-game/game_summary.cpp
-game/game.swines.cpp
-game/game.team.cpp
-game/game.trick.cpp
-game/reservation.cpp
-game/specialpoint.cpp
 misc/bug_report.cpp
 misc/references_check.cpp
 misc/setting.cardsorder.cpp

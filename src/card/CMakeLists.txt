@@ -1,0 +1,14 @@
+set(LOCAL_SOURCES
+  card.color.cpp
+  card_counter.cpp
+  card.cpp
+  card.value.cpp
+  hand_card.cpp
+  hand_cards.cpp
+  hand.cpp
+  sorted_hand.cpp
+  tcolor_counter.cpp
+  trick.cpp
+  weighted_card_list.cpp
+  )
+toglobalsources(${LOCAL_SOURCES})
