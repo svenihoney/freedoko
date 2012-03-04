@@ -6375,6 +6375,9 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
             value += 1;
           if (cardno == hi.hand().cardsnumber() )
             value += 2;
+          if ( g.is_solo()
+              && cardno >= 9 )
+            value += 1;
     } else
     {
       if (hi.hand().numberoftrumps() >= 9 )
@@ -6385,6 +6388,10 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
          value += 1;
        if (hi.hand().numberoftrumps() == hi.hand().cardsnumber() )
          value += 2;
+
+       if ( g.is_solo()
+           && hi.hand().numberoftrumps() >= 9 )
+                   value += 1;
     }
 
 
