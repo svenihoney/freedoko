@@ -154,6 +154,8 @@ class CardsInformation {
   void recalc_possible_hands() const;
   // updates the estimated hands
   void recalc_estimated_hands() const;
+  // recalc the weightings
+  void recalc_weightings() const;
 
   public:
 

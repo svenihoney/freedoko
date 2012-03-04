@@ -1673,6 +1673,46 @@ CardsInformation::recalc_estimated_hands() const
 } // void CardsInformation::recalc_estimated_hands()
 
 /**
+ ** updates the estimated hands
+ **
+ ** @param     -
+ **
+ ** @return    -
+ **
+ ** @author    Diether Knof
+ **
+ ** @version   0.7.12
+ **
+ ** @todo      work in progress
+ **/
+void
+CardsInformation::recalc_weightings() const
+{
+#ifdef CHECK_RUNTIME
+  if (this == &this->player().cards_information())
+    ::runtime["ai recalc weightings"].start();
+#endif
+  // overview
+  // * Rebuild a new cards information for the start of the game with 'must have' and 'cannot have' from the gameplay.
+  // * Replay the game and update the weighting (using the information of further played cards)
+
+
+  // create a dummy game
+
+  // build a new cards information for start of the game
+
+  // replay the game (with announcements!)
+
+  // copy the cards information
+
+#ifdef CHECK_RUNTIME
+  if (this == &this->player().cards_information())
+    ::runtime["ai recalc weightings"].stop();
+#endif
+  return ;
+} // void CardsInformation::recalc_weightings() const
+
+/**
  ** -> result
  **
  ** @param     -

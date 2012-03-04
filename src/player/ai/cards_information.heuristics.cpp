@@ -50,7 +50,7 @@
 // the ai whose information are written
 // (what the ai assumes of the other players)
 // undefine for no output
-#define DEBUG_AI 9
+#define DEBUG_AI 3
 #endif
 #endif
 
@@ -100,6 +100,9 @@ namespace CardsInformationHeuristics {
   CARD_PLAYED_HEURISTIC(first_player_played_pfund);
   // the first player has played a club queen
   CARD_PLAYED_HEURISTIC(first_player_played_club_queen);
+
+  // the bride in the marriage plays a pfund in the decision trick
+  CARD_PLAYED_HEURISTIC(bride_pfunds_in_decision_trick);
 
   // the player has no second diamond ace because he has not announced swines
   CARD_PLAYED_HEURISTIC(no_swines);
@@ -216,6 +219,7 @@ namespace CardsInformationHeuristics {
       heuristic_list.push_back(threw_trump_in_color_trick);
       heuristic_list.push_back(first_player_played_pfund);
       heuristic_list.push_back(first_player_played_club_queen);
+      heuristic_list.push_back(bride_pfunds_in_decision_trick);
       heuristic_list.push_back(no_swines);
       heuristic_list.push_back(no_silent_marriage);
       heuristic_list.push_back(both_dollen);
@@ -1214,6 +1218,76 @@ namespace CardsInformationHeuristics {
 
       return ;
     } // void first_player_played_club_queen(...)
+
+  /**
+   ** the bride plays in pfund in the decision trick
+   **
+   ** @param     played_card    the card played by the player
+   ** @param     trick          the current trick
+   ** @param     ai             the ai that analyses
+   ** @param     weightings     the card weightings
+   **
+   ** @return    -
+   **
+   ** @author    Diether Knof
+   **
+   ** @version   0.7.12
+   **/
+  void
+    bride_pfunds_in_decision_trick(HandCard const& played_card,
+                                   Trick const& trick,
+                                   Ai const& ai,
+                                   map<Card, int>& weightings)
+    {
+      /* Idea:
+       * In the decision trick of a marriage, the bride plays a pfund.
+       */
+
+      // the name of the heuristic
+      char const* const heuristic_name = "bride pfunds in decision trick";
+
+      // the player of the card
+      Player const& player = played_card.player();
+      // the game
+      Game const& game = trick.game();
+
+      // the player is a bride in an undetermined marriage and this is the marriage decision trick
+      if (!(   game.is_undetermined_marriage()
+            && game.is_soloplayer(player)
+            && is_selector(trick.startcard().tcolor(), game.marriage_selector())
+           ) )
+        return ;
+
+      // the player has not played a color ace
+      if (   !played_card.istrump()
+          && (played_card.value() == Card::ACE))
+        return ;
+
+      // the player (bride) has no better pfund
+      if (played_card.istrump()) {
+        if (played_card != Card(game.trumpcolor(), Card::ACE)) {
+          if (!HandCard(ai.hand(), game.trumpcolor(), Card::ACE).is_special())
+            CHANGE_WEIGHTING(Card(game.trumpcolor(), Card::ACE), -100); // *Value*
+          if (played_card != Card(game.trumpcolor(), Card::TEN)) {
+            if (!HandCard(ai.hand(), game.trumpcolor(), Card::TEN).is_special())
+              CHANGE_WEIGHTING(Card(game.trumpcolor(), Card::TEN), -90); // *Value*
+          } // if (played_card != TEN)
+        } // if (played_card != ACE)
+      } else {
+        for (vector<Card::Value>::const_iterator
+             v = game.rule().card_values().begin();
+             v != game.rule().card_values().end();
+             ++v)
+          if (   (*v > played_card.value())
+              && !Card(played_card.color(), *v).istrump(game))
+            CHANGE_WEIGHTING(Card(played_card.color(), *v), -100); // *Value*
+
+        if (played_card.value() == Card::NINE)
+          CHANGE_WEIGHTING(Card(played_card.color(), Card::NINE), -100); // *Value*
+      } // if !(played_card.tcolor() == Card::TRUMP)
+
+      return ;
+    } // void bride_pfunds_in_decision_trick(...)
 
   /**
    ** the player has no second diamond ace because he has not announced swines

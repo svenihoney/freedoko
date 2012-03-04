@@ -1,3 +1,6 @@
+2012-02-26 Diether Knof
+	- added cards information heuristic 'bride pfunds in decision trick'
+
 2012-02-19 Diether Knof
 	- fixed limiting of the main window to the screen size
 	- small improvement in cards information heuristic 'served color'
