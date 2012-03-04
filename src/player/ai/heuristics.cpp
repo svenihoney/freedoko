@@ -4,27 +4,27 @@
  *
  *   Copyright (C) 2001-2012  by Diether Knof and Borg Enders
  *
- *   This program is free software; you can redistribute it and/or 
- *   modify it under the terms of the GNU General Public License as 
- *   published by the Free Software Foundation; either version 2 of 
+ *   This program is free software; you can redistribute it and/or
+ *   modify it under the terms of the GNU General Public License as
+ *   published by the Free Software Foundation; either version 2 of
  *   the License, or (at your option) any later version.
  *
  *   This program is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details. 
+ *   GNU General Public License for more details.
  *   You can find this license in the file 'gpl.txt'.
  *
  *   You should have received a copy of the GNU General Public License
  *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, 
+ *   Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *   MA  02111-1307  USA
  *
  *  Contact:
  *    Diether Knof dknof@gmx.de
  *    Borg Enders  borg@borgsoft.de
  *
- ********************************************************************/ 
+ ********************************************************************/
 
 #include "constants.h"
 
@@ -183,7 +183,8 @@ bool better_points_optimize(HandCard const& old_card,
 bool cardWillWinTheTrick(Trick const &t, HeuristicInterface const& hi,
                          HandCard const& card);
 unsigned calcPointsOfOwnTeam( HeuristicInterface const& hi, Game const& g, bool const with_current_trick = true );
-unsigned calcPointsOfOppositeTeam( HeuristicInterface const& hi, Game const& g, bool const with_current_trick = true );
+unsigned calcPointsOfOppositeTeam( HeuristicInterface const& hi, Game const& g,
+                                  bool const with_current_trick = true );
 
 // whether all players behind are of the own team
 bool checkAllMyTeam(Trick const& t, HeuristicInterface const& hi);
@@ -223,7 +224,7 @@ Card choose_best_fehl(Trick const& trick, HeuristicInterface const& hi,
  **
  ** @version    0.7.9
  **/
-bool 
+bool
 ownTeamCanWinTrick( Trick const &t, HeuristicInterface const& hi )
 {
   if (t.winnerplayer().team() == hi.team())
@@ -234,7 +235,7 @@ ownTeamCanWinTrick( Trick const &t, HeuristicInterface const& hi )
     if (   (hi.no() != t.player_of_card(i).no())
         && ( maybe_to_team(hi.teamofplayer(t.player_of_card( i ))) == hi.team() ) )
     {
-      if (hi.handofplayer(t.player_of_card( i ) 
+      if (hi.handofplayer(t.player_of_card( i )
                          ).validcards(t).higher_card_exists( t.winnercard() ))
         return true;
     } // if( maybe_to_team(hi.teamofplayer(t.player_of_card(i))) != hi.team() )
@@ -257,7 +258,7 @@ ownTeamCanWinTrick( Trick const &t, HeuristicInterface const& hi )
  **
  ** @todo      use highest_opposite_card_behind for oppositeTeamCanWinTrick
  **/
-bool 
+bool
 oppositeTeamCanWinTrick( Trick const &t, HeuristicInterface const& hi )
 {
   if (!hi.guessed_same_team(t.winnerplayer()))
@@ -266,7 +267,7 @@ oppositeTeamCanWinTrick( Trick const &t, HeuristicInterface const& hi )
   // take a look if all players coming in this trick of other team can still win the trick
   for( unsigned i = t.actcardno(); i < hi.game().playerno(); i++ )
     if (   !hi.guessed_same_team(t.player_of_card(i))
-        && hi.handofplayer(t.player_of_card(i) 
+        && hi.handofplayer(t.player_of_card(i)
                           ).higher_card_exists( t.winnercard() ))
       return true;
 
@@ -286,7 +287,7 @@ oppositeTeamCanWinTrick( Trick const &t, HeuristicInterface const& hi )
  **
  ** @version    0.7.5
  **/
-bool 
+bool
 cardWillWinTheTrick(Trick const &t, HeuristicInterface const& hi,
                     HandCard const& card)
 {
@@ -320,7 +321,7 @@ cardWillWinTheTrick(Trick const &t, HeuristicInterface const& hi,
 unsigned
 number_of_no_trumps_per_color()
 {
-  unsigned i;  
+  unsigned i;
   unsigned notrump_per_color=0;
 
   // calculate number of no trump cards per color
@@ -329,8 +330,8 @@ number_of_no_trumps_per_color()
   if( Card( Card::SPADE, Card::ACE ).istrump( ::party.game() ) )
   {
     for ( i = 0;  i < 2 * ::party.rule()(Rule::NUMBER_OF_CARD_VALUES); i += 2 )
-      if( !Card( Card::InttoColor(Card::CLUB), Card::InttoValue(i) ).istrump( 
-                                                                             ::party.game() ) 
+      if( !Card( Card::InttoColor(Card::CLUB), Card::InttoValue(i) ).istrump(
+                                                                             ::party.game() )
         )
         notrump_per_color+=2;
   } else { // if( Card( Card::SPADE, Card::ACE ).istrump( ::party.game() ) )
@@ -363,7 +364,7 @@ Heuristics::play_to_marry( Trick const& trick,
 {
   // @heuristic::name   play to marry
   // @heuristic::idea   play card to marry
-  if( !(   hi.game().type() == GAMETYPE::MARRIAGE 
+  if( !(   hi.game().type() == GAMETYPE::MARRIAGE
         && hi.game().soloplayer().no() != hi.no()
        )
     )
@@ -463,7 +464,7 @@ Heuristics::play_to_get_married( Trick const& trick,
   // @heuristic::idea   play card to get married
 
   // @heuristic::condition   marriage player
-  if( !(   hi.game().type() == GAMETYPE::MARRIAGE 
+  if( !(   hi.game().type() == GAMETYPE::MARRIAGE
         && hi.game().soloplayer().no() == hi.no()
        )
     )
@@ -536,10 +537,10 @@ Heuristics::play_to_get_married( Trick const& trick,
        && trick.startcard().istrump() )
       return Heuristics::choose_pfund_card( trick, hi );
 
-    if( trick.isempty() ) 
+    if( trick.isempty() )
     {
       // take a 'good' card
-      if(   hi.hand().numberoftrumpaces() > 0 
+      if(   hi.hand().numberoftrumpaces() > 0
          && !hi.hand().has_swines()
         )
         return Card(hi.game().trumpcolor(), Card::ACE);
@@ -565,7 +566,7 @@ Heuristics::play_to_get_married( Trick const& trick,
       )
       return Heuristics::choose_pfund_card( trick, hi );
 
-    if( trick.isempty() ) 
+    if( trick.isempty() )
     {
       vector<Card> cards;
       if (!HandCard(hi.hand(), Card(color, Card::TEN)).is_special())
@@ -588,16 +589,16 @@ Heuristics::play_to_get_married( Trick const& trick,
       for (vector<Card::Color>::const_iterator
            c = hi.game().rule().card_colors().begin();
            c != hi.game().rule().card_colors().end();
-           ++c) 
+           ++c)
       {
         Card::Color const& color = *c;
-        if ( !HandCard( hi.hand(), Card(color, Card::TEN)).isdolle() ) 
+        if ( !HandCard( hi.hand(), Card(color, Card::TEN)).isdolle() )
           cards.push_back(Card(color, Card::TEN));
       } // foreach ( color in hi.game().rule().card_colors() )
       for (vector<Card::Color>::const_iterator
            c = hi.game().rule().card_colors().begin();
            c != hi.game().rule().card_colors().end();
-           ++c) 
+           ++c)
       {
         Card::Color const& color = *c;
         cards.push_back(Card(color, Card::KING));
@@ -606,7 +607,7 @@ Heuristics::play_to_get_married( Trick const& trick,
       for (vector<Card::Color>::const_iterator
            c = hi.game().rule().card_colors().begin();
            c != hi.game().rule().card_colors().end();
-           ++c) 
+           ++c)
       {
         Card::Color const& color = *c;
         cards.push_back(Card(color, Card::NINE));
@@ -1064,7 +1065,7 @@ lowest_card( Hand const& h, Card::Value const cv, HeuristicInterface const& hi )
   for( i = 0; i < h.cardsnumber(); i++ )
   {
     // find lowest card
-    if(   h.card(i).value() == cv 
+    if(   h.card(i).value() == cv
        && h.card(i).less(c) )
       c = h.card(i);
   } // for ( i < h.cardsnumber() )
@@ -1109,7 +1110,7 @@ highest_card( Hand const& h, Card::Value const cv, HeuristicInterface const& hi 
   for( i = 0; i < h.cardsnumber(); i++ )
   {
     // find highest card
-    if(   h.card(i).value() == cv 
+    if(   h.card(i).value() == cv
        && !h.card(i).less(c) )
       c=h.card(i);
   } // for ( i < h.cardsnumber() )
@@ -1187,7 +1188,7 @@ lowest_queen( Hand const& h, HeuristicInterface const& hi )
  **
  ** @version   0.7.5
  **/
-bool 
+bool
 trumpInTrick( Trick const& trick )
 {
   for (unsigned i = 0; i < trick.actcardno(); i++)
@@ -1527,7 +1528,7 @@ secure_tricks_of_team(HeuristicInterface const& hi)
 } // unsigned secure_tricks_of_team(HeuristicInterface const& hi)
 
 /**
- ** finds best card on Hand of hi, which wins this trick, 
+ ** finds best card on Hand of hi, which wins this trick,
  ** non trump ace or lowest trump
  ** greater than jack, only in lastcard lower trumps are allowed
  ** the card will be chosen taking the value of the trick in account
@@ -1543,15 +1544,15 @@ secure_tricks_of_team(HeuristicInterface const& hi)
  **
  ** @version   Beta
  **/
-Card 
-Heuristics::best_winning_card_single_picture(Trick const& t, Card::Value v, 
+Card
+Heuristics::best_winning_card_single_picture(Trick const& t, Card::Value v,
                                              HeuristicInterface const& hi, unsigned pointmodi)
 {
   // @heuristic::name   ?  best winning card single picture  ?
-  // @heuristic::idea   Only valid for soli with only one picture as trump: Tries to find the best card to win a trick depending on different values like Aiconfig::LIMITQUEEN    
+  // @heuristic::idea   Only valid for soli with only one picture as trump: Tries to find the best card to win a trick depending on different values like Aiconfig::LIMITQUEEN
   // @heuristic::action  jab the trick
 
-  if ( t.isstartcard() ) 
+  if ( t.isstartcard() )
     return Card::EMPTY;
 
   Card c;
@@ -1563,11 +1564,11 @@ Heuristics::best_winning_card_single_picture(Trick const& t, Card::Value v,
   // find any card that wins this trick greater or equal to lowest_trump_card_limit
   for( i = 0; i < ha.cardsnumber(); i++ )
   {
-    if(   t.isvalid( ha.card(i), hi.hand() )  
+    if(   t.isvalid( ha.card(i), hi.hand() )
        && t.isjabbed(ha.card(i))
-       && (   hi.lowest_trump_card_limit().less( ha.card( i ) ) 
-           || allmyteam 
-          )  
+       && (   hi.lowest_trump_card_limit().less( ha.card( i ) )
+           || allmyteam
+          )
       )
     {
       c = ha.card(i);
@@ -1576,33 +1577,33 @@ Heuristics::best_winning_card_single_picture(Trick const& t, Card::Value v,
   } // for ( i < ha.cardsnumber() )
 
   // if can't win this trick and I'am not the last player: that's it
-  if (c.is_empty() && !t.islastcard())  
+  if (c.is_empty() && !t.islastcard())
     return Card::EMPTY;
 
   bool trumpintrick = trumpInTrick( t );
 
   // or this is a color trick of a first color run with my card the first trump
-  allmyteam =  (  allmyteam 
+  allmyteam =  (  allmyteam
                 || (   t.actcardno() > 1
                     && hi.color_runs(t.startcard().color()) == 0
                     && !t.startcard().istrump()
-                    && !trumpintrick 
+                    && !trumpintrick
                    ) );
 
   // find a better card
   for( i = 0; i < ha.cardsnumber(); i++ )
   {
 
-    if(   t.isvalid( ha.card( i ), hi.hand() ) 
+    if(   t.isvalid( ha.card( i ), hi.hand() )
        && t.isjabbed(ha.card(i))
       )
     {
       // non trump ace is always the best choice if color is not already jabbed
-      if(   ha.card(i).value() == Card::ACE 
-         && !ha.card(i).istrump() 
+      if(   ha.card(i).value() == Card::ACE
+         && !ha.card(i).istrump()
          && (   !hi.colorjabbed( ha.card(i).color() )
-             || hi.jabbedbyownteam( ha.card(i).color() ) 
-             || allmyteam 
+             || hi.jabbedbyownteam( ha.card(i).color() )
+             || allmyteam
             )
         )
       {
@@ -1614,8 +1615,8 @@ Heuristics::best_winning_card_single_picture(Trick const& t, Card::Value v,
       {
 
         // find lowest trump
-        if( (    hi.lowest_trump_card_limit().less( ha.card(i) ) 
-             || t.islastcard() 
+        if( (    hi.lowest_trump_card_limit().less( ha.card(i) )
+             || t.islastcard()
              || allmyteam
             )
            && ha.card(i).less( c )
@@ -1634,14 +1635,14 @@ Heuristics::best_winning_card_single_picture(Trick const& t, Card::Value v,
   // if last card or first_color_run of trick let's check for a better card
   // Ace, ten, king, nine
 
-  if(   t.islastcard() 
+  if(   t.islastcard()
      || allmyteam
      ||(    !t.isstartcard()
         && !t.startcard().istrump()
         && hi.color_runs(t.startcard().color()) < 1
         && (   t.startcard().color()!= Card::HEART
-            || !HandCard( hi.hand(), Card::HEART, Card::TEN ).isdolle() 
-           )                   
+            || !HandCard( hi.hand(), Card::HEART, Card::TEN ).isdolle()
+           )
        )
     )
   {
@@ -1653,37 +1654,37 @@ Heuristics::best_winning_card_single_picture(Trick const& t, Card::Value v,
         )
       {
 
-        // ace is always the best card 
-        if(  !ha.card(i).isswine() 
-           && ha.card(i).value()==Card::ACE 
-           && (    allmyteam 
-               || !ha.card( i ).istrump() 
+        // ace is always the best card
+        if(  !ha.card(i).isswine()
+           && ha.card(i).value()==Card::ACE
+           && (    allmyteam
+               || !ha.card( i ).istrump()
                || t.islastcard()
               )
           )
-        {          
+        {
           c = ha.card(i);
           break;
-        } 
+        }
 
-        if(   ha.card(i).value() == Card::TEN 
-           && !ha.card(i).isdolle() 
-           && (     t.islastcard() 
-               || allmyteam 
-               || (  hi.color_runs( t.startcard().color() ) == 0 
-                   && !t.startcard().istrump() 
+        if(   ha.card(i).value() == Card::TEN
+           && !ha.card(i).isdolle()
+           && (     t.islastcard()
+               || allmyteam
+               || (  hi.color_runs( t.startcard().color() ) == 0
+                   && !t.startcard().istrump()
                   )
               )
           )
         {
           c = ha.card(i);
-          if ( t.islastcard() 
+          if ( t.islastcard()
               || allmyteam )
             break;
           continue;
         }
 
-        if(   ha.card( i ).value() != v 
+        if(   ha.card( i ).value() != v
            && ha.card( i ).value() < Card::TEN )
         {
           c = ha.card(i);
@@ -1700,7 +1701,7 @@ Heuristics::best_winning_card_single_picture(Trick const& t, Card::Value v,
 
 
 /**
- ** finds best card on Hand of hi, which wins this trick, 
+ ** finds best card on Hand of hi, which wins this trick,
  ** non trump ace or lowest trump
  ** greater than jack, only in lastcard lower trumps are allowed
  ** the card will be chosen taking the value of the trick in account
@@ -1717,16 +1718,16 @@ Heuristics::best_winning_card_single_picture(Trick const& t, Card::Value v,
  **
  ** @version   Beta
  **/
-Card 
-Heuristics::best_winning_card_double_picture( 
-                                             Trick const& t, Card::Value v1, Card::Value v2, 
+Card
+Heuristics::best_winning_card_double_picture(
+                                             Trick const& t, Card::Value v1, Card::Value v2,
                                              HeuristicInterface const& hi, unsigned pointmodi )
 {
   // @heuristic::name   ?  best winning card double picture  ?
-  // @heuristic::idea   Only valid for soli with only tow picutes as trump: Tries to find the best card to win a trick depending on different values like Aiconfig::LIMITQUEEN    
+  // @heuristic::idea   Only valid for soli with only tow picutes as trump: Tries to find the best card to win a trick depending on different values like Aiconfig::LIMITQUEEN
   // @heuristic::action  jab the trick
 
-  if ( t.isstartcard() ) 
+  if ( t.isstartcard() )
     return Card::EMPTY;
 
   Trick tr;
@@ -1742,10 +1743,10 @@ Heuristics::best_winning_card_double_picture(
   {
     tr = t;
     tr += ha.card(i);
-    if(   tr.winnerplayer().no() == hi.no() 
-       && t.isvalid( ha.card(i),hi.hand() )  
-       && (   hi.lowest_trump_card_limit().less( ha.card(i) ) 
-           || allmyteam 
+    if(   tr.winnerplayer().no() == hi.no()
+       && t.isvalid( ha.card(i),hi.hand() )
+       && (   hi.lowest_trump_card_limit().less( ha.card(i) )
+           || allmyteam
           )
       )
     {
@@ -1762,11 +1763,11 @@ Heuristics::best_winning_card_double_picture(
 
 
   // or this is a color trick of a first color run with my card the first trump
-  allmyteam =    allmyteam 
+  allmyteam =    allmyteam
     ||(   t.actcardno() > 1
        && hi.color_runs(t.startcard().color()) == 0
-       && !t.startcard().istrump() 
-       && !trumpintrick 
+       && !t.startcard().istrump()
+       && !trumpintrick
       );
 
   // find a better card
@@ -1774,30 +1775,30 @@ Heuristics::best_winning_card_double_picture(
   {
     tr = t;
     tr += ha.card( i );
-    if(   tr.winnerplayer().no() == hi.no() 
-       && t.isvalid( ha.card(i),hi.hand() ) 
+    if(   tr.winnerplayer().no() == hi.no()
+       && t.isvalid( ha.card(i),hi.hand() )
       )
     {
       // non trump ace is always the best choice if color is not already jabbed
-      if(   ha.card(i).value() == Card::ACE 
-         && !ha.card(i).istrump() 
+      if(   ha.card(i).value() == Card::ACE
+         && !ha.card(i).istrump()
          && (   !hi.colorjabbed( ha.card(i).color() )
-             || hi.jabbedbyownteam(ha.card(i).color()) 
+             || hi.jabbedbyownteam(ha.card(i).color())
              || allmyteam
             )
         )
       {
         c = ha.card( i );
         break;
-      } 
+      }
 
       if( ha.card(i).istrump() )
       {
 
         // find lowest trump
-        if( (   hi.lowest_trump_card_limit().less( ha.card(i) ) 
-             || t.islastcard() 
-             || allmyteam 
+        if( (   hi.lowest_trump_card_limit().less( ha.card(i) )
+             || t.islastcard()
+             || allmyteam
             )
            && ha.card(i).less(c)
           )
@@ -1813,13 +1814,13 @@ Heuristics::best_winning_card_double_picture(
 
   // if last card or first_color_run of trick let's check for a better card
   // Ace, ten, king, nine
-  if(   t.islastcard() 
+  if(   t.islastcard()
      || allmyteam
      ||(   !t.isstartcard()
         && !t.startcard().istrump()
         && hi.color_runs(t.startcard().color())<1
         && (   t.startcard().color()!= Card::HEART
-            || !HandCard( hi.hand(), Card::HEART, Card::TEN ).isdolle() 
+            || !HandCard( hi.hand(), Card::HEART, Card::TEN ).isdolle()
            )
        )
     )
@@ -1830,50 +1831,50 @@ Heuristics::best_winning_card_double_picture(
       tr = t;
       tr += ha.card(i);
 
-      if(   tr.winnerplayer().no()==hi.no() 
+      if(   tr.winnerplayer().no()==hi.no()
          && t.isvalid(ha.card(i),hi.hand())
         )
       {
-        // ace is always the best card 
-        if(   !ha.card(i).isswine() 
-           &&  ha.card(i).value()==Card::ACE 
-           && (   allmyteam 
-               || !ha.card(i).istrump() 
+        // ace is always the best card
+        if(   !ha.card(i).isswine()
+           &&  ha.card(i).value()==Card::ACE
+           && (   allmyteam
+               || !ha.card(i).istrump()
                || t.islastcard()
               )
           )
         {
           c = ha.card(i);
           break;
-        } 
+        }
 
-        if(   ha.card(i).value() == Card::TEN 
-           && !ha.card(i).isdolle() 
-           && (   t.islastcard() 
-               || allmyteam 
-               || (   hi.color_runs(t.startcard().color()) == 0 
-                   && !t.startcard().istrump() 
+        if(   ha.card(i).value() == Card::TEN
+           && !ha.card(i).isdolle()
+           && (   t.islastcard()
+               || allmyteam
+               || (   hi.color_runs(t.startcard().color()) == 0
+                   && !t.startcard().istrump()
                   )
               )
           )
         {
           c = ha.card(i);
-          if ( t.islastcard() 
+          if ( t.islastcard()
               || allmyteam )
             break;
 
           continue;
         }
 
-        if(    ha.card(i).value() != v1 
-           && ha.card(i).value() != v2 
+        if(    ha.card(i).value() != v1
+           && ha.card(i).value() != v2
            && ha.card(i).value() < Card::TEN )
-        {        
-          c = ha.card(i);             
+        {
+          c = ha.card(i);
           continue;
         }
 
-      } // if (tr.winnerplayer().no()==hi.no() 
+      } // if (tr.winnerplayer().no()==hi.no()
     } // for ( i < ha.cardsnumber() )
   } // if ( t.islastcard() || allmyteam || (....) )
 
@@ -1882,7 +1883,7 @@ Heuristics::best_winning_card_double_picture(
 
 
 /**
- ** finds best card on Hand of hi, which wins this trick, 
+ ** finds best card on Hand of hi, which wins this trick,
  ** non trump ace or lowest trump
  ** greater than jack, only in lastcard lower trumps are allowed
  ** the card will be chosen taking the value of the trick in account
@@ -1897,15 +1898,15 @@ Heuristics::best_winning_card_double_picture(
  **
  ** @version   Beta
  **/
-Card 
-Heuristics::best_winning_card_triple_picture( Trick const& t, 
+Card
+Heuristics::best_winning_card_triple_picture( Trick const& t,
                                              HeuristicInterface const& hi, unsigned pointmodi )
 {
   // @heuristic::name   ?  best winning card triple picture  ?
-  // @heuristic::idea Only valid for soli with only three pictures as trump: Tries to find the best card to win a trick depending on different values like Aiconfig::LIMITQUEEN    
+  // @heuristic::idea Only valid for soli with only three pictures as trump: Tries to find the best card to win a trick depending on different values like Aiconfig::LIMITQUEEN
   // @heuristic::action  jab the trick
 
-  if ( t.isstartcard() ) 
+  if ( t.isstartcard() )
     return Card::EMPTY;
 
   Trick tr;
@@ -1921,10 +1922,10 @@ Heuristics::best_winning_card_triple_picture( Trick const& t,
     tr = t;
     tr += ha.card( i );
 
-    if(   tr.winnerplayer().no() == hi.no() 
-       && t.isvalid( ha.card(i), hi.hand() )  
-       && (  hi.lowest_trump_card_limit().less( ha.card(i) ) 
-           || allmyteam 
+    if(   tr.winnerplayer().no() == hi.no()
+       && t.isvalid( ha.card(i), hi.hand() )
+       && (  hi.lowest_trump_card_limit().less( ha.card(i) )
+           || allmyteam
           )
       )
     {
@@ -1933,17 +1934,17 @@ Heuristics::best_winning_card_triple_picture( Trick const& t,
     }
   } // for ( i < ha.cardsnumber() )
   // if can't win this trick and I'am not the last player: that's it
-  if( c.is_empty() && !t.islastcard() )  
+  if( c.is_empty() && !t.islastcard() )
     return Card::EMPTY;
 
   bool trumpintrick = trumpInTrick( t );
 
   // or this is a color trick of a first color run with my card the first trump
-  allmyteam =    allmyteam 
+  allmyteam =    allmyteam
     || (   t.actcardno() > 1
         && hi.color_runs(t.startcard().color()) == 0
         && !t.startcard().istrump()
-        && !trumpintrick 
+        && !trumpintrick
        );
 
   // find a better card
@@ -1952,28 +1953,28 @@ Heuristics::best_winning_card_triple_picture( Trick const& t,
   {
     tr = t;
     tr += ha.card(i);
-    if(   tr.winnerplayer().no() == hi.no() 
+    if(   tr.winnerplayer().no() == hi.no()
        && t.isvalid( ha.card( i ), hi.hand() ) )
     {
       // non trump ace is always the best choice if color is not already jabbed
-      if(   ha.card(i).value() == Card::ACE 
-         && !ha.card(i).istrump() 
+      if(   ha.card(i).value() == Card::ACE
+         && !ha.card(i).istrump()
          && (   !hi.colorjabbed( ha.card( i ).color() )
-             || hi.jabbedbyownteam( ha.card( i ).color() ) 
+             || hi.jabbedbyownteam( ha.card( i ).color() )
              || allmyteam
             )
         )
       {
         c = ha.card( i );
         break;
-      } 
+      }
 
       if( ha.card(i).istrump() )
       {
 
         // find lowest trump
-        if( (   hi.lowest_trump_card_limit().less( ha.card(i) ) 
-             || t.islastcard() 
+        if( (   hi.lowest_trump_card_limit().less( ha.card(i) )
+             || t.islastcard()
              || allmyteam )
            && ha.card(i).less(c) )
         {
@@ -1991,13 +1992,13 @@ Heuristics::best_winning_card_triple_picture( Trick const& t,
 
   // if last card or first_color_run of trick let's check for a better card
   // Ace, ten, king, nine
-  if(   t.islastcard() 
+  if(   t.islastcard()
      || allmyteam
      ||(   !t.isstartcard()
         && !t.startcard().istrump()
         && hi.color_runs( t.startcard().color() ) < 1
-        && (   t.startcard().color()!= Card::HEART 
-            || !HandCard( hi.hand(), Card::HEART, Card::TEN ).isdolle() 
+        && (   t.startcard().color()!= Card::HEART
+            || !HandCard( hi.hand(), Card::HEART, Card::TEN ).isdolle()
            )
        )
     )
@@ -2008,15 +2009,15 @@ Heuristics::best_winning_card_triple_picture( Trick const& t,
       tr = t;
       tr += ha.card( i );
 
-      if(   tr.winnerplayer().no() == hi.no() 
+      if(   tr.winnerplayer().no() == hi.no()
          && t.isvalid( ha.card( i ), hi.hand() ) )
       {
 
-        // ace is always the best card 
-        if(   !ha.card(i).isswine() 
-           && ha.card(i).value() == Card::ACE 
-           && (   allmyteam 
-               || !ha.card(i).istrump() 
+        // ace is always the best card
+        if(   !ha.card(i).isswine()
+           && ha.card(i).value() == Card::ACE
+           && (   allmyteam
+               || !ha.card(i).istrump()
                || t.islastcard()
               )
           )
@@ -2025,18 +2026,18 @@ Heuristics::best_winning_card_triple_picture( Trick const& t,
           break;
         }
 
-        if(    ha.card(i).value() == Card::TEN 
-           && !ha.card(i).isdolle() 
-           && (   t.islastcard() 
-               || allmyteam 
-               || (   hi.color_runs( t.startcard().color()) == 0 
-                   && !t.startcard().istrump() 
+        if(    ha.card(i).value() == Card::TEN
+           && !ha.card(i).isdolle()
+           && (   t.islastcard()
+               || allmyteam
+               || (   hi.color_runs( t.startcard().color()) == 0
+                   && !t.startcard().istrump()
                   )
               )
           )
         {
           c = ha.card( i );
-          if ( t.islastcard() 
+          if ( t.islastcard()
               || allmyteam )
             break;
           continue;
@@ -2056,7 +2057,7 @@ Heuristics::best_winning_card_triple_picture( Trick const& t,
 
 
 /**
- ** finds best card on Hand of hi, which wins this trick, 
+ ** finds best card on Hand of hi, which wins this trick,
  ** non trump ace or lowest trump
  ** greater than jack, only in lastcard lower trumps are allowed
  ** the card will be chosen taking the value of the trick in account
@@ -2071,19 +2072,19 @@ Heuristics::best_winning_card_triple_picture( Trick const& t,
  **
  ** @version   Beta
  **/
-Card 
+Card
 Heuristics::best_winning_card_old(Trick const& t, HeuristicInterface const& hi,
                               unsigned pointmodi )
 {
   // @heuristic::name   best winning card
-  // @heuristic::idea   Tries to find the best card to win a trick depending on different values like Aiconfig::LIMITQUEEN    
+  // @heuristic::idea   Tries to find the best card to win a trick depending on different values like Aiconfig::LIMITQUEEN
 
   switch (hi.game().type()) {
   case GAMETYPE::SOLO_JACK:
     return best_winning_card_single_picture( t, Card::JACK, hi, pointmodi );
   case GAMETYPE::SOLO_QUEEN:
     return best_winning_card_single_picture( t, Card::QUEEN, hi, pointmodi);
-  case GAMETYPE::SOLO_KING: 
+  case GAMETYPE::SOLO_KING:
     return best_winning_card_single_picture( t, Card::KING, hi, pointmodi);
   case GAMETYPE::SOLO_QUEEN_JACK:
     return best_winning_card_double_picture( t, Card::JACK, Card::QUEEN, hi, pointmodi);
@@ -2091,14 +2092,14 @@ Heuristics::best_winning_card_old(Trick const& t, HeuristicInterface const& hi,
     return best_winning_card_double_picture( t, Card::JACK, Card::KING, hi, pointmodi);
   case GAMETYPE::SOLO_KING_QUEEN:
     return best_winning_card_double_picture( t, Card::KING, Card::QUEEN, hi, pointmodi);
-  case GAMETYPE::SOLO_KOEHLER: 
+  case GAMETYPE::SOLO_KOEHLER:
     return best_winning_card_triple_picture( t, hi, pointmodi);
   default:
     break;
-  } // switch (hi.game().type()) 
+  } // switch (hi.game().type())
 
 
-  if( t.isstartcard() ) 
+  if( t.isstartcard() )
     return Card::EMPTY;
 
   HandCard c( hi.hand() );
@@ -2124,10 +2125,10 @@ Heuristics::best_winning_card_old(Trick const& t, HeuristicInterface const& hi,
       HandCard const& card = ha.card(i);
 
       if (!t.isjabbed(card))
-        continue; 
+        continue;
       if( (   c.is_empty()
-           || card.value() < c.value() 
-           || ( card.value() == c.value() 
+           || card.value() < c.value()
+           || ( card.value() == c.value()
                && card.less( c ) )
           )
         )
@@ -2191,7 +2192,7 @@ Heuristics::best_winning_card_old(Trick const& t, HeuristicInterface const& hi,
     if (!t.isjabbed(card))
       continue;
 
-    if (!(   hi.lowest_trump_card_limit().less(card) 
+    if (!(   hi.lowest_trump_card_limit().less(card)
           || allmyteam) )
       continue;
 
@@ -2208,8 +2209,8 @@ Heuristics::best_winning_card_old(Trick const& t, HeuristicInterface const& hi,
     if( card.value() == Card::QUEEN )
       continue;
 
-    if(  (   card.isdolle() 
-          || card.possible_swine() 
+    if(  (   card.isdolle()
+          || card.possible_swine()
           || card.possible_hyperswine()
          )
        && tpoints >= hi.value( Aiconfig::LIMITDOLLE )
@@ -2222,8 +2223,8 @@ Heuristics::best_winning_card_old(Trick const& t, HeuristicInterface const& hi,
       }
     }
 
-    if(   card.isdolle() 
-       || card.possible_swine() 
+    if(   card.isdolle()
+       || card.possible_swine()
        || card.possible_hyperswine() )
       continue;
 
@@ -2233,20 +2234,20 @@ Heuristics::best_winning_card_old(Trick const& t, HeuristicInterface const& hi,
 
   // if can't win this trick and I'am not the last player: that's it
   if(   c.is_empty()
-     && !t.islastcard() )  
+     && !t.islastcard() )
     return Card::EMPTY;
 
 
   bool trumpintrick = trumpInTrick( t );
 
   // or this is a color trick of a first color run with my card the first trump
-  allmyteam =   allmyteam 
+  allmyteam =   allmyteam
     ||(   t.actcardno() > 1
        && hi.color_runs(t.startcard().color()) == 0
-       && !t.startcard().istrump() 
-       && !trumpintrick 
-       && (   t.startcard().color()!= Card::HEART 
-           || !HandCard(hi.hand(), Card::HEART, Card::TEN ).isdolle() 
+       && !t.startcard().istrump()
+       && !trumpintrick
+       && (   t.startcard().color()!= Card::HEART
+           || !HandCard(hi.hand(), Card::HEART, Card::TEN ).isdolle()
           )
       );
 
@@ -2258,33 +2259,33 @@ Heuristics::best_winning_card_old(Trick const& t, HeuristicInterface const& hi,
       continue;
 
     // non trump ace is always the best choice if color is not already jabbed
-    if(   card.value() == Card::ACE 
-       && !card.istrump() 
+    if(   card.value() == Card::ACE
+       && !card.istrump()
        && (   !hi.colorjabbed( card.color() )
-           || hi.jabbedbyownteam( card.color() ) 
+           || hi.jabbedbyownteam( card.color() )
            || allmyteam
           )
       ) {
       c = card;
       break;
-    } 
+    }
 
     if( card.istrump() ) {
       // find lowest trump
       if(     t.islastcard()
          && card.less(Card(Card::DIAMOND, Card::JACK))
-         && card.less( c ) 
+         && card.less( c )
         )
-      { 
+      {
         c = card;
         continue;
       }
 
       if (!card.less(Card(Card::DIAMOND, Card::JACK))) {
-        if(   !t.isstartcard() 
+        if(   !t.isstartcard()
            && card.less(Card(Card::DIAMOND, Card::QUEEN))
            && !t.startcard().istrump()
-           && card.less( c ) 
+           && card.less( c )
            && (   !hi.colorjabbed( t.startcard().color() )
                || tpoints <= hi.value( Aiconfig::LIMITQUEEN )
                || ha.numberof( Card::QUEEN ) < 2
@@ -2298,18 +2299,18 @@ Heuristics::best_winning_card_old(Trick const& t, HeuristicInterface const& hi,
            && (tpoints >= hi.value( Aiconfig::LIMITQUEEN ) )
            && (  (    c.less(Card(Card::DIAMOND, Card::QUEEN))
                   && !t.islastcard()
-                  && (    hi.color_runs( t.startcard().color() ) != 0 
-                      || (   hi.color_runs( t.startcard().color() ) == 0 
-                          && hi.game().type() == GAMETYPE::POVERTY 
+                  && (    hi.color_runs( t.startcard().color() ) != 0
+                      || (   hi.color_runs( t.startcard().color() ) == 0
+                          && hi.game().type() == GAMETYPE::POVERTY
                          )
                       || t.startcard().istrump()
-                      || tpoints > hi.value( Aiconfig::LIMITDOLLE ) 
-                     )     
+                      || tpoints > hi.value( Aiconfig::LIMITDOLLE )
+                     )
                  )
-               || (    card.less( c ) 
+               || (    card.less( c )
                    &&  !(    c == Card( Card::CLUB, Card::QUEEN )
-                         && (hi.game().teaminfo( hi.no() ) == TEAM::UNKNOWN)  
-                         && (hi.game().trick_current_no() > 3) 
+                         && (hi.game().teaminfo( hi.no() ) == TEAM::UNKNOWN)
+                         && (hi.game().trick_current_no() > 3)
                         )
 
                   )
@@ -2322,30 +2323,30 @@ Heuristics::best_winning_card_old(Trick const& t, HeuristicInterface const& hi,
                {
 
                  if ( (hi.hand().numberofclubqueens() > 0) // club queen is as good as dolle
-                     && !hi.game().second_dolle_over_first() 
+                     && !hi.game().second_dolle_over_first()
                      && hi.color_runs( t.startcard().color() ) > 0)
                  {
 
-                   c = Card( Card::CLUB, Card::QUEEN );                   
+                   c = Card( Card::CLUB, Card::QUEEN );
                  } else {
-                   c = card; 
+                   c = card;
                  }
                  continue;
                }
 
-        if(  
-           (   card.isdolle() 
-            || card.possible_swine() 
-            || card.possible_hyperswine() 
+        if(
+           (   card.isdolle()
+            || card.possible_swine()
+            || card.possible_hyperswine()
            )
-           && (   card.less(c) 
-               || (   tpoints >= hi.value( Aiconfig::LIMITDOLLE ) 
+           && (   card.less(c)
+               || (   tpoints >= hi.value( Aiconfig::LIMITDOLLE )
                    && c.less(Card(Card::DIAMOND, Card::QUEEN))
                    && !hi.color_runs( t.startcard().color() ) < 1
                    && !t.islastcard()
                   )
               )
-          ) 
+          )
         {
 
           if ( (hi.hand().numberofclubqueens() > 0) // club queen is as good as dolle
@@ -2353,9 +2354,9 @@ Heuristics::best_winning_card_old(Trick const& t, HeuristicInterface const& hi,
               && card.isdolle() )
           {
 
-            c = Card( Card::CLUB, Card::QUEEN );                   
+            c = Card( Card::CLUB, Card::QUEEN );
           } else {
-            c = card; 
+            c = card;
           }
 
           continue;
@@ -2376,7 +2377,7 @@ Heuristics::best_winning_card_old(Trick const& t, HeuristicInterface const& hi,
 
   //if opposite team can win trick no further optimization
 
-  if (    oppositeTeamCanWinTrick( tempTrick, hi ) 
+  if (    oppositeTeamCanWinTrick( tempTrick, hi )
       && !t.islastcard()
       && (   (hi.color_runs(t.startcard().color()) != 0 )
           || (hi.game().numberof(t.startcard().color())
@@ -2403,7 +2404,7 @@ Heuristics::best_winning_card_old(Trick const& t, HeuristicInterface const& hi,
   for( unsigned i = t.actcardno() + 1; i < hi.game().playerno(); i++ )
     onlyPovertyPlayer = (   onlyPovertyPlayer
                          &&  (   hi.game().type() == GAMETYPE::POVERTY
-                              && t.player_of_card( i ) == hi.game().soloplayer() 
+                              && t.player_of_card( i ) == hi.game().soloplayer()
                              )); /// @todo poverty partner has no trumps
 
 
@@ -2420,7 +2421,7 @@ Heuristics::best_winning_card_old(Trick const& t, HeuristicInterface const& hi,
             || (hi.hand().numberoftrumpaces() - hi.hand().numberofswines()
                 + hi.hand().numberof(hi.game().trumpcolor(), Card::TEN)
                 >= 2 )
-           ) 
+           )
        )
     )
   {
@@ -2433,22 +2434,22 @@ Heuristics::best_winning_card_old(Trick const& t, HeuristicInterface const& hi,
         continue;
 
       // Maybe it's time to get the heart ten back home
-      if(   card.isdolle() 
+      if(   card.isdolle()
          &&(   (  hi.hand().numberoftrumps() < 5
                 &&  hi.game().tricks_remaining_no() < 7
                 &&  hi.hand().numberofdolle() == 1
-                &&  hi.game().rule()(Rule::EXTRAPOINT_DOLLE_JABS_DOLLE) 
+                &&  hi.game().rule()(Rule::EXTRAPOINT_DOLLE_JABS_DOLLE)
                 &&  !hi.cards_information().played(Card::DOLLE)
                )
             || (   hi.hand().numberoftrumps()  < 6
                 &&  hi.game().tricks_remaining_no() < 8
-                && hi.game().swines_owner() != NULL 
-                && hi.teamofplayer( *hi.game().swines_owner() ) != hi.team() 
+                && hi.game().swines_owner() != NULL
+                && hi.teamofplayer( *hi.game().swines_owner() ) != hi.team()
                )
             || (    hi.hand().numberoftrumps() < 6
-                &&  hi.game().tricks_remaining_no()  < 8 
-                && hi.game().hyperswines_owner() != NULL 
-                && hi.teamofplayer( *hi.game().hyperswines_owner() ) != hi.team() 
+                &&  hi.game().tricks_remaining_no()  < 8
+                && hi.game().hyperswines_owner() != NULL
+                && hi.teamofplayer( *hi.game().hyperswines_owner() ) != hi.team()
                )
            )
         )
@@ -2457,29 +2458,29 @@ Heuristics::best_winning_card_old(Trick const& t, HeuristicInterface const& hi,
         break;
       }
 
-      // ace is always the best card 
+      // ace is always the best card
       if(   (card.value() == Card::ACE)
          && !card.possible_swine()
-         && (   t.islastcard() 
-             || allmyteam 
+         && (   t.islastcard()
+             || allmyteam
              || (   hi.color_runs( t.startcard().color() ) == 0
-                 && hi.game().type() != GAMETYPE::POVERTY 
-                 && !t.startcard().istrump() 
+                 && hi.game().type() != GAMETYPE::POVERTY
+                 && !t.startcard().istrump()
                 )
             )
         )
       {
         c = card;
         break;
-      } 
+      }
 
-      if(    card.value() == Card::TEN 
-         && !card.isdolle() 
-         && (   t.islastcard() 
-             || allmyteam 
+      if(    card.value() == Card::TEN
+         && !card.isdolle()
+         && (   t.islastcard()
+             || allmyteam
              || (   hi.color_runs( t.startcard().color() ) == 0
-                 && hi.game().type() != GAMETYPE::POVERTY 
-                 && !t.startcard().istrump() 
+                 && hi.game().type() != GAMETYPE::POVERTY
+                 && !t.startcard().istrump()
                 )
             )
         )
@@ -2499,11 +2500,11 @@ Heuristics::best_winning_card_old(Trick const& t, HeuristicInterface const& hi,
         }
         continue;
       }
-      if(   card.value() == Card::NINE 
+      if(   card.value() == Card::NINE
          && !card.possible_hyperswine() )
       {
         if(  (   c.value() != Card::TEN
-              && c.value() != Card::KING 
+              && c.value() != Card::KING
               && c.value() != Card::ACE
               && better_points_optimize( c, card, hi )
              )
@@ -2517,24 +2518,24 @@ Heuristics::best_winning_card_old(Trick const& t, HeuristicInterface const& hi,
       }
 
 
-      if(   c.istrump() 
-         && card.istrump() 
-         && card.less(c) 
+      if(   c.istrump()
+         && card.istrump()
+         && card.less(c)
 
         )
       {
         if(  (   c.value() != Card::TEN
-              && c.value() != Card::KING 
-              && c.value() != Card::ACE 
+              && c.value() != Card::KING
+              && c.value() != Card::ACE
               && better_points_optimize( c, card, hi )
               && !(   (c == Card( Card::CLUB, Card::QUEEN ))
                    && (hi.game().teaminfo(hi.no()) == TEAM::UNKNOWN)
                    && !(hi.game().type() == GAMETYPE::MARRIAGE_SILENT))
              )
-           || c.isdolle() 
-           || c.possible_hyperswine() 
+           || c.isdolle()
+           || c.possible_hyperswine()
           )
-        { 
+        {
           c = card;
         }
         continue;
@@ -2552,7 +2553,7 @@ Heuristics::best_winning_card_old(Trick const& t, HeuristicInterface const& hi,
 
 
 /**
- ** finds lowest color card on Hand h, which is the best in a meatless solo 
+ ** finds lowest color card on Hand h, which is the best in a meatless solo
  **
  ** @param     trick     trick to check
  ** @param     h         hand to choose the card from
@@ -2563,7 +2564,7 @@ Heuristics::best_winning_card_old(Trick const& t, HeuristicInterface const& hi,
  **
  ** @version   Beta
  **/
-Card 
+Card
 lowest_color_card_meatless( Trick const& t, Hand h )
 {
   Card c;
@@ -2588,9 +2589,9 @@ lowest_color_card_meatless( Trick const& t, Hand h )
   {
     if(   !ha.card( i ).istrump()
        && c.value() <= ha.card(i).value()
-       && (   ha.numberof( ha.card(i).color() ) >  ha.numberof( c.color() ) 
-           || (   ha.numberof( ha.card(i).color(), Card::TEN ) == 0 
-               && ha.numberof( ha.card(i).color(), Card::ACE ) == 0 
+       && (   ha.numberof( ha.card(i).color() ) >  ha.numberof( c.color() )
+           || (   ha.numberof( ha.card(i).color(), Card::TEN ) == 0
+               && ha.numberof( ha.card(i).color(), Card::ACE ) == 0
               )
           )
       )
@@ -2613,7 +2614,7 @@ lowest_color_card_meatless( Trick const& t, Hand h )
  **
  ** @version   Beta
  **/
-Card 
+Card
 lowest_trump_card( Trick const& t, Hand h )
 {
   Card c;
@@ -2635,7 +2636,7 @@ lowest_trump_card( Trick const& t, Hand h )
   // find a better card
   for( i = 0; i < ha.cardsnumber(); i++ )
   {
-    if(   ha.card(i).less( c ) 
+    if(   ha.card(i).less( c )
        && ha.card(i).istrump()
       )
       c = ha.card( i );
@@ -2657,7 +2658,7 @@ lowest_trump_card( Trick const& t, Hand h )
  **
  ** @version   Beta
  **/
-Card 
+Card
 highest_trump_card( Trick const& t, Hand h )
 {
   Card c;
@@ -2680,7 +2681,7 @@ highest_trump_card( Trick const& t, Hand h )
   // find a better card
   for( i = 0; i < ha.cardsnumber(); i++ )
   {
-    if(   c.less( ha.card(i) ) 
+    if(   c.less( ha.card(i) )
        && ha.card(i).istrump()
       )
       c = ha.card( i );
@@ -2704,12 +2705,12 @@ highest_trump_card( Trick const& t, Hand h )
  **
  ** @version   Beta
  **/
-Card 
-Heuristics::lowest_best_trump_card( Trick const& t, Hand const& h, 
+Card
+Heuristics::lowest_best_trump_card( Trick const& t, Hand const& h,
                                    HeuristicInterface const& hi )
 {
   // @heuristic::name   ?  lowest best trump  ?
-  // @heuristic::idea   find smallest best trump card (avoiding for example a fox in most situations)        
+  // @heuristic::idea   find smallest best trump card (avoiding for example a fox in most situations)
   // @heuristic::action  play the smallest trump, but no fox/ten
 
   HandCard c( h );
@@ -2728,11 +2729,11 @@ Heuristics::lowest_best_trump_card( Trick const& t, Hand const& h,
 
   // find a better card
   for(unsigned i = 0; i < ha.cardsnumber(); i++ ) {
-    if(   ha.card( i ).istrump() 
+    if(   ha.card( i ).istrump()
        && (   (c.value() >= Card::TEN)
            || ha.card( i ).less( c ) )
-       && !ha.card( i ).isfox() 
-       && (   ha.card(i).value() < Card::TEN 
+       && !ha.card( i ).isfox()
+       && (   ha.card(i).value() < Card::TEN
            || c.isfox()
           )
       ) {
@@ -2743,8 +2744,8 @@ Heuristics::lowest_best_trump_card( Trick const& t, Hand const& h,
   if( !c.less( hi.trump_card_limit() ) ) {
     // maybe a diamond ten isn't all that bad
     for(unsigned i = 0; i < ha.cardsnumber(); i++ ) {
-      if(   ha.card( i ).less( c ) 
-         && ha.card( i ).istrump() 
+      if(   ha.card( i ).less( c )
+         && ha.card( i ).istrump()
          && !ha.card( i ).isfox()
         ) {
         c = ha.card( i );
@@ -2755,7 +2756,7 @@ Heuristics::lowest_best_trump_card( Trick const& t, Hand const& h,
   if( !c.less( hi.trump_card_limit() ) ) {
     // maybe a diamond Ace isn't all that bad
     for(unsigned i = 0; i < ha.cardsnumber(); i++ ) {
-      if(   ha.card( i ).less( c ) 
+      if(   ha.card( i ).less( c )
          && ha.card(i).istrump()
         ) {
         c = ha.card( i );
@@ -2780,7 +2781,7 @@ Heuristics::lowest_best_trump_card( Trick const& t, Hand const& h,
  **
  ** @version   Beta
  **/
-Card 
+Card
 Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
 {
   // @heuristic::name   ?  choose pfund card  ?
@@ -2795,7 +2796,7 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
 
 
   bool allmyteam = (checkAllMyTeam( t, hi ) && ownTeamCanWinTrick(t, hi));
-  allmyteam = (   allmyteam 
+  allmyteam = (   allmyteam
                || (   hi.game().type() == GAMETYPE::POVERTY
                    && hi.no() == hi.game().soloplayer().no()
                    && trick.cardno_of_player(hi.game().poverty_partner()) == 3 ) );
@@ -2816,7 +2817,7 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
   HandCards const ha = hi.hand().validcards( t );
 
   // first color trick in a solo, soloplayer wins
-  bool solo_check = 
+  bool solo_check =
     (   GAMETYPE::is_solo( hi.game().type() )
      && hi.color_runs(t.startcard().color()) == 0
      && !t.startcard().istrump()
@@ -2838,23 +2839,23 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
      ) {
     // then find first trump ace
     for( unsigned i = 0; i < ha.cardsnumber(); i++ ) {
-      if(   ha.card(i).value() == Card::ACE 
-         && ha.card(i).istrump() 
-         && (   t.islastcard() 
+      if(   ha.card(i).value() == Card::ACE
+         && ha.card(i).istrump()
+         && (   t.islastcard()
              || allmyteam
-             || ha.numberoftrumps() < 3 
+             || ha.numberoftrumps() < 3
              || (   hi.color_runs(t.startcard().color()) == 0
                  && !t.startcard().istrump()
                 )
              || (   ! hi.cards_information().higher_card_exists( t.winnercard())
                  //!t.winnercard().less( Card( Card::CLUB, Card::QUEEN ) )
-                 && hi.teamofplayer( t.winnerplayer() )== hi.team()  
+                 && hi.teamofplayer( t.winnerplayer() )== hi.team()
                 )
              || (   hi.game().is_undetermined_marriage()
                  && hi.game().soloplayer().no() == hi.no()
-                 && hi.game().marriage_selector() == MARRIAGE_SELECTOR::FIRST_FOREIGN 
-                )  
-            ) 
+                 && hi.game().marriage_selector() == MARRIAGE_SELECTOR::FIRST_FOREIGN
+                )
+            )
          && !ha.card(i).possible_swine()
         )
       {
@@ -2883,9 +2884,9 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
         || local_ace.istrump( hi.game() )
         || !t.isvalid(local_ace, hi.hand()))
       continue;
-    if (   (   hi.teamofplayer(t.winnerplayer()) == hi.team() 
-            || solo_check 
-            || allmyteam ) 
+    if (   (   hi.teamofplayer(t.winnerplayer()) == hi.team()
+            || solo_check
+            || allmyteam )
         && (   (   hi.hand().numberof( local_ace )
                 == hi.game().rule()(Rule::NUMBER_OF_SAME_CARDS))
             || (   (hi.game().type() == GAMETYPE::POVERTY)
@@ -2924,21 +2925,21 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
     if(   ha.card(i).value() == Card::TEN
        && !ha.card(i).istrump()
        && t.isvalid( ha.card( i ),hi.hand() )
-       && (   hi.teamofplayer(t.winnerplayer()) == hi.team() 
-           || solo_check 
-           || allmyteam 
-          ) 
+       && (   hi.teamofplayer(t.winnerplayer()) == hi.team()
+           || solo_check
+           || allmyteam
+          )
       )
-    {            
+    {
       return ha.card(i);
     }
 
 
   bool const to_fat_solo
-    = (   GAMETYPE::is_solo( hi.game().type() ) 
+    = (   GAMETYPE::is_solo( hi.game().type() )
        && (static_cast<int>(t.points()) > hi.value( Aiconfig::LIMITQUEEN ))
        && (t.player_of_card( 3 ) == hi.game().soloplayer()));
-  // or an ace of color  
+  // or an ace of color
   for( unsigned i = 0; i < ha.cardsnumber(); i++ ) {
     int cardsInGame
       = hi.cards_information().remaining_others(ha.card(i).color());
@@ -2948,31 +2949,31 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
        && (hi.hand().numberof(t.startcard().color()) >= 3)
        && !ha.card(i).istrump()
        /// @todo   see 'choose pfund', check that enough cards still remain
-       && (   cardsInGame >= 2 
+       && (   cardsInGame >= 2
            || ( hi.game().type() == GAMETYPE::POVERTY && hi.no() == hi.game().soloplayer().no() )
           )
-       && (   hi.teamofplayer(t.winnerplayer()) == hi.team() 
-           || solo_check 
-           || allmyteam 
-          ) 
+       && (   hi.teamofplayer(t.winnerplayer()) == hi.team()
+           || solo_check
+           || allmyteam
+          )
       ) {
       return ha.card(i);
     }
 
     if(   ha.card(i).value()==Card::ACE
-       && (  hi.color_runs(ha.card(i).color()) > 0  
-           || (   t.winnercard().istrump() 
+       && (  hi.color_runs(ha.card(i).color()) > 0
+           || (   t.winnercard().istrump()
                && allmyteam )
           )
-       && cardsInGame >= 2 
-       && !ha.card(i).istrump() 
+       && cardsInGame >= 2
+       && !ha.card(i).istrump()
        && t.isvalid( ha.card(i),hi.hand() )
        && !to_fat_solo
        && (   (   hi.game().type()!=GAMETYPE::SOLO_JACK // with not much trumps
                && hi.game().type()!=GAMETYPE::SOLO_QUEEN // it is good to
                && hi.game().type()!=GAMETYPE::SOLO_KING  // keep a second ace
               )
-           || hi.color_runs(t.startcard().color()) > 0 
+           || hi.color_runs(t.startcard().color()) > 0
           )
       )
     {
@@ -2987,8 +2988,8 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
 
   // or an ace of trump
   for( unsigned i = 0; i < ha.cardsnumber(); i++ )
-    if(   ha.card(i).value() == Card::ACE 
-       && ha.card(i).istrump() 
+    if(   ha.card(i).value() == Card::ACE
+       && ha.card(i).istrump()
        && !ha.card(i).possible_swine()
       )
     {
@@ -2997,8 +2998,8 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
 
   // or a ten of trump
   for( unsigned i = 0; i < ha.cardsnumber(); i++ )
-    if(   ha.card(i).value() == Card::TEN 
-       && ha.card(i).istrump() 
+    if(   ha.card(i).value() == Card::TEN
+       && ha.card(i).istrump()
        && !ha.card(i).isdolle()
       )
     {
@@ -3008,7 +3009,7 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
 
   // or a King of color
   for ( unsigned i = 0; i < ha.cardsnumber(); i++ )
-    if(   ha.card(i).value() == Card::KING 
+    if(   ha.card(i).value() == Card::KING
        && !ha.card(i).istrump()
       )
     {
@@ -3030,9 +3031,9 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
 
   // or Queen if no trump
   for ( unsigned i = 0; i < ha.cardsnumber(); i++ )
-    if(    ha.card(i).value()==Card::QUEEN 
+    if(    ha.card(i).value()==Card::QUEEN
        && !ha.card(i).istrump()
-       && hi.game().type() != GAMETYPE::SOLO_QUEEN 
+       && hi.game().type() != GAMETYPE::SOLO_QUEEN
        && hi.game().type() != GAMETYPE::SOLO_KING_QUEEN
        && hi.game().type() != GAMETYPE::SOLO_QUEEN_JACK
        && hi.game().type() != GAMETYPE::SOLO_KOEHLER
@@ -3044,9 +3045,9 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
 
   // or Jack if no trump
   for( unsigned i = 0; i < ha.cardsnumber(); i++ )
-    if(   ha.card(i).value() == Card::JACK 
+    if(   ha.card(i).value() == Card::JACK
        && !ha.card(i).istrump()
-       && hi.game().type() != GAMETYPE::SOLO_JACK 
+       && hi.game().type() != GAMETYPE::SOLO_JACK
        && hi.game().type() != GAMETYPE::SOLO_QUEEN_JACK
        && hi.game().type() != GAMETYPE::SOLO_KING_JACK
        && hi.game().type() != GAMETYPE::SOLO_KOEHLER
@@ -3058,9 +3059,9 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
 
   // or a nine of color
   for( unsigned i = 0; i < ha.cardsnumber(); i++ )
-    if(   ha.card(i).value() == Card::NINE 
+    if(   ha.card(i).value() == Card::NINE
        && !ha.card(i).istrump()
-      ) 
+      )
     {
       return ha.card(i);
     }
@@ -3069,9 +3070,9 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
   { // or a small jack of trump
     Card best_jack;
     for ( unsigned i = 0; i < ha.cardsnumber(); i++ ) {
-      if(   ha.card(i).value() == Card::JACK 
+      if(   ha.card(i).value() == Card::JACK
          && (ha.card(i).color() <= Card::HEART)
-         && ha.card(i).istrump() 
+         && ha.card(i).istrump()
         ) {
         if (best_jack.is_empty()
             || ha.card(i).less(best_jack))
@@ -3097,8 +3098,8 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
  ** @author    Borg Enders
  **
  ** @version   0.7.5
- **/ 
-bool 
+ **/
+bool
 soloPlayerBehind( Trick const& t, HeuristicInterface const& hi )
 {
   return (   hi.game().is_solo()
@@ -3126,7 +3127,7 @@ soloPlayerBehind( Trick const& t, HeuristicInterface const& hi )
  **
  ** @version   Beta
  **/
-Card 
+Card
 Heuristics::choose_for_color_trick( Trick const& t,
                                    HeuristicInterface const& hi )
 {
@@ -3154,10 +3155,15 @@ Heuristics::choose_for_color_trick( Trick const& t,
   bool allmyteam = (   checkAllMyTeam( t, hi )
                     && hi.jabbedbyownteam( t.startcard().color() )
                     && !t.islastcard());
+  // Check whether the soloplayer in a poverty can jab the trick
+  if (   (game.type() == GAMETYPE::POVERTY)
+      && (hi.no() == game.poverty_partner().no())
+      && !hi.handofplayer(game.soloplayer()).can_jab(t))
+    allmyteam = false;
 
-  allmyteam = (   allmyteam 
+  allmyteam = (   allmyteam
                && (   hi.teamofplayer(t.winnerplayer())==hi.team()
-                   || (   t.winnercard().less( hi.trump_card_limit() ) 
+                   || (   t.winnercard().less( hi.trump_card_limit() )
                        && t.winnercard().istrump() )
                   ) );
 
@@ -3194,9 +3200,9 @@ Heuristics::choose_for_color_trick( Trick const& t,
   // lets see if this is the last card for this trick
   // or the first run of this  color
   // and first card is no trump
-  if ( (   t.islastcard() 
-        || allmyteam 
-        || (   !t.isstartcard() 
+  if ( (   t.islastcard()
+        || allmyteam
+        || (   !t.isstartcard()
             && hi.color_runs(t.startcard().color()) == 0
            )
        )
@@ -3220,8 +3226,8 @@ Heuristics::choose_for_color_trick( Trick const& t,
       } // if !(trick determines marriage)
     }  // if (game.type() == GAMETYPE::MARRIAGE)
 
-    pred = (   pred  
-            && (    t.islastcard() 
+    pred = (   pred
+            && (    t.islastcard()
                 || (   t.winnercard().value() == Card::ACE
                     &&  (hi.color_runs(t.startcard().color()) == 0)
                     &&  (hi.cards_information().remaining_others(t.startcard().color()) >= t.remainingcardno() - 1) )
@@ -3233,20 +3239,20 @@ Heuristics::choose_for_color_trick( Trick const& t,
     pred = pred || allmyteam;
 
     if( game.type() == GAMETYPE::POVERTY ) {
-      pred &=    (hi.no() == game.poverty_partner().no()) 
-        && (  (   !game.rule()(Rule::DOLLEN) 
-               || t.startcard().color() != Card::HEART)                      
-            || allmyteam); 
+      pred &= (   (hi.no() == game.poverty_partner().no())
+               && (  (   !game.rule()(Rule::DOLLEN)
+                      || t.startcard().color() != Card::HEART)
+                   || allmyteam));
     }
 
-    if (   pred 
-        || (   GAMETYPE::is_solo( game.type() )  
-            && t.winnerplayer() != game.soloplayer() 
-            &&  hi.color_runs(t.startcard().color()) == 0 
-            &&  t.winnercard().less( hi.trump_card_limit() ) 
-            &&  !t.islastcard() 
-           ) 
-       ) { 
+    if (   pred
+        || (   GAMETYPE::is_solo( game.type() )
+            && t.winnerplayer() != game.soloplayer()
+            &&  hi.color_runs(t.startcard().color()) == 0
+            &&  t.winnercard().less( hi.trump_card_limit() )
+            &&  !t.islastcard()
+           )
+       ) {
       Card const c = choose_best_fehl( t, hi, false );
       if(   !c.is_empty()
          && hi.hand().numberof( c.color() ) == 1
@@ -3263,12 +3269,12 @@ Heuristics::choose_for_color_trick( Trick const& t,
 
       if( !ha.contains(t.startcard().color() ) ) {
         if(!c.is_empty())
-        { 
+        {
           if (static_cast<int>(t.points()) > hi.value(Aiconfig::LIMITDOLLE)) {
             return c;
           }
           if(   (static_cast<int>(t.points()) > hi.value( Aiconfig::LIMITQUEEN))
-             && (  !Card( Card::CLUB, Card::QUEEN ).less( c ) 
+             && (  !Card( Card::CLUB, Card::QUEEN ).less( c )
                  || t.islastcard() )
             ) {
             return c;
@@ -3290,8 +3296,8 @@ Heuristics::choose_for_color_trick( Trick const& t,
         GameType gt = game.type();
 
         if( gt != GAMETYPE::SOLO_MEATLESS ) {
-          if(   hi.color_runs(t.startcard().color()) == 0 
-             && t.winnercard().value() != Card::ACE  
+          if(   hi.color_runs(t.startcard().color()) == 0
+             && t.winnercard().value() != Card::ACE
              && ha.numberof( t.startcard().color(), Card::ACE )  > 0 )
             return Card( t.startcard().color(), Card::ACE );
 
@@ -3321,7 +3327,7 @@ Heuristics::choose_for_color_trick( Trick const& t,
       {
         c = best_winning_card( t, hi );
 
-        if( !c.is_empty() ) { 
+        if( !c.is_empty() ) {
           if( static_cast<int>(t.points()) > hi.value(Aiconfig::LIMITDOLLE) )
             return c;
           if(   (static_cast<int>(t.points()) > hi.value(Aiconfig::LIMITQUEEN))
@@ -3364,7 +3370,7 @@ Heuristics::choose_for_color_trick( Trick const& t,
  **
  ** @version   0.7.9
  **/
-Card 
+Card
 Heuristics::jab_color_over_fox(Trick const& trick,
                                HeuristicInterface const& hi )
 {
@@ -3411,7 +3417,7 @@ Heuristics::jab_color_over_fox(Trick const& trick,
           || (  (trick.actcardno() <= 2)
               ? !hi.guessed_opposite_team(trick.player_of_card(3)) : false)
          )
-      )
+     )
     return Card::CLUB_QUEEN;
 
   return card;
@@ -3425,7 +3431,7 @@ Heuristics::jab_color_over_fox(Trick const& trick,
  ** @param        hi        heuristic interface
  **
  ** @return       card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author       Borg Enders
  ** @author       Diether Knof
  **
@@ -3435,7 +3441,7 @@ Card
 Heuristics::retry_color(Trick const& trick, HeuristicInterface const& hi)
 {
   // @heuristic::name   retry color
-  // @heuristic::idea   try a color again, which was not jabbed or jabbed by the own team        
+  // @heuristic::idea   try a color again, which was not jabbed or jabbed by the own team
   if (!trick.isstartcard())
     return Card::EMPTY;
 
@@ -3493,7 +3499,7 @@ Heuristics::retry_color(Trick const& trick, HeuristicInterface const& hi)
  ** @param        hi        heuristic interface
  **
  ** @return        card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author        Diether Knof
  **
  ** @version        0.7.4
@@ -3610,7 +3616,7 @@ Heuristics::play_color_for_partner(Trick const& trick,
  ** @param        hi        heuristic interface
  **
  ** @return       card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author       Diether Knof
  **
  ** @version      0.7.4
@@ -3685,7 +3691,7 @@ Heuristics::try_color_for_partner(Trick const& trick,
 
 
 /**
- ** Play shortest color in game for solo contra in hope solo player and partner 
+ ** Play shortest color in game for solo contra in hope solo player and partner
  ** can jab
  **
  **
@@ -3693,7 +3699,7 @@ Heuristics::try_color_for_partner(Trick const& trick,
  ** @param        hi        heuristic interface
  **
  ** @return       card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author       Diether Knof
  **
  ** @version      0.7.4
@@ -3754,7 +3760,7 @@ Heuristics::play_color_in_solo(Trick const& trick,
  ** @param        hi        heuristic interface
  **
  ** @return       card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author       Diether Knof
  **
  ** @version      0.7.4
@@ -3855,7 +3861,7 @@ Heuristics::play_color_for_partner_ace(Trick const& trick,
  ** @param     hi      heuristic interface
  **
  ** @return    card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author    Diether Knof
  **
  ** @version   0.7.9
@@ -3922,7 +3928,7 @@ Heuristics::play_bad_color(Trick const& trick,
  ** @param        hi        heuristic interface
  **
  ** @return       card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author       Diether Knof
  **
  ** @version      0.6.6
@@ -4072,7 +4078,7 @@ Heuristics::serve_color_trick(Trick const& trick, HeuristicInterface const& hi)
   // @heuristic::action   take lowest color card
   Card const card = Heuristics::lowest_card(trick, hi.hand());
   if (   hi.lowest_trump_card_limit().less(HandCard(hi.hand(), card))
-      && hi.hand().lowest_trump().less(card)) 
+      && hi.hand().lowest_trump().less(card))
     return Card::EMPTY;
   return card;
 } // Card Heuristics::serve_color_trick(Trick trick, HeuristicInterface hi)
@@ -4096,7 +4102,7 @@ Heuristics::serve_color_trick(Trick const& trick, HeuristicInterface const& hi)
  ** @param        hi        heuristic interface
  **
  ** @return       card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author       Diether Knof
  ** @author       Borg Enders
  **
@@ -4141,13 +4147,13 @@ Heuristics::serve_trump_trick(Trick const& trick,
   // @heuristic::condition   not: game is solo and solo player is behind
   if(     GAMETYPE::is_solo( game.type() )
      &&  (trick.cardno_of_player( player ) < trick.cardno_of_player( game.soloplayer()) ) )
-    return Card::EMPTY; 
+    return Card::EMPTY;
 
   // @heuristic::condition   one cannot get the trick or has only 1/2 cards over the winnercard and over trump limit
   if (hand.higher_card_exists(trick.winnercard())) {
-  // @heuristic::condition   there is no extrapoint in the trick
-  if (trick.contains_possible_extrapoint(game))
-    return Card::EMPTY;
+    // @heuristic::condition   there is no extrapoint in the trick
+    if (trick.contains_possible_extrapoint(game))
+      return Card::EMPTY;
     if (game.is_solo())
       return Card::EMPTY;
     // not many more trumps
@@ -4260,7 +4266,7 @@ Heuristics::lowest_card(Trick const& trick,
 
 /**
  ** -> result
- ** decision order: 
+ ** decision order:
  ** 1) normal trump with less than 10 points
  ** 2) normal trump
  ** 3) special trump
@@ -4767,15 +4773,15 @@ Heuristics::choose_best_prefiltered_trump_card(Trick const& trick,
     }
   } // for( i < ha.cardsnumber() )
 
-  if( card.is_empty()) 
+  if( card.is_empty())
     return Card::EMPTY;
 
   // find a better card
   for(unsigned i = 0; i < cards.cardsnumber(); i++ ) {
-    if(   cards.card( i ).less(card) 
-       && cards.card( i ).istrump() 
-       && !cards.card( i ).isfox() 
-       && (   cards.card(i).value() != Card::TEN 
+    if(   cards.card( i ).less(card)
+       && cards.card( i ).istrump()
+       && !cards.card( i ).isfox()
+       && (   cards.card(i).value() != Card::TEN
            || card.isfox()
           )
       )
@@ -4785,8 +4791,8 @@ Heuristics::choose_best_prefiltered_trump_card(Trick const& trick,
   if( !card.less( hi.trump_card_limit() ) ) {
     // maybe a diamond ten isn't all that bad
     for(unsigned i = 0; i < cards.cardsnumber(); i++ ) {
-      if(   cards.card( i ).less( card ) 
-         && cards.card( i ).istrump() 
+      if(   cards.card( i ).less( card )
+         && cards.card( i ).istrump()
          && !cards.card( i ).isfox()
         )
         card = cards.card( i );
@@ -4796,7 +4802,7 @@ Heuristics::choose_best_prefiltered_trump_card(Trick const& trick,
   if( !card.less( hi.trump_card_limit() ) ) {
     // maybe a diamond Ace isn't all that bad
     for(unsigned i = 0; i < cards.cardsnumber(); i++ ) {
-      if(   cards.card( i ).less( card ) 
+      if(   cards.card( i ).less( card )
          && cards.card(i).istrump()
         )
         card = cards.card( i );
@@ -4807,7 +4813,7 @@ Heuristics::choose_best_prefiltered_trump_card(Trick const& trick,
 } // Card Heuristics::choose_best_prefiltered_trump_card(Trick trick, HeuristicsInterface hi, Hand hand, HandCards cards)
 
 /**
- ** for the last card in a trick, which wins your own team 
+ ** for the last card in a trick, which wins your own team
  ** or where your teammate has already a played a high enough trump
  ** play a pfund
  **
@@ -4820,7 +4826,7 @@ Heuristics::choose_best_prefiltered_trump_card(Trick const& trick,
  **
  ** @version      Beta
  **/
-Card 
+Card
 Heuristics::choose_pfund( Trick const& t, HeuristicInterface const& hi )
 {
   // @heuristic::name   choose pfund
@@ -4862,7 +4868,7 @@ Heuristics::choose_pfund( Trick const& t, HeuristicInterface const& hi )
           || (t.winnercard() == Card(color, Card::ACE)))
       && (hi.cards_information().remaining_others(color)
           >= t.remainingcardno() - 1)
-     ) { 
+     ) {
     return pfund_card;
   }
 
@@ -4874,7 +4880,7 @@ Heuristics::choose_pfund( Trick const& t, HeuristicInterface const& hi )
           || (t.winnercard() == Card(color, Card::ACE)))
       && (hi.cards_information().remaining_others(color)
           >= t.remainingcardno() - 1 + 1)
-     ) { 
+     ) {
     for (Player const*
          player = &(t.game().player_following(t.actplayer()));
          player != &t.startplayer();
@@ -4901,7 +4907,7 @@ Heuristics::choose_pfund( Trick const& t, HeuristicInterface const& hi )
   bool const soloPlayer = soloPlayerBehind( t, hi );
 
   // if winner is own team
-  if (   hi.teamofplayer(t.winnerplayer()) == hi.team() 
+  if (   hi.teamofplayer(t.winnerplayer()) == hi.team()
       &&  !oppositeTeamCanWinTrick( t, hi ) ) {
     HandCards const cards = hi.hand().validcards(t);
     if (cards.lowest_value() == cards.highest_value())
@@ -4921,9 +4927,9 @@ Heuristics::choose_pfund( Trick const& t, HeuristicInterface const& hi )
   }
 
   if (   hi.guessed_same_team(t.winnerplayer())
-      && (  !hi.cards_information().higher_card_exists( t.winnercard() )     
+      && (  !hi.cards_information().higher_card_exists( t.winnercard() )
           ||(  !soloPlayer
-             && (    t.islastcard() 
+             && (    t.islastcard()
                  || !t.winnercard().less( hi.trump_card_limit() )
                 )
             )
@@ -4937,8 +4943,8 @@ Heuristics::choose_pfund( Trick const& t, HeuristicInterface const& hi )
       && t.winnerplayer() == hi.game().soloplayer()
       && t.winnercard().less( hi.trump_card_limit() )
       && !t.islastcard()
-      && choose_pfund_card(t,hi).points() > 0 
-      && t.startcard().istrump()  
+      && choose_pfund_card(t,hi).points() > 0
+      && t.startcard().istrump()
      )
   {
     return pfund_card;
@@ -4947,12 +4953,12 @@ Heuristics::choose_pfund( Trick const& t, HeuristicInterface const& hi )
   if (   checkAllMyTeam( t, hi )
       && ownTeamCanWinTrick( t, hi )
       && (    hi.teamofplayer(t.winnerplayer()) == hi.team()
-          || (   t.winnercard().less( hi.trump_card_limit() ) 
+          || (   t.winnercard().less( hi.trump_card_limit() )
               && (t.winnercard() != Card(color, Card::ACE))
-              && !(!t.startcard().istrump() && t.winnercard().istrump()) 
+              && !(!t.startcard().istrump() && t.winnercard().istrump())
               && !t.islastcard()
-             ) 
-         ) 
+             )
+         )
      )
   {
     return pfund_card;
@@ -4964,16 +4970,16 @@ Heuristics::choose_pfund( Trick const& t, HeuristicInterface const& hi )
 
 /**
  ** if the partner has the highest card in the game, play a pfund (>= 10 points)
- ** 
+ **
  ** @param     trick   current trick
  ** @param     hi      heuristics interface
- ** 
+ **
  ** @return    card to play
- ** 
+ **
  ** @author    Diether Knof
- ** 
+ **
  ** @version   0.7.9
- **/ 
+ **/
 Card
 Heuristics::choose_pfund_before_partner(Trick const& trick,
                                         HeuristicInterface const& hi)
@@ -5147,7 +5153,7 @@ Heuristics::choose_pfund_before_partner(Trick const& trick,
  **
  ** @version 0.6.9
  **/
-Card 
+Card
 Heuristics::jab_for_ace( Trick const& t, HeuristicInterface const& hi )
 {
   // @heuristic::name   jab for ace
@@ -5202,7 +5208,7 @@ Heuristics::jab_for_ace( Trick const& t, HeuristicInterface const& hi )
     = (hi.game().numberof(ace.color())
        - (hi.cards_information().played(ace.color()) + hi.hand().numberof(ace.color())));
   if(   GAMETYPE::is_solo( hi.game().type() )
-     && hi.game().soloplayer().no() != hi.no() 
+     && hi.game().soloplayer().no() != hi.no()
      && remaining_cards < 5 )
     return Card::EMPTY;
 
@@ -5214,7 +5220,7 @@ Heuristics::jab_for_ace( Trick const& t, HeuristicInterface const& hi )
       && t.winnercard().less( hi.trump_card_limit() )
       && !t.islastcard()
       && (hi.hand().numberoftrumps() < 4)
-     ) 
+     )
     return Card::EMPTY;
   // solo game, color trick, goes to own team
   if (   hi.game().is_solo()
@@ -5237,8 +5243,8 @@ Heuristics::jab_for_ace( Trick const& t, HeuristicInterface const& hi )
          || (   (TEAM::maybe_to_team(hi.teamofplayer(t.winnerplayer())) == hi.team())
              && t.winnercard().less( hi.trump_card_limit() )
             )
-         || (hi.game().trick_current_no() == 0) 
-        ) 
+         || (hi.game().trick_current_no() == 0)
+        )
     )
   {
     // do not overjab the partner, if he has played a high card
@@ -5253,7 +5259,7 @@ Heuristics::jab_for_ace( Trick const& t, HeuristicInterface const& hi )
 
     Card c;
     if(   (hi.game().trick_current_no() == 0)
-       && t.startcard().istrump() 
+       && t.startcard().istrump()
        && !t.islastcard()
        && !checkAllMyTeam(t, hi )) {
       c = highest_trump_card( t, hi.hand() );
@@ -5263,7 +5269,7 @@ Heuristics::jab_for_ace( Trick const& t, HeuristicInterface const& hi )
     } else {
 #ifdef OUTDATED
       // 0.7.11 (2011-09-04)
-      c =  best_winning_card_old( t, hi, 
+      c =  best_winning_card_old( t, hi,
                                  hi.value( Aiconfig::LIMITDOLLE ) - ( 4 - t.actcardno() ) + 10 );
 #endif
       c = best_jabbing_card(t, hi);
@@ -5304,10 +5310,10 @@ Heuristics::jab_for_ace( Trick const& t, HeuristicInterface const& hi )
 
         tempTrick = t;
         tempTrick += HandCard(hi.hand(), c);
-      } // if (special card and 
+      } // if (special card and
 
       bool trickLost = tempTrick.winnercard().less(highest_card_behind_of_opposite_team(tempTrick, hi));
-      if(   trickLost 
+      if(   trickLost
          && (!c.less(HandCard( hi.hand(), Card(Card::DIAMOND, Card::QUEEN))))
          && (hi.hand().numberof(Card::QUEEN) < 3)
         )
@@ -5333,7 +5339,7 @@ Heuristics::jab_for_ace( Trick const& t, HeuristicInterface const& hi )
  **
  ** @version      Beta
  **/
-Card 
+Card
 Heuristics::play_low_high(Trick const& t, HeuristicInterface const& hi)
 {
   // @heuristic::name   play low high
@@ -5343,7 +5349,7 @@ Heuristics::play_low_high(Trick const& t, HeuristicInterface const& hi)
      && hi.game().soloplayer ().no() != hi.no() )
     return Card::EMPTY;
 
-  // @heuristic::condition do not use for undetermined marriage  
+  // @heuristic::condition do not use for undetermined marriage
   if (hi.game().is_undetermined_marriage())
     return Card::EMPTY;
 
@@ -5352,17 +5358,17 @@ Heuristics::play_low_high(Trick const& t, HeuristicInterface const& hi)
     return Card::EMPTY;
 
 
-  if(   t.isstartcard() 
+  if(   t.isstartcard()
      && (hi.hand().numberoftrumps() > hi.game().tricks_remaining_no() / 2)
      && (hi.hand().higher_cards_no(Card(Card::DIAMOND, Card::JACK))
          + hi.hand().numberof(Card::DIAMOND, Card::JACK)
          > 3)
-    ) 
+    )
   {
     if(  hi.next_low()
        || (hi.game().trick_current_no() < 4) )
     {
-      if( hi.hand().numberof( Card::QUEEN ) < 2 * hi.hand().numberof( Card::JACK ) ) 
+      if( hi.hand().numberof( Card::QUEEN ) < 2 * hi.hand().numberof( Card::JACK ) )
       {
         Card c = lowest_jack( hi.hand(), hi );
 
@@ -5372,15 +5378,15 @@ Heuristics::play_low_high(Trick const& t, HeuristicInterface const& hi)
 
         return c;
       }
-    } else 
+    } else
     { // if !(hi.next_low())
-      if( hi.hand().numberof( Card::QUEEN ) > 1) 
+      if( hi.hand().numberof( Card::QUEEN ) > 1)
       {
         Card c = lowest_queen( hi.hand(), hi );
 
         if(   (hi.hand().numberof( Card::QUEEN ) < 4)
            && (hi.hand().numberofclubqueens() == 1)
-           && (hi.game().teaminfo( hi.no() ) == TEAM::UNKNOWN) 
+           && (hi.game().teaminfo( hi.no() ) == TEAM::UNKNOWN)
           )
           c = Card::CLUB_QUEEN;
 
@@ -5432,7 +5438,7 @@ Heuristics::SecondBestTrump(HeuristicInterface const& hi)
   {
     if(   h.card(i).istrump()
        && bestcard.less( h.card( i ) )
-      ) 
+      )
     {
       bestcard = h.card( i );
       best = i;
@@ -5444,7 +5450,7 @@ Heuristics::SecondBestTrump(HeuristicInterface const& hi)
   {
     if(   h.card(i).istrump()
        && (  h.card(i).less(bestcard)
-           || h.card(i) == bestcard 
+           || h.card(i) == bestcard
           )
        && c.less( h.card(i) )
        && i != best
@@ -5462,7 +5468,7 @@ Heuristics::SecondBestTrump(HeuristicInterface const& hi)
 
 /**
  ** puts a nice card to a trick of a partner
- ** returns a king, a ten (no dolle), an ace (no swine) or a nine 
+ ** returns a king, a ten (no dolle), an ace (no swine) or a nine
  ** the order depends on the card the partner has played
  **
  ** @param        t         current trick
@@ -5474,7 +5480,7 @@ Heuristics::SecondBestTrump(HeuristicInterface const& hi)
  **
  ** @version      Beta
  **/
-Card 
+Card
 Heuristics::play_for_team( Trick const& t, HeuristicInterface const& hi )
 {
   // @heuristic::name   play for team
@@ -5503,13 +5509,13 @@ Heuristics::play_for_team( Trick const& t, HeuristicInterface const& hi )
     if( tr.isvalid( hi.hand().card(i), hi.hand() ) ) {
       tr += hi.hand().card( i );
       if (   tr.winnerplayer().no() != hi.no()
-          && hi.hand().card(i).value()==Card::KING 
+          && hi.hand().card(i).value()==Card::KING
           && !hi.hand().card(i).istrump())
         c = hi.hand().card( i );
     } // if ( tr.isvalid( ... ) )
   } // for ( i < hi.hand().cardsnumber() )
 
-  if( !c.is_empty() ) 
+  if( !c.is_empty() )
     return c;
 
 
@@ -5526,11 +5532,11 @@ Heuristics::play_for_team( Trick const& t, HeuristicInterface const& hi )
              >= 3)
          && !hi.hand().card(i).is_special()
         )
-        c=hi.hand().card(i);     
+        c=hi.hand().card(i);
     } // if ( tr.isvalid ( ... ) )
   } // for ( i < hi.hand().cardsnumber() )
 
-  if( !c.is_empty() ) 
+  if( !c.is_empty() )
     return c;
 
   for(unsigned i = 0; i < hi.hand().cardsnumber(); i++ ) {
@@ -5540,29 +5546,29 @@ Heuristics::play_for_team( Trick const& t, HeuristicInterface const& hi )
       tr += hi.hand().card( i );
 
       // last player after me is player with poverty
-      bool lastPoverty = (soloPlayer 
-                          && tr.actcardno() == 3 
+      bool lastPoverty = (soloPlayer
+                          && tr.actcardno() == 3
                           && hi.game().soloplayer() == tr.player_of_card(3) );
 
       if(   tr.winnerplayer().no() != hi.no()
          && hi.hand().card(i).value() == Card::ACE
          && (   !tr.winnercard().less( hi.value( Aiconfig::LIMITHIGH ) )
-             || t.islastcard() 
-             || lastPoverty 
+             || t.islastcard()
+             || lastPoverty
             )
-         && !hi.hand().card( i ).isswine() 
+         && !hi.hand().card( i ).isswine()
          && (hi.hand().numberof(Card::TEN) + hi.hand().numberof(Card::ACE)
              >= 3)
-         && (   !hi.hand().card( i ).isfox() 
-             || t.islastcard() 
-             || lastPoverty 
+         && (   !hi.hand().card( i ).isfox()
+             || t.islastcard()
+             || lastPoverty
             )
         )
-        c = hi.hand().card( i );     
+        c = hi.hand().card( i );
     } // if ( tr.isvalid ( ... ) )
   } // for ( i < hi.hand().cardsnumber() )
 
-  if( !c.is_empty()) 
+  if( !c.is_empty())
     return c;
 
 
@@ -5578,7 +5584,7 @@ Heuristics::play_for_team( Trick const& t, HeuristicInterface const& hi )
          && hi.hand().card(i).value() == Card::NINE
          && !hi.hand().card(i).ishyperswine()
         )
-        c = hi.hand().card( i );     
+        c = hi.hand().card( i );
     } // if ( tr.isvalid( ... ) )
   } // for ( i < hi.hand().cardsnumber() )
 #endif
@@ -5601,7 +5607,7 @@ Heuristics::play_for_team( Trick const& t, HeuristicInterface const& hi )
  **
  ** @version      0.7.9
  **/
-Card 
+Card
 Heuristics::jab_fox( Trick const& t, HeuristicInterface const& hi )
 {
   // @heuristic::name   jab fox
@@ -5623,7 +5629,7 @@ Heuristics::jab_fox( Trick const& t, HeuristicInterface const& hi )
   Card c;
 
   // lastcard and this is our trick nothing to do.
-  if ( (    t.islastcard() 
+  if ( (    t.islastcard()
         || !oppositeTeamCanWinTrick( t, hi ) )
       && hi.same_team(t.winnerplayer())) {
     return Card::EMPTY;
@@ -5633,7 +5639,7 @@ Heuristics::jab_fox( Trick const& t, HeuristicInterface const& hi )
   if (   t.islastcard()
       && !hi.same_team(t.winnerplayer())) {
     return best_winning_card_old(t, hi, 10 ); ///@todo 10 replace with AiConfig
-  } 
+  }
 
 
 #ifdef DKNOF
@@ -5669,7 +5675,7 @@ Heuristics::jab_fox( Trick const& t, HeuristicInterface const& hi )
       // the partner has the best possible card
       if(   hi.teamofplayer(trick.winnerplayer()) == hi.team()
          && !trick.winnercard().less( highest_card_behind )
-         /// @todo next_higher_card_of_other_team             
+         /// @todo next_higher_card_of_other_team
         )
         return Card::EMPTY;
 
@@ -5678,12 +5684,12 @@ Heuristics::jab_fox( Trick const& t, HeuristicInterface const& hi )
       HandCards const valid_cards = hi.hand().validcards( t );
       for( HandCards::const_iterator c = valid_cards.begin();
           c != valid_cards.end();
-          ++c ) 
+          ++c )
       {
-        Trick tempTrick = trick; 
+        Trick tempTrick = trick;
         tempTrick += *c;
         if (   trick.isjabbed(*c)
-            && !tempTrick.isjabbed(highest_card_behind) 
+            && !tempTrick.isjabbed(highest_card_behind)
             && (   lowest_better_card.is_empty()
                 || lowest_better_card.less(*c)
                )
@@ -5698,7 +5704,7 @@ Heuristics::jab_fox( Trick const& t, HeuristicInterface const& hi )
 #endif
 
   if(    (hi.game().trick_current_no() == 0)
-     && (t.startcard().istrump() 
+     && (t.startcard().istrump()
          && (!t.islastcard()))
     )
   {
@@ -5712,7 +5718,7 @@ Heuristics::jab_fox( Trick const& t, HeuristicInterface const& hi )
 
   Trick tr = t;
   tr += ca;
-  if(   t.isvalid( ca, hi.hand() ) 
+  if(   t.isvalid( ca, hi.hand() )
      && tr.winnerplayer().no()==hi.no()
     ) {
     return ca;
@@ -5736,11 +5742,11 @@ Heuristics::jab_fox( Trick const& t, HeuristicInterface const& hi )
  ** @version      0.6.9
  **/
 Card
-Heuristics::try_for_doppelkopf( Trick const& trick, 
+Heuristics::try_for_doppelkopf( Trick const& trick,
                                HeuristicInterface const& hi )
 {
   // @heuristic::name   try for doppelkopf
-  // @heuristic::idea   try to get a doppelkopf for the own team        
+  // @heuristic::idea   try to get a doppelkopf for the own team
 
   // a doppelkopf gives a specialpoint (t.i. no solo game)
   if (GAMETYPE::is_solo(hi.game().type()))
@@ -5825,7 +5831,7 @@ Heuristics::try_for_doppelkopf( Trick const& trick,
  **
  ** @version   0.7.4
  **/
-Card 
+Card
 choose_best_fehl(Trick const& trick,
                  HeuristicInterface const& hi, bool const forceFehl)
 {
@@ -5846,11 +5852,11 @@ choose_best_fehl(Trick const& trick,
        ++card) {
     unsigned const remaining
       = hi.cards_information().remaining_others(card->color());
-    if(   !card->istrump() 
+    if(   !card->istrump()
        && (remaining > best_remaining)
        && (hi.hand().numberof(card->color()) <= 1)
-       && (   card->value() == Card::KING 
-           || card->value() == Card::NINE )    
+       && (   card->value() == Card::KING
+           || card->value() == Card::NINE )
       ) {
       best_card = *card;
       best_remaining = remaining;
@@ -5873,7 +5879,7 @@ choose_best_fehl(Trick const& trick,
  **
  ** @version   0.7.6
  **/
-Card 
+Card
 Heuristics::create_fehl(Trick const& trick, HeuristicInterface const& hi)
 {
   // @heuristic::name   create fehl
@@ -5887,26 +5893,26 @@ Heuristics::create_fehl(Trick const& trick, HeuristicInterface const& hi)
         < hi.value(Aiconfig::LASTFEHLCREATION)))
     return Card::EMPTY;
 
-  // @heuristic::condition   this is the firstcard 
-  if (hi.value(Aiconfig::FEHLCREATIONONFIRSTCARD)) 
+  // @heuristic::condition   this is the firstcard
+  if (hi.value(Aiconfig::FEHLCREATIONONFIRSTCARD))
     if (trick.isstartcard())
       return choose_best_fehl(trick, hi);
 
-  // @heuristic::condition   this is not the first colorrun and there are not more then 10 points 
+  // @heuristic::condition   this is not the first colorrun and there are not more then 10 points
   if(   !trick.isstartcard()
      && (hi.color_runs(trick.startcard().color()))
      && (static_cast<int>(trick.points())
          < hi.value(Aiconfig::LIMIT_THROW_FEHL))
-    ) {  
-    // @heuristic::condition   - the trick is jabbed high enough 
+    ) {
+    // @heuristic::condition   - the trick is jabbed high enough
     if(   trick.winnercard().istrump()
-       && !trick.winnercard().less(hi.lowest_trump_card_limit()) 
+       && !trick.winnercard().less(hi.lowest_trump_card_limit())
       ) {
       return choose_best_fehl(trick, hi);
     }
 
-    // @heuristic::condition   - the winnercard is already a no trump ace 
-    if(   !trick.winnercard().istrump() 
+    // @heuristic::condition   - the winnercard is already a no trump ace
+    if(   !trick.winnercard().istrump()
        && (trick.winnercard().value() == Card::ACE))
       return choose_best_fehl(trick, hi);
   }
@@ -5928,7 +5934,7 @@ Heuristics::create_fehl(Trick const& trick, HeuristicInterface const& hi)
  **
  ** @version      Beta
  **/
-int 
+int
 Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
 {
   // @heuristic::name   ?  calc hand value  ?
@@ -5944,7 +5950,7 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
   unsigned v_fehl = 0;
 
   if( g.type() == GAMETYPE::NORMAL )
-  { v_queen = 2; v_jack = 1; v_highest = 3; v_king = 0; v_ace = 1; v_fehl = 2; 
+  { v_queen = 2; v_jack = 1; v_highest = 3; v_king = 0; v_ace = 1; v_fehl = 2;
 
     if (hi.value(Aiconfig::AGGRESSIVE))
       v_highest += 1;
@@ -6044,9 +6050,9 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
     }
   }
 
-  if(    g.type()==GAMETYPE::SOLO_CLUB 
-     || g.type()==GAMETYPE::SOLO_HEART 
-     || g.type()==GAMETYPE::SOLO_SPADE 
+  if(    g.type()==GAMETYPE::SOLO_CLUB
+     || g.type()==GAMETYPE::SOLO_HEART
+     || g.type()==GAMETYPE::SOLO_SPADE
      || g.type()==GAMETYPE::SOLO_DIAMOND )
   { v_queen = 2; v_jack = 1; v_highest = 3; v_king = 0; v_ace = 1; v_fehl = 2;
     if (hi.team() == TEAM::RE)
@@ -6061,8 +6067,8 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
 
   if( g.type() == GAMETYPE::SOLO_MEATLESS )
   { v_queen = 0; v_jack = 0; v_highest = 0; v_king = 0; v_ace = 4; v_fehl = 1; // missing aces
-    value = -2; 
-  } 
+    value = -2;
+  }
 
 #ifdef ANNOUNCE_DEBUG_DETAIL
   COUT << "CalcHandValue(1)\t" << hi.no() << "\t" << value << endl;
@@ -6078,7 +6084,7 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
        || hi.hand().card(i).isswine()
        || hi.hand().card(i).possible_swine()
        || hi.hand().card(i).ishyperswine()
-       || hi.hand().card(i).possible_hyperswine()    
+       || hi.hand().card(i).possible_hyperswine()
       )
       value += v_highest;
     else if( hi.hand().card(i).value()==Card::QUEEN
@@ -6104,31 +6110,31 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
         value +=1;
     }
     else if(    hi.hand().card(i).value()==Card::ACE
-            && !hi.hand().card(i).istrump() 
+            && !hi.hand().card(i).istrump()
             && !hi.jabbedbyotherteam(hi.hand().card(i).color()))
     {
       value += v_ace;
       if (::in_running_game()
           && (hi.game().trick_current().cardno_of_player( player ) == 0 ) )
-        {
+      {
         if (hi.hand().numberof( hi.hand().card(i).color() ) == 1)
-          {
+        {
           value += v_ace;
           if( hi.color_runs( hi.hand().card(i).color() ) == 0 )
-            {
+          {
             value += v_ace;
-            }
+          }
 
-          } else
-            {
-            value += 1;
-            if( hi.color_runs( hi.hand().card(i).color() ) == 0 )
-              {
-              value += v_ace;
-              }
-            }
-
+        } else
+        {
+          value += 1;
+          if( hi.color_runs( hi.hand().card(i).color() ) == 0 )
+          {
+            value += v_ace;
+          }
         }
+
+      }
       if ( hi.hand().card(i).color() == Card::HEART
           && hi.hand().numberof( hi.hand().card(i).color() ) > 1
           && hi.game().rule()(Rule::DOLLEN))
@@ -6146,7 +6152,7 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
        ++c)
   {
     Card::Color const color = *c;
-    if (   !Card( color, Card::ACE ).istrump( hi.game() ) 
+    if (   !Card( color, Card::ACE ).istrump( hi.game() )
         && !hi.hand().contains( color )
         && !hi.jabbedbyotherteam(color)
        )
@@ -6180,7 +6186,7 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
            c != hi.game().rule().card_colors().end();
            ++c)
       {
-        if(   hi.hand().numberof(*c,Card::ACE)  == 2 
+        if(   hi.hand().numberof(*c,Card::ACE)  == 2
            && hi.hand().numberof(*c ) > longColor )
           longColor = hi.hand().numberof(*c );
       }
@@ -6188,10 +6194,10 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
     }
   } else  {
 
-    for( vector<Card::Color>::const_iterator 
+    for( vector<Card::Color>::const_iterator
         c = hi.game().rule().card_colors().begin();
         c != hi.game().rule().card_colors().end();
-        ++c ) 
+        ++c )
     {
       Card::Color color = *c;
 
@@ -6256,10 +6262,10 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
 #endif
 
   if( g.type() == GAMETYPE::SOLO_KOEHLER ) {
-    for( vector<Card::Color>::const_iterator 
+    for( vector<Card::Color>::const_iterator
         c = hi.game().rule().card_colors().begin();
         c != hi.game().rule().card_colors().end();
-        ++c ) 
+        ++c )
     {
       if( hi.hand().contains(*c)
          && !hi.jabbedbyownteam(*c) )
@@ -6268,15 +6274,15 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
   } // if( g.type() == GAMETYPE::SOLO_KOEHLER )
 
 
-  if(   (   hi.game().swines_owner() != NULL 
-         && hi.game().swines_owner()->no() != hi.no() ) 
+  if(   (   hi.game().swines_owner() != NULL
+         && hi.game().swines_owner()->no() != hi.no() )
      || hi.game().swines_announcement_valid( hi.game().player( hi.no() ) )
     )
   {
     Player const& swines_player = ( hi.game().swines_owner()
                                    ? *hi.game().swines_owner()
                                    : hi.game().player( hi.no() ) );
-    if(   hi.teamofplayer(swines_player) == hi.team() 
+    if(   hi.teamofplayer(swines_player) == hi.team()
        || hi.game().swines_announcement_valid( swines_player )
       )
     {
@@ -6286,7 +6292,7 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
       } else
       {
         value += 1;
-      } 
+      }
     } else
     {
       value -= 2* v_highest;
@@ -6297,7 +6303,7 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
   COUT << "CalcHandValue(4)\t" << hi.no() << "\t" << value << endl;
 #endif
 
-  if(  (   hi.game().hyperswines_owner() != NULL 
+  if(  (   hi.game().hyperswines_owner() != NULL
         && hi.game().hyperswines_owner()->no() != hi.no()
        )
      || hi.game().hyperswines_announcement_valid( hi.game().player( hi.no() ) )
@@ -6306,8 +6312,8 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
     Player const& hyperswines_player = ( hi.game().hyperswines_owner()
                                         ? *hi.game().hyperswines_owner()
                                         : hi.game().player( hi.no() ) );
-    if(   hi.teamofplayer(hyperswines_player) == hi.team() 
-       || hi.game().hyperswines_announcement_valid( hyperswines_player ) 
+    if(   hi.teamofplayer(hyperswines_player) == hi.team()
+       || hi.game().hyperswines_announcement_valid( hyperswines_player )
       )
     {
       if(hyperswines_player.no() != hi.no() )
@@ -6316,7 +6322,7 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
       } else
       {
         value += 1;
-      } 
+      }
     } else
     {
       value -= 2* v_highest;
@@ -6342,28 +6348,28 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
   }
 
   if (::in_running_game()
-       && (hi.game().trick_current().cardno_of_player( player ) == 0 ) )
-    { // count aces like trumps, if I serve
-      unsigned cardno = hi.hand().numberoftrumps();
+      && (hi.game().trick_current().cardno_of_player( player ) == 0 ) )
+  { // count aces like trumps, if I serve
+    unsigned cardno = hi.hand().numberoftrumps();
 
-      for( vector<Card::Color>::const_iterator
-              c = hi.game().rule().card_colors().begin();
-              c != hi.game().rule().card_colors().end();
-              ++c )
-          {
-            Card::Color color = *c;
+    for( vector<Card::Color>::const_iterator
+        c = hi.game().rule().card_colors().begin();
+        c != hi.game().rule().card_colors().end();
+        ++c )
+    {
+      Card::Color color = *c;
 
-            if( color == hi.game().trumpcolor() )
-              continue;
+      if( color == hi.game().trumpcolor() )
+        continue;
 
-            if(  ((hi.color_runs( color ) == 0)
-                  || hi.jabbedbyownteam(color) )
-                && (hi.hand().numberof( color ) <= 1 + hi.hand().numberof( Card( color, Card::ACE ) ) )
-              )
-              {
-               cardno += hi.hand().numberof( Card( color, Card::ACE ) );
+      if(  ((hi.color_runs( color ) == 0)
+            || hi.jabbedbyownteam(color) )
+         && (hi.hand().numberof( color ) <= 1 + hi.hand().numberof( Card( color, Card::ACE ) ) )
+        )
+      {
+        cardno += hi.hand().numberof( Card( color, Card::ACE ) );
 
-              }
+      }
 
           }
 
@@ -6394,14 +6400,34 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
                    value += 1;
     }
 
+    if (cardno >= 9 )
+      value += 1;
+    if (cardno >= hi.game().trickno() - 1 )
+      value += 2;
+    if (cardno >= hi.game().trickno() )
+      value += 1;
+    if (cardno == hi.hand().cardsnumber() )
+      value += 2;
+  } else
+  {
+    if (hi.hand().numberoftrumps() >= 9 )
+      value += 1;
+    if (hi.hand().numberoftrumps() >= hi.game().trickno() - 1 )
+      value += 2;
+    if (hi.hand().numberoftrumps() >= hi.game().trickno() )
+      value += 1;
+    if (hi.hand().numberoftrumps() == hi.hand().cardsnumber() )
+      value += 2;
+  }
+
 
 
   if (hi.hand().numberoftrumps() -1 < (hi.hand().cardsnumber()+1) / 2 )
-    value -= 1; 
+    value -= 1;
   if (hi.hand().numberoftrumps() -1 < (hi.hand().cardsnumber()+1) / 3 )
-    value -= 1; 
+    value -= 1;
   if (hi.hand().numberoftrumps() -1 < (hi.hand().cardsnumber()+1) / 4 )
-    value -= 1; 
+    value -= 1;
 
   if ( g.type() == GAMETYPE::NORMAL ) // remove a value if a lot of small trumps are on hand
   {
@@ -6414,12 +6440,12 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
   }
 
   if ( g.type() == GAMETYPE::NORMAL ) // remove a value for two heart aces
-   {
+  {
     if(    hi.game().rule()(Rule::DOLLEN)
-        && hi.game().trumpcolor() != Card::HEART
-        && hi.hand().numberof(Card::HEART,Card::ACE) == 2)
+       && hi.game().trumpcolor() != Card::HEART
+       && hi.hand().numberof(Card::HEART,Card::ACE) == 2)
       value -=1;
-   }
+  }
 
   if (    (::game_status > GAMESTATUS::GAME_START)
       && (hi.game().type() == GAMETYPE::POVERTY)
@@ -6427,17 +6453,17 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
     value -= 2;
 
   if ( (   g.type() == GAMETYPE::NORMAL
-        || g.type() == GAMETYPE::POVERTY )  
+        || g.type() == GAMETYPE::POVERTY )
       && hi.team() == TEAM::RE )
   {
     if( hi.hand().numberof( Card( Card::SPADE, Card::QUEEN ) ) == 2 )
-      value += 2; 
+      value += 2;
     if( hi.hand().numberof( Card( Card::HEART, Card::QUEEN ) ) == 2 )
       value += 1;
   }
 
   if (   ( hi.hand().numberof( Card::QUEEN ) < 3 ) // check for some queens on hand
-      ||(    hi.team() == TEAM::CONTRA 
+      ||(    hi.team() == TEAM::CONTRA
          && hi.hand().numberof( Card::QUEEN ) < 4 )
      )
   {
@@ -6448,7 +6474,7 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
   if( ::in_running_game() )
   {
     if( (   hi.game().trick_current().isfull()  // lost trick
-         && TEAM::maybe_to_team(hi.teamofplayer(hi.game().trick_current().winnerplayer())) != hi.team() 
+         && TEAM::maybe_to_team(hi.teamofplayer(hi.game().trick_current().winnerplayer())) != hi.team()
         ) ||
        (    !hi.game().trick_current().isempty() // lost color trick
         && !hi.game().trick_current().startcard().istrump()
@@ -6482,7 +6508,7 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
  ** @param        hi        heuristic interface
  **
  ** @return       card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author       Borg Enders
  ** @author       Diether Knof
  **
@@ -6544,7 +6570,7 @@ Heuristics::poverty_special_play_pfund(Trick const& trick,
       break;
     }
 
-  if (c.is_empty()) 
+  if (c.is_empty())
     return Card::EMPTY;
 
   // find a better card
@@ -6552,7 +6578,7 @@ Heuristics::poverty_special_play_pfund(Trick const& trick,
     if(   !ha.card(i).istrump()
        && (ha.card(i).value() != Card::ACE)
        && (ha.card(i).value() > c.value())
-       && (   (ha.numberof( ha.card(i).color() ) >  ha.numberof(c.color())) 
+       && (   (ha.numberof( ha.card(i).color() ) >  ha.numberof(c.color()))
            || (ha.numberof( ha.card(i).color(), Card::ACE ) == 0)
           )
       )
@@ -6570,7 +6596,7 @@ Heuristics::poverty_special_play_pfund(Trick const& trick,
  ** @param        hi        heuristic interface
  **
  ** @return       card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author       Borg Enders
  **
  ** @version      0.7.6
@@ -6654,7 +6680,7 @@ Heuristics::poverty_special_offer_pfund(Trick const& trick,
  ** @param        hi        heuristic interface
  **
  ** @return        card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author        Diether Knof
  **
  ** @version        0.7.3
@@ -6740,7 +6766,7 @@ Heuristics::poverty_special_give_no_points(Trick const& trick,
  ** @param        hi        heuristic interface
  **
  ** @return        card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author        Diether Knof
  **
  ** @version        0.7.3
@@ -6785,7 +6811,7 @@ Heuristics::poverty_re_trump_color_trick_high(Trick const& trick,
   list<Card> cards_to_play;
 
   if(   hi.color_runs( trick.startcard().color() ) > 0
-     && !trick.startcard().istrump() 
+     && !trick.startcard().istrump()
      && trick.points() >= 10 )
   {
     cards_to_play.push_back(Card(Card::SPADE,   Card::QUEEN));
@@ -6829,7 +6855,7 @@ Heuristics::poverty_re_trump_color_trick_high(Trick const& trick,
  ** @param        hi        heuristic interface
  **
  ** @return        card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author        Diether Knof
  **
  ** @version        0.7.3
@@ -6867,7 +6893,7 @@ Heuristics::poverty_re_play_trump(Trick const& trick,
       )
     {
       jacksAdded = true;
-      cards_to_play.push_back(Card(Card::CLUB,    Card::JACK));  
+      cards_to_play.push_back(Card(Card::CLUB,    Card::JACK));
       cards_to_play.push_back(Card(Card::SPADE,   Card::JACK));
       cards_to_play.push_back(Card(Card::HEART,   Card::JACK));
       cards_to_play.push_back(Card(Card::DIAMOND, Card::JACK));
@@ -6876,9 +6902,9 @@ Heuristics::poverty_re_play_trump(Trick const& trick,
     cards_to_play.push_back(Card(Card::HEART,   Card::QUEEN));
     cards_to_play.push_back(Card(Card::SPADE,   Card::QUEEN));
     cards_to_play.push_back(Card(Card::CLUB,    Card::QUEEN));
-    if( ! jacksAdded ) 
+    if( ! jacksAdded )
     {
-      cards_to_play.push_back(Card(Card::CLUB,    Card::JACK));  
+      cards_to_play.push_back(Card(Card::CLUB,    Card::JACK));
       cards_to_play.push_back(Card(Card::SPADE,   Card::JACK));
       cards_to_play.push_back(Card(Card::HEART,   Card::JACK));
       cards_to_play.push_back(Card(Card::DIAMOND, Card::JACK));
@@ -6888,14 +6914,14 @@ Heuristics::poverty_re_play_trump(Trick const& trick,
     // @heuristic::comment   \n\n
     // @heuristic::condition   partner has trump
     // @heuristic::action   play a high trump
-    if( hi.hand().numberofdolle() == 2 ) 
+    if( hi.hand().numberofdolle() == 2 )
       cards_to_play.push_back(Card::DOLLE);
 
     cards_to_play.push_back(Card(Card::CLUB,    Card::QUEEN));
     cards_to_play.push_back(Card(Card::SPADE,   Card::QUEEN));
     cards_to_play.push_back(Card(Card::HEART,   Card::QUEEN));
     cards_to_play.push_back(Card(Card::DIAMOND, Card::QUEEN));
-    cards_to_play.push_back(Card(Card::CLUB,    Card::JACK));  
+    cards_to_play.push_back(Card(Card::CLUB,    Card::JACK));
     cards_to_play.push_back(Card(Card::SPADE,   Card::JACK));
     cards_to_play.push_back(Card(Card::HEART,   Card::JACK));
     cards_to_play.push_back(Card(Card::DIAMOND, Card::JACK));
@@ -6923,7 +6949,7 @@ Heuristics::poverty_re_play_trump(Trick const& trick,
  ** @param        hi        heuristic interface
  **
  ** @return       card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author       Diether Knof
  **
  ** @version       0.7.3
@@ -7068,7 +7094,7 @@ Heuristics::poverty_contra_play_color(Trick const& trick,
  ** @param        hi        heuristic interface
  **
  ** @return       card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author       Diether Knof
  **
  ** @version      0.7.3
@@ -7164,7 +7190,7 @@ Heuristics::poverty_contra_trump_color_trick_high(Trick const& trick,
  ** @param        hi        heuristic interface
  **
  ** @return       card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author       Diether Knof
  **
  ** @version      0.7.3
@@ -7267,7 +7293,7 @@ Heuristics::poverty_leave_to_partner(Trick const& trick,
  ** @param        hi        heuristic interface
  **
  ** @return       card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author       Diether Knof
  **
  ** @version      0.7.3
@@ -7303,12 +7329,12 @@ Heuristics::poverty_overjab_re(Trick const& trick,
 
 /**
  ** best winning card for the last card
- * 
+ *
  ** @param        trick        current trick
  ** @param        hi        heuristic interface
  **
  ** @return       card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author       Diether Knof
  **
  ** @version      0.7.3
@@ -7492,7 +7518,7 @@ calcPointsOfOppositeTeam(HeuristicInterface const& hi, Game const& g,
  **
  ** @version      Beta
  **/
-bool 
+bool
 Heuristics::make_announcement( HeuristicInterface const& hi, const Game& g )
 {
   // @heuristic::name   ?  make announcement  ?
@@ -7559,8 +7585,8 @@ Heuristics::make_announcement( HeuristicInterface const& hi, const Game& g )
     value -= 1;
 
   if (   hi.teamofplayer(t.winnerplayer()) == hi.team()
-       &&  !oppositeTeamCanWinTrick( t, hi ) )
-     value += 2;
+      &&  !oppositeTeamCanWinTrick( t, hi ) )
+    value += 2;
 
   if (   (hi.game().type() == GAMETYPE::MARRIAGE)
       && (hi.game().marriage_selector() == MARRIAGE_SELECTOR::TEAM_SET)
@@ -7612,12 +7638,12 @@ Heuristics::make_announcement( HeuristicInterface const& hi, const Game& g )
   }
 
   if (   (hi.game().type() == GAMETYPE::NORMAL
-       || hi.game().type() == GAMETYPE::MARRIAGE) )
-    {
+          || hi.game().type() == GAMETYPE::MARRIAGE) )
+  {
 
-      if( hi.hand().numberoftrumps() < 1.5* hi.hand().cardsnumber() )
-        value -=  ( hi.hand().cardsnumber() - hi.hand().numberoftrumps() - 1);
-    }
+    if( hi.hand().numberoftrumps() < 1.5* hi.hand().cardsnumber() )
+      value -=  ( hi.hand().cardsnumber() - hi.hand().numberoftrumps() - 1);
+  }
 
 
 
@@ -7636,7 +7662,7 @@ Heuristics::make_announcement( HeuristicInterface const& hi, const Game& g )
       << (int)hi.value(Aiconfig::ANNOUNCECONFIG) << std::endl;
 #endif
 
-  return ( value >=  (static_cast<int>(hi.value(Aiconfig::ANNOUNCELIMIT)) 
+  return ( value >=  (static_cast<int>(hi.value(Aiconfig::ANNOUNCELIMIT))
                       + static_cast<int>(hi.value(Aiconfig::ANNOUNCECONFIG))));
 } // bool Heuristics::make_announcement( HeuristicInterface hi, Game g )
 
@@ -7656,22 +7682,22 @@ Heuristics::make_announcement( HeuristicInterface const& hi, const Game& g )
  **
  ** @version      Beta
  **/
-bool 
+bool
 Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
 {
   // @heuristic::name   ?  say no 90  ?
   // @heuristic::idea decision to make the annoncement no 90 depending on Heuristics::CalcHandValue
   int value = 0;
 
-  if( g.announcement_of_team( opposite( hi.team() ) ).announcement 
+  if( g.announcement_of_team( opposite( hi.team() ) ).announcement
      > ANNOUNCEMENT::NO120 )
     return false;
 
-  value = CalcHandValue( hi, g ) 
-    - std::max( 0, (int)g.tricks_remaining_no() - 7) 
+  value = CalcHandValue( hi, g )
+    - std::max( 0, (int)g.tricks_remaining_no() - 7)
     * static_cast<int>(hi.value(Aiconfig::ANNOUNCELIMITDEC));
 
-  if( g.announcement_of_team( opposite( hi.team() ) ).announcement 
+  if( g.announcement_of_team( opposite( hi.team() ) ).announcement
      != ANNOUNCEMENT::NOANNOUNCEMENT  )
     value -= 2;
 
@@ -7693,10 +7719,10 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
           && hi.game().poverty_partner().no() == hi.no()) )
     value -= 1;
 
-  for( vector<Card::Color>::const_iterator 
+  for( vector<Card::Color>::const_iterator
       c = hi.game().rule().card_colors().begin();
       c != hi.game().rule().card_colors().end();
-      ++c ) 
+      ++c )
   {
     Card::Color color = *c;
 
@@ -7748,22 +7774,22 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
   }
 
   Trick const t = (game_status < GAMESTATUS::GAME_PLAY
-                    ? Trick(g.startplayer())
-                    : g.trick_current());
+                   ? Trick(g.startplayer())
+                   : g.trick_current());
 
-   if (   hi.teamofplayer(t.winnerplayer()) != hi.team()
-       ||  oppositeTeamCanWinTrick( t, hi ) )
-     value -= 2;
+  if (   hi.teamofplayer(t.winnerplayer()) != hi.team()
+      ||  oppositeTeamCanWinTrick( t, hi ) )
+    value -= 2;
 
-   if (   hi.teamofplayer(t.winnerplayer()) == hi.team()
-        &&  !oppositeTeamCanWinTrick( t, hi ) )
-      value += 1;
+  if (   hi.teamofplayer(t.winnerplayer()) == hi.team()
+      &&  !oppositeTeamCanWinTrick( t, hi ) )
+    value += 1;
 
 #ifdef ANNOUNCE_DEBUG
   if( !g.isvirtual() )
-    cout << "NO90: " << hi.no() << "\t" << value << " + " 
+    cout << "NO90: " << hi.no() << "\t" << value << " + "
       << 2 * (int)hi.value(Aiconfig::ANNOUNCELIMITDEC ) << "\t"
-      << (int)hi.value(Aiconfig::ANNOUNCELIMIT) << " + " 
+      << (int)hi.value(Aiconfig::ANNOUNCELIMIT) << " + "
       << 2 * (int)hi.value(Aiconfig::ANNOUNCECONFIG) << std::endl;
   cout << "\t" << own_p << "\t" << 1.3 * opp_p << std::endl;
 #endif
@@ -7773,8 +7799,8 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
              )
           && (   (hi.game().played_points() <= 60)
               || (own_p > 1.3 * opp_p) )  // previous: 2, 1.5
-          && (opp_p < 90) 
-          && (   opp_p > 0  
+          && (opp_p < 90)
+          && (   opp_p > 0
               || g.last_chance_to_announce(ANNOUNCEMENT::NO90,
                                            g.player(hi.no()))
              )
@@ -7794,24 +7820,24 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
  **
  ** @version      Beta
  **/
-bool 
+bool
 Heuristics::say_no60( HeuristicInterface const& hi, const Game& g )
 {
   // @heuristic::name   ?  say no 60  ?
   // @heuristic::idea decision to make the annoncement no 60 depending on Heuristics::CalcHandValue
   int value = 0;
 
-  if( g.announcement_of_team( opposite( hi.team() ) ).announcement 
+  if( g.announcement_of_team( opposite( hi.team() ) ).announcement
      > ANNOUNCEMENT::NO120 )
     return false;
 
 
 
-  value = CalcHandValue( hi, g ) 
-    - std::max( 0, (int)g.tricks_remaining_no() - 5) 
+  value = CalcHandValue( hi, g )
+    - std::max( 0, (int)g.tricks_remaining_no() - 5)
     * static_cast<int>(hi.value(Aiconfig::ANNOUNCELIMITDEC));
 
-  if( g.announcement_of_team( opposite( hi.team() ) ).announcement 
+  if( g.announcement_of_team( opposite( hi.team() ) ).announcement
      != ANNOUNCEMENT::NOANNOUNCEMENT  )
     value -= 2;
 
@@ -7832,16 +7858,16 @@ Heuristics::say_no60( HeuristicInterface const& hi, const Game& g )
   own_p += 3 * hi.hand().numberoftrumps() * hi.hand().numberofhyperswines();
 
   Trick const t = (game_status < GAMESTATUS::GAME_PLAY
-                    ? Trick(g.startplayer())
-                    : g.trick_current());
+                   ? Trick(g.startplayer())
+                   : g.trick_current());
 
   if (   hi.teamofplayer(t.winnerplayer()) != hi.team()
       ||  oppositeTeamCanWinTrick( t, hi ) )
     value -= 2;
 
   if (   hi.teamofplayer(t.winnerplayer()) == hi.team()
-       &&  !oppositeTeamCanWinTrick( t, hi ) )
-     value += 1;
+      &&  !oppositeTeamCanWinTrick( t, hi ) )
+    value += 1;
 
   if (   (hi.game().type() == GAMETYPE::POVERTY)
       && (hi.no() == hi.game().poverty_partner().no()) )
@@ -7851,18 +7877,18 @@ Heuristics::say_no60( HeuristicInterface const& hi, const Game& g )
 
 #ifdef ANNOUNCE_DEBUG
   if( !g.isvirtual() )
-    cout << "NO60: " << hi.no() << "\t" << value << " + " 
+    cout << "NO60: " << hi.no() << "\t" << value << " + "
       << 3 * (int)hi.value(Aiconfig::ANNOUNCELIMITDEC ) << "\t"
-      << (int)hi.value(Aiconfig::ANNOUNCELIMIT) << " + " 
+      << (int)hi.value(Aiconfig::ANNOUNCELIMIT) << " + "
       << 3 * (int)hi.value(Aiconfig::ANNOUNCECONFIG) << std::endl;
 #endif
   return (   (  value + 3 * (int)hi.value(Aiconfig::ANNOUNCELIMITDEC)
               >   (int)hi.value(Aiconfig::ANNOUNCELIMIT)
               + 3 * (int)hi.value(Aiconfig::ANNOUNCECONFIG)
              )
-          && own_p > 2 * opp_p  // previous: 3 
-          && opp_p < 60 
-          && (   opp_p > 0  
+          && own_p > 2 * opp_p  // previous: 3
+          && opp_p < 60
+          && (   opp_p > 0
               || g.last_chance_to_announce(ANNOUNCEMENT::NO60,
                                            g.player(hi.no()))
              )
@@ -7882,7 +7908,7 @@ Heuristics::say_no60( HeuristicInterface const& hi, const Game& g )
  **
  ** @version      Beta
  **/
-bool 
+bool
 Heuristics::say_no30( HeuristicInterface const& hi, const Game& g )
 {
   // @heuristic::name   ?  say no 30  ?
@@ -7896,11 +7922,11 @@ Heuristics::say_no30( HeuristicInterface const& hi, const Game& g )
     return false;
 
 
-  value = CalcHandValue( hi, g ) 
-    - std::max( 0, (int)g.tricks_remaining_no() - 3) 
+  value = CalcHandValue( hi, g )
+    - std::max( 0, (int)g.tricks_remaining_no() - 3)
     * static_cast<int>(hi.value(Aiconfig::ANNOUNCELIMITDEC));
 
-  if( g.announcement_of_team( opposite( hi.team() ) ).announcement 
+  if( g.announcement_of_team( opposite( hi.team() ) ).announcement
      != ANNOUNCEMENT::NOANNOUNCEMENT  )
     value -= 2;
 
@@ -7927,9 +7953,9 @@ Heuristics::say_no30( HeuristicInterface const& hi, const Game& g )
              >   (int)hi.value(Aiconfig::ANNOUNCELIMIT)
              + (int)hi.value(Aiconfig::ANNOUNCECONFIG)
             )
-          && own_p > 7 * opp_p  
-          && opp_p < 30   
-          && (    opp_p > 0   
+          && own_p > 7 * opp_p
+          && opp_p < 30
+          && (    opp_p > 0
               || g.last_chance_to_announce(ANNOUNCEMENT::NO30,
                                            g.player(hi.no()))
              )
@@ -7952,12 +7978,12 @@ Heuristics::say_no30( HeuristicInterface const& hi, const Game& g )
  **
  ** @version   0.7.3
  **/
-bool 
+bool
 Heuristics::say_no0( HeuristicInterface const& hi, Game const& game )
 {
   // @heuristic::name   ?  say no 0  ?
   // @heuristic::idea decision to make the annoncement no 0 depending on Heuristics::CalcHandValue
-  if( game.announcement_of_team( opposite( hi.team() ) ).announcement 
+  if( game.announcement_of_team( opposite( hi.team() ) ).announcement
      != ANNOUNCEMENT::NOANNOUNCEMENT )
     return false;
 
@@ -7984,8 +8010,8 @@ Heuristics::say_no0( HeuristicInterface const& hi, Game const& game )
   // ToDo: check that no opposite player has the highest trump card
   // Test: force a player by 'ANNOUNCELIMITDEC' high
 
-  int const value = CalcHandValue( hi, game ) 
-    - std::max( 0, (int)game.tricks_remaining_no() ) 
+  int const value = CalcHandValue( hi, game )
+    - std::max( 0, (int)game.tricks_remaining_no() )
     * static_cast<int>(hi.value(Aiconfig::ANNOUNCELIMITDEC));
 
 #ifdef ANNOUNCE_DEBUG
@@ -8019,8 +8045,8 @@ Heuristics::say_no0( HeuristicInterface const& hi, Game const& game )
  **
  ** @todo      play the lowest highest card
  **/
-Card 
-Heuristics::play_highest_color(Trick const& trick, 
+Card
+Heuristics::play_highest_color(Trick const& trick,
                                HeuristicInterface const& hi,
                                Card::TColor const& tcolor)
 {
@@ -8058,7 +8084,7 @@ Heuristics::play_highest_color(Trick const& trick,
  ** @param     hi      heuristic interface
  **
  ** @return    card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author    Diether Knof
  **
  ** @version   0.7.4
@@ -8152,11 +8178,11 @@ Heuristics::partner_backhand_draw_trump(Trick const& trick,
  **
  ** @version   0.7.4
  **/
-Card 
+Card
 Heuristics::draw_trump(Trick const& trick, HeuristicInterface const& hi)
 {
   // @heuristic::name   draw trump
-  // @heuristic::idea play trumps to force other players to play also trumps        
+  // @heuristic::idea play trumps to force other players to play also trumps
 
   // @heuristic::condition   first player
   if( !trick.isstartcard() )
@@ -8165,7 +8191,7 @@ Heuristics::draw_trump(Trick const& trick, HeuristicInterface const& hi)
   // @heuristic::condition   more trumps then remaining trumps * 2
   // ToDo: check 'cannot have' for players
   if (! (   (hi.hand().numberoftrumps() * 2
-             > hi.cards_information().remaining_trumps_others()) 
+             > hi.cards_information().remaining_trumps_others())
          && hi.cards_information().remaining_trumps_others() ) )
     return Card::EMPTY;
 
@@ -8196,7 +8222,7 @@ Heuristics::draw_trump(Trick const& trick, HeuristicInterface const& hi)
 
 
 /**
- ** 
+ **
  ** prerequisites:
  **   1. startplayer
  **   2. no trumps remain in the game in the opposite team
@@ -8207,7 +8233,7 @@ Heuristics::draw_trump(Trick const& trick, HeuristicInterface const& hi)
  ** @param     hi      heuristic interface
  **
  ** @return    card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author    Borg Enders
  ** @author    Diether Knof
  **
@@ -8243,7 +8269,7 @@ Heuristics::play_highest_color_card_in_game(Trick const& trick,
     // ToDo: points equal, take the color with more points remaining
   } // for (c \in cards)
 
-  // @heuristic::action   take color card the opposite team can not get with the most points 
+  // @heuristic::action   take color card the opposite team can not get with the most points
   return best_card;
 } // Card Heuristics::play_highest_color_card_in_game(Trick trick, HeuristicInterface hi)
 
@@ -8258,7 +8284,7 @@ Heuristics::play_highest_color_card_in_game(Trick const& trick,
  ** @param     hi      heuristic interface
  **
  ** @return    card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author    Diether Knof
  **
  ** @version   0.7.4
@@ -8292,7 +8318,7 @@ Heuristics::grab_trick(Trick const& trick,
  ** @param     hi      heuristic interface
  **
  ** @return    card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author    Borg Enders
  ** @author    Diether Knof
  **
@@ -8321,7 +8347,7 @@ Heuristics::play_trump(Trick const& trick,
       return lowest_best_trump_card( trick, hi.hand(), hi );
     } // if (hi.team() == TEAM::RE)
     if (   (hi.team() == TEAM::CONTRA)
-        && hi.hand().numberof(trick.startcard().tcolor()) == 0 
+        && hi.hand().numberof(trick.startcard().tcolor()) == 0
        ) {
       Player const& re_player = hi.game().poverty_partner();
       if ( !(trick.cardno_of_player(re_player) < trick.actcardno()) ) {
@@ -8330,7 +8356,7 @@ Heuristics::play_trump(Trick const& trick,
 
         return lowest_best_trump_card( trick, hi.hand(), hi );
       }
-    } 
+    }
   } // if (hi.game().type() == GAMETYPE::POVERTY)
 
   // @heuristic::condition   only trumps
@@ -8386,7 +8412,7 @@ Heuristics::play_trump(Trick const& trick,
  ** @param     hi      heuristic interface
  **
  ** @return    card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author    Borg Enders
  ** @author    Diether Knof
  **
@@ -8468,12 +8494,12 @@ Heuristics::let_trick_pass(Trick const& trick,
  **
  ** @version   0.7.10
  **/
-Card 
-Heuristics::get_trick_for_keeping_announcement(Trick const& t, 
+Card
+Heuristics::get_trick_for_keeping_announcement(Trick const& t,
                                                HeuristicInterface const& hi)
 {
   // @heuristic::name   get trick for announcement
-  // @heuristic::idea   If this trick would open the possibility for the other team to win the announcement try to win this trick for the own team        
+  // @heuristic::idea   If this trick would open the possibility for the other team to win the announcement try to win this trick for the own team
 
   // @heuristic::condition   the trick goes to the opposite team
   if (hi.guessed_same_team(t.winnerplayer()))
@@ -8518,7 +8544,7 @@ Heuristics::get_trick_for_keeping_announcement(Trick const& t,
  **
  ** @version   0.7.5
  **/
-Card 
+Card
 Heuristics::play_for_partner_worries(Trick const& trick,
                                      HeuristicInterface const& hi)
 {
@@ -8539,7 +8565,7 @@ Heuristics::play_for_partner_worries(Trick const& trick,
 
 
 #if 0 //BE: old statement for four ifs above.
-  if ( !((trick.isempty() || trick.startcard().istrump()) && partner 
+  if ( !((trick.isempty() || trick.startcard().istrump()) && partner
          && trick.cardno_of_player(*partner) > trick.actcardno() ))
     return Card::EMPTY;
 #endif
@@ -8554,7 +8580,7 @@ Heuristics::play_for_partner_worries(Trick const& trick,
          card != validcards.end();
          card++) {
       HandCard const& actCard = *card;
-      if (actCard.value() >= 10 && (!actCard.isdolle()) 
+      if (actCard.value() >= 10 && (!actCard.isdolle())
           && !actCard.is_special())
       { // partner has worries so search for the lowest card that will win the trick
         worries_no += 1;
@@ -8607,7 +8633,7 @@ Heuristics::play_for_partner_worries(Trick const& trick,
  ** @param        hi        heuristic interface
  **
  ** @return       card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author       Diether Knof
  **
  ** @version      0.7.4
@@ -8678,7 +8704,7 @@ Heuristics::start_with_color(Trick const& trick,
  ** @param     hi      heuristic interface
  **
  ** @return    card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author    Florian Sundermann
  ** @author    Diether Knof
  **
@@ -8743,10 +8769,10 @@ Heuristics::start_with_low_color(Trick const& trick,
     for (vector<Card::Color>::const_iterator
          col = hi.game().rule().card_colors().begin();
          col != hi.game().rule().card_colors().end();
-         ++col) 
+         ++col)
     {
-      Card::Color const& color = *col; 
-      if (longestcolor == Card::NOCARDCOLOR 
+      Card::Color const& color = *col;
+      if (longestcolor == Card::NOCARDCOLOR
           || hi.hand().numberof(color) > hi.hand().numberof(longestcolor))
         longestcolor = color;
     } // for each color
@@ -8766,7 +8792,7 @@ Heuristics::start_with_low_color(Trick const& trick,
  ** @param     hi      heuristic interface
  **
  ** @return    card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author    Florian Sundermann
  ** @author    Diether Knof
  **
@@ -8779,7 +8805,7 @@ Heuristics::start_with_low_trump(Trick const& trick,
   // @heuristic::name   start with low trump
   // @heuristic::idea   Start the trick with a low trump to find the partner
   if (GAMETYPE::is_solo(hi.game().type())
-      || !trick.isstartcard() 
+      || !trick.isstartcard()
       || hi.team_information().guessed_partner() )
     return Card::EMPTY;
 
@@ -8814,7 +8840,7 @@ Heuristics::start_with_low_trump(Trick const& trick,
  ** @param     hi      heuristic interface
  **
  ** @return    card to play, 'Card()' if the heuristic does not match
- ** 
+ **
  ** @author    Borg Enders
  **
  ** @version   0.7.6
@@ -8868,7 +8894,7 @@ Heuristics::play_to_jab_later(Trick const& trick,
  **
  ** @version   0.6.3
  **/
-Announcement 
+Announcement
 Heuristics::make_reply( HeuristicInterface const& hi, const Game& g )
 {
   // @heuristic::name   ?  make reply  ?
@@ -8896,9 +8922,9 @@ Heuristics::make_reply( HeuristicInterface const& hi, const Game& g )
     return ANNOUNCEMENT::NOANNOUNCEMENT;
 
   {
-    int value = 0; 
+    int value = 0;
 
-    value = CalcHandValue( hi, g ); 
+    value = CalcHandValue( hi, g );
 
     if (    GAMETYPE::is_solo(hi.game().type())
         &&  (hi.team() == TEAM::RE) )
@@ -8906,7 +8932,7 @@ Heuristics::make_reply( HeuristicInterface const& hi, const Game& g )
 
     for( int a = (int)ANNOUNCEMENT::NO90;
         a <= announcement_opp;
-        a++ ) 
+        a++ )
       value += (int)hi.value(Aiconfig::ANNOUNCECONFIGREPLY);
 
     Trick t = g.trick_current();
@@ -8926,8 +8952,8 @@ Heuristics::make_reply( HeuristicInterface const& hi, const Game& g )
 
 #ifdef ANNOUNCE_DEBUG
     if( !g.isvirtual() )
-      cout << "REPLY: " << hi.no() << "\t" << value << "\t" 
-        << hi.value(Aiconfig::ANNOUNCELIMITREPLY) << std::endl; 
+      cout << "REPLY: " << hi.no() << "\t" << value << "\t"
+        << hi.value(Aiconfig::ANNOUNCELIMITREPLY) << std::endl;
 #endif
     if( value >=  static_cast<int>(hi.value(Aiconfig::ANNOUNCELIMITREPLY)) )
       return ANNOUNCEMENT::REPLY;
@@ -9088,7 +9114,7 @@ Heuristics::optimized_card_to_play(Card const& c,
  **
  ** @version   0.7.9
  **/
-Card 
+Card
 Heuristics::lowest_serving_card(Trick const& trick, HeuristicInterface const& hi)
 {
   if (trick.isempty())
@@ -9140,7 +9166,7 @@ Heuristics::lowest_serving_card(Trick const& trick, HeuristicInterface const& hi
  **
  ** @version   0.7.9
  **/
-Card 
+Card
 Heuristics::jabbing_card(Trick const& trick, HeuristicInterface const& hi)
 {
   if (trick.isempty())

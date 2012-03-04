@@ -1,3 +1,6 @@
+2012-03-04 Diether Knof
+	- heuristic 'choose for color trick': added a check in a poverty, that the poverty player can jab the trick
+
 2012-02-26 Diether Knof
 	- added cards information heuristic 'bride pfunds in decision trick'
 
