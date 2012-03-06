@@ -1697,11 +1697,35 @@ CardsInformation::recalc_weightings() const
   // * Replay the game and update the weighting (using the information of further played cards)
 
 
-  // create a dummy game
+  // create a virtual game
 
-  // build a new cards information for start of the game
+  // virtual players
+  vector<Player*> player_virt;
+  {
+    // Create new players.
+    // The hand is set during the recursion.
+    for (vector<Player*>::const_iterator player
+         = this->game().players_begin();
+         player != this->game().players_end();
+         player++) {
+        if ((*player)->no() == this->player().no())
+          player_virt.push_back(this->player().Ai::clone());
+        else
+          player_virt.push_back(this->player().Player::clone());
+      player_virt.back()->set_no(player_virt.size() - 1);
+      player_virt.back()->set_name((*player)->name());
+      player_virt.back()->set_team(this->player().team_information().guessed_team(player_virt.size() - 1));
+    } // for (player)
+
+  } // create a virtual game
+  Game virt_game(this->game(), player_virt);
+  virt_game.reset_to_first_trick();
+
+  // build a new cards information for the start of the game
+  CardsInformation cards_information(*player_virt[this->player().no()]);
 
   // replay the game (with announcements!)
+  // for each game action do game action
 
   // copy the cards information
 

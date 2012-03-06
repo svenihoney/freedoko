@@ -96,7 +96,6 @@ Game::Game(Party& party, Player& startplayer) :
 } // Game::Game(Party& party, Player const& startplayer)
 
 /**
- **
  ** constructor
  **
  ** @param	game	game to copy
@@ -104,10 +103,9 @@ Game::Game(Party& party, Player& startplayer) :
  **
  ** @return	-
  **
- ** @version	0.5.4
- **
  ** @author	Diether Knof
  **
+ ** @version	0.5.4
  **/
 Game::Game(Game const& game, vector<Player*>& players) :
   party_(game.party_),

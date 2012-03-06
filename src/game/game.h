@@ -67,13 +67,16 @@ class Game {
   public:
   // constructor
   Game(class Party& party, Player& startplayer);
-  // constructor
+  // constructor (for virtual games)
   Game(Game const& game, vector<Player*>& players);
   // destructor
   ~Game();
 
   // checks the data
   bool self_check() const;
+  // resets the game to the beginning of the first trick
+  // (that is after the cards distribution and reservation)
+  void reset_to_first_trick();
 
   // output of the game
   ostream& write(ostream& ostr) const;

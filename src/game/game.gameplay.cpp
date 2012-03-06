@@ -181,6 +181,7 @@ redistribute: // if the cards have to be redistributed
   return ;
 } // void Game::play()
 
+
 /**
  ** initializes a new game -- get reservations and set the game type
  **
@@ -492,6 +493,44 @@ Game::init()
 
   return ;
 } // void Game::init()
+
+/**
+ ** resets the game to the first trick
+ ** Does not reset the hands of the players.
+ ** This function is to be used to create a virtual copy of game that can be used to replay the game from the beginning (that is after shifting of the poverty)
+ **
+ ** @param       -
+ **
+ ** @return      -
+ **
+ ** @author      Diether Knof
+ **
+ ** @version     0.7.12
+ **/
+void
+Game::reset_to_first_trick()
+{
+
+  this->player_current_ = &this->player(this->startplayer().no());
+
+  this->marriage_selector_ = MARRIAGE_SELECTOR::TEAM_SET;
+  this->marriage_determination_trickno_ = UINT_MAX;
+  this->tricks_.clear();
+  this->teaminfo_set_at_gamestart();
+  this->human_teaminfo_ = this->teaminfo_;
+  // ToDo: add human to info
+  this->announcement_.clear();
+  this->swines_owner_ = NULL;
+  this->first_fox_catcher_ = NULL;
+  this->swines_announced_ = false;
+  this->hyperswines_owner_ = NULL;
+  this->hyperswines_announced_ = false;
+  this->finished_ = false;
+
+  // gameplay 
+
+  return ;
+} // void Game::reset_to_first_trick()
 
 /**
  ** -> result

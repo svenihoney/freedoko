@@ -636,11 +636,35 @@ CardsInformation::OfPlayer::weighting(Card const& card, bool const modify) const
  **
  ** @param	-
  **
+ ** @return	the cards the player has played
+ **
+ ** @author	Diether Knof
+ **
+ ** @version	0.7.12
+ **/
+Hand
+CardsInformation::OfPlayer::played_cards() const
+{
+  Hand cards(this->player());
+
+  for (list<Card>::const_iterator c = this->played_.cards().begin();
+       c != this->played_.cards().end();
+       ++c)
+    cards.add(*c);
+
+  return cards;
+} // Hand CardsInformation::OfPlayer::played_cards() const
+
+/**
+ ** -> result
+ **
+ ** @param	-
+ **
  ** @return	the cards the player must have
  **
  ** @author	Diether Knof
  **
- ** @version	0.8.9
+ ** @version	0.7.9
  **/
 Hand
 CardsInformation::OfPlayer::must_have_cards() const
@@ -654,6 +678,32 @@ CardsInformation::OfPlayer::must_have_cards() const
 
   return cards;
 } // Hand CardsInformation::OfPlayer::must_have_cards() const
+
+/**
+ ** -> result
+ **
+ ** @param	-
+ **
+ ** @return	the cards the player cannot have
+ **
+ ** @author	Diether Knof
+ **
+ ** @version	0.7.9
+ **/
+Hand
+CardsInformation::OfPlayer::cannot_have_cards() const
+{
+  Hand cards(this->player());
+
+    for (vector<Card>::const_iterator
+         c = this->game().rule().cards().begin();
+         c != this->game().rule().cards().end();
+         ++c)
+      for (int i = 0; i < this->cannot_have(*c); ++i)
+        cards.add(*c);
+
+  return cards;
+} // Hand CardsInformation::OfPlayer::cannot_have_cards() const
 
 /**
  ** -> result

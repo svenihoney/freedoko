@@ -99,8 +99,12 @@ class CardsInformation::OfPlayer {
   int weighting(Card const& card, bool const modify = true) const;
 
 
+  // the cards the player has played
+  Hand played_cards() const;
   // the cards the player must have
   Hand must_have_cards() const;
+  // the cards the player cannot have
+  Hand cannot_have_cards() const;
   // hand with all possible cards of the player
   Hand possible_hand() const;
   // the estimated hand for the player
