@@ -138,8 +138,8 @@ int TrickWeighting::modi_dolle_swines(VirtualGamesInterface const& vgi,
 
      if (  trick.startplayer().no() == vgi.no() )
      {
-       // previous: 12
-       modi -= 18;
+       // previous: 12, 18
+       modi -= 23;  // 23: 002645
        if (    ai.hand().numberofswines() +
            ai.hand().numberofhyperswines() +
            ai.hand().numberof( Card::DOLLE ) == ai.hand().numberoftrumps() )
@@ -1011,6 +1011,10 @@ int TrickWeighting::modi_other_trumps(VirtualGamesInterface const& vgi,
   if (  (vgi.no() == trick.startplayer().no()))
   {
     modi -= 2;
+
+    if( ai.hand().numberoftrumps() == ai.hand().cardsnumber()
+        && card.value() < 3 )
+      modi +=5; // Reference 012664
   }
 
   { // the player has overjabbed his partner without need
