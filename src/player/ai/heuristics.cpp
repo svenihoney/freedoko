@@ -7634,6 +7634,15 @@ Heuristics::make_announcement( HeuristicInterface const& hi, const Game& g )
     return false;
 
 
+  if( ::in_running_game() )
+  {
+    if( (   hi.game().trick_current().isfull()  // lost trick
+         && hi.game().trick_current().winnerplayer().no() == hi.no()
+         && hi.game().trick_current().points() > 15) )
+
+      value += 1;
+      }
+
 
 #ifdef ANNOUNCE_DEBUG
   if( !g.isvirtual() )
@@ -7697,7 +7706,10 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
 
   if (   (hi.game().type() == GAMETYPE::POVERTY
           && hi.game().poverty_partner().no() == hi.no()) )
-    value -= 1;
+    {
+      value -= 2;
+      value -= 2* (2-hi.hand().numberofdolle());
+    }
 
   for( vector<Card::Color>::const_iterator
       c = hi.game().rule().card_colors().begin();
