@@ -1,0 +1,10 @@
+set(LOCAL_SOURCES
+  translation.cpp
+  translator.cpp
+  setting.cpp
+  setting.theme.cpp
+  setting.cardsorder.cpp
+  bug_report.cpp
+  references_check.cpp
+)
+toglobalsources(${LOCAL_SOURCES})
