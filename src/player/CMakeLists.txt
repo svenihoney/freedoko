@@ -1,0 +1,14 @@
+add_subdirectory(rating)
+add_subdirectory(human)
+add_subdirectory(ai)
+add_subdirectory(ai.dummy)
+add_subdirectory(ai.random)
+add_subdirectory(network)
+set(LOCAL_SOURCES
+  namegen.cpp
+  player.cpp
+  playersDb.cpp
+  aiconfig.cpp
+  heuristicsmap.cpp
+)
+toglobalsources(${LOCAL_SOURCES})

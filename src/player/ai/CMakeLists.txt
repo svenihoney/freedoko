@@ -1,0 +1,17 @@
+set(LOCAL_SOURCES
+  ai.cpp
+  aiDb.cpp
+  team_information.cpp
+  team_information.heuristics.cpp
+  cards_information.cpp
+  cards_information.of_player.cpp
+  cards_information.heuristics.cpp
+  heuristics.cpp
+  heuristics.best_winning.cpp
+  weighting.cpp
+  trickweighting.cpp
+  w_virtual_games.cpp
+  gametree.cpp
+  w_monte_carlo.cpp
+)
+toglobalsources(${LOCAL_SOURCES})

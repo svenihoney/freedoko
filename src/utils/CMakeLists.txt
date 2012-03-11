@@ -1,0 +1,10 @@
+set(LOCAL_SOURCES
+  file.cpp
+  string.cpp
+  windows.cpp
+  version.cpp
+  date.cpp
+  time.cpp
+  stop_watch.cpp
+)
+toglobalsources(${LOCAL_SOURCES})

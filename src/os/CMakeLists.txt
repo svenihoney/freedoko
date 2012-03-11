@@ -1,0 +1,11 @@
+set(LOCAL_SOURCES
+  os.cpp
+  gameplay.cpp
+  seed.cpp
+  party_points.cpp
+  bug_report.cpp
+  bug_report_replay.cpp
+  auto_bug_report.cpp
+  chatter.cpp
+)
+toglobalsources(${LOCAL_SOURCES})

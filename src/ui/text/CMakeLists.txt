@@ -1,0 +1,19 @@
+set(LOCAL_SOURCES
+  ui.cpp
+  ui.init.cpp
+  ui.party.cpp
+  ui.game.cpp
+  ui.poverty.cpp
+  ui.swines.cpp
+  ui.game.gameplay.cpp
+  ui.genscher.cpp
+  ui.trick.cpp
+  ui.update.cpp
+  ui.io.cpp
+  general.cpp
+  party.cpp
+  bug_report.cpp
+  help.cpp
+  settings.cpp
+)
+toglobalsources(${LOCAL_SOURCES})

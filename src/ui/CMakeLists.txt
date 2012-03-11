@@ -1,0 +1,9 @@
+add_subdirectory(text)
+add_subdirectory(gtkmm)
+set(LOCAL_SOURCES
+  ui.cpp
+  ui.dummy.cpp
+  ui.wrap.cpp
+  help.cpp
+)
+toglobalsources(${LOCAL_SOURCES})
