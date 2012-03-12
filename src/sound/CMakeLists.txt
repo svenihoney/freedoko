@@ -1,3 +1,7 @@
-add_library(fd_sound STATIC
-sound.cpp command.cpp playsound.cpp alut.cpp)
-
+set(LOCAL_SOURCES
+  sound.cpp 
+  command.cpp 
+  playsound.cpp 
+  alut.cpp
+)
+toglobalsources(${LOCAL_SOURCES})

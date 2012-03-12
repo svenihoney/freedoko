@@ -7,8 +7,13 @@ find_package(PkgConfig)
 pkg_check_modules(GTKMM gtkmm-2.4)
 pkg_check_modules(GNET gnet-2.0)
 
-pkg_check_modules(ALUT freealut)
-find_package(Boost COMPONENTS filesystem system)
+if(USE_SOUND)
+  pkg_check_modules(ALUT freealut)
+endif(USE_SOUND)
+
+if(USE_BOOST)
+  find_package(Boost COMPONENTS filesystem system)
+endif(USE_BOOST)
 
 option(USE_THREADS "Use thread library (experimental)")
 if(USE_THREADS)

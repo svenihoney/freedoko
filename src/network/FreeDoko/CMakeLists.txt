@@ -1,0 +1,9 @@
+add_subdirectory(parser)
+set(LOCAL_SOURCES
+  sender.game.cpp
+  interpreter.cpp
+  sender.cpp
+  sender.party.cpp
+  receiver.cpp
+)
+toglobalsources(${LOCAL_SOURCES})

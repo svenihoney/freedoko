@@ -1,5 +1,12 @@
 include(CMakeChecks.txt)
 
+macro(toglobalsources LOCAL_SOURCES)
+  foreach(SRC ${ARGV})
+    list(APPEND GLOBAL_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${SRC})
+  endforeach(SRC)
+  set(FREEDOKO_SOURCES ${FREEDOKO_SOURCES} ${GLOBAL_SOURCES} PARENT_SCOPE)
+endmacro(toglobalsources)
+
 include_directories(SYSTEM
   ${GTKMM_INCLUDE_DIRS} 
   ${GNET_INCLUDE_DIRS}
@@ -11,17 +18,15 @@ if(GTKMM_FOUND)
   add_definitions( -DUSE_UI_GTKMM )
 endif(GTKMM_FOUND)
 
-if(ALUT_FOUND)
-  add_definitions( -DUSE_SOUND -DUSE_SOUND_ALUT )
-  add_subdirectory(sound)
-  set(SOUND_LIB fd_sound)
-endif(ALUT_FOUND)
-
 if(GNET_FOUND)
   add_definitions( -DUSE_NETWORK )
   add_subdirectory(network)
-  set(NETWORK_LIB fd_network)
 endif(GNET_FOUND)
+
+if(ALUT_FOUND)
+  add_definitions( -DUSE_SOUND -DUSE_SOUND_ALUT )
+  add_subdirectory(sound)
+endif(ALUT_FOUND)
 
 if(Boost_FOUND)
   add_definitions( -DBOOST )
@@ -69,13 +74,6 @@ ADD_CUSTOM_COMMAND(
 )
 ADD_CUSTOM_TARGET(copy_logos DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/logo.png)
 
-macro(toglobalsources LOCAL_SOURCES)
-  foreach(SRC ${ARGV})
-    list(APPEND GLOBAL_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${SRC})
-  endforeach(SRC)
-  set(FREEDOKO_SOURCES ${FREEDOKO_SOURCES} ${GLOBAL_SOURCES} PARENT_SCOPE)
-endmacro(toglobalsources)
-
 add_subdirectory(card)
 add_subdirectory(game)
 add_subdirectory(class)
@@ -100,7 +98,6 @@ add_executable(FreeDoko
 add_dependencies(FreeDoko copy_logos)
 
 target_link_libraries(FreeDoko 
-  ${SOUND_LIB} ${NETWORK_LIB}
   ${GTKMM_LIBRARIES} ${GNET_LIBRARIES} ${ALUT_LIBRARIES}
   ${Boost_LIBRARIES}
   ${CMAKE_THREAD_LIBS_INIT}
