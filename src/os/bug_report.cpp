@@ -26,6 +26,7 @@
  *
  *********************************************************************/
 
+#include "config.h"
 #include "constants.h"
 
 #include "../utils/file.h"
@@ -50,7 +51,7 @@
 #include "../network/connection.h"
 #endif
 
-#ifdef WINDOWS
+#ifdef HAVE_IO_H
 // for 'mkdir'
 #include <io.h>
 #else
@@ -75,7 +76,7 @@ namespace OS_NS {
    ** @return    the filename in which the report is written
    **
    ** @author    Diether Knof
-   ** 
+   **
    ** @version   0.7.4
    **/
   string
@@ -93,7 +94,7 @@ namespace OS_NS {
    ** @return    the filename in which the report is written
    **
    ** @author    Diether Knof
-   ** 
+   **
    ** @version   0.7.3
    **/
   string
@@ -167,15 +168,7 @@ namespace OS_NS {
           << "version: " << *::version
           << '\n'
           << "compiled: " << __DATE__ << ", " << __TIME__ << '\n'
-#ifdef WINDOWS
-          << "system: Windows\n"
-#endif
-#ifdef LINUX
-          << "system: Linux\n"
-#endif
-#ifdef HPUX
-          << "system: HPUX\n"
-#endif
+          << "system: " << g_system_name << "\n"
           << "time: " << asctime(localtime(&time_now)) << "\n"
           << "language: " << ::setting(Setting::LANGUAGE) << "\n";
 
@@ -291,7 +284,7 @@ namespace OS_NS {
               *ofstr << '\n'
                 << "current trick\n"
                 << this->game().trick_current();
-            } // if (this->game().trick_current_no() != UINT_MAX) 
+            } // if (this->game().trick_current_no() != UINT_MAX)
           } // if (game_status & GAME)
         } // write the current hands
 #endif
@@ -361,7 +354,7 @@ namespace OS_NS {
    ** @return    -
    **
    ** @author    Diether Knof
-   ** 
+   **
    ** @version   0.6.7
    **/
   BugReport::BugReport() :
@@ -389,7 +382,7 @@ namespace OS_NS {
    ** @param     -
    **
    ** @return    -
-   ** 
+   **
    ** @version   0.6.7
    **
    ** @author    Diether Knof
@@ -434,7 +427,7 @@ namespace OS_NS {
    ** @return    -
    **
    ** @author    Diether Knof
-   ** 
+   **
    ** @version   0.6.7
    **/
   void
@@ -453,7 +446,7 @@ namespace OS_NS {
    ** @param     -
    **
    ** @return    -
-   ** 
+   **
    ** @version   0.6.7b
    **
    ** @author    Diether Knof
@@ -474,7 +467,7 @@ namespace OS_NS {
    ** @return    -
    **
    ** @author    Diether Knof
-   ** 
+   **
    ** @version   0.6.7
    **/
   void
@@ -547,9 +540,9 @@ namespace OS_NS {
    ** @return    -
    **
    ** @author    Diether Knof
-   ** 
+   **
    ** @version   0.6.7
-   ** 
+   **
    ** @todo      poverty
    **/
   void
@@ -633,12 +626,12 @@ namespace OS_NS {
    ** @return    -
    **
    ** @author    Diether Knof
-   ** 
+   **
    ** @version   0.7.3
    **/
   void
     BugReport::game_finish()
-    { 
+    {
       this->OS::game_finish();
 
       this->game_summary = new GameSummary(this->party().last_game_summary());
@@ -654,7 +647,7 @@ namespace OS_NS {
    ** @return    -
    **
    ** @author    Diether Knof
-   ** 
+   **
    ** @version   0.7.3
    **/
   void
@@ -704,7 +697,7 @@ namespace OS_NS {
    ** @param     -
    **
    ** @return    -
-   ** 
+   **
    ** @author    Diether Knof
    **
    ** @version   0.6.7
@@ -726,7 +719,7 @@ namespace OS_NS {
    ** @param     -
    **
    ** @return    -
-   ** 
+   **
    ** @author    Diether Knof
    **
    ** @version   0.6.7
@@ -769,7 +762,7 @@ namespace OS_NS {
    ** @return    the directory to save the bug report in
    **
    ** @author    Diether Knof
-   ** 
+   **
    ** @version   0.6.7
    **/
   string
@@ -790,7 +783,7 @@ namespace OS_NS {
    ** @param     -
    **
    ** @return    the filename (BUG_REPORT_FILE.`seed`)
-   ** 
+   **
    ** @author    Diether Knof
    **
    ** @version   0.6.7
@@ -809,7 +802,7 @@ namespace OS_NS {
    ** @return    the filename (`seed`.BUG_REPORT_FILE)
    **
    ** @author    Diether Knof
-   ** 
+   **
    ** @version   0.7.5
    **/
   string

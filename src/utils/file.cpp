@@ -2,20 +2,20 @@
 //
 //   Copyright (C) 2002  by Diether Knof
 //
-//   This program is free software; you can redistribute it and/or 
-//   modify it under the terms of the GNU General Public License as 
-//   published by the Free Software Foundation; either version 2 of 
+//   This program is free software; you can redistribute it and/or
+//   modify it under the terms of the GNU General Public License as
+//   published by the Free Software Foundation; either version 2 of
 //   the License, or (at your option) any later version.
 //
 //   This program is distributed in the hope that it will be useful,
 //   but WITHOUT ANY WARRANTY; without even the implied warranty of
 //   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//   GNU General Public License for more details. 
+//   GNU General Public License for more details.
 //   You can find this license in the file 'gpl.txt'.
 //
 //   You should have received a copy of the GNU General Public License
 //   along with this program; if not, write to the Free Software
-//   Foundation, Inc., 59 Temple Place, Suite 330, Boston, 
+//   Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 //   MA  02111-1307  USA
 //
 //  Contact:
@@ -23,19 +23,20 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
+#include "config.h"
 #include "file.h"
 #include "string.h"
 #include "windows.h"
 
 #include <sys/stat.h>
-#if defined(LINUX) || defined(HPUX)
+#ifdef UNIX
 // for getpwent
 #include <pwd.h>
 #include <unistd.h>
 // for MAXPATHLEN
 #include <sys/param.h>
 #endif
-#ifdef WINDOWS
+#ifdef HAVE_SHLOBJ_H
 // for SHGetFolderPath
 #include <shlobj.h>
 #endif
@@ -58,7 +59,7 @@ namespace DK {
        ** @param	-
        **
        ** @return	the home directory
-       ** 
+       **
        ** @author	Diether Knof
        **
        ** @version	2003-10-30
@@ -67,7 +68,7 @@ namespace DK {
       string
 	home_directory()
 	{
-#ifndef WINDOWS
+#ifdef HAVE_GETPWUID
 	  if (getenv("HOME") != NULL)
 	    return getenv("HOME");
 
@@ -82,11 +83,11 @@ namespace DK {
             // see http://msdn.microsoft.com/en-us/library/bb762181(VS.85).aspx
             TCHAR szPath[MAX_PATH];
 
-            if(SUCCEEDED(SHGetFolderPath(NULL, 
-                                         CSIDL_APPDATA|CSIDL_FLAG_CREATE, 
-                                         NULL, 
-                                         0, 
-                                         szPath))) 
+            if(SUCCEEDED(SHGetFolderPath(NULL,
+                                         CSIDL_APPDATA|CSIDL_FLAG_CREATE,
+                                         NULL,
+                                         0,
+                                         szPath)))
             {
               return szPath;
             }
@@ -109,7 +110,7 @@ namespace DK {
        **
        ** @return	the desktop directory
        ** 		empty string, if the directory does not exists
-       ** 
+       **
        ** @author	Diether Knof
        **
        ** @version	2004-03-03
@@ -123,7 +124,7 @@ namespace DK {
                                               "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders",
                                               "Desktop");
 #endif
-#ifdef LINUX
+#ifdef UNIX
           if (DK::Utils::File::isdirectory(home_directory() + "/Desktop"))
             return (home_directory() + "/Desktop");
 #endif
@@ -138,7 +139,7 @@ namespace DK {
        ** @param	filename	the filename to be checked
        **
        ** @return	the dirname of 'filename'
-       ** 
+       **
        ** @author	Diether Knof
        **
        ** @version	2003-03-30
@@ -174,7 +175,7 @@ namespace DK {
        ** @param	suffix		the suffix, that shall be removed
        **
        ** @return	the basename of 'filename' without 'suffix'
-       ** 
+       **
        ** @author	Diether Knof
        **
        ** @version	2003-03-30
@@ -209,7 +210,7 @@ namespace DK {
        ** @param	filename	the filename to be checked
        **
        ** @return	the extension of 'filename'
-       ** 
+       **
        ** @author	Diether Knof
        **
        ** @version	2003-03-30
@@ -240,7 +241,7 @@ namespace DK {
        ** @param	name	the name to check
        **
        ** @return	whether 'name' is a file that exists
-       ** 
+       **
        ** @author	Diether Knof
        **
        ** @version	2003-03-30
@@ -252,7 +253,7 @@ namespace DK {
           struct stat status;
 
           // look, whether the file exists
-#ifdef LINUX
+#ifdef HAVE_LSTAT
           if (lstat(name.c_str(), &status) == -1)
 #else
             ;
@@ -270,7 +271,7 @@ namespace DK {
        ** @param	name	the name to check
        **
        ** @return	whether 'name' is a directory that exists
-       ** 
+       **
        ** @author	Diether Knof
        **
        ** @version	2003-03-30
@@ -282,7 +283,7 @@ namespace DK {
           struct stat status;
 
           // look, whether the file exists
-#ifdef LINUX
+#ifdef HAVE_LSTAT
           if (lstat(name.c_str(), &status) == -1)
 #else
             ;
@@ -302,7 +303,7 @@ namespace DK {
        ** @param	filename	filename to be expanded
        **
        ** @return	expanded filename
-       ** 
+       **
        ** @author	Diether Knof
        **
        ** @version	2003-04-02
@@ -332,7 +333,7 @@ namespace DK {
        ** @param     path   path (relative or absolute
        **
        ** @return    absolute path, 'path' if it could not be detected
-       ** 
+       **
        ** @author    Dirk Przybylla
        ** @author    Diether Knof
        **

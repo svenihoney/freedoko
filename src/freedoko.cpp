@@ -1,23 +1,23 @@
 /**********************************************************************
  *
  *   FreeDoko a Doppelkopf-Game
- *    
+ *
  *   Copyright (C) 2001-2013  by Diether Knof and Borg Enders
  *
- *   This program is free software; you can redistribute it and/or 
- *   modify it under the terms of the GNU General Public License as 
- *   published by the Free Software Foundation; either version 2 of 
+ *   This program is free software; you can redistribute it and/or
+ *   modify it under the terms of the GNU General Public License as
+ *   published by the Free Software Foundation; either version 2 of
  *   the License, or (at your option) any later version.
  *
  *   This program is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details. 
+ *   GNU General Public License for more details.
  *   You can find this license in the file 'gpl.txt'.
  *
  *   You should have received a copy of the GNU General Public License
  *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, 
+ *   Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *   MA  02111-1307  USA
  *
  *  Contact:
@@ -29,16 +29,17 @@
 
 /**
  **
- ** Alpha-Version of FreeDoko 
+ ** Alpha-Version of FreeDoko
  **
  **   developed since fall 2001
  **
  **/
 
+#include "config.h"
 #include "constants.h"
 #include <ctime>
 #include <unistd.h>
-#ifdef WINDOWS
+#ifdef HAVE_IO_H
 // for 'mkdir'
 #include <io.h>
 #else
@@ -259,7 +260,7 @@ main(int argc, char* argv[])
           return EXIT_FAILURE;
         } // if (option.fail())
 
-        if (   (option.name() == "help") 
+        if (   (option.name() == "help")
             || (option.name() == "hilfe")) {
           // output of the help
 #ifdef WINDOWS
@@ -273,16 +274,8 @@ main(int argc, char* argv[])
         } else if (option.name() == "version") {
           // output of the version
           cout << "FreeDoko " << *::version << "\n"
-            << "compiled: " << __DATE__ << ", " << __TIME__ << '\n'
-#ifdef WINDOWS
-            << "system: Windows\n"
-#endif
-#ifdef LINUX
-            << "system: Linux\n"
-#endif
-#ifdef HPUX
-            << "system: HPUX\n"
-#endif
+               << "compiled: " << __DATE__ << ", " << __TIME__ << '\n'
+               << "system: " << g_system_name << "\n"
             ;
           return EXIT_SUCCESS;
         } else if (option.name() == "license") {
@@ -603,7 +596,7 @@ main(int argc, char* argv[])
         if (!DK::Utils::File::isdirectory(*dir)) {
           information += (::translation("Message::creating directory \'%sdir%\'",
                                         *dir));
-#ifdef WINDOWS
+#ifdef HAVE_IO_H
           if (mkdir(dir->c_str()) != 0)
 #else
             if (mkdir(dir->c_str(), 00700) != 0)
