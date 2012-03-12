@@ -11,7 +11,10 @@ pkg_check_modules(GNET gnet-2.0)
 find_package(Boost COMPONENTS filesystem system)
 include_directories(${Boost_INCLUDE_DIRS})
 
-find_package(Threads)
+option(USE_THREADS "Use thread library (experimental)")
+if(USE_THREADS)
+  find_package(Threads)
+endif(USE_THREADS)
 
 set(DATA_INSTALL_DIR share/games/FreeDoko)
 set(DOC_INSTALL_DIR share/doc/freedoko)
