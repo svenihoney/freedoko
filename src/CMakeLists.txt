@@ -1,18 +1,21 @@
+include(CMakeChecks.txt)
+
 include_directories(SYSTEM
   ${GTKMM_INCLUDE_DIRS} 
   ${GNET_INCLUDE_DIRS}
   ${ALUT_INCLUDE_DIRS} 
+  ${CMAKE_CURRENT_BINARY_DIR}
 )
 
 if(GTKMM_FOUND)
   add_definitions( -DUSE_UI_GTKMM )
 endif(GTKMM_FOUND)
 
-#if(ALUT_FOUND)
-#  add_definitions( -DUSE_SOUND -DUSE_SOUND_ALUT )
-#  add_subdirectory(sound)
-#  set(SOUND_LIB fd_sound)
-#endif(ALUT_FOUND)
+if(ALUT_FOUND)
+  add_definitions( -DUSE_SOUND -DUSE_SOUND_ALUT )
+  add_subdirectory(sound)
+  set(SOUND_LIB fd_sound)
+endif(ALUT_FOUND)
 
 if(GNET_FOUND)
   add_definitions( -DUSE_NETWORK )
@@ -20,9 +23,10 @@ if(GNET_FOUND)
   set(NETWORK_LIB fd_network)
 endif(GNET_FOUND)
 
-#if(Boost_FOUND)
-#  add_definitions( -DBOOST )
-#endif(Boost_FOUND)
+if(Boost_FOUND)
+  add_definitions( -DBOOST )
+  include_directories(${Boost_INCLUDE_DIRS})
+endif(Boost_FOUND)
 
 if(Threads_FOUND)
   add_definitions( -DUSE_THREADS )

@@ -149,7 +149,7 @@ UI::new_(UI_TYPE::UIType const type)
 void
 UI::sleep(unsigned const sleep_msec)
 {
-#ifdef LINUX
+#ifdef HAVE_USLEEP
   usleep(1000 * sleep_msec);
 #endif
   this->update();

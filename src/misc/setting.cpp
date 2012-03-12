@@ -1,23 +1,23 @@
 /**********************************************************************
  *
  *   FreeDoko a Doppelkopf-Game
- * 
+ *
  *   Copyright (C) 2001-2013  by Diether Knof and Borg Enders
  *
- *   This program is free software; you can redistribute it and/or 
- *   modify it under the terms of the GNU General Public License as 
- *   published by the Free Software Foundation; either version 2 of 
+ *   This program is free software; you can redistribute it and/or
+ *   modify it under the terms of the GNU General Public License as
+ *   published by the Free Software Foundation; either version 2 of
  *   the License, or (at your option) any later version.
  *
  *   This program is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details. 
+ *   GNU General Public License for more details.
  *   You can find this license in the file 'gpl.txt'.
  *
  *   You should have received a copy of the GNU General Public License
  *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, 
+ *   Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  *   MA  02111-1307  USA
  *
  *  Contact:
@@ -26,14 +26,17 @@
  *
  ********************************************************************/
 
+#include "config.h"
 #include "constants.h"
 
 #include "setting.h"
 #include "setting.cardsorder.h"
 #include "setting.theme.h"
 
-#ifdef LINUX
-#include <unistd.h>
+#ifdef HAVE_GETENV
+#include <stdlib.h>
+#endif
+#ifdef HAVE_GETPWUID
 #include <pwd.h>
 #include <sys/types.h>
 #endif
@@ -74,7 +77,7 @@ unsigned const Setting::STRING_CONST_NUMBER = (1 + Setting::STRING_CONST_LAST
 
 /**
  ** constructor
- ** 
+ **
  ** @param     -
  **
  ** @return    -
@@ -107,7 +110,7 @@ Setting::Setting() :
 
 /**
  ** copy constructor
- ** 
+ **
  ** @param     setting   setting to copy
  **
  ** @return    -
@@ -138,7 +141,7 @@ Setting::Setting(Setting const& setting):
 
 /**
  ** copy operator
- ** 
+ **
  ** @param     setting   setting to copy
  **
  ** @return    this
@@ -168,7 +171,7 @@ Setting::operator=(Setting const& setting)
 
 /**
  ** destructor
- ** 
+ **
  ** @param     -
  **
  ** @return    -
@@ -186,7 +189,7 @@ Setting::~Setting()
 
 /**
  ** set the values to the hardcoded
- ** 
+ **
  ** @param     -
  **
  ** @return    -
@@ -615,7 +618,7 @@ Setting::operator()(TypeString const type) const
   if (value.empty()) {
     switch(type) {
     case NAME:
-#ifdef LINUX
+#ifdef HAVE_GETPWUID
       value = getpwuid(geteuid())->pw_gecos;
       if (value.empty())
         // no real name - take the login
@@ -685,7 +688,7 @@ Setting::operator()(TypeString const type) const
 #endif
     case LANGUAGE:
       value = "en";
-#ifdef LINUX
+#ifdef HAVE_GETENV
       if (getenv("LANG"))
         if (string(getenv("LANG"), 0, 2) == string("de"))
           value = "de";
@@ -800,7 +803,7 @@ Setting::operator()(TypeString const type) const
                                                  "Software\\CLASSES\\" + class_str
                                                  + "\\shell\\open\\command",
                                                  "");
-          if (   (value.size() >= 5)  
+          if (   (value.size() >= 5)
               && string(value, value.size() - 4, std::string::npos) == "\"\%1\"")
             value = string(value, 0, value.size() - 4);
         } // if (!class_str.empty())
@@ -816,7 +819,7 @@ Setting::operator()(TypeString const type) const
 #endif // #ifdef USE_SOUND_COMMAND
 
     case BROWSER_COMMAND:
-#ifdef LINUX
+#ifdef HAVE_GETENV
       value = "echo could not open a browser for"; // if nothing else works
       if (getenv("BROWSER") != NULL) {
         value = string(getenv("BROWSER"));
@@ -869,7 +872,7 @@ Setting::operator()(TypeString const type) const
                                                  "Software\\CLASSES\\" + class_str
                                                  + "\\shell\\open\\command",
                                                  "");
-          if (   (value.size() >= 5)  
+          if (   (value.size() >= 5)
               && string(value, value.size() - 4, std::string::npos) == "\"\%1\"")
             value = string(value, 0, value.size() - 4);
         } // if (!class_str.empty())
@@ -1259,7 +1262,7 @@ Setting::dependencies(TypeString const& type) const
  ** @param	type	setting type
  **
  ** @return	the value of the setting 'type'
- ** 
+ **
  ** @author	Diether Knof
  **
  ** @version	0.7.0
@@ -1284,7 +1287,7 @@ Setting::value(const TypeBool type) const
  ** @param	type	setting type
  **
  ** @return	the value of the (bool) setting 'type'
- ** 
+ **
  ** @author	Diether Knof
  **
  ** @version	0.7.0
@@ -1301,7 +1304,7 @@ Setting::value(const TypeUnsigned type) const
  ** @param	type	setting type
  **
  ** @return	the value of the (string) setting 'type'
- ** 
+ **
  ** @author	Diether Knof
  **
  ** @version	0.7.0
@@ -1319,7 +1322,7 @@ Setting::value(TypeString const type) const
  **
  ** @return    the file/directory with 'type'
  **            empty string if not found
- ** 
+ **
  ** @author    Diether Knof
  **
  ** @version   0.7.5
@@ -1337,7 +1340,7 @@ Setting::path(TypeString const type) const
  **
  ** @return    the file/directory with 'type'
  **            empty string if not found
- ** 
+ **
  ** @author    Diether Knof
  **
  ** @version   0.7.4
@@ -1648,7 +1651,7 @@ Setting::dokolounge_icon(string const& icon) const
  ** @param	type	setting type
  **
  ** @return	the value of the (string) setting 'type'
- ** 
+ **
  ** @author	Diether Knof
  **
  ** @version	0.7.0
@@ -1745,7 +1748,7 @@ Setting::value(TypeStringConst const type) const
 #endif
 #ifdef USE_UI_AATEXT
       case UI_TYPE::AATEXT:
-#endif 
+#endif
         return "txt";
 #ifdef USE_UI_GTKMM
       case UI_TYPE::GTKMM_DOKO:
@@ -1808,7 +1811,7 @@ Setting::value(TypeStringConst const type) const
  ** @param	type	setting type (only 'CARDS_ORDER')
  **
  ** @return	the value of the cards order
- ** 
+ **
  ** @author	Diether Knof
  **
  ** @version	0.7.0
@@ -1825,7 +1828,7 @@ Setting::value(TypeCardsOrder const type) const
  ** @param	type	setting type (only 'CARDS_ORDER')
  **
  ** @return	the value of the cards order
- ** 
+ **
  ** @author	Diether Knof
  **
  ** @version	0.7.0
@@ -1842,7 +1845,7 @@ Setting::value(TypeCardsOrder const type)
  ** @param	type	setting type (Type Unsigned)
  **
  ** @return	the minimal value of the setting 'type'
- ** 
+ **
  ** @author	Diether Knof
  **
  ** @version	0.7.0
@@ -1870,7 +1873,7 @@ Setting::min(TypeUnsigned const& type) const
  ** @param	type	setting type (Type Unsigned)
  **
  ** @return	the maximal value of the setting 'type'
- ** 
+ **
  ** @author	Diether Knof
  **
  ** @version	0.7.0
@@ -1950,7 +1953,7 @@ Setting::theme(string const& name) const
  ** @param	value	new value
  **
  ** @return	-
- ** 
+ **
  ** @author	Diether Knof
  **
  ** @version	0.7.0
@@ -1978,7 +1981,7 @@ Setting::set(TypeBool const type, bool const value)
  ** @param	value	new value (as string)
  **
  ** @return	-
- ** 
+ **
  ** @author	Diether Knof
  **
  ** @version	0.7.0
@@ -2012,7 +2015,7 @@ Setting::set(TypeBool const type, string const& value)
  ** @param	value	new value
  **
  ** @return	-
- ** 
+ **
  ** @author	Diether Knof
  **
  ** @version	0.7.0
@@ -2040,7 +2043,7 @@ Setting::set(TypeUnsigned const type, unsigned const value)
  ** @param	value	new value (as string)
  **
  ** @return	-
- ** 
+ **
  ** @author	Diether Knof
  **
  ** @version	0.7.0
@@ -2068,7 +2071,7 @@ Setting::set(TypeUnsigned const type, string const& value)
  ** @param	value	new value
  **
  ** @return	-
- ** 
+ **
  ** @author	Diether Knof
  **
  ** @version	0.7.0
@@ -2085,7 +2088,7 @@ Setting::set(TypeString const type, string const& value)
   // If it is, then leave the value empty.
 #ifdef POSTPONED
   this->string_[type - STRING_FIRST] = "";
-#endif // #ifdef POSTPONED 
+#endif // #ifdef POSTPONED
 
   this->string_[type - STRING_FIRST] = value;
 
@@ -2190,7 +2193,7 @@ Setting::set(TypeString const type, string const& value)
  ** @param	value	new value
  **
  ** @return	-
- ** 
+ **
  ** @author	Diether Knof
  **
  ** @version	0.7.0
@@ -2229,7 +2232,7 @@ Setting::set(TypeCardsOrder const type, CardsOrder const& value)
  ** @param	value	new value (as string)
  **
  ** @return	-
- ** 
+ **
  ** @author	Diether Knof
  **
  ** @version	0.7.0
@@ -2249,7 +2252,7 @@ Setting::set(TypeCardsOrder const type, string const& value)
  ** @param	value	new value
  **
  ** @return	whether the setting was successful
- ** 
+ **
  ** @author	Diether Knof
  **
  ** @version	0.7.0
@@ -2691,7 +2694,7 @@ Setting::clear_themes_list()
  ** @param     type	setting type
  **
  ** @return    -
- ** 
+ **
  ** @author    Diether Knof
  **
  ** @version   0.7.5
@@ -2774,7 +2777,7 @@ Setting::update_path(TypeString const type)
 
     this->update_path(CARDS_BACK);
     break;
-  } // case CARDSET: 
+  } // case CARDSET:
 
   case CARDS_BACK: {
 
