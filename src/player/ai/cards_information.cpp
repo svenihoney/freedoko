@@ -1720,6 +1720,7 @@ CardsInformation::recalc_weightings() const
   } // create a virtual game
   Game virt_game(this->game(), player_virt);
   virt_game.reset_to_first_trick();
+  CLOG << virt_game << endl;
 
   // build a new cards information for the start of the game
   CardsInformation cards_information(*player_virt[this->player().no()]);

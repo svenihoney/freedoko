@@ -39,6 +39,7 @@ class GameplayAction;
 
 // The gameplay, saved as actions
 class Gameplay : public OS {
+  friend class Game;
   public:
     // constructor
     Gameplay();

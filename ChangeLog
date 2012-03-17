@@ -1,3 +1,8 @@
+2012-03-17 Diether Knof
+	- Monte Carlo: removed some special cards as startcard for a trick
+	- improvement of 'best winning card'
+	- play pfund, meatless: do not pfund an ace
+
 2012-03-17 Borg Enders
 	- announcement tweaks 
 	- tweaked trickweighting  

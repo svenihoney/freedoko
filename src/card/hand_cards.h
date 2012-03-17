@@ -68,6 +68,11 @@ class HandCards : public vector<HandCard> {
     // add hand cards
     void add(HandCards const& cards);
 
+    // remove a hand card
+    void remove(Card const& card);
+    // remove 'cards'
+    void remove(HandCards const& cards);
+
     // the highest value
     Card::Value highest_value() const;
     // the highest value of the given tcolor
@@ -107,9 +112,6 @@ class HandCards : public vector<HandCard> {
     // the card 'card' or the next lower card then 'card'
     HandCard const& same_or_lower_card(Card const& card) const;
 
-
-    // remove 'cards'
-    void remove(HandCards const& cards);
 
 
     // whether there is a trump card in the hand

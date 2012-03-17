@@ -331,7 +331,7 @@ check_references :
 	@echo -e "failed: "; grep "^[0-9]\+_\?[0-9]*.Reference.FreeDoko;" ../References/References.report.csv | grep -v OK | awk -F \; '{printf(" %s", $$1)}' | sort -n; echo
 	@rm -rf /tmp/FreeDoko.References.failed
 	@mkdir /tmp/FreeDoko.References.failed
-	@for f in References.report.csv `grep "^[0-9]\+\(_[0-9]\+\)\?.Reference.FreeDoko;" ../References/References.report.csv | grep -v OK | awk -F \; '{printf(" %s", $$1)}'`; do cp ../References/$$f /tmp/FreeDoko.References.failed/; done
+	@for f in References.report.csv `grep "^[0-9]\+\(_[0-9]\+\)\?.Reference.FreeDoko;" ../References/References.report.csv | grep -v OK | awk -F \; '{printf(" %s\\n", $$1)}'`; do cp ../References/$$f /tmp/FreeDoko.References.failed/; done
 	@$(MAKE) >/dev/null
 endif
 

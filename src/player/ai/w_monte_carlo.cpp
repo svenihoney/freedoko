@@ -143,6 +143,19 @@ WMonteCarlo::init()
   if (this->ai_type() == AITYPE::MONTE_CARLO_JAB_OR_SERVE) {
     if (this->vgi().game().trick_current().isempty()) {
       this->hand_ = this->vgi().hand().validcards(this->vgi().game().trick_current());
+      // remove some special cards
+      if (   !this->vgi().game().is_solo()
+          && this->hand().contains(Card::FOX)
+          && (this->hand().size() > 1))
+        this->hand_.remove(Card::FOX);
+      if (   !this->vgi().game().is_solo()
+          && this->hand().contains(Card::DIAMOND_TEN)
+          && (this->hand().size() > 1))
+        this->hand_.remove(Card::DIAMOND_TEN);
+      if (   this->vgi().game().rule()(Rule::DOLLEN)
+          && this->hand().contains(Card::DOLLE)
+          && (this->hand().size() > 1))
+        this->hand_.remove(Card::DOLLE);
     } else {
       this->hand_ = HandCards();
       Ai const& ai = dynamic_cast<Ai const&>(this->vgi().game().player(this->vgi().no()));

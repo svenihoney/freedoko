@@ -527,7 +527,29 @@ Game::reset_to_first_trick()
   this->hyperswines_announced_ = false;
   this->finished_ = false;
 
-  // gameplay 
+  { // gameplay 
+  Gameplay gameplay;
+  gameplay.game_open(*this);
+  gameplay.game_cards_distributed();
+  gameplay.game_start();
+  list<GameplayAction*>::iterator a
+    = this->gameplay_->actions_.begin();
+  for (;
+       a != this->gameplay_->actions_.end();
+       ++a) {
+    gameplay.gameplay_action(**a);
+  } // for (a \in this->gameplay().actions())
+  for (list<GameplayAction*>::const_iterator a2 = a;
+       a2 != this->gameplay().actions().end();
+       ++a2)
+    delete *a2;
+  this->gameplay_->actions_.erase(a, this->gameplay_->actions_.end());
+
+  for (unsigned p = 0; p < this->playerno(); ++p)
+    this->gameplay_->hands_[p] = Hand(this->player(p),
+                                      this->player(p).hand().cards_all());
+
+  } // gameplay 
 
   return ;
 } // void Game::reset_to_first_trick()

@@ -42,7 +42,7 @@
 // the ai whose changes of the weightings are written
 // (what the ai assumes of the other players)
 // undefine for no output
-//#define DEBUG_AI 1
+#define DEBUG_AI 3
 #endif
 #endif
 
@@ -527,6 +527,8 @@ namespace TeamInformationHeuristic {
             // The player could have jabbed in order to play a color ace
             // so check whether all colors have already been run
             // and check in the next trick whether the player does play a color ace
+            if (card.isfox())
+              return 0;
             return team_value(trick.isfull()          
                               ? -2 * (35 - card.value())
                               : (trick.actcardno() == 3) 

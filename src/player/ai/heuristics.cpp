@@ -2879,6 +2879,12 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
       color = hi.game().rule().card_colors().begin();
       color != hi.game().rule().card_colors().end();
       ++color ) {
+    // do not pfund an ace in a meatless solo, if the soloplayer is behind
+    if (   (hi.game().type() == GAMETYPE::SOLO_MEATLESS)
+        && (   !t.has_played(hi.game().soloplayer())
+            || (t.cardno_of_player(hi.game().soloplayer())
+                < t.winnercardno()) ) )
+      break;
     Card const local_ace( *color, Card::ACE );
     if (!hi.hand().contains(local_ace)
         || local_ace.istrump( hi.game() )
@@ -2921,7 +2927,7 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
   }
 
   // or a ten of color
-  for( unsigned i = 0; i < ha.cardsnumber(); i++ )
+  for( unsigned i = 0; i < ha.cardsnumber(); i++ ) {
     if(   ha.card(i).value() == Card::TEN
        && !ha.card(i).istrump()
        && t.isvalid( ha.card( i ),hi.hand() )
@@ -2933,6 +2939,7 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
     {
       return ha.card(i);
     }
+  }
 
 
   bool const to_fat_solo
@@ -2956,6 +2963,7 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
            || solo_check
            || allmyteam
           )
+       && !(hi.game().type() == GAMETYPE::SOLO_MEATLESS)
       ) {
       return ha.card(i);
     }
@@ -4079,6 +4087,13 @@ Heuristics::serve_color_trick(Trick const& trick, HeuristicInterface const& hi)
   Card const card = Heuristics::lowest_card(trick, hi.hand());
   if (   hi.lowest_trump_card_limit().less(HandCard(hi.hand(), card))
       && hi.hand().lowest_trump().less(card))
+    return Card::EMPTY;
+  // do not play a color ace blank in a solo
+  if (   hi.game().is_solo()
+      && (hi.hand().numberof(card.color()) == 2)
+      && hi.hand().contains(card.color(), Card::ACE)
+      && hi.cards_information().remaining_others(card.color(), Card::ACE)
+     )
     return Card::EMPTY;
   return card;
 } // Card Heuristics::serve_color_trick(Trick trick, HeuristicInterface hi)
@@ -6065,8 +6080,8 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
   }
 
 
-  if( g.type() == GAMETYPE::SOLO_MEATLESS )
-  { v_queen = 0; v_jack = 0; v_highest = 0; v_king = 0; v_ace = 4; v_fehl = 1; // missing aces
+  if( g.type() == GAMETYPE::SOLO_MEATLESS ) {
+    v_queen = 0; v_jack = 0; v_highest = 0; v_king = 0; v_ace = 4; v_fehl = 1; // missing aces
     value = -2;
   }
 
@@ -6175,8 +6190,8 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
          ++c)
     {
       if( hi.hand().contains( *c ) )
-        value -=  v_fehl
-          * ( 2 - hi.hand().numberof( *c, Card::ACE ) );
+        value -=  (v_fehl
+                   * ( 2 - hi.hand().numberof( *c, Card::ACE ) ));
     }
     if( hi.no() == hi.game().soloplayer().no() )
     {
@@ -7639,21 +7654,19 @@ Heuristics::make_announcement( HeuristicInterface const& hi, const Game& g )
     return false;
 
 
-  if( ::in_running_game() )
-  {
+  if (::in_running_game()) {
     if( (   hi.game().trick_current().isfull()  // lost trick
          && hi.game().trick_current().winnerplayer().no() == hi.no()
          && hi.game().trick_current().points() > 15) )
-
       value += 1;
 
     if( (   hi.game().trick_current().isfull()  // lost trick
-           && hi.game().trick_current().winnerplayer().no() != hi.no() ) )
+         && hi.game().trick_current().winnerplayer().no() != hi.no() ) )
       value -= 1;
 
   }
   if( hi.game().trick_current().startplayer().no() != hi.no()
-      && hi.game().trick_current().isempty() )
+     && hi.game().trick_current().isempty() )
   {
     value -= 1;
 
@@ -7722,10 +7735,10 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
 
   if (   (hi.game().type() == GAMETYPE::POVERTY
           && hi.game().poverty_partner().no() == hi.no()) )
-    {
-      value -= 2;
-      value -= 2* (2-hi.hand().numberofdolle());
-    }
+  {
+    value -= 2;
+    value -= 2* (2-hi.hand().numberofdolle());
+  }
 
   for( vector<Card::Color>::const_iterator
       c = hi.game().rule().card_colors().begin();

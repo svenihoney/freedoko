@@ -266,6 +266,8 @@ namespace OS_NS {
           } // if (this->game_summary)
         } // write the game summary
 
+#ifdef OUTDATED
+        // 2011-03-17 dknof
         { // write the current hands
           if (   (::game_status & GAMESTATUS::GAME)
               && (::game_status != GAMESTATUS::GAME_NEW)) {
@@ -291,7 +293,10 @@ namespace OS_NS {
             } // if (this->game().trick_current_no() != UINT_MAX) 
           } // if (game_status & GAME)
         } // write the current hands
+#endif
 
+#ifdef OUTDATED
+        // 2011-03-17 dknof
         { // write the human actions
           *ofstr << "\n\nhuman actions\n"
             << "{\n";
@@ -302,6 +307,7 @@ namespace OS_NS {
             *ofstr << "  " << **a << '\n';
           *ofstr << "}\n";
         } // write the human actions
+#endif
 
 #ifdef USE_NETWORK
         { // write the network log

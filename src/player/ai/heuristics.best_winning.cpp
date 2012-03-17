@@ -1030,8 +1030,8 @@ Heuristics::best_jabbing_card(Trick const& trick,
             DEBUG_BJC_OSTR << "  " << card << " (same or lower card(club queen))\n";
           }
           if (!card) {
-            card = hi.hand().same_or_higher_card(hi.trump_card_limit());
-            DEBUG_BJC_OSTR << "  " << card << " (same or higher card(trump card limit))\n";
+            card = hi.hand().same_or_higher_card(hi.lowest_trump_card_limit());
+            DEBUG_BJC_OSTR << "  " << card << " (same or higher card(lowest trump card limit))\n";
           }
         } else if (   (trick.actcardno() == 1)
                    && hi.guessed_same_team(trick.startplayer()) ) {
@@ -1233,6 +1233,7 @@ Heuristics::best_jabbing_card(Trick const& trick,
     }
     if (   !trick.startcard().istrump()
         && (hi.color_runs(trick.startcard().tcolor()) > 0)
+        && !trick.islastcard()
         && hi.guessed_same_team(trick.lastplayer())) {
       card = Card::CLUB_QUEEN;
       DEBUG_BJC_OSTR << "  " << card << " (show with club queen)\n";

@@ -355,6 +355,66 @@ HandCards::add(HandCards const& cards)
 } // void HandCards::add(HandCards cards)
 
 /**
+ ** removes 'card' from the vector
+ **
+ ** @param	card	card to remove
+ **
+ ** @return	-
+ **
+ ** @author	Diether Knof
+ **
+ ** @version	0.7.12
+ **/
+void
+HandCards::remove(Card const& card)
+{
+  HandCards::iterator d;
+  for (d = this->begin();
+       card != *d;
+       ++d) {
+    DEBUG_ASSERTION((d != this->end()),
+                    "HandCards::remove(card):\n"
+                    "  card '" << card << "' not found in the cards.\n"
+                    << *this);
+  }
+  this->erase(d);
+
+  return ;
+} // void HandCards::remove(Card card)
+
+/**
+ ** removes 'cards' from the vector
+ **
+ ** @param	cards	cards to remove
+ **
+ ** @return	-
+ **
+ ** @author	Diether Knof
+ **
+ ** @version	0.6.8
+ **/
+void
+HandCards::remove(HandCards const& cards)
+{
+  for (HandCards::const_iterator c = cards.begin();
+       c != cards.end();
+       ++c) {
+    HandCards::iterator d;
+    for (d = this->begin();
+         *c != *d;
+         ++d) {
+      DEBUG_ASSERTION((d != this->end()),
+                      "HandCards::remove(cards):\n"
+                      "  card '" << *c << "' not found in the cards.\n"
+                      << *this);
+    }
+    this->erase(d);
+  } // for (c \in cards)
+
+  return ;
+} // void HandCards::remove(HandCards cards)
+
+/**
  ** -> result
  **
  ** @param	-
@@ -846,38 +906,6 @@ HandCards::same_or_lower_card(Card const& card) const
 
   return this->next_lower_card(card);
 } // HandCard HandCards::same_or_lower_card(Card card) const
-
-/**
- ** removes 'cards' from the vector
- **
- ** @param	cards	cards to remove
- **
- ** @return	-
- **
- ** @author	Diether Knof
- **
- ** @version	0.6.8
- **/
-void
-HandCards::remove(HandCards const& cards)
-{
-  for (HandCards::const_iterator c = cards.begin();
-       c != cards.end();
-       ++c) {
-    HandCards::iterator d;
-    for (d = this->begin();
-         *c != *d;
-         ++d) {
-      DEBUG_ASSERTION((d != this->end()),
-                      "HandCards::remove(cards):\n"
-                      "  card '" << *c << "' not found in the cards.\n"
-                      << *this);
-    }
-    this->erase(d);
-  } // for (c \in cards)
-
-  return ;
-} // void HandCards::remove(HandCards cards)
 
 /**
  **
