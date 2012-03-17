@@ -81,7 +81,7 @@ Rule::throw when fox highest trump	= schmeiße, wenn Fuchs höchster Trumpf
 # marriage
 Rule::Group::marriage			= Hochzeit
 Rule::marriage determination		= Hochzeitsklärung
-Rule::marriage first foreign		= erster Fremde
+Rule::marriage first foreign		= erster Fremder
 Rule::marriage first color		= erster Farb
 Rule::marriage first single color	= erster spezieller Farb
 Rule::marriage first trump		= erster Trumpf

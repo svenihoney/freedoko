@@ -2,6 +2,9 @@
 	- Monte Carlo: removed some special cards as startcard for a trick
 	- improvement of 'best winning card'
 	- play pfund, meatless: do not pfund an ace
+	- changed weighting for team information heuristics
+	- choose pfund card: pfund a color ace for a doppelkopf
+	- some fixes/improvements in cards information heuristics
 
 2012-03-17 Borg Enders
 	- announcement tweaks 

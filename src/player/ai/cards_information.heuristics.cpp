@@ -50,7 +50,7 @@
 // the ai whose information are written
 // (what the ai assumes of the other players)
 // undefine for no output
-#define DEBUG_AI 4
+#define DEBUG_AI 3
 #endif
 #endif
 
@@ -299,8 +299,10 @@ namespace CardsInformationHeuristics {
             || played_card.istrump())
           return ;
 
-        // if it is the solo player, we will have the color ace, if he played a ten
-        if (played_card.value() == Card::TEN) {
+        // If it is the solo player, he will have the color ace, if he played a ten
+        if (   game.is_solo()
+            && (player.no() == game.soloplayer().no())
+            && (played_card.value() == Card::TEN)) {
           CHANGE_WEIGHTING(Card(played_card.color(), Card::ACE), 50); // *Value*
           return ;
         }
@@ -689,8 +691,6 @@ namespace CardsInformationHeuristics {
               && !Card(played_card.color(), *v).istrump(game))
             CHANGE_WEIGHTING(Card(played_card.color(), *v), -100); // *Value*
 
-        if (played_card.value() == Card::NINE)
-          CHANGE_WEIGHTING(Card(played_card.color(), Card::NINE), -100); // *Value*
       } // if !(played_card.tcolor() == Card::TRUMP)
       return ;
     } // void last_player_played_pfund(...)

@@ -42,7 +42,7 @@
 // the ai whose changes of the weightings are written
 // (what the ai assumes of the other players)
 // undefine for no output
-#define DEBUG_AI 3
+#define DEBUG_AI 1
 #endif
 #endif
 
@@ -203,7 +203,7 @@ namespace TeamInformationHeuristic {
                  > -(ai.value(Aiconfig::TRUSTING)
                      ? 10 : 20) ) // *Value*
              ) )
-        modifier *= (0.2 + ((0.6 * player.game().trick_current_no())
+        modifier *= (0.2 + ((0.3 * player.game().trick_current_no())
                             / player.game().trickno())); // *Value*
 
       switch (team) {

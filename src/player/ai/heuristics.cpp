@@ -2886,7 +2886,7 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
                 < t.winnercardno()) ) )
       break;
     Card const local_ace( *color, Card::ACE );
-    if (!hi.hand().contains(local_ace)
+    if (   !hi.hand().contains(local_ace)
         || local_ace.istrump( hi.game() )
         || !t.isvalid(local_ace, hi.hand()))
       continue;
@@ -2906,6 +2906,7 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
                               : 0))
                        && (hi.game().type() != GAMETYPE::SOLO_MEATLESS))
                     || (hi.hand().numberof(*color) == 1)
+                    || (trick.points() + 11 >= 40)
                    )
                 && !(   hi.hand().contains(*color, Card::TEN)
                      && !HandCard(hi.hand(), *color, Card::TEN).istrump()
@@ -4578,7 +4579,8 @@ Heuristics::choose_best_prefiltered_color_card(Trick const& trick,
   Rule const& rule = game.rule();
 
   // whether the trick goes to the own team
-  bool const own_team = (trick.winnerteam() == hi.team());
+  bool const own_team = (   !trick.isempty() 
+                         && (trick.winnerteam() == hi.team()));
 
   if (own_team) {
     // search a single ace

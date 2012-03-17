@@ -94,7 +94,7 @@ Announcement::no 0 reply		= doch Punkte
 # marriage selector
 MarriageSelector::silent		= still
 MarriageSelector::team set		= Team gesetzt
-MarriageSelector::first foreign		= erster fremde
+MarriageSelector::first foreign		= erster Fremder
 MarriageSelector::first trump		= erster Trumpf
 MarriageSelector::first color		= erster Farb
 MarriageSelector::first club		= erster Kreuz
