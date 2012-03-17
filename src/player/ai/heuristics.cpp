@@ -8977,6 +8977,17 @@ Heuristics::make_reply( HeuristicInterface const& hi, const Game& g )
         value += (int)hi.value(Aiconfig::ANNOUNCECONFIGREPLY);
     } // for (i < hi.hand().cardsnumber())
 
+    if (   (hi.game().type() == GAMETYPE::POVERTY)
+        && (hi.no() == hi.game().poverty_partner().no()) )
+    {
+      value -= 6 - hi.hand().numberofdolle() - hi.hand().numberofclubqueens();
+      if( g.announcement_of_team( opposite( hi.team() ) ).announcement
+         != ANNOUNCEMENT::NOANNOUNCEMENT  )
+      {
+        value -= 1;
+      }
+    }
+
 #ifdef ANNOUNCE_DEBUG
     if( !g.isvirtual() )
       cout << "REPLY: " << hi.no() << "\t" << value << "\t"
