@@ -748,7 +748,7 @@ int TrickWeighting::modi_no_trump(VirtualGamesInterface const& vgi,
   {
     modi += card.value();
     if ( card.value() >= 10 )
-      modi += 1;
+      modi += 3;
   }
 
   if( GAMETYPE::is_solo( vgi.game().type() )
@@ -784,6 +784,11 @@ int TrickWeighting::modi_no_trump(VirtualGamesInterface const& vgi,
 
     modi -= 2 - vgi.color_runs( card.color() );
   }
+
+  if( GAMETYPE::is_solo( vgi.game().type() )
+      && vgi.team() == TEAM::CONTRA )
+    modi -=  2* ai.hand().numberof( card.color() ); // reference  137807
+
 
   if (  vgi.no() != trick.winnerplayer().no()
       && winnerteam != team
