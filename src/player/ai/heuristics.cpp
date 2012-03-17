@@ -7538,7 +7538,12 @@ Heuristics::make_announcement( HeuristicInterface const& hi, const Game& g )
 
   if( g.announcement_of_team( opposite( hi.team() ) ).announcement
      != ANNOUNCEMENT::NOANNOUNCEMENT  )
+  {
     value -= 1;
+    if (    GAMETYPE::is_solo(hi.game().type())
+           &&  (hi.team() == TEAM::RE) )
+         value -= 6;
+  }
 
   if(   (game_status < GAMESTATUS::GAME_PLAY)
      || (   (g.trick_current().no() == 0)
@@ -7776,6 +7781,12 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
   if (   hi.teamofplayer(t.winnerplayer()) == hi.team()
       &&  !oppositeTeamCanWinTrick( t, hi ) )
     value += 1;
+
+  if( g.announcement_of_team( opposite( hi.team() ) ).announcement
+     != ANNOUNCEMENT::NOANNOUNCEMENT  )
+  {
+    value -= 3;
+  }
 
 #ifdef ANNOUNCE_DEBUG
   if( !g.isvirtual() )
@@ -8920,7 +8931,7 @@ Heuristics::make_reply( HeuristicInterface const& hi, const Game& g )
 
     if (    GAMETYPE::is_solo(hi.game().type())
         &&  (hi.team() == TEAM::RE) )
-      value -= 2;
+      value -= 5; // previous 2
 
     for( int a = (int)ANNOUNCEMENT::NO90;
         a <= announcement_opp;
