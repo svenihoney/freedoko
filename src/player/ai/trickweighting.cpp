@@ -297,6 +297,8 @@ int TrickWeighting::modi_queen(VirtualGamesInterface const& vgi,
       && card.less(ai.cards_information().highest_remaining_trump_of_others()))
     modi -= 8; // reference 246985
 
+
+
   if(   (  vgi.no() != trick.winnerplayer().no()
          && !(  trick.cardno_of_player( card.player() ) == 3
               && trick.winnerplayer().team() == vgi.team() )
@@ -315,6 +317,12 @@ int TrickWeighting::modi_queen(VirtualGamesInterface const& vgi,
 
   if (   card == Card(Card::CLUB, Card::QUEEN) )
   {
+
+    if( vgi.no() != trick.winnerplayer().no() )
+      {
+        modi -= 3; // reference
+      }
+
     if( vgi.game().teaminfo( ai ) != ai.team() )
     {
       modi += 3; // previous 1
