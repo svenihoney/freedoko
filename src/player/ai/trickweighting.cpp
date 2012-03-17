@@ -367,6 +367,11 @@ int TrickWeighting::modi_jack(VirtualGamesInterface const& vgi,
   if (  trick.cardno_of_player(card.player()) == 3 )
     modi -= 2;
 
+  if( trick.startcard().istrump()
+      && trick.cardno_of_player(card.player()) !=0 )
+    modi += 5; //reference 099840
+
+
   // force enemy with a jack to play a queen
   if (   vgi.no() != trick.winnerplayer().no()
       && (trick.cardno_of_player(trick.winnerplayer())
