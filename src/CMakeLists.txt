@@ -12,6 +12,7 @@ include_directories(SYSTEM
   ${GNET_INCLUDE_DIRS}
   ${ALUT_INCLUDE_DIRS} 
   ${CMAKE_CURRENT_BINARY_DIR}
+  ${CMAKE_CURRENT_BINARY_DIR}/player
 )
 
 if(GTKMM_FOUND)
@@ -95,7 +96,7 @@ add_executable(FreeDoko
   ${FREEDOKO_SOURCES}
 )
 
-add_dependencies(FreeDoko copy_logos)
+add_dependencies(FreeDoko copy_logos aiconfigs)
 
 target_link_libraries(FreeDoko 
   ${GTKMM_LIBRARIES} ${GNET_LIBRARIES} ${ALUT_LIBRARIES}
