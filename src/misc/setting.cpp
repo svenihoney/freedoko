@@ -1737,7 +1737,7 @@ Setting::value(TypeStringConst const type) const
   case PRIVATE_DATA_DIRECTORY:
     {
       string value;
-#if defined(LINUX) || defined(HPUX)
+#if defined(UNIX)
       value = "~/.FreeDoko";
 #endif
 #ifdef WINDOWS
