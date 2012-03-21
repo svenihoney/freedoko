@@ -1,5 +1,5 @@
-# include(UseLATEX.cmake)
-  
+include(${CMAKE_SOURCE_DIR}/cmake/UseLATEX.cmake)
+
 add_subdirectory(de)
 add_subdirectory(en)
   
