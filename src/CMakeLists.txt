@@ -7,6 +7,19 @@ macro(toglobalsources LOCAL_SOURCES)
   set(FREEDOKO_SOURCES ${FREEDOKO_SOURCES} ${GLOBAL_SOURCES} PARENT_SCOPE)
 endmacro(toglobalsources)
 
+MACRO (GENERATE_WITH_CMAKE infile outfile cmakefile)
+ADD_CUSTOM_COMMAND( 
+  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${outfile}
+  COMMAND ${CMAKE_COMMAND}
+  ARGS
+    -Dinfile:FILEPATH=${infile}
+    -Doutfile:FILEPATH=${CMAKE_CURRENT_BINARY_DIR}/${outfile}
+    -P ${CMAKE_CURRENT_SOURCE_DIR}/${cmakefile}
+  MAIN_DEPENDENCY ${infile}
+  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${cmakefile}
+)
+ENDMACRO (GENERATE_WITH_CMAKE)
+
 include_directories(SYSTEM
   ${GTKMM_INCLUDE_DIRS} 
   ${GNET_INCLUDE_DIRS}
@@ -84,6 +97,7 @@ add_subdirectory(party)
 add_subdirectory(player)
 add_subdirectory(ui)
 add_subdirectory(utils)
+add_subdirectory(text)
 
 add_executable(FreeDoko
   basistypes.cpp  
@@ -96,7 +110,7 @@ add_executable(FreeDoko
   ${FREEDOKO_SOURCES}
 )
 
-add_dependencies(FreeDoko copy_logos aiconfigs)
+add_dependencies(FreeDoko copy_logos aiconfigs texts)
 
 target_link_libraries(FreeDoko 
   ${GTKMM_LIBRARIES} ${GNET_LIBRARIES} ${ALUT_LIBRARIES}
