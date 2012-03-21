@@ -1,24 +1,5 @@
 include(CMakeChecks.txt)
-
-macro(toglobalsources LOCAL_SOURCES)
-  foreach(SRC ${ARGV})
-    list(APPEND GLOBAL_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${SRC})
-  endforeach(SRC)
-  set(FREEDOKO_SOURCES ${FREEDOKO_SOURCES} ${GLOBAL_SOURCES} PARENT_SCOPE)
-endmacro(toglobalsources)
-
-MACRO (GENERATE_WITH_CMAKE infile outfile cmakefile)
-ADD_CUSTOM_COMMAND( 
-  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${outfile}
-  COMMAND ${CMAKE_COMMAND}
-  ARGS
-    -Dinfile:FILEPATH=${infile}
-    -Doutfile:FILEPATH=${CMAKE_CURRENT_BINARY_DIR}/${outfile}
-    -P ${CMAKE_CURRENT_SOURCE_DIR}/${cmakefile}
-  MAIN_DEPENDENCY ${infile}
-  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${cmakefile}
-)
-ENDMACRO (GENERATE_WITH_CMAKE)
+include(CMakeMacros.txt)
 
 include_directories(SYSTEM
   ${GTKMM_INCLUDE_DIRS} 
