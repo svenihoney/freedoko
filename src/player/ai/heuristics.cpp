@@ -7814,6 +7814,14 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
     value -= 3;
   }
 
+  if (!hi.value(Aiconfig::AGGRESSIVE))
+    {
+      value -= 1;
+      if( hi.team() == TEAM::CONTRA)
+        value -= 1;
+    }
+
+
 #ifdef ANNOUNCE_DEBUG
   if( !g.isvirtual() )
     cout << "NO90: " << hi.no() << "\t" << value << " + "
