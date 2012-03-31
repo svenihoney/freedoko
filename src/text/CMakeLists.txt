@@ -1,5 +1,8 @@
-generate_with_cmake(${CMAKE_CURRENT_SOURCE_DIR}/gpl.string gpl.dos.string to_dos.cmake) 
-generate_with_cmake(${CMAKE_CURRENT_SOURCE_DIR}/help.string help.dos.string to_dos.cmake) 
-generate_with_cmake(${CMAKE_CURRENT_SOURCE_DIR}/Altenburg.string Altenburg.dos.string to_dos.cmake) 
+configure_file(gpl.string gpl.dos.string COPYONLY) 
+set_property(SOURCE gpl.dos.string PROPERTY GENERATED)
+configure_file(help.string help.dos.string COPYONLY)
+set_property(SOURCE help.dos.string PROPERTY GENERATED)
+configure_file(Altenburg.string Altenburg.dos.string COPYONLY)
+set_property(SOURCE Altenburg.dos.string PROPERTY GENERATED)
 
 ADD_CUSTOM_TARGET(texts DEPENDS gpl.dos.string help.dos.string Altenburg.dos.string)
