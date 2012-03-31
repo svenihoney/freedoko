@@ -1,3 +1,7 @@
+2012-03-31 Borg Enders
+	- tweaked AI for NO90 announcement
+	- tweaked trickweighting for serving a club queen
+
 2012-03-17 Diether Knof
 	- Monte Carlo: removed some special cards as startcard for a trick
 	- improvement of 'best winning card'

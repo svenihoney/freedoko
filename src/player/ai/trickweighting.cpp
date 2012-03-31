@@ -340,13 +340,17 @@ int TrickWeighting::modi_queen(VirtualGamesInterface const& vgi,
     {
       modi += 4; // previous
       if (  vgi.game().played_no(Card::CLUB_QUEEN) == 0
-          && vgi.game().announcement_of_team( ai.team() ).announcement == ANNOUNCEMENT::NOANNOUNCEMENT )
+          && vgi.game().announcement_of_team( ai.team() ).announcement == ANNOUNCEMENT::NOANNOUNCEMENT
+         )
         modi += 12; // previous
     }
 
     if(    trick.cardno_of_player( ai ) == 3
         && trick.winnerplayer().team() != vgi.team() )
       modi -= 3; // reference 234467
+
+    if(    trick.cardno_of_player( ai ) == 0 )
+      modi -= 12; // reference 168423
   }
 
 #ifdef PLAYERCHECK
