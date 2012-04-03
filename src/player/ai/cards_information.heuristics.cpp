@@ -50,7 +50,7 @@
 // the ai whose information are written
 // (what the ai assumes of the other players)
 // undefine for no output
-#define DEBUG_AI 3
+#define DEBUG_AI 4
 #endif
 #endif
 

@@ -42,7 +42,7 @@
 // the ai whose changes of the weightings are written
 // (what the ai assumes of the other players)
 // undefine for no output
-#define DEBUG_AI 1
+#define DEBUG_AI 4
 #endif
 #endif
 

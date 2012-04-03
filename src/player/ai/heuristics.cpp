@@ -7666,12 +7666,12 @@ Heuristics::make_announcement( HeuristicInterface const& hi, const Game& g )
          && hi.game().trick_current().winnerplayer().no() != hi.no() ) )
       value -= 1;
 
-  }
-  if( hi.game().trick_current().startplayer().no() != hi.no()
-     && hi.game().trick_current().isempty() )
-  {
-    value -= 1;
+    if( hi.game().trick_current().startplayer().no() != hi.no()
+       && hi.game().trick_current().isempty() )
+    {
+      value -= 1;
 
+    }
   }
 
 
@@ -7815,11 +7815,11 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
   }
 
   if (!hi.value(Aiconfig::AGGRESSIVE))
-    {
+  {
+    value -= 1;
+    if( hi.team() == TEAM::CONTRA)
       value -= 1;
-      if( hi.team() == TEAM::CONTRA)
-        value -= 1;
-    }
+  }
 
 
 #ifdef ANNOUNCE_DEBUG

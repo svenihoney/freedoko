@@ -1,3 +1,6 @@
+2012-04-03 Diether Knof
+	- fixed bug in 'make announcement'
+
 2012-03-31 Borg Enders
 	- tweaked AI for NO90 announcement
 	- tweaked trickweighting for serving a club queen
