@@ -7636,7 +7636,7 @@ Heuristics::make_announcement( HeuristicInterface const& hi, const Game& g )
   if (   (hi.game().type() == GAMETYPE::POVERTY)
       && (hi.no() == hi.game().poverty_partner().no()) )
   {
-    value -= 6 - hi.hand().numberofdolle() - hi.hand().numberofclubqueens();
+    value -= 7 - hi.hand().numberofdolle() - hi.hand().numberofclubqueens();
   }
 
   if (   (hi.game().type() == GAMETYPE::NORMAL
