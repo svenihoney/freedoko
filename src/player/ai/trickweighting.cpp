@@ -269,7 +269,8 @@ int TrickWeighting::modi_queen(VirtualGamesInterface const& vgi,
   if( card.value() != Card::QUEEN )
     return modi;
 
-  modi -= 3; // previous 2
+  modi -= 4; // previous 2, 3
+  // 4: Reference 188872
 
   if (
       (static_cast<int>(trick.points()) - card.value()
@@ -352,6 +353,7 @@ int TrickWeighting::modi_queen(VirtualGamesInterface const& vgi,
     if(    trick.cardno_of_player( ai ) == 0 )
       modi -= 12; // reference 168423
   }
+
 
 #ifdef PLAYERCHECK
   if (vgi.no() == playerCheck) {
@@ -1109,7 +1111,7 @@ int TrickWeighting::modi_poverty(VirtualGamesInterface const& vgi,
 
   if(    card.istrump()
      && trick.cardno_of_player( ai ) == 0)
-    modi -= 1; // reference 208016
+    modi -= 3; // 1:reference 208016, 3: reference 194579
 
   //  get large cards of poverty player
   if((  //only for not poverty-player
