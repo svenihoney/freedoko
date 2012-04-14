@@ -7733,14 +7733,16 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
     value += 1; // reference 139722_1
   }
 
-
-
   if (   (hi.game().type() == GAMETYPE::POVERTY
           && hi.game().poverty_partner().no() == hi.no()) )
   {
     value -= 2;
-    value -= 2* (2-hi.hand().numberofdolle());
+    value -= (2-hi.hand().numberofdolle());
+    value -= 5 - hi.hand().numberofdolle() - hi.hand().numberofclubqueens();
   }
+
+  value -= (2-hi.hand().numberofdolle());
+
 
   for( vector<Card::Color>::const_iterator
       c = hi.game().rule().card_colors().begin();
@@ -7790,11 +7792,7 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
     opp_p += 20 * hi.cards_information().remaining_trumps_others();
   }
 
-  if (   (hi.game().type() == GAMETYPE::POVERTY)
-      && (hi.no() == hi.game().poverty_partner().no()) )
-  {
-    value -= 5 - hi.hand().numberofdolle() - hi.hand().numberofclubqueens();
-  }
+
 
   Trick const t = (game_status < GAMESTATUS::GAME_PLAY
                    ? Trick(g.startplayer())
