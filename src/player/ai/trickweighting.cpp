@@ -1002,6 +1002,7 @@ int TrickWeighting::modi_other_trumps(VirtualGamesInterface const& vgi,
     modi -= 14; // reference 256027
   }
 
+
   if( game_virt.next_higher_card( card ).value() != card.value() //2do nect_higher_card_still_in_game compar reference 260689
      && (trick.cardno_of_player(trick.winnerplayer())
          > trick.cardno_of_player(card.player()))
@@ -1039,6 +1040,10 @@ int TrickWeighting::modi_other_trumps(VirtualGamesInterface const& vgi,
     if( ai.hand().numberoftrumps() == ai.hand().cardsnumber()
         && card.value() < 3 )
       modi +=5; // Reference 012664
+
+    if( (card.value() == Card::KING)
+       && (winnerteam == team) )
+      modi += 8;
   }
 
   { // the player has overjabbed his partner without need
