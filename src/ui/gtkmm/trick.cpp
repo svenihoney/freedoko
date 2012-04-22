@@ -126,11 +126,11 @@ namespace UI_GTKMM_NS {
   void
     Trick::draw(bool const update)
     {
-      if ( ((::game_status >= GAMESTATUS::GAME_PLAY)
-	    && ((::game_status < GAMESTATUS::GAME_FINISHED)
-		|| (this->table().in_game_review()) ) ) ) {
-	this->set_center(Gdk::Point(this->table().width() / 2,
-				    this->table().height() / 2));
+      if (   (::game_status >= GAMESTATUS::GAME_PLAY)
+          && (   (::game_status < GAMESTATUS::GAME_FINISHED)
+              || (this->table().in_game_review()) ) ) {
+        this->set_center(Gdk::Point(this->table().width() / 2,
+                                    this->table().height() / 2));
 
         if (this->table().in_game_review()) {
           if (this->table().game_review_trick_visible())

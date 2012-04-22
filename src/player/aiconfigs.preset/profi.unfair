@@ -112,6 +112,7 @@ heuristics\n\
     play for team = true\n\
     play color for partner = true\n\
     try color for partner = true\n\
+    start with color = false\n\
     retry color = true\n\
     partner backhand draw trump = true\n\
     create fehl = true\n\
@@ -120,7 +121,6 @@ heuristics\n\
     best winning card = true\n\
     draw trump = true\n\
     play to jab later = true\n\
-    start with color = false\n\
     start with low color = false\n\
     start with low trump = true\n\
     play low high = true\n\
@@ -166,6 +166,7 @@ heuristics\n\
     play for team = true\n\
     play color for partner = true\n\
     try color for partner = true\n\
+    start with color = true\n\
     retry color = true\n\
     partner backhand draw trump = true\n\
     create fehl = true\n\
@@ -174,7 +175,6 @@ heuristics\n\
     best winning card = true\n\
     draw trump = true\n\
     play to jab later = true\n\
-    start with color = true\n\
     start with low color = true\n\
     start with low trump = false\n\
     play low high = true\n\
@@ -384,6 +384,7 @@ heuristics\n\
     play for team = true\n\
     play color for partner = true\n\
     try color for partner = true\n\
+    start with color = false\n\
     retry color = true\n\
     partner backhand draw trump = true\n\
     create fehl = true\n\
@@ -392,7 +393,6 @@ heuristics\n\
     best winning card = true\n\
     draw trump = true\n\
     play to jab later = true\n\
-    start with color = false\n\
     start with low color = false\n\
     start with low trump = true\n\
     play low high = true\n\
@@ -544,6 +544,7 @@ heuristics\n\
     play for team = true\n\
     play color for partner = true\n\
     try color for partner = true\n\
+    play color in solo = true\n\
     retry color = true\n\
     partner backhand draw trump = false\n\
     create fehl = true\n\
@@ -552,7 +553,6 @@ heuristics\n\
     best winning card = true\n\
     draw trump = true\n\
     play to jab later = true\n\
-    play color in solo = true\n\
     start with low color = true\n\
     start with low trump = true\n\
     color: play low high = true\n\
@@ -760,6 +760,7 @@ heuristics\n\
     play for team = true\n\
     play color for partner = true\n\
     try color for partner = true\n\
+    play color in solo = true\n\
     retry color = true\n\
     partner backhand draw trump = false\n\
     create fehl = true\n\
@@ -768,7 +769,6 @@ heuristics\n\
     best winning card = true\n\
     draw trump = true\n\
     play to jab later = true\n\
-    play color in solo = true\n\
     start with low color = true\n\
     start with low trump = true\n\
     color: play low high = true\n\
@@ -868,6 +868,7 @@ heuristics\n\
     play for team = true\n\
     play color for partner = true\n\
     try color for partner = true\n\
+    play color in solo = true\n\
     retry color = true\n\
     partner backhand draw trump = false\n\
     create fehl = true\n\
@@ -876,7 +877,6 @@ heuristics\n\
     best winning card = true\n\
     draw trump = true\n\
     play to jab later = true\n\
-    play color in solo = true\n\
     start with low color = true\n\
     start with low trump = true\n\
     play low high = true\n\
@@ -976,6 +976,7 @@ heuristics\n\
     play for team = true\n\
     play color for partner = true\n\
     try color for partner = true\n\
+    play color in solo = true\n\
     retry color = true\n\
     partner backhand draw trump = false\n\
     create fehl = true\n\
@@ -984,7 +985,6 @@ heuristics\n\
     best winning card = true\n\
     draw trump = true\n\
     play to jab later = true\n\
-    play color in solo = true\n\
     start with low color = true\n\
     start with low trump = true\n\
     play low high = true\n\
@@ -1084,6 +1084,7 @@ heuristics\n\
     play for team = true\n\
     play color for partner = true\n\
     try color for partner = true\n\
+    play color in solo = true\n\
     retry color = true\n\
     partner backhand draw trump = false\n\
     create fehl = true\n\
@@ -1092,7 +1093,6 @@ heuristics\n\
     best winning card = true\n\
     draw trump = true\n\
     play to jab later = true\n\
-    play color in solo = true\n\
     start with low color = false\n\
     start with low trump = true\n\
     play low high = true\n\

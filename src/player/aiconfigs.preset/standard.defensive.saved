@@ -1,4 +1,4 @@
-# FreeDoko ai configuration (0.7.11  (2011-10-01) (developer version) (dknof))
+# FreeDoko ai configuration (0.7.12  (2011-12-18) (developer version) (dknof))
 
 # difficulty = standard defensive
 type         =  0: monte carlo - jab or serve
@@ -110,6 +110,7 @@ heuristics
     play for team = true
     play color for partner = true
     try color for partner = true
+    start with color = false
     retry color = true
     partner backhand draw trump = true
     create fehl = true
@@ -118,7 +119,6 @@ heuristics
     best winning card = true
     draw trump = true
     play to jab later = true
-    start with color = false
     start with low color = false
     start with low trump = true
     play low high = true
@@ -164,6 +164,7 @@ heuristics
     play for team = true
     play color for partner = true
     try color for partner = true
+    start with color = true
     retry color = true
     partner backhand draw trump = true
     create fehl = true
@@ -172,7 +173,6 @@ heuristics
     best winning card = true
     draw trump = true
     play to jab later = true
-    start with color = true
     start with low color = true
     start with low trump = false
     play low high = true
@@ -382,6 +382,7 @@ heuristics
     play for team = true
     play color for partner = true
     try color for partner = true
+    start with color = false
     retry color = true
     partner backhand draw trump = true
     create fehl = true
@@ -390,7 +391,6 @@ heuristics
     best winning card = true
     draw trump = true
     play to jab later = true
-    start with color = false
     start with low color = false
     start with low trump = true
     play low high = true
@@ -542,6 +542,7 @@ heuristics
     play for team = true
     play color for partner = true
     try color for partner = true
+    play color in solo = true
     retry color = true
     partner backhand draw trump = false
     create fehl = true
@@ -550,7 +551,6 @@ heuristics
     best winning card = true
     draw trump = true
     play to jab later = true
-    play color in solo = true
     start with low color = true
     start with low trump = true
     color: play low high = true
@@ -758,6 +758,7 @@ heuristics
     play for team = true
     play color for partner = true
     try color for partner = true
+    play color in solo = true
     retry color = true
     partner backhand draw trump = false
     create fehl = true
@@ -766,7 +767,6 @@ heuristics
     best winning card = true
     draw trump = true
     play to jab later = true
-    play color in solo = true
     start with low color = true
     start with low trump = true
     color: play low high = true
@@ -866,6 +866,7 @@ heuristics
     play for team = true
     play color for partner = true
     try color for partner = true
+    play color in solo = true
     retry color = true
     partner backhand draw trump = false
     create fehl = true
@@ -874,7 +875,6 @@ heuristics
     best winning card = true
     draw trump = true
     play to jab later = true
-    play color in solo = true
     start with low color = true
     start with low trump = true
     play low high = true
@@ -974,6 +974,7 @@ heuristics
     play for team = true
     play color for partner = true
     try color for partner = true
+    play color in solo = true
     retry color = true
     partner backhand draw trump = false
     create fehl = true
@@ -982,7 +983,6 @@ heuristics
     best winning card = true
     draw trump = true
     play to jab later = true
-    play color in solo = true
     start with low color = true
     start with low trump = true
     play low high = true
@@ -1082,6 +1082,7 @@ heuristics
     play for team = true
     play color for partner = true
     try color for partner = true
+    play color in solo = true
     retry color = true
     partner backhand draw trump = false
     create fehl = true
@@ -1090,7 +1091,6 @@ heuristics
     best winning card = true
     draw trump = true
     play to jab later = true
-    play color in solo = true
     start with low color = false
     start with low trump = true
     play low high = true

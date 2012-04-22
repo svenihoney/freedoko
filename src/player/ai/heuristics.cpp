@@ -3770,7 +3770,7 @@ Heuristics::play_color_in_solo(Trick const& trick,
 
 
   return best_card;
-} // Card Heuristics::try_color_for_partner(Trick trick, HeuristicInterface hi)
+} // Card Heuristics::play_color_in_solo(Trick trick, HeuristicInterface hi)
 
 /**
  ** Start a new color hoping the partner has an ace
@@ -8707,11 +8707,6 @@ Heuristics::start_with_color(Trick const& trick,
   if (!trick.isstartcard())
     return Card::EMPTY;
 
-  // @heuristic::condition   following player is not of the opposite team
-  if (TEAM::maybe_to_team(hi.teamofplayer(trick.player_of_card(1)))
-      != hi.team())
-    return Card::EMPTY;
-
   // best card so far to play
   Card best_card;
   // maximal remaining cards of the selected color
@@ -8733,6 +8728,12 @@ Heuristics::start_with_color(Trick const& trick,
 
     // the player has the color
     if (hi.hand().numberof(color) == 0)
+      continue;
+
+    // @heuristic::condition   following player is not of the opposite team
+    if (   (TEAM::maybe_to_team(hi.teamofplayer(trick.player_of_card(1)))
+            != hi.team())
+        && hi.handofplayer(trick.player_of_card(1)).contains(Card(color, Card::ACE)))
       continue;
 
     unsigned const remaining_cards_no

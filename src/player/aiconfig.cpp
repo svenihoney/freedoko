@@ -1404,6 +1404,7 @@ Aiconfig::init_heuristic_states()
     states.push_back(HeuristicState(PLAY_FOR_TEAM,                  true));
     states.push_back(HeuristicState(PLAY_COLOR_FOR_PARTNER,         true));
     states.push_back(HeuristicState(TRY_COLOR_FOR_PARTNER,          true));
+    states.push_back(HeuristicState(START_WITH_COLOR,               false));
     states.push_back(HeuristicState(RETRY_COLOR,                    true));
     states.push_back(HeuristicState(PARTNER_BACKHAND_DRAW_TRUMP,    true));
     states.push_back(HeuristicState(CREATE_FEHL,                    true));
@@ -1412,7 +1413,6 @@ Aiconfig::init_heuristic_states()
     states.push_back(HeuristicState(BEST_WINNING,                   true));
     states.push_back(HeuristicState(DRAW_TRUMP,                     true));
     states.push_back(HeuristicState(PLAY_TO_JAB_LATER,              true));
-    states.push_back(HeuristicState(START_WITH_COLOR,               false));
     states.push_back(HeuristicState(START_WITH_LOW_COLOR,           false));
     states.push_back(HeuristicState(START_WITH_LOW_TRUMP,           true));
     states.push_back(HeuristicState(LOW_HIGH,                       true));

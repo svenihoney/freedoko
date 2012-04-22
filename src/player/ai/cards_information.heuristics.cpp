@@ -50,7 +50,7 @@
 // the ai whose information are written
 // (what the ai assumes of the other players)
 // undefine for no output
-#define DEBUG_AI 4
+#define DEBUG_AI 2
 #endif
 #endif
 
@@ -295,8 +295,7 @@ namespace CardsInformationHeuristics {
           return ;
 
         // has not played a color ace
-        if (   (played_card.value() == Card::ACE)
-            || played_card.istrump())
+        if (played_card.value() == Card::ACE)
           return ;
 
         // If it is the solo player, he will have the color ace, if he played a ten

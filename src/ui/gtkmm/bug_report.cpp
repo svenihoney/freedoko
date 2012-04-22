@@ -35,6 +35,7 @@
 #include "ui.h"
 #include "translations.h"
 #include "party_settings.h"
+#include "table.h"
 
 #include "../../misc/setting.h"
 #include "../../os/bug_report.h"
@@ -42,6 +43,7 @@
 #include "../ui.wrap.h"
 
 #include "../../utils/file.h"
+#include "../../utils/string.h"
 
 #include "widgets/stock_button.h"
 #include <gtkmm/scrolledwindow.h>
@@ -359,7 +361,16 @@ namespace UI_GTKMM_NS {
   void
     BugReport::save()
     {
-      string const filename = ::bug_report->report(this->message->get_buffer()->get_text() + "\n");
+      string const filename
+        = ::bug_report->report(this->message->get_buffer()->get_text()
+                               + "\n"
+                               + (this->ui->table->in_game_review()
+                               ? ("---\n"
+                                  + ("Game review, trick: " + DK::Utils::String::to_string(this->ui->table->game_review_trickno()) + "\n\n"
+                                     + DK::Utils::String::to_string(this->ui->table->game_review_trick())
+                                     +"\n")
+                                 )
+                               : string()));
 
       cerr << "Saved bug report in the file '" << filename << "'." << endl;
 

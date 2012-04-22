@@ -1696,6 +1696,7 @@ CardsInformation::recalc_weightings() const
   // * Rebuild a new cards information for the start of the game with 'must have' and 'cannot have' from the gameplay.
   // * Replay the game and update the weighting (using the information of further played cards)
 
+  return ;
 
   // create a virtual game
 
