@@ -325,6 +325,8 @@ class Game {
   unsigned real_tricks_remaining_no() const;
   // whether this is the last trick
   bool is_last_trick() const;
+  // the number of the trump tricks
+  unsigned trumptricks_no() const;
 
 
   // teaminfo (known to all)

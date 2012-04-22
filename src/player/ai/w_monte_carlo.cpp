@@ -139,47 +139,55 @@ WMonteCarlo::init()
     delete *player;
   this->player_virt_p.clear();
 
+  Game const& game = this->vgi().game();
+
   // set the cards to the valid cards
   if (this->ai_type() == AITYPE::MONTE_CARLO_JAB_OR_SERVE) {
-    if (this->vgi().game().trick_current().isempty()) {
-      this->hand_ = this->vgi().hand().validcards(this->vgi().game().trick_current());
+    if (game.trick_current().isempty()) {
+      this->hand_ = this->vgi().hand().validcards(game.trick_current());
       // remove some special cards
-      if (   !this->vgi().game().is_solo()
+      if (   !game.is_solo()
           && this->hand().contains(Card::FOX)
           && (this->hand().size() > 1))
         this->hand_.remove(Card::FOX);
-      if (   !this->vgi().game().is_solo()
+      if (   !game.is_solo()
           && this->hand().contains(Card::DIAMOND_TEN)
           && (this->hand().size() > 1))
         this->hand_.remove(Card::DIAMOND_TEN);
-      if (   this->vgi().game().rule()(Rule::DOLLEN)
+      if (   game.rule()(Rule::DOLLEN)
           && this->hand().contains(Card::DOLLE)
           && (this->hand().size() > 1))
         this->hand_.remove(Card::DOLLE);
     } else {
       this->hand_ = HandCards();
-      Ai const& ai = dynamic_cast<Ai const&>(this->vgi().game().player(this->vgi().no()));
+      Ai const& ai = dynamic_cast<Ai const&>(game.player(this->vgi().no()));
       {
-        HandCard const card(this->vgi().hand(),
-                            Heuristics::jabbing_card(this->vgi().game().trick_current(), ai));
+        HandCard card(this->vgi().hand(),
+                      Heuristics::jabbing_card(game.trick_current(), ai));
+        if (   !game.is_real_solo()
+            && (game.trumptricks_no() == 1)
+            && (game.trick_current().startcard().istrump())
+            && card.less(Card::DIAMOND_JACK)) {
+          card = this->vgi().hand().same_or_higher_card(Card::DIAMOND_JACK);
+        }
         if (!card.is_empty()
-            && !(   this->vgi().same_team(this->vgi().game().trick_current().winnerplayer())
+            && !(   this->vgi().same_team(game.trick_current().winnerplayer())
                  // ToDo: check whether the opposite playes behind can have a card between the winnercard and 'card'
-                 && (card == this->vgi().game().trick_current().winnercard())) )
+                 && (card == game.trick_current().winnercard())) )
           this->hand_.add(card);
       }
       {
         HandCard const card(this->vgi().hand(),
-                            Heuristics::lowest_serving_card(this->vgi().game().trick_current(), ai));
+                            Heuristics::lowest_serving_card(game.trick_current(), ai));
         if (!card.is_empty())
           this->hand_.add(card);
       }
       if (this->hand_.cardsnumber() == 0)
-        this->hand_ = this->vgi().hand().validcards(this->vgi().game().trick_current());
-    } // if (this->vgi().game().trick_current().isempty())
+        this->hand_ = this->vgi().hand().validcards(game.trick_current());
+    } // if (game.trick_current().isempty())
 
   } else {
-    this->hand_ = this->vgi().hand().validcards(this->vgi().game().trick_current());
+    this->hand_ = this->vgi().hand().validcards(game.trick_current());
   }
   // set the weightings to 0
   this->weighting_p = vector<long long int>(this->hand().cardsnumber(), 0);
@@ -188,14 +196,14 @@ WMonteCarlo::init()
   // (the players have a hand independent of the hand of the vgi, so that
   //  reordering the card is no problem)
   for (vector<Player*>::const_iterator player
-       = this->vgi().game().players_begin();
-       player != this->vgi().game().players_end();
+       = game.players_begin();
+       player != game.players_end();
        player++) {
 
-    this->player_virt_p.push_back(new AiRandom(static_cast<AiRandom const&>(this->vgi().game().player(this->vgi().no()))));
+    this->player_virt_p.push_back(new AiRandom(static_cast<AiRandom const&>(game.player(this->vgi().no()))));
 
     // if the player is not the vgi, some values have to changed
-    if (**player != this->vgi().game().player(this->vgi().no())) {
+    if (**player != game.player(this->vgi().no())) {
       unsigned const no = this->player_virt_p.size() - 1;
       AiRandom& ai_virtual = static_cast<AiRandom&>(*this->player_virt_p.back());
 
@@ -206,12 +214,12 @@ WMonteCarlo::init()
       ai_virtual.set_hand(this->vgi().handofplayer(**player) );
       DEBUG_ASSERTION((ai_virtual.hand().cardsnumber() + 1
                        // hack (if the player has already played a card in the trick)
-                       >= this->vgi().game().tricks_remaining_no()),
+                       >= game.tricks_remaining_no()),
                       "WMonteCarlo::init():\n"
                       "  the hand of the virtual player " << ai_virtual.no()
                       << " is too small: "
                       << ai_virtual.hand().cardsnumber()
-                      << " < " << this->vgi().game().tricks_remaining_no()
+                      << " < " << game.tricks_remaining_no()
                       << ":\n"
                       << ai_virtual.hand());
 
@@ -280,7 +288,7 @@ WMonteCarlo::best_card()
         && this->vgi().cards_information().remaining_others(Card::DOLLE)
        )
       continue;
-    
+
     // never take a fox but in the last three tricks
     if (this->vgi().game().tricks_remaining_no() > 3) {
       if (this->hand().card(c).isfox())

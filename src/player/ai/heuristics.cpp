@@ -2872,6 +2872,22 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
     } // for (i < ha.cardsnumber)
   } // if partner is start player and with none trump card.
 
+  // choose a single ten of a color
+  for( unsigned i = 0; i < ha.cardsnumber(); i++ ) {
+    if(   ha.card(i).value() == Card::TEN
+       && (ha.numberof(ha.card(i).color()) == 1)
+       && !ha.card(i).istrump()
+       && t.isvalid( ha.card( i ),hi.hand() )
+       && (   hi.teamofplayer(t.winnerplayer()) == hi.team()
+           || solo_check
+           || allmyteam
+          )
+      )
+    {
+      return ha.card(i);
+    }
+  }
+
   Card best_ace;
   // choose an ace of a color if the player has two aces
   // or if there are not enough remaining color cards and the player has not the ten or no other player has a ten
@@ -8546,23 +8562,24 @@ Heuristics::get_trick_for_keeping_announcement(Trick const& t,
     = calcPointsOfOppositeTeam(hi, hi.game(), false);
 
   // @heuristic::condition   the trick is critical for keeping the announcement or for deflecting the announcement of the opposite team
+  Card const card = best_jabbing_card(t, hi);
+#ifdef OUTDATED
+  = best_winning_card_old(t, hi, 30);
+#endif
   if (   (   hi.game().needed_points_to_win(hi.team())
           > own_points)
       && (   hi.game().needed_points_to_win(hi.team())
-          <= (own_points + t.points() + 10) ) )
-    return best_jabbing_card(t, hi);
-#ifdef OUTDATED
-  return best_winning_card_old(t, hi, 30);
-#endif
+          <= (own_points + t.points() + card.value()) ) )
+    return card;
   if (   (   hi.game().needed_points_to_win(opposite(hi.team()))
           > opp_points)
       && (   hi.game().needed_points_to_win(opposite(hi.team()))
-          <= (opp_points + t.points() + 10) ) )
+          <= (opp_points + t.points()
+              + hi.hand().validcards(t).lowest_value()
+              + ((t.remainingcardno() - 1) * 4) )
+         ) )
     // @heuristic::action   take the best winning card
-    return best_jabbing_card(t, hi);
-#ifdef OUTDATED
-  return best_winning_card_old(t, hi, 30);
-#endif
+    return card;
 
   return Card::EMPTY;
 } // Card Heuristics::get_trick_for_keeping_announcement(Trick t, HeuristicInterface hi)

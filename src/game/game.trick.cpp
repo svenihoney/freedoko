@@ -34,17 +34,15 @@
 #include "../card/trick.h"
 
 /**
- **
  ** -> result
  **
  ** @param	-
  **
  ** @return	the tricks
  **
- ** @version	0.6.8
- **
  ** @author	Diether Knof
  **
+ ** @version	0.6.8
  **/
 vector<Trick*>&
 Game::tricks()
@@ -53,18 +51,16 @@ Game::tricks()
 } // vector<Trick*>& Game::tricks()
 
 /**
- **
  ** -> result
  **
  ** @param	-
  **
  ** @return	number of tricks in game
  **
- ** @version	0.4.4
- **
  ** @author	Borg Enders
  ** @author	Diether Knof
  **
+ ** @version	0.4.4
  **/
 unsigned
 Game::trickno() const
@@ -73,7 +69,6 @@ Game::trickno() const
 } // unsigned Game::trickno() const
 
 /**
- **
  ** -> result
  **
  ** @param	t	number of trick, which should be result of this method
@@ -81,11 +76,10 @@ Game::trickno() const
  ** @return	returns trick i, if i is legal
  **		otherwise initialized trick
  **
- ** @version	0.4.4
- **
  ** @author	Borg Enders
  ** @author	Diether Knof
  **
+ ** @version	0.4.4
  **/
 Trick const&
 Game::trick(unsigned const& t) const
@@ -99,18 +93,16 @@ Game::trick(unsigned const& t) const
 } // Trick const& Game::trick(unsigned const& t) const
 
 /**
- **
  ** -> result
  **
  ** @param	-
  **
  ** @return	the current trick
  **
- ** @version	0.4.5
- **
  ** @author	Borg Enders
  ** @author	Diether Knof
  **
+ ** @version	0.4.5
  **/
 Trick const&
 Game::trick_current() const
@@ -123,18 +115,16 @@ Game::trick_current() const
 } // Trick const& Game::trick_current() const
 
 /**
- **
  ** -> result
  **
  ** @param	-
  **
  ** @return	the current trick
  **
- ** @version	0.4.4
- **
  ** @author	Borg Enders
  ** @author	Diether Knof
  **
+ ** @version	0.4.4
  **/
 Trick&
 Game::trick_current()
@@ -155,10 +145,10 @@ Game::trick_current()
  **
  ** @return	the number of the current trick
  **
- ** @version	0.6.7
- **
  ** @author	Borg Enders
  ** @author	Diether Knof
+ **
+ ** @version	0.6.7
  **
  ** @todo	replace with 'real_trick_current_no'
  **/
@@ -186,11 +176,9 @@ Game::trick_current_no() const
  **
  ** @return	the number of tricks in the trickpile
  **
- ** @version	0.7.9
- **
  ** @author	Diether Knof
  **
- ** @todo	-
+ ** @version	0.7.9
  **/
 unsigned
 Game::tricks_in_trickpiles() const
@@ -215,10 +203,10 @@ Game::tricks_in_trickpiles() const
  **
  ** @return	the number of the current trick
  **
- ** @version	0.6.7
- **
  ** @author	Borg Enders
  ** @author	Diether Knof
+ **
+ ** @version	0.6.7
  **/
 unsigned
 Game::real_trick_current_no() const
@@ -242,10 +230,10 @@ Game::real_trick_current_no() const
  **
  ** @return	the number of remaining tricks
  **
- ** @version	0.4.4
- **
  ** @author	Borg Enders
  ** @author	Diether Knof
+ **
+ ** @version	0.4.4
  **/
 unsigned
 Game::tricks_remaining_no() const
@@ -264,10 +252,10 @@ Game::tricks_remaining_no() const
  **
  ** @return	the number of remaining tricks
  **
- ** @version	0.7.3
- **
  ** @author	Borg Enders
  ** @author	Diether Knof
+ **
+ ** @version	0.7.3
  **/
 unsigned
 Game::real_tricks_remaining_no() const
@@ -286,9 +274,9 @@ Game::real_tricks_remaining_no() const
  **
  ** @return	whether this is the last trick
  **
- ** @version	0.6.6
- **
  ** @author	Diether Knof
+ **
+ ** @version	0.6.6
  **/
 bool
 Game::is_last_trick() const
@@ -298,3 +286,27 @@ Game::is_last_trick() const
     return false;
   return (this->tricks_remaining_no() == 1);
 } // bool Game::is_last_trick() const
+
+/**
+ ** -> result
+ **
+ ** @param	-
+ **
+ ** @return	number of trump tricks (with the current trick)
+ **
+ ** @author	Diether Knof
+ **
+ ** @version	0.7.12
+ **/
+unsigned
+Game::trumptricks_no() const
+{
+  unsigned n = 0;
+  for (vector<Trick*>::const_iterator t = this->tricks_.begin();
+       t != this->tricks_.end();
+       ++t)
+    if (   !(*t)->isempty()
+        && (*t)->startcard().istrump())
+      n += 1;
+  return n;
+} // unsigned Game::trumptrick_no() const

@@ -1,10 +1,15 @@
-2012-05-15
+2012-04-21 Diether Knof
+	- Monte Carlo: in the first trump trick do not jab with a card less then diamond jack
+	- improved heuristic 'get trick for announcement'
+	- choose pfund card: at first select a single color ten
+	
+2012-04-15 Borg Enders
 	- tweaked trickweighting
 	
-2012-04-14
+2012-04-14 Borg Enders
 	- tweaked no90 announcement
 	
-2012-04-09
+2012-04-09 Borg Enders
 	- tweaked trickweighting (and created two accorduing references)
 
 2012-04-03 Diether Knof

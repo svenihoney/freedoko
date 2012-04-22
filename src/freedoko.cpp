@@ -37,6 +37,7 @@
 
 #include "constants.h"
 #include <time.h>
+#include <unistd.h>
 #ifdef WINDOWS
 // for 'mkdir'
 #include <io.h>
