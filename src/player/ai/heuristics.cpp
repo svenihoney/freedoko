@@ -7650,7 +7650,7 @@ Heuristics::make_announcement( HeuristicInterface const& hi, const Game& g )
       if ( hi.game().swines_owner() == NULL
           && hi.game().hyperswines_owner() == NULL)
       {
-        value +=hi.hand().numberofdolle();
+        value +=2*hi.hand().numberofdolle();
       }
     }
   }
