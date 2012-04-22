@@ -1,5 +1,6 @@
 2012-04-22 Borg Enders
 	- announcemnets calculation adapted for the game with out nines
+	- tweaked trickweighting
 
 2012-04-21 Diether Knof
 	- Monte Carlo: in the first trump trick do not jab with a card less then diamond jack

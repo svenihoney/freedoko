@@ -316,6 +316,15 @@ int TrickWeighting::modi_queen(VirtualGamesInterface const& vgi,
       modi -= 16; // previously 9, 12
   }
 
+  if (   card == Card(Card::SPADE, Card::QUEEN) )
+   {
+
+     if( vgi.no() != trick.winnerplayer().no() )
+       {
+         modi -= 3; // reference
+       }
+   }
+
   if (   card == Card(Card::CLUB, Card::QUEEN) )
   {
 
@@ -543,6 +552,9 @@ int TrickWeighting::modi_fox(VirtualGamesInterface const& vgi,
      && maybe_to_team(winnerteam) != team )
   {
     modi -= 6; // previous
+
+    if( ai.hand().numberoftrumps() <= 3 )
+      modi += 2; // reference
   }
 
   if( trick.cardno_of_player(card.player()) == 3
@@ -1355,7 +1367,7 @@ TrickWeighting::backhand(VirtualGamesInterface const& vgi,
         result -= 3;
     }
     else
-      result = -5;
+      result = -6;
 
 
     return result;
