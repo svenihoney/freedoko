@@ -6103,6 +6103,12 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
     value = -2;
   }
 
+  if ( !hi.game().rule()(Rule::WITH_NINES) )
+    {
+      v_ace= std::max(0,(int)v_ace-1);
+      value += 1; // compensate for reduced ace value
+    }
+
 #ifdef ANNOUNCE_DEBUG_DETAIL
   COUT << "CalcHandValue(1)\t" << hi.no() << "\t" << value << endl;
 #endif
