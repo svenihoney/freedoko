@@ -832,7 +832,6 @@ Card
 Heuristics::best_jabbing_card(Trick const& trick,
                               HeuristicInterface const& hi)
 {
-
   // notes
   // * first trick: duty announcement
   // * color trick: not below a fox 
@@ -1118,6 +1117,12 @@ Heuristics::best_jabbing_card(Trick const& trick,
           // 2), 3: opposite team, 4: same team
           // take lowest winning card
           card = hi.hand().next_higher_card(trick.winnercard());
+          while (  (   (card.value() >= 10)
+                    || (   (   !game.is_real_solo()
+                            || GAMETYPE::is_color_solo(game.type()) )
+                        && HandCard(hi.hand(), card).less(Card::DIAMOND_JACK)) )
+                 && !HandCard(hi.hand(), card).is_special())
+            card = hi.hand().next_higher_card(card);
           DEBUG_BJC_OSTR << "  " << card << " (next higher card)\n";
         } // 2), 3: opposite team, 4: same team
         else { // 2, two times opposite team behind
