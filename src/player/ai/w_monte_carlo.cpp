@@ -179,7 +179,8 @@ WMonteCarlo::init()
       {
         HandCard const card(this->vgi().hand(),
                             Heuristics::lowest_serving_card(game.trick_current(), ai));
-        if (!card.is_empty())
+        if (   !card.is_empty()
+            && !this->hand_.contains(card))
           this->hand_.add(card);
       }
       if (this->hand_.cardsnumber() == 0)

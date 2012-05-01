@@ -1,3 +1,7 @@
+2012-05-01 Diether Knof
+	- team information heuristics: value change
+	- heuristic 'play highest color card in game': also applies after the first trick card
+
 2012-04-22 Diether Knof
 	- improved 'best jabbing card'
 	- bug report: added trick number of game review

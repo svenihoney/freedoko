@@ -480,7 +480,7 @@ Heuristics::play_to_get_married( Trick const& trick,
     return Card::EMPTY;
 
   case MARRIAGE_SELECTOR::FIRST_FOREIGN:
-    if( trick.isempty() ) {
+    if (trick.isempty()) {
       vector<Card> cards;
       for (vector<Card::Color>::const_iterator
            c = hi.game().rule().card_colors().begin();
@@ -8302,9 +8302,13 @@ Heuristics::play_highest_color_card_in_game(Trick const& trick,
 {
   // @heuristic::name   play highest color card in game
   // @heuristic::idea   Make a sure trick with a color card
+ 
+#ifdef OUTDATED
+  // DK: 1. Mai 12 
   // @heuristic::condition   startplayer
   if (!trick.isempty())
     return Card::EMPTY;
+#endif
 
   HandCards const cards = hi.hand().cards_single();
   Card best_card; // the card to play
@@ -8313,13 +8317,15 @@ Heuristics::play_highest_color_card_in_game(Trick const& trick,
        ++c) {
     if (c->istrump())
       continue;
+    if (!trick.isvalid(*c))
+      continue;
 
     Trick t(trick);
     t += *c;
     if (oppositeTeamCanWinTrick(t, hi))
       continue;
 
-    if (best_card.is_empty()
+    if (   best_card.is_empty()
         || (c->points() > best_card.points()))
       best_card = *c;
 

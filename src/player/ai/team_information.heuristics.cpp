@@ -795,7 +795,7 @@ namespace TeamInformationHeuristic {
       } // not all color have run
 
       // contra
-      return std::min(0, -10 + 2 * static_cast<int>(trick.game().trick_current_no())); // *Value*
+      return std::min(0, -6 + 1 * static_cast<int>(trick.game().trick_current_no())); // *Value*
     } // int first_trump_run_no_jabbing_with_club_queen(...)
 
 } // namespace TeamInformationHeuristic
