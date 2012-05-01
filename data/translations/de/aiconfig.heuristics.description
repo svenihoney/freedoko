@@ -37,7 +37,7 @@ AiConfig::Heuristic::Description::play to marry \
     Betrifft nur den Kontra-Spieler in einer unerfüllten Hochzeit.
 
 AiConfig::Heuristic::play to get married \
-  = Spiele um zu geheiratet zu werden
+  = Spiele um geheiratet zu werden
 AiConfig::Heuristic::Description::play to get married \
   = Pfunde, wenn der Stich Klärungsstich ist. \n\
     Als Ausspieler spiele eine hohe Karte von einer Klärungsfarbe. \n\

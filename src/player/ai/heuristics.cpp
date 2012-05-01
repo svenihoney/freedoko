@@ -571,6 +571,8 @@ Heuristics::play_to_get_married( Trick const& trick,
       vector<Card> cards;
       if (!HandCard(hi.hand(), Card(color, Card::TEN)).is_special())
         cards.push_back(Card(color, Card::TEN));
+      if (!trick.isjabbed(Card(color, Card::ACE)))
+        cards.push_back(Card(color, Card::ACE));
       cards.push_back(Card(color, Card::KING));
       cards.push_back(Card(color, Card::NINE));
       cards.push_back(Card(color, Card::ACE)); // With Ace I will probably win the trick bad decision
@@ -2914,29 +2916,30 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
             || (   (hi.game().type() == GAMETYPE::POVERTY)
                 && (hi.no() == hi.game().soloplayer().no()))
             || (    (hi.hand().numberof(local_ace) == 1)
-                && (  (   (hi.cards_information().remaining_others(*color)
-                           < hi.game().playerno() - 1
-                           + ( (   (t.startcard().tcolor() == *color)
-                                && !t.winnercard().istrump())
-                              ? (t.remainingcardno() - 1)
-                              : 0))
+                && (  (   (   (hi.cards_information().remaining_others(*color)
+                               < hi.game().playerno() - 1
+                               + ( (   (t.startcard().tcolor() == *color)
+                                    && !t.winnercard().istrump())
+                                  ? (t.remainingcardno() - 1)
+                                  : 0))
+                           || !(   hi.hand().contains(*color, Card::TEN)
+                                && !HandCard(hi.hand(), *color, Card::TEN).is_special())
+                          )
                        && (hi.game().type() != GAMETYPE::SOLO_MEATLESS))
                     || (hi.hand().numberof(*color) == 1)
                     || (trick.points() + 11 >= 40)
                    )
-                && !(   hi.hand().contains(*color, Card::TEN)
-                     && !HandCard(hi.hand(), *color, Card::TEN).istrump()
-                     && hi.cards_information().remaining_others(Card(*color, Card::TEN)))
+                || !hi.hand().contains(*color, Card::TEN)
                )
-           ) )
-           {
-             if(   best_ace.is_empty()
-                || (hi.cards_information().remaining_others(*color)
-                    > hi.cards_information().remaining_others(best_ace.color()))
-               ) {
-               best_ace = local_ace;
-             }
-           }
+            ) )
+            {
+              if(   best_ace.is_empty()
+                 || (hi.cards_information().remaining_others(*color)
+                     > hi.cards_information().remaining_others(best_ace.color()))
+                ) {
+                best_ace = local_ace;
+              }
+            }
   } // for (color \in card_colors)
 
   if(!best_ace.is_empty()) {
@@ -6104,10 +6107,10 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
   }
 
   if ( !hi.game().rule()(Rule::WITH_NINES) )
-    {
-      v_ace= std::max(0,(int)v_ace-1);
-      value += 1; // compensate for reduced ace value
-    }
+  {
+    v_ace= std::max(0,(int)v_ace-1);
+    value += 1; // compensate for reduced ace value
+  }
 
 #ifdef ANNOUNCE_DEBUG_DETAIL
   COUT << "CalcHandValue(1)\t" << hi.no() << "\t" << value << endl;
@@ -7580,8 +7583,8 @@ Heuristics::make_announcement( HeuristicInterface const& hi, const Game& g )
   {
     value -= 1;
     if (    GAMETYPE::is_solo(hi.game().type())
-           &&  (hi.team() == TEAM::RE) )
-         value -= 6;
+        &&  (hi.team() == TEAM::RE) )
+      value -= 6;
   }
 
   if(   (game_status < GAMESTATUS::GAME_PLAY)
@@ -8302,7 +8305,7 @@ Heuristics::play_highest_color_card_in_game(Trick const& trick,
 {
   // @heuristic::name   play highest color card in game
   // @heuristic::idea   Make a sure trick with a color card
- 
+
 #ifdef OUTDATED
   // DK: 1. Mai 12 
   // @heuristic::condition   startplayer

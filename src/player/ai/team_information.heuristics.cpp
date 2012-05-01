@@ -528,7 +528,7 @@ namespace TeamInformationHeuristic {
             // so check whether all colors have already been run
             // and check in the next trick whether the player does play a color ace
             if (card.isfox())
-              return 0;
+              return team_value(-11, winnercard.player(), ai);
             return team_value(trick.isfull()          
                               ? -2 * (35 - card.value())
                               : (trick.actcardno() == 3) 
