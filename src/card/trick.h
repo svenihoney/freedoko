@@ -133,6 +133,8 @@ class Trick {
   Player const& startplayer() const;
   // returns the last player
   Player const& lastplayer() const;
+  // returns the second last player
+  Player const& secondlastplayer() const;
   // returns the number of the startplayer
   unsigned startplayerno() const;
   // set the startplayer

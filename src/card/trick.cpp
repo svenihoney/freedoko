@@ -804,6 +804,29 @@ Trick::lastplayer() const
 } // Player const& Trick::lastplayer() const
 
 /**
+ ** -> result
+ **
+ ** @param	-
+ **
+ ** @return	the last player
+ **
+ ** @author	Diether Knof
+ **
+ ** @version	0.7.12
+ **/
+Player const&
+Trick::secondlastplayer() const
+{
+  DEBUG_ASSERTION(this->startplayerno() != UINT_MAX,
+                  "Trick::secondlastplayer():\n"
+                  "  startplayerno() == N != UINT_MAX");
+
+  return this->game().player((this->startplayerno()
+                              + this->game().playerno() - 2)
+                             % this->game().playerno());
+} // Player const& Trick::secondlastplayer() const
+
+/**
  ** set the startplayer
  **
  ** @param     startplayer   new startplayer

@@ -3346,9 +3346,10 @@ Heuristics::choose_for_color_trick( Trick const& t,
     }// there was no other trumps in trick
     else // there is a trump in this trick
     {
-      // if there is already a trump try jab this trump with lowest possible trump,
+      // if there is already a trump
       // and my partner doesn't already win this trick
-      // if there are more then 10 points already in this trick
+      // there are more then 10 points already in this trick
+      // try jab this trump with lowest possible trump
 
 
       if( maybe_to_team( hi.teamofplayer( t.winnerplayer() ) ) != hi.team() )
@@ -4102,6 +4103,23 @@ Heuristics::serve_color_trick(Trick const& trick, HeuristicInterface const& hi)
   {
     return Card::EMPTY;
   }
+
+  // @heuristic::action   take last trump card
+  if (   hi.hand().hastrump()
+      && !hi.hand().contains(trick.startcard().color())
+      && (hi.hand().numberoftrumps() <= 2)
+      && (hi.hand().numberoftrumps() < hi.hand().cardsnumber() / 2) ) {
+    HandCards const trumps = hi.hand().trumps();
+    if (   (trumps[0].value() <= 3)
+        && trumps[0].less(hi.lowest_trump_card_limit())) {
+      if (trumps.size() == 1)
+        return trumps[0];
+      if (   (trumps[1].value() <= 3)
+          && trumps[1].less(hi.lowest_trump_card_limit())) {
+        return trumps.lowest_trump();
+      }
+    } // if (first trump small)
+  } // if (hi.hand().numberoftrumps() <= 2)
 
   // @heuristic::action   take lowest color card
   Card const card = Heuristics::lowest_card(trick, hi.hand());
@@ -5163,7 +5181,17 @@ Heuristics::choose_pfund_before_partner(Trick const& trick,
         || trick.startcard().istrump()
         || (   partner
             && (trick.isvalid(hi.handofplayer(*partner).highest_trump(),
-                              hi.handofplayer(*partner)))) ) {
+                              hi.handofplayer(*partner))))
+        || (   hi.game().is_solo()
+            && (hi.team() == TEAM::CONTRA)
+            && trick.has_played(hi.game().soloplayer())
+            && !trick.startcard().istrump()
+            && (   hi.handofplayer(trick.lastplayer()).can_jab(trick)
+                || (   (trick.actcardno() == hi.game().playerno() - 2)
+                    && hi.handofplayer(trick.secondlastplayer()).can_jab(trick))
+               )
+           )
+       ) {
       // search a pfund card
       Card const card = Heuristics::choose_pfund_card(trick, hi);
       if (card.value() >= Card::TEN)
@@ -5674,22 +5702,26 @@ Heuristics::jab_fox( Trick const& t, HeuristicInterface const& hi )
   // if lastcard just take the best winning card
   if (   t.islastcard()
       && !hi.same_team(t.winnerplayer())) {
+    return best_jabbing_card(t, hi);
+#ifdef OUTDATED
+    // DK, 0.7.12 (2012-05-05)
     return best_winning_card_old(t, hi, 10 ); ///@todo 10 replace with AiConfig
+#endif
   }
 
 
-#ifdef DKNOF
   { // If I can jab the fox surely, jab it.
     // take the best cards of all players behind me that are not in my team
     HandCard const& highest_opposite_card
       = highest_card_behind_of_opposite_team(t, hi);
-    if (highest_opposite_card.less(hi.hand().highest_trump())) {
-      Card const c = lowest_highest_trump(t, hi);
+    if (!hi.hand().highest_trump().less(highest_opposite_card)) {
+      Card const c = optimized_card_to_play(lowest_highest_trump(t, hi), t, hi);
       if (!c.is_empty())
         return c;
     }
   } // If I can jab the fox surely, jab it.
-#else
+#ifdef OUTDATED
+  // DK, 5. Mai 2012 
   { // if I can jab the fox surely, take the card
     // take the best cards of all players behind me that are not in my team
     Trick const& trick = t;
@@ -8166,8 +8198,9 @@ Heuristics::partner_backhand_draw_trump(Trick const& trick,
   if (!(hi.teamofplayer(trick.lastplayer()) == hi.team()))
     return Card::EMPTY;
 
-  // @heuristic::condition   the opposite team has not made any announcement
-  if (hi.game().announcement_of_team(TEAM::opposite(hi.team())))
+  // @heuristic::condition   the opposite team has not made any better announcement then the own team
+  if (  hi.game().announcement_of_team(TEAM::opposite(hi.team()))
+      > hi.game().announcement_of_team(hi.team()))
     return Card::EMPTY;
 
   // the partner

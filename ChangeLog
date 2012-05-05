@@ -1,3 +1,10 @@
+2012-05-03 Diether Knof
+	- choose pfund before partner: in solo games also take color tricks into account
+	- partner backhand draw trump: also use this heuristic, if the opposite team has announced, but not better then the own team
+
+2012-05-02 Diether Knof
+	- serve color trick: also take a trump to get rid of them
+
 2012-05-01 Diether Knof
 	- team information heuristics: value change
 	- heuristic 'play highest color card in game': also applies after the first trick card
