@@ -1,3 +1,6 @@
+2012-05-17 Borg Enders
+	- fixed broken References 268670
+
 2012-05-03 Diether Knof
 	- choose pfund before partner: in solo games also take color tricks into account
 	- partner backhand draw trump: also use this heuristic, if the opposite team has announced, but not better then the own team
