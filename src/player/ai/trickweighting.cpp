@@ -279,7 +279,8 @@ int TrickWeighting::modi_queen(VirtualGamesInterface const& vgi,
 
   if ( trick.cardno_of_player(card.player()) == 3 )
   {
-    modi -= 14; // previous 11, 13, 17
+    modi -= 13; // previous 11, 13, 17, 14
+   // 13 reference 043530
 
     Trick t( trick.startplayer());
     t += trick.card( 0 );
@@ -313,7 +314,8 @@ int TrickWeighting::modi_queen(VirtualGamesInterface const& vgi,
     if( trick.cardno_of_player( trick.winnerplayer() )
        < trick.cardno_of_player( card.player() )
        || !trick.jabs_cards_before(  card.player() ))
-      modi -= 16; // previously 9, 12
+      modi -= 18; // previously 9, 12, 16
+     // 18 261053
   }
 
   if (   card == Card(Card::SPADE, Card::QUEEN) )
@@ -324,6 +326,10 @@ int TrickWeighting::modi_queen(VirtualGamesInterface const& vgi,
          modi -= 3; // reference
        }
    }
+
+  if ( GAMETYPE::is_solo(vgi.game().type())
+          && Card(Card::DIAMOND, Card::QUEEN) == card )
+       modi += 1; // reference 126305
 
   if (   card == Card(Card::CLUB, Card::QUEEN) )
   {
@@ -357,7 +363,9 @@ int TrickWeighting::modi_queen(VirtualGamesInterface const& vgi,
 
     if(    trick.cardno_of_player( ai ) == 3
         && trick.winnerplayer().team() != vgi.team() )
+    {
       modi -= 3; // reference 234467
+    }
 
     if(    trick.cardno_of_player( ai ) == 0 )
       modi -= 12; // reference 168423

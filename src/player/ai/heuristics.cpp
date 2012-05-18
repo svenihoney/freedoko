@@ -6457,7 +6457,8 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
 
     if ( g.is_solo()
         && cardno >= 9 )
-      value += 1;
+      value += 2; // reference 096567
+
   } else
   {
     if (hi.hand().numberoftrumps() >= 9 )
@@ -7665,7 +7666,7 @@ Heuristics::make_announcement( HeuristicInterface const& hi, const Game& g )
     {
       value +=2 + 2*hi.hand().numberofdolle();
       if( hi.game().hyperswines_owner() == NULL)
-        value +=1;
+        value +=2; // reference 040594
     }
     if ( hi.game().hyperswines_owner() != NULL
         && hi.game().soloplayer().no() == hi.game().hyperswines_owner()->no() )
@@ -7810,6 +7811,8 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
          )
         value += 1 * hi.hand().numberofdolle(); // reference 139722
    }
+
+
 
   for( vector<Card::Color>::const_iterator
       c = hi.game().rule().card_colors().begin();
