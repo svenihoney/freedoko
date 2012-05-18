@@ -6029,8 +6029,6 @@ Heuristics::CalcHandValue( HeuristicInterface const& hi, const Game& g )
     {
       value = 0;
     }
-    // Todo: if aggressive
-    //  	value += 1;
   }
 
   if( g.type() == GAMETYPE::POVERTY )
@@ -7786,7 +7784,7 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
        && (hi.team() == TEAM::RE) ) {
     if (   hi.game().swines_owner() == NULL
         && hi.game().hyperswines_owner() == NULL ) {
-      value += 7*hi.hand().numberofdolle(); // reference 123343
+      value += 8*hi.hand().numberofdolle(); // 7: reference 123343, 8: 139722_1
     }
 
     value += 1; // reference 139722_1
@@ -7802,6 +7800,16 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
 
   value -= (2-hi.hand().numberofdolle());
 
+  if( hi.game().swines_owner() == NULL
+      && hi.game().hyperswines_owner() == NULL)
+   { // reference 101732
+      value += hi.hand().numberofdolle()*hi.hand().numberofclubqueens();
+      if( (hi.cards_information().played(Card::CLUB_QUEEN) == 0)
+          && (hi.team() == TEAM::RE)
+          && (!GAMETYPE::is_solo( hi.game().type() ))
+         )
+        value += 1 * hi.hand().numberofdolle(); // reference 139722
+   }
 
   for( vector<Card::Color>::const_iterator
       c = hi.game().rule().card_colors().begin();
