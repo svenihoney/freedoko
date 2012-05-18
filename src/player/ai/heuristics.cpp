@@ -7620,10 +7620,12 @@ Heuristics::make_announcement( HeuristicInterface const& hi, const Game& g )
       value -= 6;
   }
 
+
   if(   (game_status < GAMESTATUS::GAME_PLAY)
      || (   (g.trick_current().no() == 0)
          && g.trick_current().isempty() ) ) // before first card I should be 100% sure what I do
     value -= 1;
+
 
   // (trumps - no trumps) = trumps - (cards on hand - trumps ) = 2* trumps - cards on hand
   if ( 2*hi.hand().numberoftrumps() > hi.hand().cardsnumber() )
@@ -7689,6 +7691,7 @@ Heuristics::make_announcement( HeuristicInterface const& hi, const Game& g )
         value +=2*hi.hand().numberofdolle();
       }
     }
+
   }
 
   if (   (hi.game().type() == GAMETYPE::POVERTY)
