@@ -1242,7 +1242,7 @@ checkAllOppositeTeam(Trick const& t, HeuristicInterface const& hi)
 {
   // take a look if all players coming in this trick are of the opposite team
   for (unsigned i = t.actcardno() + 1; i < hi.game().playerno(); i++)
-    if (hi.guessed_same_team(t.player_of_card(i)))
+    if (!hi.guessed_opposite_team(t.player_of_card(i)))
       return false;
 
   return true;
@@ -2874,48 +2874,180 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
     } // for (i < ha.cardsnumber)
   } // if partner is start player and with none trump card.
 
-  // choose a single ten of a color
-  for( unsigned i = 0; i < ha.cardsnumber(); i++ ) {
-    if(   ha.card(i).value() == Card::TEN
-       && (ha.numberof(ha.card(i).color()) == 1)
-       && !ha.card(i).istrump()
-       && t.isvalid( ha.card( i ),hi.hand() )
-       && (   hi.teamofplayer(t.winnerplayer()) == hi.team()
-           || solo_check
-           || allmyteam
-          )
-      )
-    {
-      return ha.card(i);
-    }
-  }
+    { // choose a single ten of a color
+      Card best_ten;
+      for (vector<Card::Color>::const_iterator
+           color = hi.game().rule().card_colors().begin();
+           color != hi.game().rule().card_colors().end();
+           ++color) {
+        Card const local_ten(*color, Card::TEN);
+        if (   !hi.hand().contains(local_ten)
+            || local_ten.istrump(hi.game())
+            || !t.isvalid(local_ten, hi.hand()))
+          continue;
 
-  Card best_ace;
-  // choose an ace of a color if the player has two aces
-  // or if there are not enough remaining color cards and the player has not the ten or no other player has a ten
-  for( vector<Card::Color>::const_iterator
-      color = hi.game().rule().card_colors().begin();
-      color != hi.game().rule().card_colors().end();
-      ++color ) {
-    // do not pfund an ace in a meatless solo, if the soloplayer is behind
-    if (   (hi.game().type() == GAMETYPE::SOLO_MEATLESS)
-        && (   !t.has_played(hi.game().soloplayer())
-            || (t.cardno_of_player(hi.game().soloplayer())
-                < t.winnercardno()) ) )
-      break;
-    Card const local_ace( *color, Card::ACE );
-    if (   !hi.hand().contains(local_ace)
-        || local_ace.istrump( hi.game() )
-        || !t.isvalid(local_ace, hi.hand()))
-      continue;
+        if (ha.numberof(local_ten.color()) == 1) {
+          continue;
+        if (   best_ten.is_empty()
+             || (   hi.cards_information().remaining_others(*color)
+                 && (hi.cards_information().remaining_others(*color)
+                     < hi.cards_information().remaining_others(best_ten.color())) )
+           ) {
+          best_ten = local_ten;
+        }
+        } // if (single ten)
+      } // for (color \in card_colors)
+      if(!best_ten.is_empty()) {
+        return best_ten;
+      }
+    } // choose a single ten of a color
+
     if (   (   hi.teamofplayer(t.winnerplayer()) == hi.team()
             || solo_check
             || allmyteam )
-        && (   (   hi.hand().numberof( local_ace )
-                == hi.game().rule()(Rule::NUMBER_OF_SAME_CARDS))
-            || (   (hi.game().type() == GAMETYPE::POVERTY)
-                && (hi.no() == hi.game().soloplayer().no()))
-            || (    (hi.hand().numberof(local_ace) == 1)
+        // do not pfund an ace in a meatless solo, if the soloplayer is behind
+        && !(   (hi.game().type() == GAMETYPE::SOLO_MEATLESS)
+             && (   !t.has_played(hi.game().soloplayer())
+                 || (t.cardno_of_player(hi.game().soloplayer())
+                     < t.winnercardno()) ) ) )
+    {
+      { // choose an ace of a color 
+        Card best_ace;
+        // choose an ace of a color 
+        // * if the ace is single
+        for (vector<Card::Color>::const_iterator
+             color = hi.game().rule().card_colors().begin();
+             color != hi.game().rule().card_colors().end();
+             ++color) {
+          Card const local_ace( *color, Card::ACE );
+          if (   !hi.hand().contains(local_ace)
+              || local_ace.istrump( hi.game() )
+              || !t.isvalid(local_ace, hi.hand()))
+            continue;
+
+          // if the ace is single, take it
+          if (hi.hand().numberof(*color) == 1) {
+            if(   best_ace.is_empty()
+               || (hi.cards_information().remaining_others(*color)
+                   && (hi.cards_information().remaining_others(*color)
+                       < hi.cards_information().remaining_others(best_ace.color())) )
+              ) {
+              best_ace = local_ace;
+            }
+          }
+        } // for (color)
+        if(!best_ace.is_empty()) {
+          return best_ace;
+        }
+
+        // choose an ace of a color 
+        // * if the player has two aces
+        for (vector<Card::Color>::const_iterator
+             color = hi.game().rule().card_colors().begin();
+             color != hi.game().rule().card_colors().end();
+             ++color) {
+          Card const local_ace( *color, Card::ACE );
+          if (   !hi.hand().contains(local_ace)
+              || local_ace.istrump( hi.game() )
+              || !t.isvalid(local_ace, hi.hand()))
+            continue;
+
+          // if the player has two aces, take it
+          if (   hi.hand().numberof( local_ace )
+              == hi.game().rule()(Rule::NUMBER_OF_SAME_CARDS)) {
+            if(   best_ace.is_empty()
+               || (hi.cards_information().remaining_others(*color)
+                   < hi.cards_information().remaining_others(best_ace.color()))
+              ) {
+              best_ace = local_ace;
+            }
+          }
+        } // for (color)
+        if(!best_ace.is_empty()) {
+          return best_ace;
+        }
+
+        // choose an ace of a color 
+        // * if there are not enough remaining color cards and the player has not the ten or no other player has a ten
+        for (vector<Card::Color>::const_iterator
+             color = hi.game().rule().card_colors().begin();
+             color != hi.game().rule().card_colors().end();
+             ++color) {
+          Card const local_ace( *color, Card::ACE );
+          if (   !hi.hand().contains(local_ace)
+              || local_ace.istrump( hi.game() )
+              || !t.isvalid(local_ace, hi.hand()))
+            continue;
+
+          if (   (   (hi.game().type() == GAMETYPE::POVERTY)
+                  && (hi.no() == hi.game().soloplayer().no()) )
+              || (   (hi.hand().numberof(local_ace) == 1)
+                  && (hi.cards_information().remaining_others(*color)
+                      < hi.game().playerno() - 1
+                      + ( (   (t.startcard().tcolor() == *color)
+                           && !t.winnercard().istrump())
+                         ? (t.remainingcardno() - 1)
+                         : 0)
+                      && (hi.game().type() != GAMETYPE::SOLO_MEATLESS))
+                 )
+             ) {
+            if (   best_ace.is_empty()
+                || (hi.cards_information().remaining_others(*color)
+                    > hi.cards_information().remaining_others(best_ace.color()))
+               ) {
+              best_ace = local_ace;
+            }
+          }
+        } // for (color \in card_colors)
+
+        if(!best_ace.is_empty()) {
+          return best_ace;
+        }
+      } // choose an ace
+
+      { // or a ten of color
+        Card best_ten;
+        for (vector<Card::Color>::const_iterator
+             color = hi.game().rule().card_colors().begin();
+             color != hi.game().rule().card_colors().end();
+             ++color) {
+          Card const local_ten( *color, Card::TEN );
+          if (   !hi.hand().contains(local_ten)
+              || local_ten.istrump( hi.game() )
+              || !t.isvalid(local_ten, hi.hand()))
+            continue;
+          if (   best_ten.is_empty()
+              || (   hi.cards_information().remaining_others(best_ten.color())
+                  && (   (hi.hand().numberof(*color) < hi.hand().numberof(best_ten.color()))
+                      || (hi.cards_information().remaining_others(*color) == 0))
+                 )
+             ) {
+            best_ten = local_ten;
+          }
+        } // for (color \in card_colors)
+
+        if(!best_ten.is_empty()) {
+          return best_ten;
+        }
+      } // choose a ten of color
+
+      { // choose a color ace from the longest color
+        Card best_ace;
+        // do not pfund an ace in a meatless solo, if the soloplayer is behind
+        if (!(   (hi.game().type() == GAMETYPE::SOLO_MEATLESS)
+              && (   !t.has_played(hi.game().soloplayer())
+                  || (t.cardno_of_player(hi.game().soloplayer())
+                      < t.winnercardno()) ) ) ) {
+          for( vector<Card::Color>::const_iterator
+              color = hi.game().rule().card_colors().begin();
+              color != hi.game().rule().card_colors().end();
+              ++color ) {
+            Card const local_ace( *color, Card::ACE );
+            if (   !hi.hand().contains(local_ace)
+                || local_ace.istrump( hi.game() )
+                || !t.isvalid(local_ace, hi.hand()))
+              continue;
+            if (  (hi.hand().numberof(local_ace) == 1)
                 && (  (   (   (hi.cards_information().remaining_others(*color)
                                < hi.game().playerno() - 1
                                + ( (   (t.startcard().tcolor() == *color)
@@ -2931,7 +3063,6 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
                    )
                 || !hi.hand().contains(*color, Card::TEN)
                )
-            ) )
             {
               if(   best_ace.is_empty()
                  || (hi.cards_information().remaining_others(*color)
@@ -2940,178 +3071,166 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
                 best_ace = local_ace;
               }
             }
-  } // for (color \in card_colors)
+          } // for (color \in card_colors)
 
-  if(!best_ace.is_empty()) {
-    return best_ace;
-  }
-
-  // or a ten of color
-  for( unsigned i = 0; i < ha.cardsnumber(); i++ ) {
-    if(   ha.card(i).value() == Card::TEN
-       && !ha.card(i).istrump()
-       && t.isvalid( ha.card( i ),hi.hand() )
-       && (   hi.teamofplayer(t.winnerplayer()) == hi.team()
-           || solo_check
-           || allmyteam
-          )
-      )
-    {
-      return ha.card(i);
-    }
-  }
+          if(!best_ace.is_empty()) {
+            return best_ace;
+          }
+        } // if (no meatless solo with solo player behind)
+      } // choose a color ace
+    } // if (trick goes to own team)
 
 
-  bool const to_fat_solo
-    = (   GAMETYPE::is_solo( hi.game().type() )
-       && (static_cast<int>(t.points()) > hi.value( Aiconfig::LIMITQUEEN ))
-       && (t.player_of_card( 3 ) == hi.game().soloplayer()));
-  // or an ace of color
-  for( unsigned i = 0; i < ha.cardsnumber(); i++ ) {
-    int cardsInGame
-      = hi.cards_information().remaining_others(ha.card(i).color());
+    bool const to_fat_solo
+      = (   GAMETYPE::is_solo( hi.game().type() )
+         && (static_cast<int>(t.points()) > hi.value( Aiconfig::LIMITQUEEN ))
+         && (t.player_of_card( 3 ) == hi.game().soloplayer()));
+    // or an ace of color
+    for( unsigned i = 0; i < ha.cardsnumber(); i++ ) {
+      int cardsInGame
+        = hi.cards_information().remaining_others(ha.card(i).color());
 
-    if(   (ha.card(i) == Card(t.startcard().color(), Card::ACE))
-       && (hi.color_runs(ha.card(i).color()) == 0)
-       && (hi.hand().numberof(t.startcard().color()) >= 3)
-       && !ha.card(i).istrump()
-       /// @todo   see 'choose pfund', check that enough cards still remain
-       && (   cardsInGame >= 2
-           || ( hi.game().type() == GAMETYPE::POVERTY && hi.no() == hi.game().soloplayer().no() )
-          )
-       && (   hi.teamofplayer(t.winnerplayer()) == hi.team()
-           || solo_check
-           || allmyteam
-          )
-       && !(hi.game().type() == GAMETYPE::SOLO_MEATLESS)
-      ) {
-      return ha.card(i);
-    }
-
-    if(   ha.card(i).value()==Card::ACE
-       && (  hi.color_runs(ha.card(i).color()) > 0
-           || (   t.winnercard().istrump()
-               && allmyteam )
-          )
-       && cardsInGame >= 2
-       && !ha.card(i).istrump()
-       && t.isvalid( ha.card(i),hi.hand() )
-       && !to_fat_solo
-       && (   (   hi.game().type()!=GAMETYPE::SOLO_JACK // with not much trumps
-               && hi.game().type()!=GAMETYPE::SOLO_QUEEN // it is good to
-               && hi.game().type()!=GAMETYPE::SOLO_KING  // keep a second ace
-              )
-           || hi.color_runs(t.startcard().color()) > 0
-          )
-      )
-    {
-      // prefer a ten to an ace
-      if (   hi.hand().contains(ha.card(i).color(), Card::TEN)
-          && !HandCard(hi.hand(), ha.card(i).color(), Card::TEN).istrump()
-          && hi.cards_information().remaining_others(Card(ha.card(i).color(), Card::TEN)))
-        return Card(ha.card(i).color(), Card::TEN);
-      return ha.card(i);
-    }
-  } // for ( i < ha.cardsnumber() )
-
-  // or an ace of trump
-  for( unsigned i = 0; i < ha.cardsnumber(); i++ )
-    if(   ha.card(i).value() == Card::ACE
-       && ha.card(i).istrump()
-       && !ha.card(i).possible_swine()
-      )
-    {
-      return ha.card(i);
-    }
-
-  // or a ten of trump
-  for( unsigned i = 0; i < ha.cardsnumber(); i++ )
-    if(   ha.card(i).value() == Card::TEN
-       && ha.card(i).istrump()
-       && !ha.card(i).isdolle()
-      )
-    {
-      return ha.card(i);
-    }
-
-
-  // or a King of color
-  for ( unsigned i = 0; i < ha.cardsnumber(); i++ )
-    if(   ha.card(i).value() == Card::KING
-       && !ha.card(i).istrump()
-      )
-    {
-      return ha.card(i);
-    }
-
-
-  // or a king of trump
-  for( unsigned i = 0; i < ha.cardsnumber(); i++ )
-    if(   (ha.card(i).value() == Card::KING)
-       && ha.card(i).istrump()
-       && !ha.card(i).possible_hyperswine()
-       && !is_picture_solo(hi.game().type())
-      )
-    {
-      return ha.card(i);
-    }
-
-
-  // or Queen if no trump
-  for ( unsigned i = 0; i < ha.cardsnumber(); i++ )
-    if(    ha.card(i).value()==Card::QUEEN
-       && !ha.card(i).istrump()
-       && hi.game().type() != GAMETYPE::SOLO_QUEEN
-       && hi.game().type() != GAMETYPE::SOLO_KING_QUEEN
-       && hi.game().type() != GAMETYPE::SOLO_QUEEN_JACK
-       && hi.game().type() != GAMETYPE::SOLO_KOEHLER
-      )
-    {
-      return ha.card(i);
-    }
-
-
-  // or Jack if no trump
-  for( unsigned i = 0; i < ha.cardsnumber(); i++ )
-    if(   ha.card(i).value() == Card::JACK
-       && !ha.card(i).istrump()
-       && hi.game().type() != GAMETYPE::SOLO_JACK
-       && hi.game().type() != GAMETYPE::SOLO_QUEEN_JACK
-       && hi.game().type() != GAMETYPE::SOLO_KING_JACK
-       && hi.game().type() != GAMETYPE::SOLO_KOEHLER
-      )
-    {
-      return ha.card(i);
-    }
-
-
-  // or a nine of color
-  for( unsigned i = 0; i < ha.cardsnumber(); i++ )
-    if(   ha.card(i).value() == Card::NINE
-       && !ha.card(i).istrump()
-      )
-    {
-      return ha.card(i);
-    }
-
-
-  { // or a small jack of trump
-    Card best_jack;
-    for ( unsigned i = 0; i < ha.cardsnumber(); i++ ) {
-      if(   ha.card(i).value() == Card::JACK
-         && (ha.card(i).color() <= Card::HEART)
-         && ha.card(i).istrump()
+      if(   (ha.card(i) == Card(t.startcard().color(), Card::ACE))
+         && (hi.color_runs(ha.card(i).color()) == 0)
+         && (hi.hand().numberof(t.startcard().color()) >= 3)
+         && !ha.card(i).istrump()
+         /// @todo   see 'choose pfund', check that enough cards still remain
+         && (   cardsInGame >= 2
+             || ( hi.game().type() == GAMETYPE::POVERTY && hi.no() == hi.game().soloplayer().no() )
+            )
+         && (   hi.teamofplayer(t.winnerplayer()) == hi.team()
+             || solo_check
+             || allmyteam
+            )
+         && !(hi.game().type() == GAMETYPE::SOLO_MEATLESS)
         ) {
-        if (best_jack.is_empty()
-            || ha.card(i).less(best_jack))
-          best_jack = ha.card(i);
+        return ha.card(i);
       }
-    } // for (i)
-    if (!best_jack.is_empty())
-      return best_jack;
-  } // or a small jack of trump
 
-  return c;
+      if(   ha.card(i).value()==Card::ACE
+         && (  hi.color_runs(ha.card(i).color()) > 0
+             || (   t.winnercard().istrump()
+                 && allmyteam )
+            )
+         && cardsInGame >= 2
+         && !ha.card(i).istrump()
+         && t.isvalid( ha.card(i),hi.hand() )
+         && !to_fat_solo
+         && (   (   hi.game().type()!=GAMETYPE::SOLO_JACK // with not much trumps
+                 && hi.game().type()!=GAMETYPE::SOLO_QUEEN // it is good to
+                 && hi.game().type()!=GAMETYPE::SOLO_KING  // keep a second ace
+                )
+             || hi.color_runs(t.startcard().color()) > 0
+            )
+        )
+      {
+        // prefer a ten to an ace
+        if (   hi.hand().contains(ha.card(i).color(), Card::TEN)
+            && !HandCard(hi.hand(), ha.card(i).color(), Card::TEN).istrump()
+            && hi.cards_information().remaining_others(Card(ha.card(i).color(), Card::TEN)))
+          return Card(ha.card(i).color(), Card::TEN);
+        return ha.card(i);
+      }
+    } // for ( i < ha.cardsnumber() )
+
+    // or an ace of trump
+    for( unsigned i = 0; i < ha.cardsnumber(); i++ )
+      if(   ha.card(i).value() == Card::ACE
+         && ha.card(i).istrump()
+         && !ha.card(i).possible_swine()
+        )
+      {
+        return ha.card(i);
+      }
+
+    // or a ten of trump
+    for( unsigned i = 0; i < ha.cardsnumber(); i++ )
+      if(   ha.card(i).value() == Card::TEN
+         && ha.card(i).istrump()
+         && !ha.card(i).isdolle()
+        )
+      {
+        return ha.card(i);
+      }
+
+
+    // or a King of color
+    for ( unsigned i = 0; i < ha.cardsnumber(); i++ )
+      if(   ha.card(i).value() == Card::KING
+         && !ha.card(i).istrump()
+        )
+      {
+        return ha.card(i);
+      }
+
+
+    // or a king of trump
+    for( unsigned i = 0; i < ha.cardsnumber(); i++ )
+      if(   (ha.card(i).value() == Card::KING)
+         && ha.card(i).istrump()
+         && !ha.card(i).possible_hyperswine()
+         && !is_picture_solo(hi.game().type())
+        )
+      {
+        return ha.card(i);
+      }
+
+
+    // or Queen if no trump
+    for ( unsigned i = 0; i < ha.cardsnumber(); i++ )
+      if(    ha.card(i).value()==Card::QUEEN
+         && !ha.card(i).istrump()
+         && hi.game().type() != GAMETYPE::SOLO_QUEEN
+         && hi.game().type() != GAMETYPE::SOLO_KING_QUEEN
+         && hi.game().type() != GAMETYPE::SOLO_QUEEN_JACK
+         && hi.game().type() != GAMETYPE::SOLO_KOEHLER
+        )
+      {
+        return ha.card(i);
+      }
+
+
+    // or Jack if no trump
+    for( unsigned i = 0; i < ha.cardsnumber(); i++ )
+      if(   ha.card(i).value() == Card::JACK
+         && !ha.card(i).istrump()
+         && hi.game().type() != GAMETYPE::SOLO_JACK
+         && hi.game().type() != GAMETYPE::SOLO_QUEEN_JACK
+         && hi.game().type() != GAMETYPE::SOLO_KING_JACK
+         && hi.game().type() != GAMETYPE::SOLO_KOEHLER
+        )
+      {
+        return ha.card(i);
+      }
+
+
+    // or a nine of color
+    for( unsigned i = 0; i < ha.cardsnumber(); i++ )
+      if(   ha.card(i).value() == Card::NINE
+         && !ha.card(i).istrump()
+        )
+      {
+        return ha.card(i);
+      }
+
+
+    { // or a small jack of trump
+      Card best_jack;
+      for ( unsigned i = 0; i < ha.cardsnumber(); i++ ) {
+        if(   ha.card(i).value() == Card::JACK
+           && (ha.card(i).color() <= Card::HEART)
+           && ha.card(i).istrump()
+          ) {
+          if (best_jack.is_empty()
+              || ha.card(i).less(best_jack))
+            best_jack = ha.card(i);
+        }
+      } // for (i)
+      if (!best_jack.is_empty())
+        return best_jack;
+    } // or a small jack of trump
+
+    return c;
 } // Card Heuristics::choose_pfund_card( Trick trick, HeuristicInterface hi )
 
 
@@ -5089,7 +5208,7 @@ Heuristics::choose_pfund_before_partner(Trick const& trick,
       return Card::EMPTY;
 
     // normal case
-    if (   // the partner has the highest card
+    if ( // the partner has the highest card
         hi.cards_information().of_player(*partner).must_have(highest_trump)
         // no other player then the partner has the highest card
         && (hi.cards_information().of_player(*partner).must_have(highest_trump)
@@ -5593,6 +5712,7 @@ Heuristics::play_for_team( Trick const& t, HeuristicInterface const& hi )
          && hi.hand().card(i).value() == Card::TEN
          && !tr.winnercard().less(hi.value(Aiconfig::LIMITHIGH))
          && (hi.hand().numberof(Card::TEN) + hi.hand().numberof(Card::ACE)
+             - hi.hand().numberofdolle() - hi.hand().numberofswines()
              >= 3)
          && !hi.hand().card(i).is_special()
         )
@@ -7805,15 +7925,15 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
   value -= (2-hi.hand().numberofdolle());
 
   if( hi.game().swines_owner() == NULL
-      && hi.game().hyperswines_owner() == NULL)
-   { // reference 101732
-      value += hi.hand().numberofdolle()*hi.hand().numberofclubqueens();
-      if( (hi.cards_information().played(Card::CLUB_QUEEN) == 0)
-          && (hi.team() == TEAM::RE)
-          && (!GAMETYPE::is_solo( hi.game().type() ))
-         )
-        value += 1 * hi.hand().numberofdolle(); // reference 139722
-   }
+     && hi.game().hyperswines_owner() == NULL)
+  { // reference 101732
+    value += hi.hand().numberofdolle()*hi.hand().numberofclubqueens();
+    if( (hi.cards_information().played(Card::CLUB_QUEEN) == 0)
+       && (hi.team() == TEAM::RE)
+       && (!GAMETYPE::is_solo( hi.game().type() ))
+      )
+      value += 1 * hi.hand().numberofdolle(); // reference 139722
+  }
 
 
 
@@ -8465,8 +8585,8 @@ Heuristics::play_trump(Trick const& trick,
         && hi.hand().numberof(trick.startcard().tcolor()) == 0
        ) {
       Player const& re_player = hi.game().poverty_partner();
-      if ( !(trick.cardno_of_player(re_player) < trick.actcardno()) ) {
-        if( hi.hand().numberof(Card(hi.game().trumpcolor(), Card::TEN)) > 0 )
+      if (!trick.has_played(re_player)) {
+        if( hi.hand().contains(Card(hi.game().trumpcolor(), Card::TEN)) > 0 )
           return Card(hi.game().trumpcolor(), Card::TEN );
 
         return lowest_best_trump_card( trick, hi.hand(), hi );

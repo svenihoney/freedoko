@@ -322,7 +322,8 @@ ifeq ($(SHELLTYPE), sh)
 .PHONY : check_references
 check_references :
 	$(RM) $(PROGRAM)
-	$(MAKE) "CXXFLAGS=-Wall -Werror -Wno-parentheses -pipe -Os" "USE_UI_GTKMM=false" "USE_UI_TEXT=false" "USE_SOUND=false" "USE_BOOST=true" "FREEDOKO_WORKING_DIRECTORY=/tmp/${LOGNAME}/FreeDoko.check_reference/src"
+	$(MAKE) "CXXFLAGS=-Wall -Werror -Wno-parentheses -pipe -O0 -ggdb" "USE_UI_GTKMM=false" "USE_UI_TEXT=false" "USE_SOUND=false" "USE_BOOST=true" "FREEDOKO_WORKING_DIRECTORY=/tmp/${LOGNAME}/FreeDoko.check_reference/src"
+#	$(MAKE) "CXXFLAGS=-Wall -Werror -Wno-parentheses -pipe -Os" "USE_UI_GTKMM=false" "USE_UI_TEXT=false" "USE_SOUND=false" "USE_BOOST=true" "FREEDOKO_WORKING_DIRECTORY=/tmp/${LOGNAME}/FreeDoko.check_reference/src"
 	cd ../data
 	../src/$(PROGRAM) -r ../References --ui=none
 	@-grep -v OK ../References/References.report.csv | grep "^[0-9]\+\(_[0-9]\+\)\?.Reference.FreeDoko" | sort -n; \

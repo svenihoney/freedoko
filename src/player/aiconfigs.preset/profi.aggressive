@@ -330,6 +330,7 @@ heuristics\n\
     play for partner worries = true\n\
     choose pfund before partner = true\n\
     serve trump trick = true\n\
+    best winning card = true\n\
     jab color over fox = true\n\
     play to marry = false\n\
     play to get married = false\n\
@@ -344,7 +345,6 @@ heuristics\n\
     choose pfund poverty = false\n\
     jab for ace = false\n\
     create fehl = false\n\
-    best winning card = false\n\
     play low high = false\n\
     play trump = false\n\
     play for team = false\n\

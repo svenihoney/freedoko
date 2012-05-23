@@ -1506,6 +1506,7 @@ Aiconfig::init_heuristic_states()
       states.push_back(HeuristicState(PLAY_FOR_PARTNER_WORRIES,       true));
       states.push_back(HeuristicState(CHOOSE_PFUND_BEFORE_PARTNER,        true));
       states.push_back(HeuristicState(SERVE_TRUMP_TRICK,            true));
+      states.push_back(HeuristicState(BEST_WINNING,           true));
       states.push_back(HeuristicState(JAB_COLOR_OVER_FOX,     true));
     } // contra
   } // poverty

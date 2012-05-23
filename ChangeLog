@@ -1,10 +1,18 @@
+2012-05-23 Diether Knof
+	- added best winning card to default heuristics of poverty - contra
+	- choose pfund: reworked the ten/ace selection
+	- finetuning an best winning card
+
 2012-05-18 Borg Enders
 	- fixed broken References 101732,  139722_1, 139722,040594, 096567, 043530, 126305, 261053
 
 2012-05-17 Borg Enders
 	- fixed broken References 268670
 
-2012-05-03 Diether Knof
+2012-05-06 Diether Knof
+	- play for team: do not count special cards as pfund
+
+2012-05-05 Diether Knof
 	- choose pfund before partner: in solo games also take color tricks into account
 	- partner backhand draw trump: also use this heuristic, if the opposite team has announced, but not better then the own team
 
@@ -240,7 +248,7 @@
 2011-07-03 Diether Knof
 	- fixed bug in team information value
 	- perhapsed fixed the problem with game insertion in the party points
-	- overworked heuristic 'get trick for announcement', calcPointsOfSameTeam and calcPointsOfOppositeTeam
+	- reworked heuristic 'get trick for announcement', calcPointsOfSameTeam and calcPointsOfOppositeTeam
 
 2011-06-14 Diether Knof
 	- heuristic order: put 'retry color' behind 'play color for partner ace'
@@ -587,7 +595,7 @@
 	- tweaked probality of announcement before first card is played
 
 2010-05-22 Diether Knof
-	- overworked seed statistics (use 'make seed.info')
+	- reworked seed statistics (use 'make seed.info')
 
 2010-05-21 Borg Enders
 	- fixed usage of wrong function for detection of on swines in change from 2010-05-14.
@@ -596,7 +604,7 @@
 	- improved announcement if re has swines and both dollen on hand
 
 2010-05-10 Diether Knof
-	- gametree: do not take the 'cards to play' - 1 worst cards into account (overworked class Rating)
+	- gametree: do not take the 'cards to play' - 1 worst cards into account (reworked class Rating)
 
 2010-05-08 Diether Knof
 	- fixed bug in cards information heuristics 'not jabbed trump'
@@ -1105,7 +1113,7 @@
 
 2009-01-20 Diether Knof
 	- fixed bug in heuristic choose pfund before partner (2521771)
-	- overworked heuristics 'play highest color', 'create fehl'
+	- reworked heuristics 'play highest color', 'create fehl'
 
 2009-01-18 Diether Knof
 	- fixed announcement according to the rules of the DDV
@@ -1132,7 +1140,7 @@
 	- created new heuristic 'play to marry' (for the contra player)
 
 2009-01-05 Diether Knof
-	- overworked heuristic 'let trick pass'
+	- reworked heuristic 'let trick pass'
 
 2009-01-04 Diether Knof
 	- removed Card::operator bool()
@@ -1523,15 +1531,15 @@
 
 2007-06-27 Diether Knof
 	- bug fix: preferences dialog (wrong adjusting of the thread value)
-	- overworked WVirtualGames class
+	- reworked WVirtualGames class
 	- heuristic: improved 'serve color trick'
 	- heuristic: improved 'play color for partner ace'
 	- network: added simple game synchronization
 
 2007-06-26 Diether Knof
 	- added setting for threads (still unstable)
-	- overworked Weighting class for thread support
-	- overworked Gametree class
+	- reworked Weighting class for thread support
+	- reworked Gametree class
 
 2007-06-20 Diether Knof
 	- fixed heuristic 'serve color trick' for first color run with information
@@ -1581,7 +1589,7 @@
 
 2007-05-07 Diether Knof
 	- tested pending bug reports
-	- overworked sound selection
+	- reworked sound selection
 
 2007-05-06 Borg Enders
 	- new heuristic let_trick_pass
@@ -1696,11 +1704,11 @@
 	--------------------------
 
 2007-01-18 Diether Knof
-	- overworked windows installation scripts
+	- reworked windows installation scripts
 	- updated bugs list in the manual
 
 2007-01-16 Diether Knof
-	- overworked debian installation files
+	- reworked debian installation files
 
 2007-01-15 Diether Knof
 	- fixed two compilation bugs
@@ -1731,7 +1739,7 @@
 	- the ui is now initialized after parsing the command line options
 
 2007-01-02 Diether Knof
-	- overworked developer installation batch file
+	- reworked developer installation batch file
 	- fixed name update for the bug report replay window
 	- the logo is not hardcoded anymore, loaded in png-format
 	- fixed bug in cards information
@@ -1777,7 +1785,7 @@
 	- pre-release test
 
 2006-12-16 Diether Knof
-	- overworked path handling in settings (p.e. searching for cardset)
+	- reworked path handling in settings (p.e. searching for cardset)
 
 2006-12-15 Diether Knof
 	- created DOS-batch file for automatic downloading and creating the freedoko program
@@ -1890,7 +1898,7 @@
 	- checkSolo for single picture soli improved
 
 2006-10-23 Diether Knof
-	- overworked game information windows (one window instead of many)
+	- reworked game information windows (one window instead of many)
 	- fixed bug in card suggestion
 	- improved license display on the homepage
 
@@ -2065,7 +2073,7 @@
 	- simplified heuristic 'draw trump'
 	- added license information to the pictures with the cardset 'Altenburg'
 	- replaced 'Ai::playedcard()' with 'CardsInformation::remaining()'
-	- overworked 'Heuristics::choose_best_fehl()'
+	- reworked 'Heuristics::choose_best_fehl()'
 
 2006-09-02 Borg Enders
 	- added calculation for undetermined Marriage to TrickWeighting::modi
@@ -2116,7 +2124,7 @@
 	- Ai::calculate_meatless_color improved
 
 2006-08-18 Diether Knof
-	- overworked, fixed and improved heuristic 'choose ace'
+	- reworked, fixed and improved heuristic 'choose ace'
 
 2006-08-17 Diether Knof
 	- removed database from bug report
@@ -2651,7 +2659,7 @@
 	- small bug in Heuristics::CalcHandValue fixed
 	  
 2005-09-21 Diether Knof
-	- overworked homepage
+	- reworked homepage
 
 2005-09-12 Diether Knof
 	- moved team informations from 'Player' to 'Ai'
@@ -2728,7 +2736,7 @@
 	- improvements of the ai
 
 2005-08-04 Diether Knof
-	- translations overworked
+	- translations reworked
 
 2005-08-01 Diether Knof
 	- changed encoding of textfiles to utf8
@@ -2858,7 +2866,7 @@
 	- add 'Player::cards_to_play()'
 
 2005-04-14 Diether Knof
-	- overworked rules config documentation
+	- reworked rules config documentation
 
 2005-04-11
 	--------------------------
@@ -2869,7 +2877,7 @@
 	- added workaround in gametree for problems with the hand in virtual games
 
 2005-04-04 Diether Knof
-	- overworked 'basistypes.cpp'
+	- reworked 'basistypes.cpp'
 	- bug fix in gametree
 
 2005-04-03 Borg Enders, Diether Knof
@@ -3090,11 +3098,11 @@
 	- fixed bug: gamestatus changing while the ai was thinking
 
 2004-10-31 Diether Knof
-	- overworked 'rule.cpp'
+	- reworked 'rule.cpp'
 
 2004-10-28 Diether Knof
 	- removed game status 'GAME_GENSCHER', 'GAME_SHOW_LAST_TRICK', 'GAME_SHOW_GAMETYPE'
-	- overworked file 'party.cpp'
+	- reworked file 'party.cpp'
 	- added rounds to the party
 
 2004-10-27 Diether Knof
@@ -3185,7 +3193,7 @@
 	- swines handling in solo games
 
 2004-08-24 Diether Knof
-	- overworked swines handling (because of problems with the rule 'only second swine')
+	- reworked swines handling (because of problems with the rule 'only second swine')
 	  till now: automatic handling but in solo games
 
 2004-08-22 Borg Enders
@@ -3392,7 +3400,7 @@ resource file is not found
 	- updated team information in announcement reply
 
 2004-05-17 Diether Knof
-	- overworket script 'create_icons'; it now uses imagemagick
+	- reworked script 'create_icons'; it now uses imagemagick
 
 2004-05-15 Borg Enders
 	- bugreports replayed
@@ -3643,7 +3651,7 @@ name of the top player are overlayed)
 	- gtkmm: playing of cards
 
 2004-01-31 Borg Enders, Diether Knof
-	- overworked special points
+	- reworked special points
 	- finished players database
 
 2004-01-27 Diether Knof
@@ -3668,7 +3676,7 @@ name of the top player are overlayed)
 	- new function Ai::calculate_meatless_color
 	- Ai::nextcard_meatless improved
 	- Heuristics::SecondBestTrump improved
- 			
+			
 2004-01-24 Borg Enders
 	- Heuristics::CalcHandValue improved to use color_runs for calculating value of missing colors
 	- Heuristics::CalcHandValue improved. Swines, Hyperswines are now only counted once for owning player
@@ -3905,9 +3913,9 @@ name of the top player are overlayed)
 
 2003-10-08 Diether Knof
 	- removed properties 'Hand::cardsnumber_p' and 'Hand::cardsnumber_all_p'
-	- overworked part of 'hand.cpp'
+	- reworked part of 'hand.cpp'
 	- begun with gtkmm: Main Window, Menu, License
-  
+
 2003-10-03 Borg Enders
 	- bugreports reviewed
 	- best_winning_card improved
@@ -4054,8 +4062,8 @@ name of the top player are overlayed)
 	- made the ai to prefer a dolle to a swine in choosebestcard
 
 2003-08-24 Diether Knof
-	- overworked ui.gtk/aiconfigs.*
-	- overworked ui.gtk/aiconfig.*
+	- reworked ui.gtk/aiconfigs.*
+	- reworked ui.gtk/aiconfig.*
 	- when changing a player in party settings -> players, the player in
 	  aiconfigs is changed (but not vice versa, because a recursive loop
 	  in the signals)
@@ -4069,15 +4077,15 @@ name of the top player are overlayed)
 
 2003-08-23 Diether Knof
 	- fixed bug with remaining 'tricks' window when starting a new party
-	- overworked ui.gtk/players.*
-	- overworked ui.gtk/player.*
+	- reworked ui.gtk/players.*
+	- reworked ui.gtk/player.*
 
 2003-08-22 Diether Knof
 	- rewrote party settings -> general
 	- fixed bug of announcement (if the trick is full but not removed,
 	  an announcement is still possible)
-	- overworked ui.gtk/dialog.*
-	- overworked ui.gtk/rules.*
+	- reworked ui.gtk/dialog.*
+	- reworked ui.gtk/rules.*
 
 2003-08-21 Diether Knof
 	- rewrote party settings
@@ -4219,14 +4227,14 @@ name of the top player are overlayed)
 	- Heuristic::playfehl improved
 	- Aiconfig::FEHLCREATIONONFIRSTCARD can be used to turn the creation of a fehl color
 	  as first card of atrick on/off
- 	
+	
 2003-05-06 Diether Knof
 	- fixed bug with winnerteam in WVirtualGames::modi()
 	  the real team of the player was taken, not that the ai
 	  thought the team of the winnerplayer was
 
 2003-05-04 Diether Knof
-	- overworked most of party.cpp
+	- reworked most of party.cpp
 	- fixed bug with starting seed, starting player
 	  in the 'party settings' window
 
@@ -4239,8 +4247,8 @@ name of the top player are overlayed)
 	  with a poverty
 	- bug in lowest_color_card fixed and also in lowest_color_card_meatless
 	- bug in choose_best_winning card fixed
- 	       
- 	    
+	       
+	    
 2003-04-27 Diether Knof
 	- added os PartyPoints 
 
@@ -4248,27 +4256,27 @@ name of the top player are overlayed)
 	- increased the possibility for using Heuristic::play_for_team
 
 2003-04-18  Borg Enders
- 	- AI has now a member lastHeuristic_, which keeps track of the last
- 	  used heuristic
- 	- Heuristics usage by Ai examined: after 85 games:
- 	       Played cards:			  4080
- 	       Heuristics::choose_ace		  242
- 	       Heuristics::choose_for_color_trick      204
- 	       Heuristics::choose_pfund		 53
- 	       Heuristics::jab_for_ace		 159
- 	       Heuristics::create_fehl		  79
- 	       Heuristics::best_winning_card	   494
- 	       Heuristics::play_low_high	       223
- 	       Heuristics::play_for_team		 1
- 	       Heuristics::jab_fox		      32
- 	       Meatless: Heuristics::play_highest_color  6
- 	       picture: Heuristics::second_best_trump   11
- 	       color: Heuristics::choose_ace	     9
- 	       color: Heuristics::best_winning	  11
- 	       color: Heuristics::jab_for_ace	    0
- 	       color: Heuristics::play_low_high	  0
- 	       ChooseBestCard:			1584
- 	       
+	- AI has now a member lastHeuristic_, which keeps track of the last
+	  used heuristic
+	- Heuristics usage by Ai examined: after 85 games:
+	       Played cards:			  4080
+	       Heuristics::choose_ace		  242
+	       Heuristics::choose_for_color_trick      204
+	       Heuristics::choose_pfund		 53
+	       Heuristics::jab_for_ace		 159
+	       Heuristics::create_fehl		  79
+	       Heuristics::best_winning_card	   494
+	       Heuristics::play_low_high	       223
+	       Heuristics::play_for_team		 1
+	       Heuristics::jab_fox		      32
+	       Meatless: Heuristics::play_highest_color  6
+	       picture: Heuristics::second_best_trump   11
+	       color: Heuristics::choose_ace	     9
+	       color: Heuristics::best_winning	  11
+	       color: Heuristics::jab_for_ace	    0
+	       color: Heuristics::play_low_high	  0
+	       ChooseBestCard:			1584
+	       
 2003-04-12 Diether Knof
 	- added automatic saving and loading of the players
 	- fixed bug with the name generator
@@ -4368,7 +4376,7 @@ name of the top player are overlayed)
 
 2003-03-18 Diether Knof
 	- removed setting 'show setting window on start'
-	- overworked the menu
+	- reworked the menu
 
 2003-03-17 Diether Knof
 	- added automatic changing of the card back when changing the theme
@@ -4422,7 +4430,7 @@ name of the top player are overlayed)
 2003-02-18 Diether Knof
 	- fixed bug with bug-report in release (many informations were missing)
 	- added output of the seed in release, so if the program crashes we have the seed
-	- overworked the german part of the homepage 
+	- reworked the german part of the homepage 
 	- implemented rule 'announcement first trick thirty points'
 
 2003-02-17 Diether Knof
@@ -4592,7 +4600,7 @@ name of the top player are overlayed)
 	- rewrote WVirtual (for the ai)
 
 2002-09-29 Borg Enders
-	- overworked the ai files
+	- reworked the ai files
 
 2002-09-28 Diether Knof
 	- changed appearance of the table outside a game
@@ -4602,19 +4610,19 @@ name of the top player are overlayed)
 	  the hands show the remaining cards
 
 2002-09-26 Diether Knof
-	- splitted game.cpp, overworked game.*
+	- splitted game.cpp, reworked game.*
 
 2002-09-25 Diether Knof
-	- overworked player.*
+	- reworked player.*
 
 2002-09-23 Diether Knof
-	- overworked some functions in gtk/
+	- reworked some functions in gtk/
 
 2002-09-22 Diether Knof
 	- changed documentation of trick.* to doxygen
 
 2002-09-20 Diether Knof
-	- overworked trick.*, human.*
+	- reworked trick.*, human.*
 
 2002-09-19 Diether Knof
 	- added menu for announcements
@@ -4631,7 +4639,7 @@ name of the top player are overlayed)
 
 2002-09-10 Diether Knof
 	- removed the directory names from the setting file
-	- overworked bug report
+	- reworked bug report
 
 2002-09-08 Borg Enders
 	- player::sethand and ai::sethand are now correct for
@@ -4950,7 +4958,7 @@ name of the top player are overlayed)
 2002-05-10 Diether Knof
 	- the startplayer does not change, when someone has a poverty
 	- fixed bug in the gamepoints
-	- overworked most of the gtk files, removed 'key.cpp'
+	- reworked most of the gtk files, removed 'key.cpp'
 	- you can navigate through the last tricks with the cursor keys
 
 2002-05-08 Borg Enders
@@ -4985,10 +4993,10 @@ name of the top player are overlayed)
 	- created a new icon swines-hyperswines (when a player has both swines and hyperswines)
 
 2002-04-28 Diether Knof
-	- overworked 'setting.*'
+	- reworked 'setting.*'
 
 2002-04-26 Diether Knof
-	- overworked 'rule.*', 'language.*'
+	- reworked 'rule.*', 'language.*'
 	- swines and hyperswines are announced automatically when a player
 	  plays a color-solo
 

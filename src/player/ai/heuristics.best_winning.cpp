@@ -34,9 +34,9 @@
 #ifndef RELEASE
 #ifdef DKNOF
 // best jabbing card (card selection)
-//#define DEBUG_BJC_OSTR cout << "[#" << __LINE__ << "] "
+#define DEBUG_BJC_OSTR cout << "[#" << __LINE__ << "] "
 // best winning card (decision, whether to take the card)
-//#define DEBUG_BWC_OSTR cout << "[#" << __LINE__ << "] "
+#define DEBUG_BWC_OSTR cout << "[#" << __LINE__ << "] "
 #endif
 #endif
 #ifndef DEBUG_BJC_OSTR
@@ -160,12 +160,6 @@ Heuristics::best_winning_card(Trick const& trick,
   if (!hi.hand().can_jab(trick))
     return Card::EMPTY;
 
-#ifndef OUTDATED
-  if (   game.is_solo()
-      || (game.type() == GAMETYPE::POVERTY) )
-    return best_winning_card_old(trick, hi);
-#endif
-
   // call the 
   switch (game.type()) {
   case GAMETYPE::NORMAL:
@@ -178,18 +172,25 @@ Heuristics::best_winning_card(Trick const& trick,
     // should not happen
     break;
   case GAMETYPE::POVERTY:
+#ifdef OUTDATED
+    // 2012-05-23 DK
     return ( (hi.team() == TEAM::RE)
             ? (  (hi.no() == game.soloplayer().no())
                ? Card::EMPTY
                : BestWinningCard::poverty_re(trick, hi) )
             : BestWinningCard::poverty_contra(trick, hi) );
+#endif
+    if (hi.team() == TEAM::RE)
+      return (  (hi.no() == game.soloplayer().no())
+              ? Card::EMPTY
+              : BestWinningCard::poverty_re(trick, hi) );
   case GAMETYPE::GENSCHER:
     break;
   case GAMETYPE::MARRIAGE:
     // do not jab a decision trick as bride
     if (   (hi.no() == game.soloplayer().no())
         && is_selector(trick.startcard().tcolor(),
-                    game.marriage_selector()) )
+                       game.marriage_selector()) )
       return Card::EMPTY;
     break;
   case GAMETYPE::MARRIAGE_SOLO:
@@ -392,7 +393,7 @@ Heuristics::best_winning_card(Trick const& trick,
                 || (hi.hand().rel_pos_trump(card) <= 0.4)
                 || (hi.hand().higher_cards_no(card) + hi.hand().numberof(card)
                     >= (hi.hand().numberoftrumps() / 2
-                    + (hi.value(Aiconfig::AGGRESSIVE) ? 0 : 1))
+                        + (hi.value(Aiconfig::AGGRESSIVE) ? 0 : 1))
                    ) ) ) {
           DEBUG_BWC_OSTR << "  jab limitqueen\n";
           return card;
@@ -543,9 +544,6 @@ Card
 BestWinningCard::poverty_re(Trick const& trick,
                             HeuristicInterface const& hi)
 {
-#ifndef OUTDATED
-  return Heuristics::poverty_best_winning_card(trick, hi);
-#endif
   return Card::EMPTY;
 } // Card BestWinningCard::poverty_re(Trick trick, HeuristicInterface hi)
 
@@ -1024,7 +1022,9 @@ Heuristics::best_jabbing_card(Trick const& trick,
           }
           // make a high jab
           if (   !card
-              && (trick.points() >= 14)) {
+              && (   (trick.points() >= 14)
+                  || checkAllOppositeTeam(trick, hi) )
+              ) {
             card = hi.hand().same_or_lower_card(Card::CLUB_QUEEN);
             DEBUG_BJC_OSTR << "  " << card << " (same or lower card(club queen))\n";
           }
@@ -1116,7 +1116,7 @@ Heuristics::best_jabbing_card(Trick const& trick,
                  && hi.guessed_same_team(trick.player_of_card(3)) ) {
           // 2), 3: opposite team, 4: same team
           // take lowest winning card
-          card = hi.hand().next_higher_card(trick.winnercard());
+          card = hi.hand().next_jabbing_card(trick.winnercard());
           while (  (   (card.value() >= 10)
                     || (   (   !game.is_real_solo()
                             || GAMETYPE::is_color_solo(game.type()) )
