@@ -63,13 +63,12 @@ Translator::dir_scan()
   Translator::directories.clear();
   Translator::names.clear();
 
-  Translator::dir_scan(::setting(Setting::PRIVATE_DATA_DIRECTORY)
-		       + "/" + ::setting(Setting::LANGUAGES_DIRECTORY));
-  Translator::dir_scan(::setting(Setting::PUBLIC_DATA_DIRECTORY)
-		       + "/" + ::setting(Setting::LANGUAGES_DIRECTORY));
-  Translator::dir_scan(::setting(Setting::PRIVATE_DATA_DIRECTORY)
-		       + "/" + ::setting(Setting::LANGUAGES_DIRECTORY));
-  Translator::dir_scan("./" + ::setting(Setting::LANGUAGES_DIRECTORY));
+  for (list<string>::const_iterator
+       d = ::setting.data_directories().begin();
+       d != ::setting.data_directories().end();
+       ++d) {
+    Translator::dir_scan(*d + "/" + ::setting(Setting::LANGUAGES_DIRECTORY));
+  }
 
   return ;
 } // void Translator::dir_scan()
@@ -100,28 +99,28 @@ Translator::dir_scan(string const& dirname)
   // search all entries in the directory
   while ((entry = readdir(translator_dir)) != NULL) {
     if (   (strcmp(entry->d_name, ".") == 0)
-	|| (strcmp(entry->d_name, "..") == 0) )
+        || (strcmp(entry->d_name, "..") == 0) )
       continue;
     if (DK::Utils::File::isdirectory(dirname + "/" + entry->d_name)) {
       if (DK::Utils::File::isfile(dirname + "/" + entry->d_name + "/"
-				  + ::setting.value(Setting::LANGUAGE_FILE))) { 
-	// add the translator to the list
-	Translator translator;
-	translator.load(dirname + "/" + entry->d_name + "/"
-			+ ::setting.value(Setting::LANGUAGE_FILE));
+                                  + ::setting.value(Setting::LANGUAGE_FILE))) { 
+        // add the translator to the list
+        Translator translator;
+        translator.load(dirname + "/" + entry->d_name + "/"
+                        + ::setting.value(Setting::LANGUAGE_FILE));
 
-	// only add the translator, when it is not in the list
-	if (   (std::find(Translator::directories.begin(),
-			  Translator::directories.end(),
-			  entry->d_name) == Translator::directories.end())
-	    || (std::find(Translator::names.begin(), Translator::names.end(),
-			  translator.name()) == Translator::names.end())) {
+        // only add the translator, when it is not in the list
+        if (   (std::find(Translator::directories.begin(),
+                          Translator::directories.end(),
+                          entry->d_name) == Translator::directories.end())
+            || (std::find(Translator::names.begin(), Translator::names.end(),
+                          translator.name()) == Translator::names.end())) {
 
-	  Translator::directories.push_back(entry->d_name);
-	  Translator::names.push_back(translator.name());
+          Translator::directories.push_back(entry->d_name);
+          Translator::names.push_back(translator.name());
 
-	} // if (translator not in the list
-      } // if (istranslatordirectory)
+        } // if (translator not in the list)
+      } // if (is translatordirectory)
     } // if (entry->d_type == DT_DIR)
   } // while ((entry = readdir(translator_dir)) != NULL)
 
@@ -181,8 +180,8 @@ Translator::token() const
 
   // token not found
   DEBUG_ASSERTION(false,
-		  "Translator::token():\n"
-		  "  token for " << this->name() << " not found.");
+                  "Translator::token():\n"
+                  "  token for " << this->name() << " not found.");
 
   return Translator::directories[0];
 } // string const& Translator::token()
@@ -236,30 +235,31 @@ Translator::load()
   this->translation_["%ttranslation%%stext%"] = "%ttranslation%%stext%";
   this->translation_["%stext%%ttranslation%"] = "%stext%%ttranslation%";
 
-  this->load("./"
-	     + ::setting(Setting::LANGUAGE_FILE));
-  this->load(::setting(Setting::PRIVATE_DATA_DIRECTORY) + "/"
-	     + ::setting(Setting::LANGUAGE_FILE));
-  this->load(::setting(Setting::PUBLIC_DATA_DIRECTORY) + "/"
-	     + ::setting(Setting::LANGUAGE_FILE));
+  for (list<string>::const_iterator
+       d = ::setting.data_directories().begin();
+       d != ::setting.data_directories().end();
+       ++d) {
+    this->load(*d + "/" + ::setting(Setting::LANGUAGE_FILE));
+  }
 
 #ifdef SHOW_DIFF
   if (   !translation_bak.empty()
-      && (this->name() != name_bak) ) {
+      && (this->name() != name_bak)
+      && (::game_status > GAMESTATUS::PROGRAMSTART)  ) {
     cout << '\n';
     cout << "translation diff: " << name_bak << " - " << this->name() << '\n';
     cout << "---------------------------\n";
     for (map<string, string>::const_iterator t = translation_bak.begin();
-	 t != translation_bak.end();
-	 ++t)
+         t != translation_bak.end();
+         ++t)
       if (this->translation_.find(t->first) == this->translation_.end())
-	cout << "> " << t->first << '\n';
+        cout << "> " << t->first << '\n';
 
     for (map<string, string>::const_iterator t = this->translation_.begin();
-	 t != this->translation_.end();
-	 ++t)
+         t != this->translation_.end();
+         ++t)
       if (translation_bak.find(t->first) == translation_bak.end())
-	cout << "< " << t->first << '\n';
+        cout << "< " << t->first << '\n';
   } // if (!translation_bak.empty())
 #endif
 
@@ -284,16 +284,16 @@ Translator::load(string filename)
 
   if (istr->fail()) {
     if (std::find(Translator::names.begin(),
-		  Translator::names.end(),
-		  ::setting.value(Setting::LANGUAGE))
-	!= Translator::names.end()) {
+                  Translator::names.end(),
+                  ::setting.value(Setting::LANGUAGE))
+        != Translator::names.end()) {
       filename = (DK::Utils::File::dirname(filename, 2)
-		  + "/"
-		  + Translator::directories[std::find(Translator::names.begin(),
-						      Translator::names.end(),
-						      setting.value(Setting::LANGUAGE))
-		  - Translator::names.begin()]
-		  + "/text");
+                  + "/"
+                  + Translator::directories[std::find(Translator::names.begin(),
+                                                      Translator::names.end(),
+                                                      setting.value(Setting::LANGUAGE))
+                  - Translator::names.begin()]
+                  + "/text");
 
       delete istr;
       istr = new ifstream(filename.c_str());  
@@ -308,7 +308,6 @@ Translator::load(string filename)
   if (DK::Utils::File::basename(DK::Utils::File::dirname(filename)).empty())
     // the filename is not in a subdirectory
     return ;
-
   this->name_ = DK::Utils::File::basename(DK::Utils::File::dirname(filename));
 
   while (istr->good()) {
@@ -326,44 +325,37 @@ Translator::load(string filename)
       // a setting
       // if the value is in parentencies, remove both
       if ((config.value[0] == '\"')
-	  && (config.value[config.value.length() - 1] == '\"'))
-	config.value = string(config.value, 1, config.value.length() - 2);
+          && (config.value[config.value.length() - 1] == '\"'))
+        config.value = string(config.value, 1, config.value.length() - 2);
       if (config.name == "!name") {
-	// set the name of the lanaguage
-	this->name_ = config.value;
+        // set the name of the lanaguage
+        this->name_ = config.value;
       } else if (config.name == "!include") {
-	// include the given translator
-	Translator translator_new;
-	translator_new.load(::setting(Setting::PUBLIC_DATA_DIRECTORY) + "/"
-			    + ::setting(Setting::LANGUAGES_DIRECTORY) + "/"
-			    + config.value + "/"
-			    + ::setting.value(Setting::LANGUAGE_FILE));
-	this->translation_.insert(translator_new.translation_.begin(),
-				  translator_new.translation_.end());
-	translator_new.translation_.clear();
-	translator_new.load(::setting(Setting::PRIVATE_DATA_DIRECTORY) + "/"
-			    + ::setting(Setting::LANGUAGES_DIRECTORY) + "/"
-			    + config.value + "/"
-			    + ::setting.value(Setting::LANGUAGE_FILE));
-	this->translation_.insert(translator_new.translation_.begin(),
-				  translator_new.translation_.end());
+        // include the given translator
+        Translator translator_new;
+        translator_new.load(DK::Utils::File::dirname(filename) + "/"
+                            + ::setting(Setting::LANGUAGES_DIRECTORY) + "/"
+                            + config.value + "/"
+                            + ::setting.value(Setting::LANGUAGE_FILE));
+        this->translation_.insert(translator_new.translation_.begin(),
+                                  translator_new.translation_.end());
       } else if(config.name == "!end") {
-	// ignore the rest of the file
-	break;
+        // ignore the rest of the file
+        break;
       } else if (config.name == "!input") {
-	// include the given file
-	Translator translator_new;
-	translator_new.load((DK::Utils::File::dirname(filename) + "/"
-			     + config.value));
-	this->translation_.insert(translator_new.translation_.begin(),
-				  translator_new.translation_.end());
+        // include the given file
+        Translator translator_new;
+        translator_new.load((DK::Utils::File::dirname(filename) + "/"
+                             + config.value));
+        this->translation_.insert(translator_new.translation_.begin(),
+                                  translator_new.translation_.end());
       } else if(config.name == "") {
-	cerr << "Translator file \'" << filename << "\': "
-	  << "Ignoring line \'" << config.value << "\'.\n";
+        cerr << "Translator file \'" << filename << "\': "
+          << "Ignoring line \'" << config.value << "\'.\n";
       } else {
-	cerr << "Translator file \'" << filename << "\': "
-	  << "Line " << config.name << " unknown.\n"
-	  << "Ignoring it.\n";
+        cerr << "Translator file \'" << filename << "\': "
+          << "Line " << config.name << " unknown.\n"
+          << "Ignoring it.\n";
       } // if (config.name == .)
     } // config.separator
 
@@ -390,7 +382,7 @@ Translator::load(string filename)
 void
 Translator::update()
 {
-  if ((this == &::translator)
+  if (   (this == &::translator)
       && (ui != NULL))
     ::ui->language_changed();
 
@@ -433,13 +425,13 @@ Translator::translate(Translation const& translation) const
       if (::isupper(text[0])) {
 #ifndef IGNORE_UNKNOWN_WORDS
 #if 0
-      cerr << "Translation '" << this->name() << "': \"" << text << "\" not found.\n"
-	<< "  Testing for lower case version" << endl;
+        cerr << "Translation '" << this->name() << "': \"" << text << "\" not found.\n"
+          << "  Testing for lower case version" << endl;
 #endif
 #endif
-      text[0] = ::tolower(text[0]);
-      word = this->translation_.find(text);
-      text[0] = ::toupper(text[0]);
+        text[0] = ::tolower(text[0]);
+        word = this->translation_.find(text);
+        text[0] = ::toupper(text[0]);
       }
     }
   }
@@ -449,7 +441,7 @@ Translator::translate(Translation const& translation) const
 #ifndef IGNORE_UNKNOWN_WORDS
     if (!this->translation_.empty()) {
       cerr << "Translation '" << this->name() << "': \"" << text << "\" not found"
-	<< endl;
+        << endl;
       // SEGFAULT;
     }
 #endif
@@ -478,10 +470,10 @@ Translator::translate(Translation const& translation) const
 
     pos_end = find(pos + 1, text.end(), '%');
     DEBUG_ASSERTION((pos_end != text.end()),
-		    "Translation::translate(translation):\n"
-		    "  uncorrect number of \%.\n"
-		    "  Should be " << i << " but the text is: "
-		    << text);
+                    "Translation::translate(translation):\n"
+                    "  uncorrect number of \%.\n"
+                    "  Should be " << i << " but the text is: "
+                    << text);
     if (pos_end == pos + 1) {
       // "%%" -- ignore
       i -= 1;
@@ -492,71 +484,71 @@ Translator::translate(Translation const& translation) const
     switch(*(pos + 1)) {
     case 'c': // character
       DEBUG_ASSERTION((translation.type[i]
-		       == Translator::Translation::CHAR),
-		      "Translator::translate(translation):\n"
-		      "  wrong type at position " << i << ":\n"
-		      "  The text says 'char' but the translation says '"
-		      << translation.type[i] << "'.\n"
-		      "  Text: " << text);
+                       == Translator::Translation::CHAR),
+                      "Translator::translate(translation):\n"
+                      "  wrong type at position " << i << ":\n"
+                      "  The text says 'char' but the translation says '"
+                      << translation.type[i] << "'.\n"
+                      "  Text: " << text);
       break;
     case 'd':
     case 'i': // integer
       DEBUG_ASSERTION((translation.type[i]
-		       == Translator::Translation::INT),
-		      "Translator::translate(translation):\n"
-		      "  wrong type at position " << i << ":\n"
-		      "  The text says 'int' but the translation says '"
-		      << translation.type[i] << "'.\n"
-		      "  Text: " << text);
+                       == Translator::Translation::INT),
+                      "Translator::translate(translation):\n"
+                      "  wrong type at position " << i << ":\n"
+                      "  The text says 'int' but the translation says '"
+                      << translation.type[i] << "'.\n"
+                      "  Text: " << text);
       break;
     case 'u': // unsigned
       DEBUG_ASSERTION((translation.type[i]
-		       == Translator::Translation::UNSIGNED),
-		      "Translator::translate(translation):\n"
-		      "  wrong type at position " << i << ":\n"
-		      "  The text says 'unsigned' but the translation says '"
-		      << translation.type[i] << "'.\n"
-		      "  Text: " << text);
+                       == Translator::Translation::UNSIGNED),
+                      "Translator::translate(translation):\n"
+                      "  wrong type at position " << i << ":\n"
+                      "  The text says 'unsigned' but the translation says '"
+                      << translation.type[i] << "'.\n"
+                      "  Text: " << text);
       break;
     case 'f':
     case 'g': // double
       DEBUG_ASSERTION((translation.type[i]
-		       == Translator::Translation::DOUBLE),
-		      "Translator::translate(translation):\n"
-		      "  wrong type at position " << i << ":\n"
-		      "  The text says 'double' but the translation says '"
-		      << translation.type[i] << "'.\n"
-		      "  Text: " << text);
+                       == Translator::Translation::DOUBLE),
+                      "Translator::translate(translation):\n"
+                      "  wrong type at position " << i << ":\n"
+                      "  The text says 'double' but the translation says '"
+                      << translation.type[i] << "'.\n"
+                      "  Text: " << text);
       break;
     case 's': // string
 #ifndef POSTPONED
       if (translation.type[i] == Translator::Translation::TRANSLATION) {
-	cerr << "Translation type is 'translation' but the code says 'string'.\n"
-	  << "Text: " << text << endl;
-	break;
+        cerr << "Translation type is 'translation' but the code says 'string'.\n"
+          << "Text: " << text << endl;
+        break;
       }
 #endif
       DEBUG_ASSERTION((translation.type[i]
-		       == Translator::Translation::STRING),
-		      "Translator::translate(translation):\n"
-		      "  wrong type at position " << i << ":\n"
-		      "  The text says 'string' but the translation says '"
-		      << translation.type[i] << "'.\n"
-		      "  Text: " << text);
+                       == Translator::Translation::STRING),
+                      "Translator::translate(translation):\n"
+                      "  wrong type at position " << i << ":\n"
+                      "  The text says 'string' but the translation says '"
+                      << translation.type[i] << "'.\n"
+                      "  Text: " << text);
       break;
     case 't': // translation
       DEBUG_ASSERTION((translation.type[i]
-		       == Translator::Translation::TRANSLATION),
-		      "Translator::translate(translation):\n"
-		      "  wrong type at position " << i << ":\n"
-		      "  The text says 'translation' but the translation says '"
-		      << translation.type[i] << "'.\n"
-		      "  Text: " << text);
+                       == Translator::Translation::TRANSLATION),
+                      "Translator::translate(translation):\n"
+                      "  wrong type at position " << i << ":\n"
+                      "  The text says 'translation' but the translation says '"
+                      << translation.type[i] << "'.\n"
+                      "  Text: " << text);
       break;
     default:
       DEBUG_ASSERTION(false,
-		      "Translator::translate(translation):\n"
-		      "  unknown replacement type '" << *(pos + 1) << "'.");
+                      "Translator::translate(translation):\n"
+                      "  unknown replacement type '" << *(pos + 1) << "'.");
       break;
     } // switch (*(pos + 1))
 
@@ -629,10 +621,10 @@ Translator::expand(Translation const& translation) const
 
     pos_end = find(pos + 1, text.end(), '%');
     DEBUG_ASSERTION((pos_end != text.end()),
-		    "Translation::translate(translation):\n"
-		    "  uncorrect number of \%.\n"
-		    "  Should be " << i << " but the text is: "
-		    << text);
+                    "Translation::translate(translation):\n"
+                    "  uncorrect number of \%.\n"
+                    "  Should be " << i << " but the text is: "
+                    << text);
     if (pos_end == pos + 1) {
       // "%%" -- ignore
       i -= 1;
@@ -643,71 +635,71 @@ Translator::expand(Translation const& translation) const
     switch(*(pos + 1)) {
     case 'c': // character
       DEBUG_ASSERTION((translation.type[i]
-		       == Translator::Translation::CHAR),
-		      "Translator::translate(translation):\n"
-		      "  wrong type at position " << i << ":\n"
-		      "  The text says 'char' but the translation says '"
-		      << translation.type[i] << "'.\n"
-		      "  Text: " << text);
+                       == Translator::Translation::CHAR),
+                      "Translator::translate(translation):\n"
+                      "  wrong type at position " << i << ":\n"
+                      "  The text says 'char' but the translation says '"
+                      << translation.type[i] << "'.\n"
+                      "  Text: " << text);
       break;
     case 'd':
     case 'i': // integer
       DEBUG_ASSERTION((translation.type[i]
-		       == Translator::Translation::INT),
-		      "Translator::translate(translation):\n"
-		      "  wrong type at position " << i << ":\n"
-		      "  The text says 'int' but the translation says '"
-		      << translation.type[i] << "'.\n"
-		      "  Text: " << text);
+                       == Translator::Translation::INT),
+                      "Translator::translate(translation):\n"
+                      "  wrong type at position " << i << ":\n"
+                      "  The text says 'int' but the translation says '"
+                      << translation.type[i] << "'.\n"
+                      "  Text: " << text);
       break;
     case 'u': // unsigned
       DEBUG_ASSERTION((translation.type[i]
-		       == Translator::Translation::UNSIGNED),
-		      "Translator::translate(translation):\n"
-		      "  wrong type at position " << i << ":\n"
-		      "  The text says 'unsigned' but the translation says '"
-		      << translation.type[i] << "'.\n"
-		      "  Text: " << text);
+                       == Translator::Translation::UNSIGNED),
+                      "Translator::translate(translation):\n"
+                      "  wrong type at position " << i << ":\n"
+                      "  The text says 'unsigned' but the translation says '"
+                      << translation.type[i] << "'.\n"
+                      "  Text: " << text);
       break;
     case 'f':
     case 'g': // double
       DEBUG_ASSERTION((translation.type[i]
-		       == Translator::Translation::DOUBLE),
-		      "Translator::translate(translation):\n"
-		      "  wrong type at position " << i << ":\n"
-		      "  The text says 'double' but the translation says '"
-		      << translation.type[i] << "'.\n"
-		      "  Text: " << text);
+                       == Translator::Translation::DOUBLE),
+                      "Translator::translate(translation):\n"
+                      "  wrong type at position " << i << ":\n"
+                      "  The text says 'double' but the translation says '"
+                      << translation.type[i] << "'.\n"
+                      "  Text: " << text);
       break;
     case 's': // string
 #ifndef POSTPONED
       if (translation.type[i] == Translator::Translation::TRANSLATION) {
-	cerr << "Translation type is 'translation' but the code says 'string'.\n"
-	  << "Text: " << text << endl;
-	break;
+        cerr << "Translation type is 'translation' but the code says 'string'.\n"
+          << "Text: " << text << endl;
+        break;
       }
 #endif
       DEBUG_ASSERTION((translation.type[i]
-		       == Translator::Translation::STRING),
-		      "Translator::translate(translation):\n"
-		      "  wrong type at position " << i << ":\n"
-		      "  The text says 'string' but the translation says '"
-		      << translation.type[i] << "'.\n"
-		      "  Text: " << text);
+                       == Translator::Translation::STRING),
+                      "Translator::translate(translation):\n"
+                      "  wrong type at position " << i << ":\n"
+                      "  The text says 'string' but the translation says '"
+                      << translation.type[i] << "'.\n"
+                      "  Text: " << text);
       break;
     case 't': // translation
       DEBUG_ASSERTION((translation.type[i]
-		       == Translator::Translation::TRANSLATION),
-		      "Translator::translate(translation):\n"
-		      "  wrong type at position " << i << ":\n"
-		      "  The text says 'translation' but the translation says '"
-		      << translation.type[i] << "'.\n"
-		      "  Text: " << text);
+                       == Translator::Translation::TRANSLATION),
+                      "Translator::translate(translation):\n"
+                      "  wrong type at position " << i << ":\n"
+                      "  The text says 'translation' but the translation says '"
+                      << translation.type[i] << "'.\n"
+                      "  Text: " << text);
       break;
     default:
       DEBUG_ASSERTION(false,
-		      "Translator::translate(translation):\n"
-		      "  unknown replacement type '" << *(pos + 1) << "'.");
+                      "Translator::translate(translation):\n"
+                      "  unknown replacement type '" << *(pos + 1) << "'.");
       break;
     } // switch (*(pos + 1))
 

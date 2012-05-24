@@ -836,10 +836,10 @@ namespace UI_GTKMM_NS {
         if (party.rule()(Rule::NUMBER_OF_ROUNDS_LIMITED)
             && (gameno == party.round_startgame(party.rule()(Rule::NUMBER_OF_ROUNDS))) )
           row[this->party_points_model->gametype]
-            ==::translation("duty soli round").translation();
+            =::translation("duty soli round").translation();
         else
           row[this->party_points_model->gametype]
-            == "";
+            = "";
         return ;
       }
 
@@ -1505,7 +1505,7 @@ namespace UI_GTKMM_NS {
           if (   party.rule()(Rule::NUMBER_OF_ROUNDS_LIMITED)
               && (gameno == party.round_startgame(party.rule()(Rule::NUMBER_OF_ROUNDS))) )
             (*row)[this->party_points_model->gametype]
-              ==::translation("duty soli round").translation();
+              =::translation("duty soli round").translation();
           else
             (*row)[this->party_points_model->gametype] = "";
         } else { // if !(gameno >= this->ui->party().finished_games())

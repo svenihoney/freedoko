@@ -70,7 +70,8 @@ class UI_Dummy : public UI {
 
     // information for the user
     void information(Translator::Translation const& message,
-		     INFORMATION::Type const type);
+		     INFORMATION::Type const type,
+                     bool const force_show = false);
     // an error has occured
     void error(string const& message);
 

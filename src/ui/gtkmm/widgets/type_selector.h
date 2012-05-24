@@ -47,6 +47,7 @@ namespace Gtk {
         // destructor
         ~TypeSelector();
 
+        using Gtk::Container::add;
         // adds the type to the selector
         void add(Type const& type);
 

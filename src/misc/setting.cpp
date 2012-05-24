@@ -503,8 +503,11 @@ Setting::add_data_directory(string const& path)
 {
   if (std::find(this->data_directories_.begin(),
                 this->data_directories_.end(), path)
-      == this->data_directories_.end())
+      == this->data_directories_.end()) {
     this->data_directories_.push_back(path);
+    ::translator.dir_scan();
+    ::translator.load();
+  }
   return ;
 } // void Setting::add_data_directory(string const& path)
 

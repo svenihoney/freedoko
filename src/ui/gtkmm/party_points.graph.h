@@ -35,7 +35,6 @@
 
 #include "party_points.h"
 
-#include <gtkmm.h>
 #include <gtkmm/drawingarea.h>
 #include <gdkmm/pixmap.h>
 #include <gdkmm/gc.h>

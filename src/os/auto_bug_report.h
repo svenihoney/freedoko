@@ -43,6 +43,8 @@ namespace OS_NS {
       // destructor
       ~AutoBugReport();
 
+      // the trick is full
+      void trick_full();
       // the game is finished
       void game_finish();
 

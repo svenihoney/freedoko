@@ -259,7 +259,16 @@ UI_Wrap::function(type1 var1, type2 var2, type3 var3) \
   return ; \
 }
 
-WRAP_FUNCTION_VOID_2(init, int&, char**&)
+//WRAP_FUNCTION_VOID_2(init, int&, char**&)
+void
+UI_Wrap::init(int& argc, char**& argv)
+{
+  list<OS*> oss = this->os;
+  for (list<OS*>::iterator os = oss.begin(); os != oss.end(); os++)
+    (*os)->main_init(argc, argv);
+  this->ui->init(argc, argv);
+  return ;
+}
 WRAP_FUNCTION_VOID_0(update)
 WRAP_FUNCTION_VOID_1(sleep, unsigned const)
 WRAP_FUNCTION_VOID_0(language_changed)
@@ -300,7 +309,7 @@ WRAP_FUNCTION_VOID_2(poverty_ask, Player const&, unsigned const)
 WRAP_FUNCTION_VOID_1(poverty_take_denied, Player const&)
 WRAP_FUNCTION_VOID_0(poverty_take_denied_by_all)
 WRAP_FUNCTION_VOID_3(poverty_take_accepted,
-		     Player const&, unsigned const, unsigned const)
+                     Player const&, unsigned const, unsigned const)
 WRAP_FUNCTION_1(HandCards, poverty_shift, Player&)
 WRAP_FUNCTION_2(bool, poverty_take_accept, Player&, unsigned const)
 WRAP_FUNCTION_2(HandCards, poverty_cards_change, Player&, HandCards const&)
@@ -344,9 +353,9 @@ WRAP_FUNCTION_VOID_1(network_connection_new, Network::Connection const&)
 WRAP_FUNCTION_VOID_1(network_connection_changed, Network::Connection const&)
 WRAP_FUNCTION_VOID_1(network_connection_deleted, Network::Connection const&)
 WRAP_FUNCTION_VOID_3(network_traffic,
-		     Network::Connection const&,
-		     Network::TrafficType const,
-		     string const&)
+                     Network::Connection const&,
+                     Network::TrafficType const,
+                     string const&)
 #endif
 
 WRAP_FUNCTION_VOID_1(status_message_changed, Translator::Translation const&)
@@ -357,7 +366,7 @@ WRAP_FUNCTION_VOID_0(progress_finished)
 WRAP_FUNCTION_VOID_1(first_run, Translator::Translation const&)
 WRAP_FUNCTION_VOID_1(program_updated, DK::Utils::Version const&)
 WRAP_FUNCTION_VOID_3(information,
-		     Translator::Translation const&, INFORMATION::Type const,
+                     Translator::Translation const&, INFORMATION::Type const,
                      bool const)
 WRAP_FUNCTION_VOID_1(error, string const&)
 

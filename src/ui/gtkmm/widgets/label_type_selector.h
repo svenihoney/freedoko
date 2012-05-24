@@ -67,6 +67,7 @@ namespace Gtk {
         TypeSelector<Type>& get_selector()
         { return this->selector_; }
 
+        using Gtk::Container::add;
         // adds the type to the selector
         void add(Type const& type)
         { this->get_selector().add(type); }

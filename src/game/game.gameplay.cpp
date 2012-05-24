@@ -604,7 +604,6 @@ Game::reservation(Player const& player) const
 
 /**
  ** make the shifting of the poverty cards
- ** distribute the cards randomly at the players
  **
  ** @param      -
  **

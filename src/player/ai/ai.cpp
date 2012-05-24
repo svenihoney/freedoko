@@ -3392,9 +3392,7 @@ int Ai::checksolo() const
   for (vector<Card::Color>::const_iterator
        c = this->game().rule().card_colors().begin();
        c != this->game().rule().card_colors().end();
-       ++c)
-    if ( this->hand().numberof(*c,GAMETYPE::SOLO_MEATLESS,this->game().rule()(Rule::DOLLEN) ) >= 0)
-    {
+       ++c) {
       if (!Card(*c,Card::ACE).istrump(this->game()) )
       {
         res-=2*(2 - this->hand().numberof(*c, Card::ACE) );
@@ -3405,7 +3403,7 @@ int Ai::checksolo() const
     }
 
   return res;
-}
+} // int Ai::checksolo()
 
 
 /**********************************************************************   

@@ -55,10 +55,14 @@ namespace Gdk {
 
       void set_scaling(double const scaling);
 
-      int get_width(Rotation const rotation = UP) const;
-      int get_height(Rotation const rotation = UP) const;
-      int get_orig_width(Rotation const rotation = UP) const;
-      int get_orig_height(Rotation const rotation = UP) const;
+      int get_width(Rotation const rotation) const;
+      int get_width() const { return this->get_width(UP); }
+      int get_height(Rotation const rotation) const;
+      int get_height() const { return this->get_height(UP); }
+      int get_orig_width(Rotation const rotation) const;
+      int get_orig_width() const { return this->get_orig_width(UP); }
+      int get_orig_height(Rotation const rotation) const;
+      int get_orig_height() const { return this->get_orig_height(UP); }
 
     private:
       ScaledPixbuf& create_rotation(Rotation const rotation);

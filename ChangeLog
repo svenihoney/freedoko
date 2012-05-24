@@ -1,3 +1,7 @@
+2012-05-24 Diether Knof
+	- fixed crash when starting from another directory (data files were not found)
+	- fixed compilation problems with clang (llvm)
+
 2012-05-23 Diether Knof
 	- added best winning card to default heuristics of poverty - contra
 	- choose pfund: reworked the ten/ace selection

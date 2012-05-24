@@ -75,8 +75,7 @@ create_assertion_bug_report(string const& message)
     {
       cerr << '\n'
         << ::translation("Creating segmentation fault.") << '\n';
-      int const n = *(static_cast<int*>(NULL));
-      (void)(n);
+      SEGFAULT;
     }
 #endif // #ifdef ASSERTION_GENERATES_SEGFAULT
 

@@ -87,7 +87,7 @@ class OS {
   OS_TYPE::OSType type() const;
 
   // initialize the OS
-  virtual void init(int& argc, char**& argv)		{ }
+  virtual void main_init(int& argc, char**& argv)		{ }
 
   // updates the OS
   virtual void update()					{ }

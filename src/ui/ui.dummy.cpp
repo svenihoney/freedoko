@@ -199,6 +199,7 @@ UI_Dummy::genscher_partner()
  **
  ** @param	message		message
  ** @param	type		type of the information
+ ** @param	force_show	whether to force the showing of the massage (default: false)
  **
  ** @return	-
  **
@@ -208,7 +209,8 @@ UI_Dummy::genscher_partner()
  **/
 void
 UI_Dummy::information(Translator::Translation const& message,
-		     INFORMATION::Type const type)
+		     INFORMATION::Type const type,
+                     bool const force_show)
 {
   cout << message << endl;
 

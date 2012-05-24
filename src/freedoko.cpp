@@ -188,6 +188,9 @@ main(int argc, char* argv[])
 
       // load the settings
       ::setting.add_data_directory(DK::Utils::File::dirname(argv[0]));
+#ifndef RELEASE
+      ::setting.add_data_directory(DK::Utils::File::dirname(argv[0]) + string("/../data"));
+#endif // #ifndef RELEASE
       ::setting.load();
 
       ::party.set_seed(SEED_START);

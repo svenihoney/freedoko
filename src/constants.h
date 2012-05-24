@@ -189,6 +189,6 @@ extern unsigned const STARTPLAYER;
 // creates a segmentation fault
 #define SEGFAULT if (true) { cerr << "Created segmentation fault:\n" \
   << __FILE__ << " # " << __LINE__ << endl; \
-(*reinterpret_cast<int*>(NULL) = 0); } else
+(*reinterpret_cast<volatile int*>(NULL) = 0); } else
 
 #endif // #ifndef HEADER_CONSTANTS

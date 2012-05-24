@@ -133,7 +133,7 @@ namespace DK {
            << "  depth is not 0: " << this->depth
            << endl;
 #ifndef RELEASE
-          (*reinterpret_cast<int*>(NULL) = 0);
+          (*reinterpret_cast<volatile int*>(NULL) = 0);
 #endif
       }
 #endif
