@@ -323,8 +323,6 @@ Gametree::weighting(Card const& card_) const
     } // play the card 'card_'
 
     modus = this->rated_modus(virt_game, this->end_depth());
-  if (modus == INT_MIN)
-    SEGFAULT;
 
   } catch (...) {
     // delete the virtual players

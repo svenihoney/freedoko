@@ -104,7 +104,7 @@ namespace Network {
       virtual void party_finish() = 0;
 
       // open the game
-      virtual void game_open() = 0;
+      virtual void game_open(Game const& game) = 0;
       // distribute the cards
       virtual void game_distribute_cards(vector<Hand const*> hands) = 0;
       // start the game

@@ -100,7 +100,7 @@ namespace Network {
         void party_finish();
 
         // open the game
-        void game_open();
+        void game_open(Game const& game);
         // distribute the cards
         void game_distribute_cards(vector<Hand const*> hands);
         // start the game

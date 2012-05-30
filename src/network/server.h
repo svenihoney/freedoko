@@ -119,7 +119,7 @@ namespace Network {
 
 
     // the parts of a game
-    void game_open();
+    void game_open(Game const& game);
     void game_cards_distributed();
     void game_start();
     void game_finish();

@@ -79,6 +79,8 @@ namespace UI_GTKMM_NS {
       void set_default();
       // the gametype has changed (by the user)
       void gametype_changed(int const gametype);
+      // the marriage selector has changed (by the user)
+      void marriage_selector_changed(int const marriage_selector);
       // the swines butten has changed (by the user)
       void swines_changed();
 

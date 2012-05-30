@@ -148,15 +148,16 @@ namespace Network {
    ** @version	0.7.3
    **/
   void
-    Server::game_open()
+    Server::game_open(Game const& game)
     {
+      this->OS::game_open(game);
       for (vector<Connection*>::iterator c = this->connections().begin();
 	   c != this->connections().end();
 	   ++c)
 	if ((*c)->relation() == Connection::CHILD)
-	  (*c)->interpreter().sender().game_open();
+	  (*c)->interpreter().sender().game_open(game);
       return ;
-    } // void Server::game_open()
+    } // void Server::game_open(Game game)
 
   /**
    ** the cards of the game are distributed
@@ -175,8 +176,9 @@ namespace Network {
       vector<Hand const*> hands;
       for (vector<Player*>::const_iterator p = this->game().players_begin();
 	   p != this->game().players_end();
-	   ++p)
+	   ++p) {
 	hands.push_back(&(*p)->hand());
+      }
 
       for (vector<Connection*>::iterator c = this->connections().begin();
 	   c != this->connections().end();

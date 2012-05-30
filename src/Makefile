@@ -326,7 +326,7 @@ check_references :
 #	$(MAKE) "CXXFLAGS=-Wall -Werror -Wno-parentheses -pipe -Os" "USE_UI_GTKMM=false" "USE_UI_TEXT=false" "USE_SOUND=false" "USE_BOOST=true" "FREEDOKO_WORKING_DIRECTORY=/tmp/${LOGNAME}/FreeDoko.check_reference/src"
 	cd ../data
 	../src/$(PROGRAM) -r ../References --ui=none
-	@-grep -v OK ../References/References.report.csv | grep "^[0-9]\+\(_[0-9]\+\)\?.Reference.FreeDoko" | sort -n; \
+	@-grep -v OK ../References/**/References.report.csv | grep "^[0-9]\+\(_[0-9]\+\)\?.Reference.FreeDoko" | sort -n; \
 	tail -n 5 ../References/References.report.csv  | sed "s/\;/\t/g"
 	@echo -e "\nchecks entries "`grep "^[ \t]*check" ../References/*.FreeDoko | wc -l`
 	@echo -e "failed: "; grep "^[0-9]\+_\?[0-9]*.Reference.FreeDoko;" ../References/References.report.csv | grep -v OK | awk -F \; '{printf(" %s", $$1)}' | sort -n; echo

@@ -219,6 +219,7 @@ namespace UI_GTKMM_NS {
             this->marriage_selector_buttons.back()->set_data("selector", new MarriageSelector(MarriageSelector(m)));
             this->ui->translations->add(*(this->marriage_selector_buttons.back()),
                                         ::translation(static_cast<MarriageSelector>(m)));
+            this->marriage_selector_buttons.back()->signal_toggled().connect(sigc::bind<int const>(sigc::mem_fun(*this, &Reservation::marriage_selector_changed), m));
           } // for (m \in MARRIAGE_SELECTOR)
         } // create the buttons
 
@@ -904,10 +905,6 @@ namespace UI_GTKMM_NS {
       //GameType const old_gametype = this->player->game().type();
       this->ui->game().set_type(static_cast<GameType>(gametype));
 
-      this->icongroup().draw_team(true);
-      this->name().draw(true);
-      this->table().name(this->player->game().startplayer()).draw(true);
-
       { // update the swines
         ::Hand const& hand = this->player->hand();
 
@@ -945,6 +942,10 @@ namespace UI_GTKMM_NS {
           = this->ui->game().player(this->player->no()).reservation();
 
         reservation.game_type = static_cast<GameType>(gametype);
+        if (   (this->player->hand().numberofclubqueens()
+            == this->player->game().rule()(Rule::NUMBER_OF_SAME_CARDS))
+            && (gametype == GAMETYPE::NORMAL))
+          reservation.game_type = GAMETYPE::MARRIAGE_SILENT;
         for (vector<Gtk::RadioButton*>::iterator widget
              = this->marriage_selector_buttons.begin();
              widget != this->marriage_selector_buttons.end();
@@ -954,6 +955,10 @@ namespace UI_GTKMM_NS {
               = *(static_cast<MarriageSelector*>((*widget)->get_data("selector")));
         // swines are updated in the following 'this->swines_changed()'
       } // update the reservation of the player
+
+      this->icongroup().draw_team(true);
+      this->name().draw(true);
+      this->table().name(this->player->game().startplayer()).draw(true);
 
       if (    game.is_duty_solo()
           && (game.startplayer() == player))
@@ -967,6 +972,30 @@ namespace UI_GTKMM_NS {
 
       return ;
     } // void Reservation::gametype_changed(int const gametype)
+
+  /**
+   ** the marriage selector has changed
+   **
+   ** @param     marriage_selector_   changed marriage selector
+   **
+   ** @return    -
+   **
+   ** @author    Diether Knof
+   **
+   ** @version   0.7.12
+   **/
+  void
+    Reservation::marriage_selector_changed(int const marriage_selector_)
+    {
+      if (!this->is_realized())
+        return ;
+
+      this->ui->game().player(this->player->no()).reservation().marriage_selector
+        = static_cast<MARRIAGE_SELECTOR::MarriageSelector>(marriage_selector_);
+      this->icongroup().draw_team(true);
+
+      return ;
+    } // void Reservation::marriage_selector_changed(int marriage_selector_)
 
   /**
    ** the selection of swines/hyperswines has changed

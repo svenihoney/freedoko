@@ -104,9 +104,10 @@ namespace UI_GTKMM_NS {
       case GAMETYPE::GENSCHER:
         return GENSCHER;
       case GAMETYPE::MARRIAGE:
+        return MARRIAGE;
       case GAMETYPE::MARRIAGE_SOLO:
       case GAMETYPE::MARRIAGE_SILENT:
-        return MARRIAGE;
+        return MARRIAGE_SOLO;
       case GAMETYPE::SOLO_DIAMOND:
         return SOLO_DIAMOND;
       case GAMETYPE::SOLO_JACK:
@@ -155,6 +156,7 @@ namespace UI_GTKMM_NS {
     {
       switch(marriage_selector) {
       case MARRIAGE_SELECTOR::SILENT:
+        return MARRIAGE_SOLO;
       case MARRIAGE_SELECTOR::TEAM_SET:
         return MARRIAGE;
       case MARRIAGE_SELECTOR::FIRST_FOREIGN:
@@ -948,6 +950,20 @@ namespace UI_GTKMM_NS {
           icon = this->construct(Card::CLUB_QUEEN,
                                  Card::CLUB_QUEEN);
         break;
+      case MARRIAGE_SOLO:
+        icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                          + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                          + "marriage.solo" + "."
+                                          + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
+          icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                            + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                            + "marriage" + "."
+                                            + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
+          icon = this->construct(Card::CLUB_QUEEN,
+                                 Card::CLUB_QUEEN);
+        break;
       case MARRIAGE_FOREIGN:
         icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
                                           + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
@@ -1079,6 +1095,11 @@ namespace UI_GTKMM_NS {
                                           + "swines.club" + "."
                                           + ::setting(Setting::GRAPHIC_EXTENSION));
         if (!icon)
+          icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                            + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                            + "swines" + "."
+                                            + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
           icon = this->construct(Card(Card::CLUB, Card::ACE),
                                  Card(Card::CLUB, Card::ACE));
         break;
@@ -1087,6 +1108,11 @@ namespace UI_GTKMM_NS {
                                           + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
                                           + "swines.spade" + "."
                                           + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
+          icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                            + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                            + "swines" + "."
+                                            + ::setting(Setting::GRAPHIC_EXTENSION));
         if (!icon)
           icon = this->construct(Card(Card::SPADE, Card::ACE),
                                  Card(Card::SPADE, Card::ACE));
@@ -1097,6 +1123,11 @@ namespace UI_GTKMM_NS {
                                           + "swines.heart" + "."
                                           + ::setting(Setting::GRAPHIC_EXTENSION));
         if (!icon)
+          icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                            + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                            + "swines" + "."
+                                            + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
           icon = this->construct(Card(Card::HEART, Card::ACE),
                                  Card(Card::HEART, Card::ACE));
         break;
@@ -1105,6 +1136,11 @@ namespace UI_GTKMM_NS {
                                           + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
                                           + "swines.diamond" + "."
                                           + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
+          icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                            + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                            + "swines" + "."
+                                            + ::setting(Setting::GRAPHIC_EXTENSION));
         if (!icon)
           icon = this->construct(Card(Card::DIAMOND, Card::ACE),
                                  Card(Card::DIAMOND, Card::ACE));
@@ -1115,6 +1151,11 @@ namespace UI_GTKMM_NS {
                                           + "hyperswines.club" + "."
                                           + ::setting(Setting::GRAPHIC_EXTENSION));
         if (!icon)
+          icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                            + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                            + "hyperswines" + "."
+                                            + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
           icon = this->construct(Card(Card::CLUB, Card::NINE),
                                  Card(Card::CLUB, Card::NINE));
         break;
@@ -1123,6 +1164,11 @@ namespace UI_GTKMM_NS {
                                           + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
                                           + "hyperswines.spade" + "."
                                           + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
+          icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                            + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                            + "hyperswines" + "."
+                                            + ::setting(Setting::GRAPHIC_EXTENSION));
         if (!icon)
           icon = this->construct(Card(Card::SPADE, Card::NINE),
                                  Card(Card::SPADE, Card::NINE));
@@ -1133,6 +1179,11 @@ namespace UI_GTKMM_NS {
                                           + "hyperswines.heart" + "."
                                           + ::setting(Setting::GRAPHIC_EXTENSION));
         if (!icon)
+          icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                            + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                            + "hyperswines" + "."
+                                            + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
           icon = this->construct(Card(Card::HEART, Card::NINE),
                                  Card(Card::HEART, Card::NINE));
         break;
@@ -1141,6 +1192,11 @@ namespace UI_GTKMM_NS {
                                           + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
                                           + "hyperswines.diamond" + "."
                                           + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
+          icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                            + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                            + "hyperswines" + "."
+                                            + ::setting(Setting::GRAPHIC_EXTENSION));
         if (!icon)
           icon = this->construct(Card(Card::DIAMOND, Card::NINE),
                                  Card(Card::DIAMOND, Card::NINE));
@@ -1151,6 +1207,11 @@ namespace UI_GTKMM_NS {
                                           + "hyperswines.king.club" + "."
                                           + ::setting(Setting::GRAPHIC_EXTENSION));
         if (!icon)
+          icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                            + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                            + "hyperswines" + "."
+                                            + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
           icon = this->construct(Card(Card::CLUB, Card::KING),
                                  Card(Card::CLUB, Card::KING));
         break;
@@ -1159,6 +1220,11 @@ namespace UI_GTKMM_NS {
                                           + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
                                           + "hyperswines.king.spade" + "."
                                           + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
+          icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                            + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                            + "hyperswines" + "."
+                                            + ::setting(Setting::GRAPHIC_EXTENSION));
         if (!icon)
           icon = this->construct(Card(Card::SPADE, Card::KING),
                                  Card(Card::SPADE, Card::KING));
@@ -1169,6 +1235,11 @@ namespace UI_GTKMM_NS {
                                           + "hyperswines.king.heart" + "."
                                           + ::setting(Setting::GRAPHIC_EXTENSION));
         if (!icon)
+          icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                            + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                            + "hyperswines" + "."
+                                            + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
           icon = this->construct(Card(Card::HEART, Card::KING),
                                  Card(Card::HEART, Card::KING));
         break;
@@ -1178,43 +1249,12 @@ namespace UI_GTKMM_NS {
                                           + "hyperswines.king.diamond" + "."
                                           + ::setting(Setting::GRAPHIC_EXTENSION));
         if (!icon)
+          icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                            + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                            + "hyperswines" + "."
+                                            + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
           icon = this->construct(Card(Card::DIAMOND, Card::KING),
-                                 Card(Card::DIAMOND, Card::KING));
-        break;
-      case SWINES_HYPERSWINES_KING_CLUB:
-        icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
-                                          + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
-                                          + "swines-hyperswines.king.club" + "."
-                                          + ::setting(Setting::GRAPHIC_EXTENSION));
-        if (!icon)
-          icon = this->construct(Card(Card::CLUB, Card::ACE),
-                                 Card(Card::CLUB, Card::KING));
-        break;
-      case SWINES_HYPERSWINES_KING_SPADE:
-        icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
-                                          + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
-                                          + "swines-hyperswines.king.spade" + "."
-                                          + ::setting(Setting::GRAPHIC_EXTENSION));
-        if (!icon)
-          icon = this->construct(Card(Card::SPADE, Card::ACE),
-                                 Card(Card::SPADE, Card::KING));
-        break;
-      case SWINES_HYPERSWINES_KING_HEART:
-        icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
-                                          + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
-                                          + "swines-hyperswines.king.heart" + "."
-                                          + ::setting(Setting::GRAPHIC_EXTENSION));
-        if (!icon)
-          icon = this->construct(Card(Card::HEART, Card::ACE),
-                                 Card(Card::HEART, Card::KING));
-        break;
-      case SWINES_HYPERSWINES_KING_DIAMOND:
-        icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
-                                          + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
-                                          + "swines-hyperswines.king.diamond" + "."
-                                          + ::setting(Setting::GRAPHIC_EXTENSION));
-        if (!icon)
-          icon = this->construct(Card(Card::DIAMOND, Card::ACE),
                                  Card(Card::DIAMOND, Card::KING));
         break;
       case SWINES_HYPERSWINES_CLUB:
@@ -1222,6 +1262,11 @@ namespace UI_GTKMM_NS {
                                           + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
                                           + "swines-hyperswines.club" + "."
                                           + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
+          icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                            + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                            + "swines-hyperswines" + "."
+                                            + ::setting(Setting::GRAPHIC_EXTENSION));
         if (!icon)
           icon = this->construct(Card(Card::CLUB, Card::ACE),
                                  Card(Card::CLUB, Card::NINE));
@@ -1232,6 +1277,11 @@ namespace UI_GTKMM_NS {
                                           + "swines-hyperswines.spade" + "."
                                           + ::setting(Setting::GRAPHIC_EXTENSION));
         if (!icon)
+          icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                            + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                            + "swines-hyperswines" + "."
+                                            + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
           icon = this->construct(Card(Card::SPADE, Card::ACE),
                                  Card(Card::SPADE, Card::NINE));
         break;
@@ -1240,6 +1290,11 @@ namespace UI_GTKMM_NS {
                                           + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
                                           + "swines-hyperswines.heart" + "."
                                           + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
+          icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                            + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                            + "swines-hyperswines" + "."
+                                            + ::setting(Setting::GRAPHIC_EXTENSION));
         if (!icon)
           icon = this->construct(Card(Card::HEART, Card::ACE),
                                  Card(Card::HEART, Card::NINE));
@@ -1250,8 +1305,69 @@ namespace UI_GTKMM_NS {
                                           + "swines-hyperswines.diamond" + "."
                                           + ::setting(Setting::GRAPHIC_EXTENSION));
         if (!icon)
+          icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                            + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                            + "swines-hyperswines" + "."
+                                            + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
           icon = this->construct(Card(Card::DIAMOND, Card::ACE),
                                  Card(Card::DIAMOND, Card::NINE));
+        break;
+      case SWINES_HYPERSWINES_KING_CLUB:
+        icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                          + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                          + "swines-hyperswines.king.club" + "."
+                                          + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
+          icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                            + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                            + "swines-hyperswines" + "."
+                                            + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
+          icon = this->construct(Card(Card::CLUB, Card::ACE),
+                                 Card(Card::CLUB, Card::KING));
+        break;
+      case SWINES_HYPERSWINES_KING_SPADE:
+        icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                          + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                          + "swines-hyperswines.king.spade" + "."
+                                          + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
+          icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                            + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                            + "swines-hyperswines" + "."
+                                            + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
+          icon = this->construct(Card(Card::SPADE, Card::ACE),
+                                 Card(Card::SPADE, Card::KING));
+        break;
+      case SWINES_HYPERSWINES_KING_HEART:
+        icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                          + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                          + "swines-hyperswines.king.heart" + "."
+                                          + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
+          icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                            + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                            + "swines-hyperswines" + "."
+                                            + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
+          icon = this->construct(Card(Card::HEART, Card::ACE),
+                                 Card(Card::HEART, Card::KING));
+        break;
+      case SWINES_HYPERSWINES_KING_DIAMOND:
+        icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                          + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                          + "swines-hyperswines.king.diamond" + "."
+                                          + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
+          icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
+                                            + ::setting.value(Setting::ICONS_DIRECTORY) + "/"
+                                            + "swines-hyperswines" + "."
+                                            + ::setting(Setting::GRAPHIC_EXTENSION));
+        if (!icon)
+          icon = this->construct(Card(Card::DIAMOND, Card::ACE),
+                                 Card(Card::DIAMOND, Card::KING));
         break;
       case DOLLEN:
         icon = Gdk::ScaledPixbufRotations(::setting.path(Setting::CARDSET) + "/"
@@ -1425,7 +1541,7 @@ namespace UI_GTKMM_NS {
           } // if (this->icon_.size() <= type)
           this->ui->information(::translation("Cannot construct the icon for the announcement '%tannouncement%'.\n"
                                               "Keeping the old one.",
-                                              ANNOUNCEMENT::NO120),
+                                              ::translation(ANNOUNCEMENT::NO120)),
                                 INFORMATION::WARNING);
           icon = this->icon(type);
         } // if (!icon)
@@ -1450,7 +1566,7 @@ namespace UI_GTKMM_NS {
           } // if (this->icon_.size() <= type)
           this->ui->information(::translation("Cannot construct the icon for the announcement '%tannouncement%'.\n"
                                               "Keeping the old one.",
-                                              ANNOUNCEMENT::NO90),
+                                              ::translation(ANNOUNCEMENT::NO90)),
                                 INFORMATION::WARNING);
           icon = this->icon(type);
         } // if (!icon)
@@ -1475,7 +1591,7 @@ namespace UI_GTKMM_NS {
           } // if (this->icon_.size() <= type)
           this->ui->information(::translation("Cannot construct the icon for the announcement '%tannouncement%'.\n"
                                               "Keeping the old one.",
-                                              ANNOUNCEMENT::NO60),
+                                              ::translation(ANNOUNCEMENT::NO60)),
                                 INFORMATION::WARNING);
           icon = this->icon(type);
         } // if (!icon)
@@ -1500,7 +1616,7 @@ namespace UI_GTKMM_NS {
           } // if (this->icon_.size() <= type)
           this->ui->information(::translation("Cannot construct the icon for the announcement '%tannouncement%'.\n"
                                               "Keeping the old one.",
-                                              ANNOUNCEMENT::NO30),
+                                              ::translation(ANNOUNCEMENT::NO30)),
                                 INFORMATION::WARNING);
           icon = this->icon(type);
         } // if (!icon)
@@ -1525,7 +1641,7 @@ namespace UI_GTKMM_NS {
           } // if (this->icon_.size() <= type)
           this->ui->information(::translation("Cannot construct the icon for the announcement '%tannouncement%'.\n"
                                               "Keeping the old one.",
-                                              ANNOUNCEMENT::NO0),
+                                              ::translation(ANNOUNCEMENT::NO0)),
                                 INFORMATION::WARNING);
           icon = this->icon(type);
         } // if (!icon)
@@ -1550,7 +1666,7 @@ namespace UI_GTKMM_NS {
           } // if (this->icon_.size() <= type)
           this->ui->information(::translation("Cannot construct the icon for the announcement '%tannouncement%'.\n"
                                               "Keeping the old one.",
-                                              ANNOUNCEMENT::NO120_REPLY),
+                                              ::translation(ANNOUNCEMENT::NO120_REPLY)),
                                 INFORMATION::WARNING);
           icon = this->icon(type);
         } // if (!icon)
@@ -1575,7 +1691,7 @@ namespace UI_GTKMM_NS {
           } // if (this->icon_.size() <= type)
           this->ui->information(::translation("Cannot construct the icon for the announcement '%tannouncement%'.\n"
                                               "Keeping the old one.",
-                                              ANNOUNCEMENT::NO90_REPLY),
+                                              ::translation(ANNOUNCEMENT::NO90_REPLY)),
                                 INFORMATION::WARNING);
           icon = this->icon(type);
         } // if (!icon)
@@ -1600,7 +1716,7 @@ namespace UI_GTKMM_NS {
           } // if (this->icon_.size() <= type)
           this->ui->information(::translation("Cannot construct the icon for the announcement '%tannouncement%'.\n"
                                               "Keeping the old one.",
-                                              ANNOUNCEMENT::NO60_REPLY),
+                                              ::translation(ANNOUNCEMENT::NO60_REPLY)),
                                 INFORMATION::WARNING);
           icon = this->icon(type);
         } // if (!icon)
@@ -1625,7 +1741,7 @@ namespace UI_GTKMM_NS {
           } // if (this->icon_.size() <= type)
           this->ui->information(::translation("Cannot construct the icon for the announcement '%tannouncement%'.\n"
                                               "Keeping the old one.",
-                                              ANNOUNCEMENT::NO30_REPLY),
+                                              ::translation(ANNOUNCEMENT::NO30_REPLY)),
                                 INFORMATION::WARNING);
           icon = this->icon(type);
         } // if (!icon)
@@ -1650,7 +1766,7 @@ namespace UI_GTKMM_NS {
           } // if (this->icon_.size() <= type)
           this->ui->information(::translation("Cannot construct the icon for the announcement '%tannouncement%'.\n"
                                               "Keeping the old one.",
-                                              ANNOUNCEMENT::NO0_REPLY),
+                                              ::translation(ANNOUNCEMENT::NO0_REPLY)),
                                 INFORMATION::WARNING);
           icon = this->icon(type);
         } // if (!icon)

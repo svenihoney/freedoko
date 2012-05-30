@@ -144,17 +144,6 @@ namespace UI_GTKMM_NS {
       Team const team = game.teaminfo_for_humans(*this->player);
 
       Glib::RefPtr<Gdk::Pixbuf> icon;
-      if (game.is_finished()
-          || (   game.rule()(Rule::SHOW_KNOWN_TEAMS_IN_GAME)
-              && ::setting(Setting::SHOW_KNOWN_TEAMS_IN_GAME))) {
-        icon = this->ui->icons->icon(team,
-                                     this->rotation());
-        possible_icons.push_back(this->ui->icons->icon(TEAM::RE,
-                                                       this->rotation()));
-        possible_icons.push_back(this->ui->icons->icon(TEAM::CONTRA,
-                                                       this->rotation()));
-        icon = this->ui->icons->icon(team, this->rotation());
-      } // if (show teams)
 
       if (::game_status == GAMESTATUS::GAME_RESERVATION) {
         for (int t = GAMETYPE::FIRST; t <= GAMETYPE::LAST; ++t)
@@ -164,11 +153,54 @@ namespace UI_GTKMM_NS {
         possible_icons.push_back(this->ui->icons->icon(Icons::POVERTY,
                                                        this->rotation()));
 
-      } // if (::game_status == GAMESTATUS::GAME_RESERVATION)
+        if (this->player->type() == Player::HUMAN) {
+          ::Reservation const& reservation = this->player->reservation();
+          switch (reservation.game_type) {
+          case GAMETYPE::NORMAL:
+            icon = this->ui->icons->icon(TEAM::RE, this->rotation());
+            break;
+          case GAMETYPE::POVERTY:
+            // ToDo: number of trumps
+            icon = this->ui->icons->icon(reservation.game_type,
+                                         this->rotation());
+            break;
+          case GAMETYPE::GENSCHER:
+            icon = this->ui->icons->icon(Icons::GENSCHER,
+                                         this->rotation());
+            break;
+          case GAMETYPE::MARRIAGE:
+            icon = this->ui->icons->icon(reservation.marriage_selector,
+                                         this->rotation());
+            break;
+          case GAMETYPE::MARRIAGE_SOLO:
+          case GAMETYPE::MARRIAGE_SILENT:
+          case GAMETYPE::THROWN_NINES:
+          case GAMETYPE::THROWN_KINGS:
+          case GAMETYPE::THROWN_NINES_AND_KINGS:
+          case GAMETYPE::THROWN_RICHNESS:
+          case GAMETYPE::FOX_HIGHEST_TRUMP:
+          case GAMETYPE::SOLO_DIAMOND:
+          case GAMETYPE::SOLO_JACK:
+          case GAMETYPE::SOLO_QUEEN:
+          case GAMETYPE::SOLO_KING:
+          case GAMETYPE::SOLO_QUEEN_JACK:
+          case GAMETYPE::SOLO_KING_JACK:
+          case GAMETYPE::SOLO_KING_QUEEN:
+          case GAMETYPE::SOLO_KOEHLER:
+          case GAMETYPE::SOLO_CLUB:
+          case GAMETYPE::SOLO_HEART:
+          case GAMETYPE::SOLO_SPADE:
+          case GAMETYPE::SOLO_MEATLESS:
+            icon = this->ui->icons->icon(reservation.game_type,
+                                         this->rotation());
+            break;
+          } // switch (this->player->reservation().game_type())
 
-      if (   game.is_finished()
-          || (   game.rule()(Rule::SHOW_SOLOPLAYER_IN_GAME)
-              && ::setting(Setting::SHOW_SOLOPLAYER_IN_GAME))) {
+        } // if (this->player->type() == Player::HUMAN)
+
+      } else if (   game.is_finished()
+                 || (   game.rule()(Rule::SHOW_SOLOPLAYER_IN_GAME)
+                     && ::setting(Setting::SHOW_SOLOPLAYER_IN_GAME))) {
         switch (game.type()) {
         case GAMETYPE::NORMAL:
           break;
@@ -210,10 +242,8 @@ namespace UI_GTKMM_NS {
           break;
         case GAMETYPE::MARRIAGE_SILENT:
           if (this->player == soloplayer) {
-            icon = this->ui->icons->icon(game.marriage_selector(),
+            icon = this->ui->icons->icon(game.type(),
                                          this->rotation());
-            possible_icons.push_back(this->ui->icons->icon(TEAM::RE,
-                                                           this->rotation()));
           } else {
             icon.clear();
             possible_icons.push_back(this->ui->icons->icon(TEAM::CONTRA,
@@ -244,6 +274,31 @@ namespace UI_GTKMM_NS {
         } // switch(game.type())
       } // if (icon shall be shown for soloplayer)
 
+      // special case: silent marriage
+      if (   !icon
+          && (game.humanno() == 1)
+          && (this->player->type() == Player::HUMAN)
+          && (   (   (game.type() == GAMETYPE::MARRIAGE_SILENT)
+                  && (*this->player == game.soloplayer()) )
+              || (   (game.type() == GAMETYPE::NORMAL)
+                  && (this->player->hand().numberofall(Card::CLUB_QUEEN)
+                      == game.rule()(Rule::NUMBER_OF_SAME_CARDS)))
+             )
+         ) {
+        icon = this->ui->icons->icon(GAMETYPE::MARRIAGE_SILENT,
+                                     this->rotation());
+      }
+
+      if (!icon) {
+        if (   game.is_finished()
+            || (   game.rule()(Rule::SHOW_KNOWN_TEAMS_IN_GAME)
+                && ::setting(Setting::SHOW_KNOWN_TEAMS_IN_GAME))) {
+          icon = this->ui->icons->icon(team,
+                                       this->rotation());
+          icon = this->ui->icons->icon(team, this->rotation());
+        } // if (show teams)
+      } // if (!icon)
+
       if (   !icon
           && ::setting(Setting::SHOW_AI_INFORMATION_TEAMS)
           && game.rule()(Rule::SHOW_KNOWN_TEAMS_IN_GAME)
@@ -262,6 +317,10 @@ namespace UI_GTKMM_NS {
 
       if (icon)
         possible_icons.push_back(icon);
+      possible_icons.push_back(this->ui->icons->icon(TEAM::RE,
+                                                     this->rotation()));
+      possible_icons.push_back(this->ui->icons->icon(TEAM::CONTRA,
+                                                     this->rotation()));
 
       if (update) {
         max_outline.set_width(this->ui->icons->max_width(possible_icons));
@@ -283,13 +342,8 @@ namespace UI_GTKMM_NS {
                                           0, 0);
       }
 
-      if (update) {
-        // ToDo: remove
-        this->draw(false);
-        this->name().draw(false);
-
+      if (update)
         this->table().update(max_outline);
-      } // if (update)
 
       return ;
     } // void Icongroup::draw_team(bool const update = true)

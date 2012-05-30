@@ -238,6 +238,10 @@ Game::real_trick_current_no() const
 unsigned
 Game::tricks_remaining_no() const
 {
+  if (   (::game_status == GAMESTATUS::GAME_RESERVATION)
+      || (::game_status == GAMESTATUS::GAME_POVERTY_SHIFT) )
+    return this->trickno();
+
   DEBUG_ASSERTION((this->trick_current_no() != UINT_MAX),
 		  "Game::tricks_remaining_no():\n"
 		  "  this->trick_current_no() == -1");

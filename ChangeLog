@@ -1,3 +1,7 @@
+2012-05-30 Diether Knof
+	- icons: in the reservation the marriage selector icon is shown
+	- icons: support for silent marriage / marriage solo icon
+
 2012-05-24 Diether Knof
 	- fixed crash when starting from another directory (data files were not found)
 	- fixed compilation problems with clang (llvm)

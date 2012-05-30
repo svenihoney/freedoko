@@ -50,6 +50,7 @@ int const FAST_NS::ALL = (  PAUSE
 // 3: 161411 different games
 //unsigned SEED_START = 3;
 
+//     18: marriage     0
 //  12700: ?
 // 248603: poverty	2	(3) (1 Karo As)
 // 228801 0: poverty	3	(2)

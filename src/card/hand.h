@@ -231,6 +231,9 @@ class Hand {
 		      GameType const gametype,
 		      bool const dollen) const;
 
+    // the number of played cards 'card'
+    unsigned played(Card const& card) const;
+
     // the number of trumps
     unsigned numberoftrumps() const;
     // the number of trumps

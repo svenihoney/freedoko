@@ -34,9 +34,9 @@
 #ifndef RELEASE
 #ifdef DKNOF
 // best jabbing card (card selection)
-#define DEBUG_BJC_OSTR cout << "[#" << __LINE__ << "] "
+//#define DEBUG_BJC_OSTR cout << "[#" << __LINE__ << "] "
 // best winning card (decision, whether to take the card)
-#define DEBUG_BWC_OSTR cout << "[#" << __LINE__ << "] "
+//#define DEBUG_BWC_OSTR cout << "[#" << __LINE__ << "] "
 #endif
 #endif
 #ifndef DEBUG_BJC_OSTR

@@ -1905,6 +1905,23 @@ Hand::numberof(Card::Color const& color,
 /**
  ** -> result
  **
+ ** @param	card   card to check
+ **
+ ** @return	how many times 'card' has been played
+ **
+ ** @author	Diether Knof
+ **
+ ** @version	0.7.12
+ **/
+unsigned
+Hand::played(Card const& card) const
+{
+  return (this->numberofall(card) - this->numberof(card));
+} // unsigned Hand::played(Card const& card) const
+
+/**
+ ** -> result
+ **
  ** @param	-
  **
  ** @return	number of trumps on the hand

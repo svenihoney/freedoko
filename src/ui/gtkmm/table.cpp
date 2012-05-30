@@ -510,8 +510,9 @@ namespace UI_GTKMM_NS {
         this->hand(player).draw();
       if (::setting(Setting::SHOW_AI_INFORMATION_TEAMS))
         this->icons_update();
-      else
+      else {
         this->icongroup(player).draw();
+      }
 
       this->mouse_cursor_update();
 

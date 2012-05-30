@@ -65,27 +65,27 @@ namespace Network {
    /**
     ** the game is opened
     **
-    ** @param     -
+    ** @param     game   game that is opened
     **
     ** @return    -
     **
     ** @author    Diether Knof
     **
-    ** @version   0.7.1
+    ** @version   0.7.12
     **/
    void
-     Interpreter::Sender::game_open()
+     Interpreter::Sender::game_open(Game const& game)
      {
        this->send("game: open");
        this->send("game: startplayer: "
-		  + DK::Utils::String::to_string(this->connection().server().game().startplayer().no())
+		  + DK::Utils::String::to_string(game.startplayer().no())
 		  );
        this->send("game: seed: "
-		  + DK::Utils::String::to_string(this->connection().server().game().seed())
+		  + DK::Utils::String::to_string(game.seed())
 		  );
 
        return ;
-     } // void Interpreter::Sender::game_open()
+     } // void Interpreter::Sender::game_open(Game const& game)
      
    /**
     ** the cards are distributed
