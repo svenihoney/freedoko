@@ -61,6 +61,7 @@ ReferencesCheck* references_check = NULL;
  ** @version   0.7.6
  **/
 ReferencesCheck::ReferencesCheck() :
+  references_main_dir_(),
   references_dir_(),
   references_subdir_(),
   report_file_("References.report.csv"),
@@ -82,11 +83,14 @@ ReferencesCheck::ReferencesCheck() :
  ** @version   0.7.6
  **/
 ReferencesCheck::ReferencesCheck(string const& references_dir) :
+  references_main_dir_(),
   references_dir_(),
   references_subdir_(),
   report_file_("References.report.csv")
 {
-  this->set_directory(references_dir);
+  this->set_main_directory(references_dir);
+  this->next_reference();
+  //this->statistics_.reset();
 
   return ;
 } // ReferencesCheck::ReferencesCheck(string references_dir)
@@ -103,7 +107,52 @@ ReferencesCheck::ReferencesCheck(string const& references_dir) :
  ** @version   0.7.6
  **/
 ReferencesCheck::~ReferencesCheck()
-{ }
+{ 
+  this->write_statistics();
+}
+
+/**
+ ** set the main directory
+ **
+ ** @param     references_main_dir   the main directory with the references
+ **
+ ** @return    -
+ **
+ ** @author    Diether Knof
+ **
+ ** @version   0.7.12
+ **/
+void
+ReferencesCheck::set_main_directory(string const& references_main_dir)
+{
+  this->references_main_dir_ = references_main_dir;
+  this->set_directory(references_main_dir);
+#ifdef BOOST
+  { // create the statistics file
+    ofstream ostr((this->references_main_dir() + "/" + this->report_file()).c_str());
+    if (ostr.fail()) {
+      this->report_file_.clear();
+      return ;
+    } // if (ostr.fail())
+
+    ostr << "file;"
+      << "trick;"
+      << "player;"
+      << "discrepancy;"
+      << "real action;"
+      << "ref action;"
+      << "comment\n";
+
+    cout << "Created file '"
+      << this->references_main_dir() + "/" + this->report_file()
+      << "' for the references report.\n";
+
+    this->statistics_.reset();
+  } // load the next reference and create the statistics file
+#endif
+
+  return ;
+} // void ReferencesCheck::set_main_directory(string references_main_dir)
 
 /**
  ** set the directory
@@ -150,33 +199,6 @@ ReferencesCheck::set_directory(string const& references_dir)
   } // add the subdirectories
 #endif
 
-#ifdef BOOST
-  { // create the statistics file
-    ofstream ostr((this->references_dir() + "/" + this->report_file()).c_str());
-    if (ostr.fail()) {
-      this->report_file_.clear();
-      return ;
-    } // if (ostr.fail())
-
-    ostr << "file;"
-      << "trick;"
-      << "player;"
-      << "discrepancy;"
-      << "real action;"
-      << "ref action;"
-      << "comment\n";
-
-    cout << "Created file '"
-      << this->references_dir() + "/" + this->report_file()
-      << "' for the references report.\n";
-
-    this->statistics_.reset();
-  } // load the next reference and create the statistics file
-
-#endif
-  // load the next reference
-  this->next_reference();
-
   return ;
 } // void ReferencesCheck::set_directory(string references_dir)
 
@@ -210,7 +232,7 @@ ReferencesCheck::next_reference()
           && (this->dir_itr->path().filename().string().size()
               >= strlen(".Reference.FreeDoko"))
           && (this->dir_itr->path().filename().string().substr(this->dir_itr->path().filename().string().size()
-                                               - strlen(".Reference.FreeDoko"))
+                                                               - strlen(".Reference.FreeDoko"))
               == ".Reference.FreeDoko")
          ) {
         if (this->load_reference()) {
@@ -228,14 +250,12 @@ ReferencesCheck::next_reference()
         return false;
       }
     } catch (std::exception const& ex) {
-      cerr << dir_itr->path().filename() << " " << ex.what() << endl;
+      cerr << this->references_dir() << "/" << dir_itr->path().filename() << " " << ex.what() << endl;
       this->references_dir_ = "";
     }
   } // for (this->dir_itr)
 
   { // go to the next subdir
-    this->write_statistics();
-    this->statistics_.reset();
 
     if (this->references_subdir_.empty()) {
       throw GAMESTATUS::QUIT;
@@ -243,6 +263,7 @@ ReferencesCheck::next_reference()
     string const subdir = this->references_subdir_.front();
     this->references_subdir_.pop_front();
     this->set_directory(subdir);
+    this->next_reference();
     return true;
   } // go to the next subdir
 #endif
@@ -275,7 +296,7 @@ ReferencesCheck::load_reference()
     cerr << "Error loading the reference '" << this->dir_itr->path().string()
       << "'" << endl;
     if (!this->report_file().empty()) {
-      ofstream ostr((this->references_dir() + "/"
+      ofstream ostr((this->references_main_dir() + "/"
                      + this->report_file()).c_str(),
                     ios::app);
       if (!ostr.fail())
@@ -334,7 +355,10 @@ ReferencesCheck::check(Game const& game,
     // 7) comment (optional)
     ostringstream ostr;
 #ifdef BOOST
-    ostr << setfill('0') << setw(6) << this->dir_itr->path().filename().string()
+    ostr
+      << string(this->references_dir() + "/",
+                this->references_main_dir().size() + 1)
+      << setfill('0') << setw(6) << this->dir_itr->path().filename().string()
       << ';' << setw(2) << game.trick_current_no() << ';'
       << check_action.player << ';';
 #endif
@@ -355,9 +379,10 @@ ReferencesCheck::check(Game const& game,
   { // save the result line
     if (this->references_dir().empty()
         && !this->report_file().empty())
-      this->set_directory(".");
+      //this->set_directory(".");
+      this->next_reference();
     if (!this->report_file().empty()) {
-      ofstream ostr((this->references_dir() + "/"
+      ofstream ostr((this->references_main_dir() + "/"
                      + this->report_file()).c_str(),
                     ios::app);
       if (ostr.fail()) {
@@ -413,7 +438,7 @@ ReferencesCheck::write_statistics() const
       return ;
     }
     if (!this->report_file().empty()) {
-      ofstream ostr((this->references_dir() + "/"
+      ofstream ostr((this->references_main_dir() + "/"
                      + this->report_file()).c_str(),
                     ios::app);
       if (ostr.fail()) {

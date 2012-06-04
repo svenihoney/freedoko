@@ -74,6 +74,8 @@ class ReferencesCheck {
     // destructor
     ~ReferencesCheck();
 
+    // set the main directory
+    void set_main_directory(string const& references_main_dir);
     // set the directory
     void set_directory(string const& references_dir);
 
@@ -95,6 +97,8 @@ class ReferencesCheck {
 
 
   private:
+    // the main directory with the references
+    PRIV_VAR_R(string, references_main_dir);
     // the directory with the references
     PRIV_VAR_R(string, references_dir);
     // the (remaining) subdirs with the references

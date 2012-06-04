@@ -120,7 +120,7 @@ ifeq ($(OPERATING_SYSTEM), Windows)
 	              "Detected operating system: $(OPERATING_SYSTEM)\\n"\
 	              "Try an 'export OSTYPE' before compiling.\\n"\
 	      && false)
- endif
+endif
 else
 	@# echo "***** Error ***** If you see this line, the operating system was not detected correctly. Detected operating system: $(OPERATING_SYSTEM)"
 endif
@@ -134,13 +134,13 @@ ifeq ($(SHELLTYPE), sh)
 	@pkg-config --exists gtkmm-2.4 \
 	  || (echo "gtkmm 2.4 (user interface) is not found."; \
 	      export problem=true)
-  endif
+endif
   ifeq ($(USE_NETWORK), true)
 	@pkg-config --exists glib-2.0 \
 	  || echo "glib 2.0 (needed for gnet) is not found."
 	@pkg-config --exists gnet-2.0 \
 	  || echo "gnet 2.0 (network library) is not found."
-  endif
+endif
 endif
 ifeq ($(SHELLTYPE), COMMAND.COM)
 #       ToDo
@@ -319,20 +319,20 @@ strip :
 
 # checks the references
 ifeq ($(SHELLTYPE), sh)
-.PHONY : check_references
+  .PHONY : check_references
 check_references :
 	$(RM) $(PROGRAM)
 	$(MAKE) "CXXFLAGS=-Wall -Werror -Wno-parentheses -pipe -O0 -ggdb" "USE_UI_GTKMM=false" "USE_UI_TEXT=false" "USE_SOUND=false" "USE_BOOST=true" "FREEDOKO_WORKING_DIRECTORY=/tmp/${LOGNAME}/FreeDoko.check_reference/src"
-#	$(MAKE) "CXXFLAGS=-Wall -Werror -Wno-parentheses -pipe -Os" "USE_UI_GTKMM=false" "USE_UI_TEXT=false" "USE_SOUND=false" "USE_BOOST=true" "FREEDOKO_WORKING_DIRECTORY=/tmp/${LOGNAME}/FreeDoko.check_reference/src"
+	#	$(MAKE) "CXXFLAGS=-Wall -Werror -Wno-parentheses -pipe -Os" "USE_UI_GTKMM=false" "USE_UI_TEXT=false" "USE_SOUND=false" "USE_BOOST=true" "FREEDOKO_WORKING_DIRECTORY=/tmp/${LOGNAME}/FreeDoko.check_reference/src"
 	cd ../data
-	../src/$(PROGRAM) -r ../References --ui=none
-	@-grep -v OK ../References/**/References.report.csv | grep "^[0-9]\+\(_[0-9]\+\)\?.Reference.FreeDoko" | sort -n; \
-	tail -n 5 ../References/References.report.csv  | sed "s/\;/\t/g"
-	@echo -e "\nchecks entries "`grep "^[ \t]*check" ../References/*.FreeDoko | wc -l`
-	@echo -e "failed: "; grep "^[0-9]\+_\?[0-9]*.Reference.FreeDoko;" ../References/References.report.csv | grep -v OK | awk -F \; '{printf(" %s", $$1)}' | sort -n; echo
+	#../src/$(PROGRAM) -r ../References --ui=none
+	@-grep -h -v OK ../References/References.report.csv | grep "^[^;]*[0-9]\+\(_[0-9]\+\)\?.Reference.FreeDoko" | sort -n
+	@tail -n 5 ../References/References.report.csv | sed "s/\;/\t/g";
+	@echo -e "\nchecks entries "`grep "^[ \t]*check" ../References/*.Reference.FreeDoko ../References/**/*.Reference.FreeDoko | wc -l`
+	@echo -e "failed: "; grep "^[^;]*[0-9]\+_\?[0-9]*.Reference.FreeDoko;" ../References/References.report.csv | grep -v OK | awk -F \; '{printf("  %s\n", $$1)}' | sort -n; echo
 	@rm -rf /tmp/FreeDoko.References.failed
 	@mkdir /tmp/FreeDoko.References.failed
-	@for f in References.report.csv `grep "^[0-9]\+\(_[0-9]\+\)\?.Reference.FreeDoko;" ../References/References.report.csv | grep -v OK | awk -F \; '{printf(" %s\\n", $$1)}'`; do cp ../References/$$f /tmp/FreeDoko.References.failed/; done
+	@for f in References.report.csv `grep "^[^;]*[0-9]\+\(_[0-9]\+\)\?.Reference.FreeDoko;" ../References/References.report.csv | grep -v OK | awk -F \; '{printf(" %s\\n", $$1)}'`; do cp ../References/$$f /tmp/FreeDoko.References.failed/; done
 	@$(MAKE) >/dev/null
 endif
 
@@ -340,20 +340,20 @@ endif
 # uses doxygen
 # bug: does not create all documentation, since doxygen has problem with two different files with the same name
 ifeq ($(OPERATING_SYSTEM), Linux)
-.PHONY : doc
+  .PHONY : doc
 doc :
 	doxygen
 endif
 
 # create a tags file
 ifeq ($(OPERATING_SYSTEM), Linux)
-.PHONY : tags
+  .PHONY : tags
 tags :
 	ctags -R
 endif
 
 ifeq ($(OPERATING_SYSTEM), Linux)
-.PHONY : update_aiconfigs
+  .PHONY : update_aiconfigs
 update_aiconfigs :
 	make $(PROGRAM)
 	./$(PROGRAM) --save-standard-aiconfig
@@ -364,8 +364,8 @@ include $(DEPTH)/Makefile.subdir
 include $(DEPTH)/Makefile.rules
 
 ifeq ($(OPERATING_SYSTEM), Windows)
-# the program is dependent on the windres object file
-$(PROGRAM) : $(TARGET_DIR_LOCAL)windres.o
+  # the program is dependent on the windres object file
+  $(PROGRAM) : $(TARGET_DIR_LOCAL)windres.o
 
 # create the windres object file
 $(TARGET_DIR_LOCAL)windres.o : windres.rc

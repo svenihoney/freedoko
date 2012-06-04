@@ -2802,7 +2802,6 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
                || (   hi.game().type() == GAMETYPE::POVERTY
                    && hi.no() == hi.game().soloplayer().no()
                    && trick.cardno_of_player(hi.game().poverty_partner()) == 3 ) );
-
   // marriage determination for the bride
   if (   (hi.game().type() == GAMETYPE::MARRIAGE)
       && is_selector(t.startcard().tcolor(),
@@ -2810,9 +2809,16 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
       && (hi.no() == hi.game().soloplayer().no()) )
     allmyteam = true;
 
-  if (   (hi.teamofplayer(t.winnerplayer())== hi.team())
+  if (   hi.guessed_same_team(t.winnerplayer())
       && !oppositeTeamCanWinTrick(t, hi))
     allmyteam = true;
+
+  // first color run
+  if (   !t.startcard().istrump()
+      && (hi.color_runs(t.startcard().color()) == 0)
+      && (   (t.winnercard().value() == Card::ACE)
+          || t.winnercard().istrump()))
+    allmyteam = hi.guessed_same_team(t.winnerplayer());
 
   Card c;
 
@@ -2887,7 +2893,6 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
           continue;
 
         if (ha.numberof(local_ten.color()) == 1) {
-          continue;
         if (   best_ten.is_empty()
              || (   hi.cards_information().remaining_others(*color)
                  && (hi.cards_information().remaining_others(*color)
@@ -2911,6 +2916,37 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
                  || (t.cardno_of_player(hi.game().soloplayer())
                      < t.winnercardno()) ) ) )
     {
+      { // choose a ten of color if the corresponding ace is on the hand
+        Card best_ten;
+        for (vector<Card::Color>::const_iterator
+             color = hi.game().rule().card_colors().begin();
+             color != hi.game().rule().card_colors().end();
+             ++color) {
+          Card const local_ten( *color, Card::TEN );
+          if (   !hi.hand().contains(local_ten)
+              || local_ten.istrump( hi.game() )
+              || !t.isvalid(local_ten, hi.hand())
+              || !hi.hand().contains(Card(*color, Card::ACE))
+              || hi.cards_information().remaining_others(Card(*color, Card::ACE))
+             )
+            continue;
+          if (   best_ten.is_empty()
+              || (   hi.cards_information().remaining_others(best_ten.color())
+                  && !(   (hi.hand().numberof(*color) < hi.hand().numberof(best_ten.color()))
+                       || (hi.cards_information().remaining_others(*color) == 0))
+                 )
+             ) {
+            best_ten = local_ten;
+          }
+        } // for (color \in card_colors)
+
+        if(!best_ten.is_empty()) {
+          if (hi.cards_information().remaining_others(best_ten))
+            return best_ten;
+          else
+            return Card(best_ten.color(), Card::ACE);
+        }
+      } // choose a ten of color if the corresponding ace is on the hand
       { // choose an ace of a color 
         Card best_ace;
         // choose an ace of a color 
@@ -3005,7 +3041,7 @@ Heuristics::choose_pfund_card(Trick const& trick, HeuristicInterface const& hi)
         }
       } // choose an ace
 
-      { // or a ten of color
+      { // choose a ten of color
         Card best_ten;
         for (vector<Card::Color>::const_iterator
              color = hi.game().rule().card_colors().begin();
