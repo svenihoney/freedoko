@@ -787,6 +787,8 @@ Party::remaining_normal_games() const
 {
   if (!this->rule()(Rule::NUMBER_OF_ROUNDS_LIMITED))
     return 0;
+  if (this->is_duty_soli_round())
+    return 0;
 
   return (  ((this->remaining_rounds()
               - (this->starts_new_round(this->gameno()) ? 1 : 0))
@@ -869,7 +871,7 @@ Party::finished_games() const
 bool
 Party::is_duty_soli_round() const
 {
-  if (   (game_status < GAMESTATUS::PARTY_PLAY)
+  if (   (game_status == GAMESTATUS::PARTY_FINISHED)
       && !this->game_summaries().empty()
       && !GAMETYPE::is_real_solo(this->last_game_summary().game_type()))
     return false;
@@ -1160,9 +1162,10 @@ Party::add_game_summary(GameSummary* const game_summary)
     if (   this->rule()(Rule::NUMBER_OF_ROUNDS_LIMITED)
         && (this->bock_multipliers().size()
             > (this->remaining_normal_games()
-               + (this->remaining_duty_soli() ? 1 : 0) ) ) )
-      this->bock_multipliers_.resize(this->remaining_games()
+               + (this->remaining_duty_soli() ? 1 : 0) ) ) ) {
+      this->bock_multipliers_.resize(this->remaining_normal_games()
                                      + (this->remaining_duty_soli() ? 1 : 0));
+    }
   } // if (this->rule()(Rule::BOCK))
 
   return ;
@@ -1223,6 +1226,9 @@ Party::current_bock_multiplier() const
   if (this->bock_multipliers().empty())
     return 1;
 
+  DEBUG_ASSERTION(this->bock_multipliers()[0] > 1,
+                  "Party::current_bock_multiplier()\n"
+                  "  bock multiplier is not > 1: " << this->bock_multipliers()[0]);
   return this->bock_multipliers()[0];
 } // unsigned Party::current_bock_multiplier() const;
 
@@ -2243,6 +2249,15 @@ throw (ReadException)
            gs != game_summaries.end();
            ++gs, ++gameno) {
         this->add_game_summary(*gs);
+#ifdef DKNOF
+        CLOG << endl;
+        CLOG << **gs << endl;
+        for (unsigned i = 0; i < this->bock_multipliers().size(); ++i) {
+          CLOG << i << ": " << this->bock_multipliers()[i] << '\n';
+          if (this->bock_multipliers()[i] == 0)
+            SEGFAULT;
+        }
+#endif
       } // for (gs \in game_summaries)
 
       if (!this->is_duty_soli_round()

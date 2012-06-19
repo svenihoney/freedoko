@@ -38,6 +38,7 @@
 #include "cards_information.h"
 #include "team_information.h"
 
+#include "../../party/party.h"
 #include "../../card/trick.h"
 #include "../../game/exception.h"
 #include "../../game/game_summary.h"

@@ -25,7 +25,6 @@ DK
 * ai/091528: Heuristik "von oben ziehen" (für Endspiel!)
 * CardsInformation/TeamInformation: Gewichtung immer wieder neu, um alle Informationen einfließen lassen zu können (z.B. hat nur Kreuz Zehn, daher ist das kein Pfund)
 * Bug report: Teams der Spieler in Übersicht
-* Bug report: beim Erstellen im game replay: betrachteten Stich markieren
 * Kompilieren unter Windows: mit der Command-Shell kompilieren, aber eine sh.exe noch im Pfad
 * gnet: Auf gtkmm umstellen
 * "best winning card" überarbeiten

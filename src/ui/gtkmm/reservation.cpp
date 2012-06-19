@@ -502,7 +502,7 @@ namespace UI_GTKMM_NS {
 
       { // adjust some translations because of changed points
         this->remaining_rounds_number->set_label(DK::Utils::String::to_string(this->ui->party().remaining_rounds()));
-        this->remaining_games_number->set_label(DK::Utils::String::to_string(this->ui->party().remaining_normal_games()));
+        this->remaining_games_number->set_label(DK::Utils::String::to_string(this->ui->party().remaining_games()));
         this->remaining_points_number->set_label(DK::Utils::String::to_string(this->ui->party().remaining_points()));
 
         this->duty_free_soli_number->set_label(DK::Utils::String::to_string(this->player->remaining_duty_free_soli()));

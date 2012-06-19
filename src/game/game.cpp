@@ -648,7 +648,8 @@ Game::startplayer_stays() const
     return false;
   // some solo
   if (this->party().is_duty_soli_round())
-    return (this->soloplayer().no() != this->party().startplayer());
+    return (   (::game_status == GAMESTATUS::GAME_RESERVATION)
+            || (this->soloplayer().no() != this->party().startplayer()));
   if (this->is_duty_solo())
     return true;
   // some lust solo

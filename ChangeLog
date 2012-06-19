@@ -1,3 +1,6 @@
+2012-06-16 Diether Knof
+	- Fixed bug: crash when bock games reach into the duty soli round
+
 2012-06-04 Diether Knof
 	- The results of the references checks are saved in the main directory
 

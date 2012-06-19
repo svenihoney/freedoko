@@ -848,8 +848,9 @@ GameSummary::bock_multiplier() const
        s = this->specialpoints().begin();
        s != this->specialpoints().end();
        ++s)
-    if (s->type == SPECIALPOINT::BOCK)
+    if (s->type == SPECIALPOINT::BOCK) {
       multiplier *= s->value();
+    }
 
   return multiplier;
 } // int GameSummary::bock_multiplier() const
