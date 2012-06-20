@@ -1809,6 +1809,24 @@ Hand::numberof(Card::Value const& value) const
   return this->cards().numberof(value);
 } // unsigned Hand::numberof(Card::Value value)
 
+
+/**
+ ** -> result
+ **
+ ** @param	-
+ **
+ ** @return	number of cards with value 10 or mor
+ **
+ ** @author	Diether Knof
+ **
+ ** @version	0.7.12
+ **/
+unsigned
+Hand::numberofrichcards() const
+{
+  return this->cards().numberofrichcards();
+} // unsigned Hand::numberofrichcards() const
+
 /**
  ** -> result
  **

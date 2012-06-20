@@ -985,6 +985,31 @@ HandCards::numberof(Card::Value const& value) const
 } // unsigned HandCards::numberof(Card::Value const& value)
 
 /**
+ ** -> result
+ **
+ ** @param	-
+ **
+ ** @return	number of cards with value 10 or 11
+ **
+ ** @author	Diether Knof
+ **
+ ** @version	0.7.12
+ **/
+unsigned
+HandCards::numberofrichcards() const
+{
+  unsigned number = 0;
+
+  for (HandCards::const_iterator c = this->begin();
+       c != this->end();
+       ++c)
+    if (c->value() >= 10)
+      number += 1;
+
+  return number;
+} // unsigned HandCards::numberofrichcards() const
+
+/**
  **
  ** -> result
  **

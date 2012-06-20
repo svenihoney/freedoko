@@ -1,3 +1,6 @@
+2012-06-19 Diether Knof
+	- choose pfund: reworked case 'last player'
+
 2012-06-16 Diether Knof
 	- Fixed bug: crash when bock games reach into the duty soli round
 

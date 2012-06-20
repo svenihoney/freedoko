@@ -5045,7 +5045,7 @@ Heuristics::choose_pfund( Trick const& t, HeuristicInterface const& hi )
   if( t.isstartcard() )
     return Card::EMPTY;
 
-  Card const pfund_card = choose_pfund_card( t, hi );
+  HandCard const pfund_card = HandCard(hi.hand(), choose_pfund_card( t, hi ));
   if (pfund_card == Card::EMPTY)
     return Card::EMPTY;
   if (   (pfund_card.value() <= 2)
@@ -5067,6 +5067,29 @@ Heuristics::choose_pfund( Trick const& t, HeuristicInterface const& hi )
       && t.startcard().istrump()
       && hi.hand().hastrump())
     return Card::EMPTY;
+
+  // last player
+  if  (t.islastcard()) {
+    if (hi.same_team(t.winnerplayer()))
+      return pfund_card;
+    if (!hi.guessed_same_team(t.winnerplayer()))
+      return Card::EMPTY;
+    // guessed same team but not sure
+    if (hi.value(Aiconfig::TRUSTING))
+      return pfund_card;
+
+    // has to get two foxes home
+    if (   pfund_card.isfox()
+        && !hi.game().rule()(Rule::SWINES)
+        && (hi.hand().numberof(pfund_card) > 1))
+      return pfund_card;
+    // have many pfund cards
+    if (   (hi.hand().numberofrichcards() >= 3)
+        || (hi.hand().numberofrichcards() * 2 >= hi.hand().cardsnumber()))
+      return pfund_card;
+
+    return Card::EMPTY;
+  } // if  (t.islastcard())
 
   // special case: first color run
   Card::Color color = t.startcard().tcolor();
@@ -5108,10 +5131,6 @@ Heuristics::choose_pfund( Trick const& t, HeuristicInterface const& hi )
      && oppositeTeamCanWinTrick( t, hi ) ) {
     return Card::EMPTY;
   }
-
-  if(   t.islastcard()
-     && !hi.same_team(t.winnerplayer()))
-    return Card::EMPTY;
 
   bool const soloPlayer = soloPlayerBehind( t, hi );
 

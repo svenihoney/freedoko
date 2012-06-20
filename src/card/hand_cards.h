@@ -121,6 +121,8 @@ class HandCards : public vector<HandCard> {
 
     // the number of cards with the value
     unsigned numberof(Card::Value const& value) const;
+    // the number of cards with 10 or 11 points
+    unsigned numberofrichcards() const;
     // the number of cards with the trump color
     unsigned numberof(Card::TColor const& tcolor) const;
     // the number of cards 'card'
