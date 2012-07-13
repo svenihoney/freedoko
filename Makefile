@@ -355,7 +355,7 @@ install :
 	cp src/FreeDoko $(DESTDIR)$(BIN_DIRECTORY)
 	chgrp games $(DESTDIR)$(BIN_DIRECTORY)/FreeDoko
 	chmod 750 $(DESTDIR)$(BIN_DIRECTORY)/FreeDoko
-	cd $(DESTDIR)$(BIN_DIRECTORY) && ln -s FreeDoko freedoko
+	cd $(DESTDIR)$(BIN_DIRECTORY) && ln -sf FreeDoko freedoko
 #	Copying the program files
 	echo "Copying the program files"
 	mkdir -p $(DESTDIR)$(DATA_DIRECTORY)
@@ -370,15 +370,15 @@ install :
 	echo "Copying the documentation"
 	mkdir -p $(DESTDIR)$(HELP_DIRECTORY)
 	if test `basename $(HELP_DIRECTORY)` = "freedoko"; then \
-	  cd $(DESTDIR)$(HELP_DIRECTORY)/.. && ln -s freedoko FreeDoko; \
+	  cd $(DESTDIR)$(HELP_DIRECTORY)/.. && ln -sf freedoko FreeDoko; \
 	fi
 	if test `basename $(HELP_DIRECTORY)` = "FreeDoko"; then \
-	  cd $(DESTDIR)$(HELP_DIRECTORY)/.. && ln -s FreeDoko freedoko; \
+	  cd $(DESTDIR)$(HELP_DIRECTORY)/.. && ln -sf FreeDoko freedoko; \
 	fi
 	cp -a doc/* AUTHORS COPYING ChangeLog $(DESTDIR)$(HELP_DIRECTORY)/
 	chgrp -R games $(DESTDIR)$(HELP_DIRECTORY)
 	chmod -R o-rwx,g+rX,g-w $(DESTDIR)$(HELP_DIRECTORY)
-	cd $(DESTDIR)$(DATA_DIRECTORY) && ln -s $(DESTDIR)$(HELP_DIRECTORY)/ doc
+	cd $(DESTDIR)$(DATA_DIRECTORY) && ln -sf $(DESTDIR)$(HELP_DIRECTORY)/ doc
 #	update the manual page
 	echo "update the manual page"
 	cd doc; \
@@ -388,7 +388,7 @@ install :
 	cp doc/freedoko.6 $(DESTDIR)$(MAN_DIRECTORY)/
 	chgrp games $(DESTDIR)$(MAN_DIRECTORY)/freedoko.6
 	chmod 640 $(DESTDIR)$(MAN_DIRECTORY)/freedoko.6
-	cd $(DESTDIR)$(MAN_DIRECTORY)/ && ln -s freedoko.6 FreeDoko.6
+	cd $(DESTDIR)$(MAN_DIRECTORY)/ && ln -sf freedoko.6 FreeDoko.6
 #	copy the icon
 	echo "copy the icon"
 	mkdir -p $(DESTDIR)$(ICON_DIRECTORY)

@@ -160,9 +160,38 @@ namespace UI_GTKMM_NS {
             icon = this->ui->icons->icon(TEAM::RE, this->rotation());
             break;
           case GAMETYPE::POVERTY:
-            // ToDo: number of trumps
-            icon = this->ui->icons->icon(reservation.game_type,
+            {
+            Icons::Type icon_type = Icons::POVERTY;
+            switch (this->player->hand().numberoftrumps()) {
+            case 0:
+              icon_type = Icons::POVERTY_TRUMPS_0;
+              break;
+            case 1:
+              icon_type = Icons::POVERTY_TRUMPS_1;
+              break;
+            case 2:
+              icon_type = Icons::POVERTY_TRUMPS_2;
+              break;
+            case 3:
+            case 4:
+            case 5:
+              icon_type = Icons::POVERTY_TRUMPS_3;
+              break;
+            case UINT_MAX:
+              icon_type = Icons::POVERTY;
+              break;
+            default:
+              DEBUG_ASSERTION(false,
+                              "IconGroup::draw_team():\n"
+                              "  gametype: poverty\n"
+                              "  number of poverty cards for player " << this-player->no() << ' ' << this->player->name() << " invalid: "
+                              << this->player->hand().numberoftrumps());
+              icon_type = Icons::POVERTY;
+              break;
+            } // switch (this->player->hand().numberoftrumps())
+            icon = this->ui->icons->icon(icon_type,
                                          this->rotation());
+            }
             break;
           case GAMETYPE::GENSCHER:
             icon = this->ui->icons->icon(Icons::GENSCHER,

@@ -74,6 +74,34 @@ namespace UI_GTKMM_NS {
       case GAMETYPE::THROWN_RICHNESS:
         return THROWN_RICHNESS;
       case GAMETYPE::POVERTY:
+        if (::game_status == GAMESTATUS::GAME_RESERVATION) {
+          Player const& player = ::party.game().player_current();
+          if (player.type() == Player::HUMAN) {
+            switch (player.hand().numberoftrumps()) {
+            case 0:
+              return POVERTY_TRUMPS_0;
+            case 1:
+              return POVERTY_TRUMPS_1;
+            case 2:
+              return POVERTY_TRUMPS_2;
+            case 3:
+            case 4:
+            case 5:
+              return POVERTY_TRUMPS_3;
+            case UINT_MAX:
+              return POVERTY;
+            default:
+              DEBUG_ASSERTION(false,
+                              "Icons::icon(gametype):\n"
+                              "  gametype: poverty\n"
+                              "  number of poverty cards for player " << player.no() << ' ' << player.name() << " invalid: "
+                              << player.hand().numberoftrumps());
+              return POVERTY;
+            } // switch (::party.game().poverty_trumpno_returned())
+          } else {
+            return POVERTY;
+          }
+        }
         if (::game_status == GAMESTATUS::GAME_POVERTY_SHIFT) {
           return POVERTY;
         }
@@ -93,7 +121,7 @@ namespace UI_GTKMM_NS {
           return POVERTY;
         default:
           DEBUG_ASSERTION(false,
-                          "Icons::icon(gametype, player):\n"
+                          "Icons::icon(gametype):\n"
                           "  gametype: poverty\n"
                           "  number of poverty cards invalid: "
                           << ::party.game().poverty_trumpno_returned());

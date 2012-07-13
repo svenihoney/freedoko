@@ -1,3 +1,7 @@
+2012-07-13 Diether Knof
+	- fixed crash in poverty reservation
+	- poverty: contra: leave to partner: overjab, if the player has no card less then the given one
+
 2012-06-19 Diether Knof
 	- choose pfund: reworked case 'last player'
 

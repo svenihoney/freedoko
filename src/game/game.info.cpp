@@ -696,6 +696,31 @@ Game::next_higher_card(Card const& card) const
  ** -> result
  **
  ** @param     card   card
+ ** @param     n      number of cards to get higher
+ **
+ ** @return    the next higher card in n steps than 'card'
+ **
+ ** @author    Diether Knof
+ **
+ ** @version   0.7.12
+ **
+ ** @todo      use code that is more performant
+ **/
+Card
+Game::next_higher_card(Card const& card, unsigned const n) const
+{
+  if (n == 0)
+    return card;
+  else if (n == 1)
+    return this->next_higher_card(card);
+  else // if (n > 1)
+    return this->next_higher_card(card, n-1);
+} // Card Game::next_higher_card(Card card, unsigned n) const
+
+/**
+ ** -> result
+ **
+ ** @param     card   card
  **
  ** @return    all cards lower than 'card' (in ascending order)
  **

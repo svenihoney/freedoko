@@ -233,6 +233,8 @@ class Game {
   Card next_lower_card(Card const& card) const;
   // the next higher card
   Card next_higher_card(Card const& card) const;
+  // the next higher card in n steps
+  Card next_higher_card(Card const& card, unsigned const n) const;
   // the cards lower than 'card'
   list<Card> lower_cards(Card const& card) const;
   // the cards higher than 'card'

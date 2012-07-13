@@ -918,7 +918,7 @@ Game::poverty_cards_returned() const
 {
   DEBUG_ASSERTION((this->type() == GAMETYPE::POVERTY),
                   "Game::poverty_cards():\n"
-                  "  invalid gametype");
+                  "  invalid gametype '" << this->type() << "'");
 
   return this->poverty_cards_returned_;
 } // HandCards const& Game::poverty_cards_returned() const

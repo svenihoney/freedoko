@@ -7502,8 +7502,15 @@ Heuristics::poverty_leave_to_partner(Trick const& trick,
   for (list<Card>::const_iterator c = cards_to_play.begin();
        c != cards_to_play.end();
        ++c)
-    if (hi.hand().numberof(*c) > 0)
+    if (hi.hand().numberof(*c) > 0) {
+      if (*c == trick.winnercard()) {
+        if (hi.hand().contains(hi.game().next_higher_card(*c)))
+          return hi.game().next_higher_card(*c);
+        else if (hi.hand().contains(hi.game().next_higher_card(*c, 2)))
+          return hi.game().next_higher_card(*c, 2);
+      }
       return *c;
+    }
 
   return Card::EMPTY;
 } // Card Heuristics::poverty_leave_to_partner(Trick trick, HeuristicInterface hi)
