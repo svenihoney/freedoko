@@ -2417,7 +2417,7 @@ Party::save(string const& filename) const
   }
   ostr.close();
 
-#ifdef WINDOWS
+#if defined(_WIN32)
   unlink(filename.c_str());
 #endif
   if (rename(filename_tmp.c_str(), filename.c_str())) {

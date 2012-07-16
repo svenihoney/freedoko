@@ -1,11 +1,16 @@
 cmake_minimum_required(VERSION 2.6)
 
+cmake_policy(SET CMP0011 OLD)
+
 project(FreeDoko)
 
-find_package(PkgConfig)
 
-pkg_check_modules(GTKMM gtkmm-2.4)
-pkg_check_modules(GNET gnet-2.0)
+#pkg_check_modules(GTKMM gtkmm-2.4)
+find_package(GTK2 2.4 REQUIRED gtkmm)
+if(NOT CMAKE_CROSSCOMPILING)
+  find_package(PkgConfig)
+  pkg_check_modules(GNET gnet-2.0)
+endif(NOT CMAKE_CROSSCOMPILING)
 
 if(USE_SOUND)
   pkg_check_modules(ALUT freealut)

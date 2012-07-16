@@ -1193,7 +1193,7 @@ namespace UI_GTKMM_NS {
       this->update_player_reservation();
 
       this->hide();
-#ifdef WINDOWS
+#if defined(_WIN32)
 #ifdef WORKAROUND
       this->ui->main_window->raise();
 #endif

@@ -96,7 +96,7 @@ vector<DK::Utils::Version const*> all_versions;
 // the user interface
 UI* ui = NULL;
 
-#ifdef WINDOWS
+#if defined(_WIN32)
 #include "text/gpl.dos.string"
 #else
 #include "text/gpl.string"
@@ -263,7 +263,7 @@ main(int argc, char* argv[])
         if (   (option.name() == "help")
             || (option.name() == "hilfe")) {
           // output of the help
-#ifdef WINDOWS
+#if defined(_WIN32)
 #include "text/help.dos.string"
 #else
 #include "text/help.string"
@@ -450,7 +450,7 @@ main(int argc, char* argv[])
                         + ::setting(Setting::AI_DIRECTORY)
                         + "/standard.defensive.saved"
                        );
-#ifdef WINDOWS
+#if defined(_WIN32)
           DK::Utils::String::replace_all(path, "/", "\\");
 #endif
           if (aiconfig.save(path))

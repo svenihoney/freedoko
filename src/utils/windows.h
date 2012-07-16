@@ -26,7 +26,7 @@
 #ifndef DK_UTILS_WINDOWS_HEADER
 #define DK_UTILS_WINDOWS_HEADER
 
-#ifdef WINDOWS
+#if defined(_WIN32)
 
 #include <string>
 #include <windows.h>
@@ -44,6 +44,6 @@ namespace DK {
   } // namespace Utils
 } // namespace DK
 
-#endif // #ifdef WINDOWS
+#endif // #if defined(_WIN32)
 
 #endif // #ifndef DK_UTIL_WINDOWS_HEADER

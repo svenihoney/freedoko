@@ -398,7 +398,7 @@ Setting::set_to_hardcoded()
   } // set the background
 
 
-#ifdef WINDOWS
+#if defined(_WIN32)
   this->set(NAME_FONT,			"Arial Bold Italic 16");
 #else
   this->set(NAME_FONT,			"Sans Serif Bold Italic 16");
@@ -406,7 +406,7 @@ Setting::set_to_hardcoded()
   this->set(NAME_FONT_COLOR,		"black");
   this->set(NAME_ACTIVE_FONT_COLOR,	"red");
   this->set(NAME_RESERVATION_FONT_COLOR,"blue");
-#ifdef WINDOWS
+#if defined(_WIN32)
   this->set(TRICKPILE_POINTS_FONT,	"Arial Bold 18");
 #else
   this->set(TRICKPILE_POINTS_FONT,	"Sans Serif Bold 18");
@@ -452,7 +452,7 @@ Setting::set_data_directories()
 
 #ifdef RELEASE
 
-#ifdef WINDOWS
+#if defined(_WIN32)
   this->data_directories_.push_back(DK::Utils::Windows::Reg_read(HKEY_CURRENT_USER,
                                                                  "Software\\FreeDoko",
                                                                  "Directory"));
@@ -463,7 +463,7 @@ Setting::set_data_directories()
                                                                  "Directory"));
   if (this->data_directories_.back().empty())
     this->data_directories_.pop_back();
-#endif // #ifdef WINDOWS
+#endif // #if defined(_WIN32)
 
 #else // !#ifdef RELEASE
   this->data_directories_.push_back("../data");
@@ -624,7 +624,7 @@ Setting::operator()(TypeString const type) const
         // no real name - take the login
         value = getpwuid(geteuid())->pw_name;
 #endif
-#ifdef WINDOWS
+#if defined(_WIN32)
 #ifdef USE_REGISTRY
       {
         TCHAR  infoBuf[1001];
@@ -693,7 +693,7 @@ Setting::operator()(TypeString const type) const
         if (string(getenv("LANG"), 0, 2) == string("de"))
           value = "de";
 #endif
-#ifdef WINDOWS
+#if defined(_WIN32)
       value = DK::Utils::Windows::Reg_read(HKEY_CURRENT_USER,
                                            "Software\\FreeDoko",
                                            "Language");
@@ -782,7 +782,7 @@ Setting::operator()(TypeString const type) const
       break;
 #ifdef USE_SOUND_COMMAND
     case PLAY_SOUND_COMMAND:
-#ifdef WINDOWS
+#if defined(_WIN32)
 #ifdef USE_REGISTRY
       { // Look in the registry for the default program for wav files
         string class_str
@@ -812,9 +812,9 @@ Setting::operator()(TypeString const type) const
 #endif
       if (value.empty())
         value = "explorer";
-#else // #ifdef WINDOWS
+#else // #if defined(_WIN32)
       value = "aplay";
-#endif // #ifdef WINDOWS
+#endif // #if defined(_WIN32)
       break;
 #endif // #ifdef USE_SOUND_COMMAND
 
@@ -851,7 +851,7 @@ Setting::operator()(TypeString const type) const
           }
       } // test some browsers and take the first found
 #endif
-#ifdef WINDOWS
+#if defined(_WIN32)
 #ifdef USE_REGISTRY
       { // Look in the registry for the default browser for html
         string class_str
@@ -1740,7 +1740,7 @@ Setting::value(TypeStringConst const type) const
 #if defined(UNIX)
       value = "~/.FreeDoko";
 #endif
-#ifdef WINDOWS
+#if defined(_WIN32)
       value = "~/FreeDoko";
 #endif
       return DK::Utils::File::filename_expand(value);
@@ -2592,7 +2592,7 @@ Setting::save(string const& filename) const
   }
   ostr.close();
 
-#ifdef WINDOWS
+#if defined(_WIN32)
   unlink(filename.c_str());
 #endif
   if (rename(filename_tmp.c_str(), filename.c_str())) {

@@ -286,7 +286,7 @@ namespace UI_GTKMM_NS {
 #else
               column->connect_property_changed("width", sigc::mem_fun(*this, &PartyPoints::update_player_columns_size));
 #endif
-#ifdef WINDOWS
+#if defined(_WIN32)
               column->add_attribute(*column->get_first_cell_renderer(),
                                     "background", 3);
 #endif
