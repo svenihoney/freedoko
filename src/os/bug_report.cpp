@@ -122,7 +122,7 @@ namespace OS_NS {
                                     : *dir + "/" + subdir);
           bool created_dir = false;
           if (!DK::Utils::File::isdirectory(directory)) {
-#ifdef WINDOWS
+#if defined(_WIN32)
             mkdir(directory.c_str());
 #else
             mkdir(directory.c_str(), 00777);

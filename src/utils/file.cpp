@@ -36,7 +36,7 @@
 // for MAXPATHLEN
 #include <sys/param.h>
 #endif
-#ifdef HAVE_SHLOBJ_H
+#if defined(_WIN32)
 // for SHGetFolderPath
 #include <shlobj.h>
 #endif
@@ -119,7 +119,7 @@ namespace DK {
       string
         desktop_directory()
         {
-#ifdef WINDOWS
+#if defined(_WIN32)
           return DK::Utils::Windows::Reg_read(HKEY_CURRENT_USER,
                                               "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders",
                                               "Desktop");
@@ -316,9 +316,9 @@ namespace DK {
             if ((filename[0] == '~')
                 && (filename[1] == '/')) {
               filename = home_directory() + string(filename, 1, string::npos);
-#ifdef WINDOWS
+#if defined(_WIN32)
               DK::Utils::String::replace_all(filename, "\\", "/");
-#endif // #ifdef WINDOWS
+#endif // #if defined(_WIN32)
             } // if ((filename[0] == '~') && (filename[1] == '/'))
           } // if (filename.size() >= 2)
 
@@ -344,7 +344,7 @@ namespace DK {
       string
         absolute_path(string path)
         {
-#ifdef WINDOWS
+#if defined(_WIN32)
           { // Windows
             // check the size of the buffer needed
             DWORD const bufsize

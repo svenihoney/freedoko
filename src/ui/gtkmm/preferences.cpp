@@ -39,7 +39,7 @@
 #include "utils.h"
 
 #include "../../misc/setting.h"
-#ifdef WINDOWS
+#if defined(_WIN32)
 #include "../../utils/string.h"
 #endif
 

@@ -49,7 +49,7 @@
 void
 Help::show(string const& location)
 {
-#ifdef WINDOWS
+#if defined(_WIN32)
   STARTUPINFO si = {sizeof(si)};
   PROCESS_INFORMATION pi;
   CreateProcess(NULL,
@@ -139,7 +139,7 @@ Help::manual_location(string const& page)
       directories.push_back(getenv("FREEDOKO_MANUAL_DIRECTORY")
                             + ("/" + ::translator.token()));
     }
-#ifdef WINDOWS
+#if defined(_WIN32)
     {
       string dir = DK::Utils::Windows::Reg_read(HKEY_LOCAL_MACHINE,
                                                 "Software\\FreeDoko",

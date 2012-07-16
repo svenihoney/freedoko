@@ -379,7 +379,7 @@ namespace UI_GTKMM_NS {
       this->thrower.dec_depth();
 
 #ifdef WORKAROUND
-#ifdef WINDOWS
+#if defined(_WIN32)
       // Under MS-Windows there are problems with special characters (like 'ü')
       // When the language is changed, the characters are shown as they should,
       // I wonder, why.

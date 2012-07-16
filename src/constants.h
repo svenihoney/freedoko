@@ -66,11 +66,11 @@ using namespace std;
 #include <cmath>
 #include <climits>
 
-#ifdef WINDOWS
+#if defined(_WIN32)
 #define USE_REGISTRY
 #endif
 
-#ifdef WINDOWS
+#if defined(_WIN32)
 #ifdef USE_REGISTRY
 #include <windows.h>
 #undef min

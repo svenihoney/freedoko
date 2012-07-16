@@ -246,7 +246,7 @@ namespace UI_GTKMM_NS {
                             + ::setting(Setting::AI_DIRECTORY)
                             + "/"
                            );
-#ifdef WINDOWS
+#if defined(_WIN32)
               DK::Utils::String::replace_all(dir, "/", "\\");
 #endif
               this->save_file_chooser->set_current_folder(dir);

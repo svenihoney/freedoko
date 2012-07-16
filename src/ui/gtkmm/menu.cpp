@@ -499,7 +499,7 @@ namespace UI_GTKMM_NS {
                         + ::setting(Setting::PARTIES_DIRECTORY)
                         + "/"
                        );
-#ifdef WINDOWS
+#if defined(_WIN32)
           DK::Utils::String::replace_all(dir, "/", "\\");
 #endif
           this->load_party_file_chooser->set_current_folder(dir);
@@ -533,7 +533,7 @@ namespace UI_GTKMM_NS {
                         + ::setting(Setting::PARTIES_DIRECTORY)
                         + "/"
                        );
-#ifdef WINDOWS
+#if defined(_WIN32)
           DK::Utils::String::replace_all(dir, "/", "\\");
 #endif
           this->save_party_file_chooser->set_current_folder(dir);
