@@ -1,3 +1,9 @@
+2012-07-17 Diether Knof
+	- probably fixed bug in icon drawing
+
+2012-07-14 Diether Knof
+	- fixed performance problem when changing the language to english or german
+
 2012-07-13 Diether Knof
 	- fixed crash in poverty reservation
 	- poverty: contra: leave to partner: overjab, if the player has no card less then the given one

@@ -263,6 +263,8 @@ Translator::load()
   } // if (!translation_bak.empty())
 #endif
 
+  this->update();
+
   return ;
 } // Translator& Translator::load()
 
@@ -283,6 +285,7 @@ Translator::load(string filename)
   ifstream* istr = new ifstream(filename.c_str());
 
   if (istr->fail()) {
+    // ToDo: If the file is not found, this can result in a long search
     if (std::find(Translator::names.begin(),
                   Translator::names.end(),
                   ::setting.value(Setting::LANGUAGE))
@@ -362,8 +365,6 @@ Translator::load(string filename)
   } // while (istr->good())
 
   delete istr;
-
-  this->update();
 
   return ;
 } // void Translator::load(string filename)

@@ -1921,6 +1921,7 @@ Player::game_open(Game& game)
   this->game_ = &game;
   this->hand_ = Hand();
   this->team_ = TEAM::UNKNOWN;
+  this->reservation_ = Reservation();
 
   return ;
 } // void Player::game_open(Game& game)
