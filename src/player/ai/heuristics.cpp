@@ -5223,6 +5223,11 @@ Heuristics::choose_pfund_before_partner(Trick const& trick,
   // the highest trump the other players can have
   Card const highest_trump
     = hi.cards_information().highest_remaining_trump_of_others();
+  // the trick can be jabbed with the highest trump
+  if (   !trick.isempty()
+      && !trick.isjabbed(highest_trump))
+    return Card::EMPTY;
+
 
   // the partner
   Player const* partner = hi.team_information().guessed_partner();

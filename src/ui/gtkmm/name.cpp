@@ -136,9 +136,16 @@ namespace UI_GTKMM_NS {
         break;
       case GAMESTATUS::GAME_START:
       case GAMESTATUS::GAME_INIT:
-      case GAMESTATUS::GAME_POVERTY_SHIFT:
         is_active = (*this->player
                      == this->player->game().player_current());
+        break;
+      case GAMESTATUS::GAME_POVERTY_SHIFT:
+        if (this->player->game().player_current().type() == Player::HUMAN)
+          is_active = (*this->player
+                       == this->player->game().startplayer());
+        else
+          is_active = (*this->player
+                       == this->player->game().player_current());
 
         break;
       case GAMESTATUS::GAME_PLAY:
@@ -151,7 +158,7 @@ namespace UI_GTKMM_NS {
         if (this->table().in_game_review())
           is_active = (   this->table().game_review_trick_visible()
                        && (*this->player
-                       == this->table().game_review_trick().winnerplayer()));
+                           == this->table().game_review_trick().winnerplayer()));
         else
           is_active = (   (this->player->team()
                            == this->player->game().winnerteam())
@@ -222,7 +229,7 @@ namespace UI_GTKMM_NS {
         if (   is_active
             && this->ui->in_progress()
             && this->ui->progress() != 1
-            ) {
+           ) {
           {
             gc = this->table().name_reservation_gc;
             Gdk::Rectangle r(this->pos_x() - layout_width_border,

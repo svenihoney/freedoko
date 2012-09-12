@@ -185,7 +185,10 @@ namespace UI_GTKMM_NS {
                               "IconGroup::draw_team():\n"
                               "  gametype: poverty\n"
                               "  number of poverty cards for player " << this-player->no() << ' ' << this->player->name() << " invalid: "
-                              << this->player->hand().numberoftrumps());
+                              << this->player->hand().numberoftrumps() << '\n'
+                              << "reservation:\n"
+                              << this->player->reservation() << '\n'
+                              << "game status: " << ::game_status);
               icon_type = Icons::POVERTY;
               break;
             } // switch (this->player->hand().numberoftrumps())
