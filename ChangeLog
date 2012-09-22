@@ -1,3 +1,9 @@
+2012-09-20 Borg Enders
+	- replayed bug reports
+	- created new references
+	- tweaked announcement for poverty
+	- tweaked say no60
+
 2012-09-12 Diether Knof
 	- fixed bug in heuristic 'choose pfund before partner': added check, that the trick can be jabbed
 	- poverty shifting: the startplayer of the game is shown while the active player is the human

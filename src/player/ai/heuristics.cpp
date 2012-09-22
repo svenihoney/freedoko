@@ -7884,7 +7884,7 @@ Heuristics::make_announcement( HeuristicInterface const& hi, const Game& g )
   if (   (hi.game().type() == GAMETYPE::POVERTY)
       && (hi.no() == hi.game().poverty_partner().no()) )
   {
-    value -= 7 - hi.hand().numberofdolle() - hi.hand().numberofclubqueens();
+    value -= 8 - hi.hand().numberofdolle() - hi.hand().numberofclubqueens(); // previously: 7
   }
 
   if (   (hi.game().type() == GAMETYPE::NORMAL
@@ -8064,7 +8064,10 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
 
   if (   hi.teamofplayer(t.winnerplayer()) == hi.team()
       &&  !oppositeTeamCanWinTrick( t, hi ) )
-    value += 1;
+    {
+      value += 1;
+
+    }
 
   if( g.announcement_of_team( opposite( hi.team() ) ).announcement
      != ANNOUNCEMENT::NOANNOUNCEMENT  )
@@ -8078,6 +8081,8 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
     if( hi.team() == TEAM::CONTRA)
       value -= 1;
   }
+
+
 
 
 #ifdef ANNOUNCE_DEBUG
@@ -8146,7 +8151,8 @@ Heuristics::say_no60( HeuristicInterface const& hi, const Game& g )
   value -= g.tricks_remaining_no() / 4;
 
 
-  opp_p+= 4 * g.tricks_remaining_no(); //previous: 5
+  opp_p+= 3 * g.tricks_remaining_no(); //previous: 5, 4
+  opp_p-=4; // reference 233652
   own_p+= 6 * g.tricks_remaining_no(); // previous: 5
 
   own_p += 3 * hi.hand().numberoftrumps() * hi.hand().numberofswines();
@@ -8176,12 +8182,13 @@ Heuristics::say_no60( HeuristicInterface const& hi, const Game& g )
       << 3 * (int)hi.value(Aiconfig::ANNOUNCELIMITDEC ) << "\t"
       << (int)hi.value(Aiconfig::ANNOUNCELIMIT) << " + "
       << 3 * (int)hi.value(Aiconfig::ANNOUNCECONFIG) << std::endl;
+    cout << own_p << "\t" << opp_p << std::endl;
 #endif
   return (   (  value + 3 * (int)hi.value(Aiconfig::ANNOUNCELIMITDEC)
               >   (int)hi.value(Aiconfig::ANNOUNCELIMIT)
               + 3 * (int)hi.value(Aiconfig::ANNOUNCECONFIG)
              )
-          && own_p > 2 * opp_p  // previous: 3
+          && own_p > 1.7 * opp_p  // previous: 3, 2 (1.7 reference:233652)
           && opp_p < 60
           && (   opp_p > 0
               || g.last_chance_to_announce(ANNOUNCEMENT::NO60,
