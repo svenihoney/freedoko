@@ -7807,6 +7807,10 @@ Heuristics::make_announcement( HeuristicInterface const& hi, const Game& g )
       value -= 6;
   }
 
+  if (    !GAMETYPE::is_solo(hi.game().type())
+         &&  (hi.team() == TEAM::CONTRA)
+         && hi.hand().numberofdolle() == 2 )
+    value +=1; // reference 235643
 
   if(   (game_status < GAMESTATUS::GAME_PLAY)
      || (   (g.trick_current().no() == 0)
@@ -7957,6 +7961,12 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
   // @heuristic::idea decision to make the annoncement no 90 depending on Heuristics::CalcHandValue
   int value = 0;
 
+  int own_p = calcPointsOfOwnTeam( hi, g );
+  int opp_p = calcPointsOfOppositeTeam( hi, g );
+
+   if( own_p > 150 )
+     return true;
+
   if( g.announcement_of_team( opposite( hi.team() ) ).announcement
      > ANNOUNCEMENT::NO120 )
     return false;
@@ -7977,7 +7987,7 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
         && hi.game().hyperswines_owner() == NULL ) {
       value += 8*hi.hand().numberofdolle(); // 7: reference 123343, 8: 139722_1
     }
-
+    opp_p -= 21* hi.hand().numberofdolle(); // reference 237268
     value += 1; // reference 139722_1
   }
 
@@ -8030,11 +8040,7 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
     value += 2 * static_cast<int>(hi.value(Aiconfig::ANNOUNCELIMITDEC));
 
 
-  int own_p = calcPointsOfOwnTeam( hi, g );
-  int opp_p = calcPointsOfOppositeTeam( hi, g );
 
-  if( own_p > 150 )
-    return true;
 
 
   opp_p+= 3 * g.tricks_remaining_no(); //previous: 5,4
