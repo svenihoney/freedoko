@@ -461,6 +461,8 @@ namespace UI_GTKMM_NS {
           this->table().clear(max_outline);
           // ToDo: remove
           this->name().draw(false);
+        } else {
+          this->table().clear(Gdk::Rectangle(this->announcement_start_x(icon->get_width()), this->announcement_start_y(icon->get_height()), icon->get_width(), icon->get_height()));
         }
         this->table().pixmap->draw_pixbuf(this->table().gc,
                                           icon,
@@ -541,6 +543,8 @@ namespace UI_GTKMM_NS {
 
       if (!icon)
         return ;
+
+      this->table().clear(Gdk::Rectangle(this->swines_start_x(icon->get_width()), this->swines_start_y(icon->get_height()), icon->get_width(), icon->get_height()));
 
       this->table().pixmap->draw_pixbuf(this->table().gc,
                                         icon,

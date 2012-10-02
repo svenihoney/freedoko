@@ -42,4 +42,4 @@ DK
 * best winning card: lowest trump card limit
 * Referenzen: 043911.Reference.FreeDoko 178033.Reference.FreeDoko
 * Symbole: andere (Hochzeit: Ringe, Schweine: Schweine, Hyperschweine ?, Solist: Mensch-ärgere-Dich-Figur)
-* Armut aufnehmen: Ausspieler farblich markieren
+* log-Modus: automatisch einen Fehlerbericht erstellen und direkt in die Datei schreiben. Damit wird auch ein richtiger Absturz aufgezeichnet.

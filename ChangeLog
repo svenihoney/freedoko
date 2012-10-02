@@ -1,3 +1,6 @@
+2012-10-02 Diether Knof
+	- fixed double icon drawing
+
 2012-09-27 Borg Enders
 	- replayed bug reports
 	- created new references
@@ -30,7 +33,7 @@
 	- Fixed bug: crash when bock games reach into the duty soli round
 
 2012-06-04 Diether Knof
-	- The results of the references checks are saved in the main directory
+	- The results of the references checks are saved in the main directory.
 
 2012-05-31 Diether Knof
 	- choose pfund card: always pfund in the first color run
