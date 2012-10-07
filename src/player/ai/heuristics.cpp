@@ -7888,7 +7888,11 @@ Heuristics::make_announcement( HeuristicInterface const& hi, const Game& g )
   if (   (hi.game().type() == GAMETYPE::POVERTY)
       && (hi.no() == hi.game().poverty_partner().no()) )
   {
-    value -= 8 - hi.hand().numberofdolle() - hi.hand().numberofclubqueens(); // previously: 7
+    value -= 13 - hi.hand().numberofdolle() - hi.hand().numberofclubqueens(); // previously: 7, 8
+    // 13 Reference 243666
+
+    if( hi.game().trick_current().isfull() )
+      value -= 6; // reference 243666
   }
 
   if (   (hi.game().type() == GAMETYPE::NORMAL
@@ -9274,7 +9278,7 @@ Heuristics::make_reply( HeuristicInterface const& hi, const Game& g )
       if( g.announcement_of_team( opposite( hi.team() ) ).announcement
          != ANNOUNCEMENT::NOANNOUNCEMENT  )
       {
-        value -= 1;
+        value -= 5;
       }
     }
 
