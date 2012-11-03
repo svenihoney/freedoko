@@ -21,25 +21,26 @@ DK
 * new Heuristics 123901
 * Heuristics: 001042 (Fleischlos)
 * Heuristics: 016746 (Damensolo)
-* Statistiken in Dokumentation (Hochzeit, ...)
-* Kartenvorschlag: gleich selber Karte wählen düfen (mehrere Threads)
 * ai/091528: Heuristik "von oben ziehen" (für Endspiel!)
 * Bug report: Teams der Spieler in Übersicht
 * Kompilieren unter Windows: mit der Command-Shell kompilieren, aber eine sh.exe noch im Pfad
-* gnet: Auf gtkmm umstellen
-* "best winning card" überarbeiten
 * CardsInformation: Hochzeitler im Klärungsstich gibt seine höchsten Punkte
   ../Bugreports/ai/Heuristics/best_winning_card/259093.BugReport.FreeDoko
 * KI generell: restliche Stiche gehen an den Gegner (z.B. Schweine): pfunde noch dem eigenen Team (auch Herz Zehn). Beispiel: ../Bugreports/ai/Choosebestcard/GameTree/111096.BugReport.FreeDoko
   Sollte vor allen Heuristiken greifen. Dabei auch prüfen, wie früh ich meine Punkte vergeben muss (bei drei Zehnen).
 * Spiel überspringen (Tunier fortsetzen)
   über Crash-Log, darin den seed speichern
-* Windows: aktuelle boost-Bibliothek
 * Kompilieren der .src.zip testen
-* msi-Datei erstellen: Mit WiX?
-* arch linux: Erstellen der man page
 * mbrola: soundfiles
+* "best winning card" überarbeiten
 * best winning card: lowest trump card limit
 * Referenzen: 043911.Reference.FreeDoko 178033.Reference.FreeDoko
 * Symbole: andere (Hochzeit: Ringe, Schweine: Schweine, Hyperschweine ?, Solist: Mensch-ärgere-Dich-Figur)
 * log-Modus: automatisch einen Fehlerbericht erstellen und direkt in die Datei schreiben. Damit wird auch ein richtiger Absturz aufgezeichnet.
+* seed: schon bekannten überspringen
+
+
+* Kartenvorschlag: gleich selber Karte wählen düfen (mehrere Threads)
+* Windows: aktuelle boost-Bibliothek
+* gnet: Auf gtkmm umstellen
+* Statistiken in Dokumentation (Hochzeit, ...)
