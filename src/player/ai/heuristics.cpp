@@ -7992,7 +7992,7 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
       value += 8*hi.hand().numberofdolle(); // 7: reference 123343, 8: 139722_1
     }
     opp_p -= 21* hi.hand().numberofdolle(); // reference 237268
-    value += 1; // reference 139722_1
+    value += 2; // reference 139722_1,
   }
 
   if (   (hi.game().type() == GAMETYPE::POVERTY

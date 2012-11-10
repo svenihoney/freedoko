@@ -369,6 +369,8 @@ int TrickWeighting::modi_queen(VirtualGamesInterface const& vgi,
 
     if(    trick.cardno_of_player( ai ) == 0 )
       modi -= 12; // reference 168423
+
+
   }
 
 
