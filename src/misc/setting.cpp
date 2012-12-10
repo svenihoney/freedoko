@@ -38,6 +38,7 @@
 #endif
 #ifdef HAVE_GETPWUID
 #include <pwd.h>
+#include <unistd.h>
 #include <sys/types.h>
 #endif
 #include <sys/stat.h>
