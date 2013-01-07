@@ -2,7 +2,7 @@
  *
  *   FreeDoko a Doppelkopf-Game
  *    
- *   Copyright (C) 2001-2012  by Diether Knof and Borg Enders
+ *   Copyright (C) 2001-2013  by Diether Knof and Borg Enders
  *
  *   This program is free software; you can redistribute it and/or 
  *   modify it under the terms of the GNU General Public License as 
@@ -992,7 +992,9 @@ Party::remaining_points() const
 bool
 Party::starts_new_round(unsigned const gameno) const
 {
-  if (gameno <= this->round_startgame().back()) {
+  if ((gameno == 0) && this->round_startgame_.empty())
+    return true;
+    if (gameno <= this->round_startgame().back()) {
     for (vector<unsigned>::const_iterator s = this->round_startgame().begin();
          s != this->round_startgame().end();
          ++s) {
@@ -1967,9 +1969,11 @@ Party::write(ostream& ostr) const
       << "first startplayer = " << Unsigned(this->startplayer_first()) << "\n"
       << "\n";
   } else {
-    ostr << "first seed = " << Unsigned(this->real_seed_first()) << "\n"
-      << "first startplayer = " << Unsigned(this->real_startplayer_first()) << "\n"
-      << "\n";
+  ostr << "# first seed (setting) = " << Unsigned(this->seed_first()) << "\n"
+    << "# first startplayer (setting) = " << Unsigned(this->startplayer_first()) << "\n"
+    << "first seed = " << Unsigned(this->real_seed_first()) << "\n"
+    << "first startplayer = " << Unsigned(this->real_startplayer_first()) << "\n"
+    << "\n";
   }
 
   ostr << "rules \n"

@@ -1,5 +1,5 @@
 const char* const GPL_string = "\
-Copyright (C) 2001-2006  by Diether Knof and Borg Enders\n\
+Copyright (C) 2001-2013  by Diether Knof and Borg Enders\n\
 \n\
 This program is free software; you can redistribute it and/or \
 modify it under the terms of the GNU General Public License as \

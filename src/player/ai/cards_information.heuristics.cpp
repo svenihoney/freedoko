@@ -2,7 +2,7 @@
  *
  *   FreeDoko a Doppelkopf-Game
  *    
- *   Copyright (C) 2001-2012  by Diether Knof and Borg Enders
+ *   Copyright (C) 2001-2013  by Diether Knof and Borg Enders
  *
  *   This program is free software; you can redistribute it and/or 
  *   modify it under the terms of the GNU General Public License as 
@@ -1422,10 +1422,6 @@ namespace CardsInformationHeuristics {
       // the game
       Game const& game = trick.game();
 
-      // not in the last three tricks
-      if (game.tricks_remaining_no() <= 3)
-        return ;
-
       // second dolle over first
       if (!game.rule()(Rule::DOLLEN_SECOND_OVER_FIRST))
         return ;
@@ -1436,7 +1432,7 @@ namespace CardsInformationHeuristics {
       // first card
       if (trick.actcardno() == 1) {
         if (player.cards_to_play() <= 4)
-          CHANGE_WEIGHTING(played_card, 50 * player.cards_to_play() - 30); // *Value*
+          CHANGE_WEIGHTING(played_card, 40 + 40 * player.cards_to_play()); // *Value*
         else
           CHANGE_WEIGHTING(played_card, 200); // *Value*
       }

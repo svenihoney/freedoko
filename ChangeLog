@@ -1,3 +1,11 @@
+2013-01-07 Diether Knof
+	- updated copyright date to 2013
+	- tweaked value in cards information heuristic 'two dollen'
+	- fixed bug in bug report loading
+
+2012-11-17 Diether Knof
+	- added setting of party seed to the bug report
+
 2012-11-03 Diether Knof
 	− fixed rule "marriage before poverty"
 
