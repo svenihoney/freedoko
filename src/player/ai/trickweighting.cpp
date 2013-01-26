@@ -205,6 +205,10 @@ int TrickWeighting::modi_dolle_swines(VirtualGamesInterface const& vgi,
          modi -= 9; // previous
        }
 
+       if (t.winnerplayer().team() != vgi.team()) { // reference
+               modi -= 19; // previous
+             }
+
      }
 
 
