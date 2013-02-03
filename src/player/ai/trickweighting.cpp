@@ -834,7 +834,12 @@ int TrickWeighting::modi_no_trump(VirtualGamesInterface const& vgi,
         && card.value() >= 10 ) // reference 234467
       modi -= 29;
 
-      }
+  }
+
+  if(    trick.cardno_of_player( ai ) == 0
+      && card.value() == Card::NINE
+      && vgi.color_runs( trick.startcard().color() ) > 0)
+    { modi+=7; } //reference 272170
 
   bool allmyteam=true;
 

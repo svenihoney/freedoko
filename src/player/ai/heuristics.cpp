@@ -7915,7 +7915,9 @@ Heuristics::make_announcement( HeuristicInterface const& hi, const Game& g )
   if (::in_running_game()) {
     if( (   hi.game().trick_current().isfull()  // lost trick
          && hi.game().trick_current().winnerplayer().no() == hi.no()
-         && hi.game().trick_current().points() > 15) )
+         && hi.game().trick_current().points() > 15
+         )
+         )
       value += 1;
 
     if( (   hi.game().trick_current().isfull()  // lost trick
