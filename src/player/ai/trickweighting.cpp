@@ -805,7 +805,11 @@ int TrickWeighting::modi_no_trump(VirtualGamesInterface const& vgi,
   // prefer color cards a little bit
   if(    card.value() == Card::NINE
      && trick.winnerplayer().team() != vgi.team() )
-    modi += 8; // previous: 6
+    {
+      modi += 8; // previous: 6
+      if( trick.cardno_of_player( ai ) == 0 )
+        modi +=10; // reference 203953
+    }
   if(    card.value() == Card::KING
      && trick.winnerplayer().team() != vgi.team() )
     modi += 4;
