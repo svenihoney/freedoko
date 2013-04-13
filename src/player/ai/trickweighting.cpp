@@ -195,10 +195,19 @@ int TrickWeighting::modi_dolle_swines(VirtualGamesInterface const& vgi,
        t += trick.card( i );
      }
 
+     if(  trick.cardno_of_player(card.player()) == 2
+         && card.isdolle()
+         && (ai.game().swines_owner() != NULL  //2do extend to hyperswine, do same for swine hyperswine
+              && trick.cardno_of_player(*ai.game().swines_owner()) == 3 ) )
+       { // swine behind dolle
+         modi -= 15;  // reference 176246
+       }
+
 
      if (   trick.cardno_of_player(card.player()) == 3 )
      {
        modi -= 21; // previous 18, 20, 24
+
 
 
        if (t.winnerplayer().team() == vgi.team()) { // reference 43530
