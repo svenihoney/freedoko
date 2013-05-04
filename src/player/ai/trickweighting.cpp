@@ -203,6 +203,13 @@ int TrickWeighting::modi_dolle_swines(VirtualGamesInterface const& vgi,
          modi -= 15;  // reference 176246
        }
 
+     if(  card.isdolle()
+         && (ai.game().swines_owner() != NULL  //2do extend to hyperswine, do same for swine hyperswine
+             && trick.cardno_of_player(*ai.game().swines_owner()) < trick.cardno_of_player(card.player()) )
+            )
+       { //swines in game, but before player with dolle
+         modi +=13; // reference 088597, 114803
+       }
 
      if (   trick.cardno_of_player(card.player()) == 3 )
      {
