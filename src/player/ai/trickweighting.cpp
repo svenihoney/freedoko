@@ -356,7 +356,7 @@ int TrickWeighting::modi_queen(VirtualGamesInterface const& vgi,
 
     if( vgi.no() != trick.winnerplayer().no() )
       {
-        modi -= 3; // reference
+        modi -= 5; // reference 156330
       }
 
     if( vgi.game().teaminfo( ai ) != ai.team() )
@@ -624,11 +624,6 @@ int TrickWeighting::modi_soli_meat_less(VirtualGamesInterface const& vgi,
     modi -= 12;
   }
 
-  // high cards in meatless
-  if (    (    card.value() == Card::ACE
-           || card.value() == Card::TEN )
-     )
-    modi -= card.value() - 3;
 
 #ifdef PLAYERCHECK
   if (vgi.no() == playerCheck) {
