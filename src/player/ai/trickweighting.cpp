@@ -888,7 +888,17 @@ int TrickWeighting::modi_no_trump(VirtualGamesInterface const& vgi,
      )
   {
     modi += 2;
+
   }
+
+  if( GAMETYPE::is_solo( vgi.game().type() )
+       && trick.cardno_of_player(vgi.game().soloplayer()) > trick.cardno_of_player(card.player())
+     && vgi.color_runs( card.color() ) == 0
+          && card.value() == Card::ACE
+  )
+    {
+    modi += 22; // reference 9751
+    }
 
 #ifdef PLAYERCHECK
   if (vgi.no() == playerCheck) {
