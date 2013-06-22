@@ -420,6 +420,9 @@ int TrickWeighting::modi_jack(VirtualGamesInterface const& vgi,
   if (  trick.cardno_of_player(card.player()) == 3 )
     modi -= 2;
 
+  if (  trick.cardno_of_player(card.player()) == 0 )
+     modi += 22; //reference 114558
+
   if( trick.startcard().istrump()
       && trick.cardno_of_player(card.player()) !=0 )
     modi += 5; //reference 099840
