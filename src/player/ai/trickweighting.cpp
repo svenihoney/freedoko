@@ -591,6 +591,13 @@ int TrickWeighting::modi_fox(VirtualGamesInterface const& vgi,
   }
 
   if( trick.cardno_of_player(card.player()) == 3
+     && winnerteam != team )
+  {// reference 93822
+    modi -= 35; // previous
+
+   }
+
+  if( trick.cardno_of_player(card.player()) == 3
      && winnerteam == team )
   {
     modi += 5; // previous
