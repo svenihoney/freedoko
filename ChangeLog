@@ -1,3 +1,6 @@
+2013-09-01 Borg Enders
+	- improved monte carlo to avoid trump as first card of a trick
+
 2013-06-29 Borg Enders
 	- improved trickweighting
 

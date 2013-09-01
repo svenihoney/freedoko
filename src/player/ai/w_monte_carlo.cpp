@@ -290,6 +290,8 @@ WMonteCarlo::best_card()
        )
       continue;
 
+
+
     // never take a fox but in the last three tricks
     if (this->vgi().game().tricks_remaining_no() > 3) {
       if (this->hand().card(c).isfox())
@@ -320,6 +322,16 @@ WMonteCarlo::best_card()
      && !this->hand().highest_card().is_empty()
      && this->vgi().game().trick_current().isstartcard() ) {
     best_card = this->hand().highest_card();
+  }
+
+  if   (   best_card.istrump()
+          && this->vgi().game().trick_current().isstartcard() ) {
+	  Card c = Heuristics::lowest_free_card(this->vgi().hand());
+	  if (Card::EMPTY != c)
+	  {
+		  best_card = c;
+	  }else
+		  best_card = Heuristics::lowest_trump_card(this->vgi().hand());
   }
 
   // optimize the result a bit
