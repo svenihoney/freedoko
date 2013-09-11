@@ -29,6 +29,10 @@ Refactoring BEST_WINNING_CARD
 
 
 DK
+* check_references
+  - beim ersten Fehler aufhören
+  - wenn Spiel beendet ist, Fehler
+  - keine Ausgaben über Regeländerungen, Nachricht, ...
 * 246231.BugReport.FreeDoko
 * 247102.BugReport.FreeDoko
 * 247965.BugReport.FreeDoko

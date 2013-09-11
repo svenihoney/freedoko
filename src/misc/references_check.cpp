@@ -156,6 +156,7 @@ ReferencesCheck::set_main_directory(string const& references_main_dir)
 
 /**
  ** set the directory
+ ** adds the subdirectories, but skip the ones whith a file “_skip” in it
  **
  ** @param     references_dir   the directory with the references
  **
@@ -189,7 +190,8 @@ ReferencesCheck::set_directory(string const& references_dir)
           continue;
         if (   boost::filesystem::is_directory(*this->dir_itr)
             && (this->dir_itr->path().filename().string()[0] != '.')) {
-          this->references_subdir_.push_back(this->dir_itr->path().string());
+          if (!boost::filesystem::is_regular_file(this->dir_itr->path().string() + "/_skip"))
+            this->references_subdir_.push_back(this->dir_itr->path().string());
         }
       } catch (std::exception const& ex) {
         cerr << dir_itr->path().filename() << " " << ex.what() << endl;
@@ -290,7 +292,8 @@ ReferencesCheck::load_reference()
     return false;
 
   OS_NS::BugReportReplay* bug_report_replay
-    = new OS_NS::BugReportReplay(this->dir_itr->path().string());
+    = new OS_NS::BugReportReplay(this->dir_itr->path().string(),
+                                         OS_NS::BugReportReplay::VERBOSE_NONE);
   // ToDo: check for auto action end
   if (!bug_report_replay->loaded()) {
     cerr << "Error loading the reference '" << this->dir_itr->path().string()

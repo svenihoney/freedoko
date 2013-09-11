@@ -400,7 +400,8 @@ main(int argc, char* argv[])
 
         } else if (option.name() == "bug-report") {
           OS_NS::BugReportReplay* bug_report_replay
-            = new OS_NS::BugReportReplay(option.value_string());
+            = new OS_NS::BugReportReplay(option.value_string(),
+                                         OS_NS::BugReportReplay::VERBOSE_ALL);
           if (!bug_report_replay->loaded()) {
             cerr << "Error loading the bug report '" << option.value_string()
               << "'" << endl;
@@ -495,7 +496,8 @@ main(int argc, char* argv[])
                                - strlen(".Reference.FreeDoko")) )
                     == ".Reference.FreeDoko") ) {
               OS_NS::BugReportReplay* bug_report_replay
-                = new OS_NS::BugReportReplay(party_filename);
+                = new OS_NS::BugReportReplay(party_filename,
+                                         OS_NS::BugReportReplay::VERBOSE_ALL);
               if (!bug_report_replay->loaded()) {
                 cerr << "Error loading the bug report '" << option.value_string()
                   << "'" << endl;

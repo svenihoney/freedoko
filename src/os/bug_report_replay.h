@@ -86,8 +86,21 @@ namespace OS_NS {
    **/
   class BugReportReplay : public OS {
     public:
-      // Konstruktor with the filename of the bugreport
-      BugReportReplay(string const& filename);
+      enum Verbose {
+        VERBOSE_NONE = 0,
+        VERBOSE_SEED = 1 << 1,
+        VERBOSE_HEADER = 1 << 2,
+        VERBOSE_MESSAGE = 1 << 3,
+        VERBOSE_RULES = 1 << 4,
+        VERBOSE_ACTION = 1 << 5,
+        VERBOSE_HUMAN_ACTION = 1 << 6,
+        VERBOSE_FINISH = 1 << 7,
+        VERBOSE_ALL = (1 << 8 - 1)
+      }; // enum Verbose
+    public:
+      // Konstruktor with the filename of the bugreport and the verbose level
+      BugReportReplay(string const& filename,
+                      unsigned const verbose);
       ~BugReportReplay();
 
       // write the data of this bug report into 'ostr'
@@ -139,10 +152,10 @@ namespace OS_NS {
       bool expect_line(string const& read_line, string const& expected_line);
       // 'value' is expected -- test the current value
       bool expect_value(string const& read_value,
-			string const& expected_value);
+                        string const& expected_value);
       // 'keyword' is expected -- test the current keyword
       bool expect_keyword(string const& read_keyword,
-			  string const& expected_keyword);
+                          string const& expected_keyword);
 
 
       // the current action has been processed
@@ -168,6 +181,8 @@ namespace OS_NS {
     private:
       // the filename of the bugreport
       PRIV_VAR_R(string, filename);
+      // the verbose level
+      PRIV_VAR_R(unsigned, verbose);
       // whether this bug report was loaded successfully
       PRIV_VAR_R(bool, loaded);
       // whether this bug report is inconsistent

@@ -276,7 +276,8 @@ namespace UI_GTKMM_NS {
       // Note: '::bug_report_replay' is set automatically to the
       //       newly opened bug report.
       OS_NS::BugReportReplay* bug_report_replay_new
-        = new OS_NS::BugReportReplay(filename);
+        = new OS_NS::BugReportReplay(filename,
+                                     OS_NS::BugReportReplay::VERBOSE_ALL);
       // this is true, when the loading was successfull
       if (!bug_report_replay_new->loaded()) {
         delete bug_report_replay_new;

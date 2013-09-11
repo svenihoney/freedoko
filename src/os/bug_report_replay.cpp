@@ -76,7 +76,7 @@ namespace OS_NS {
     get_value(string const& line)
     {
       if (line.empty())
-	return "";
+        return "";
 
       string value = line;
       DK::Utils::String::word_first_remove_with_blanks(value);
@@ -99,15 +99,15 @@ namespace OS_NS {
     get_keyword(string const& line)
     {
       if (line.empty())
-	return "";
+        return "";
 
       string const word
-	= (  (std::find(line.begin(), line.end(), ':')
-	      != line.end())
-	   ? string(line.begin(),
-		    std::find(line.begin(), line.end(), ':'))
-	   : line
-	  );
+        = (  (std::find(line.begin(), line.end(), ':')
+              != line.end())
+           ? string(line.begin(),
+                    std::find(line.begin(), line.end(), ':'))
+           : line
+          );
 
       return word;
     } // static string get_keyword(string line)
@@ -125,9 +125,11 @@ namespace OS_NS {
    **
    ** @version	0.6.7
    **/
-  BugReportReplay::BugReportReplay(string const& filename) :
+  BugReportReplay::BugReportReplay(string const& filename,
+                                   unsigned const verbose) :
     OS(OS_TYPE::OS_BUG_REPORT_REPLAY),
     filename_(filename),
+    verbose_(verbose),
     loaded_(false),
     finished_(false),
     human_finished_(false),
@@ -1173,10 +1175,11 @@ namespace OS_NS {
       case GameplayAction::ANNOUNCEMENT: {
         GameplayAction::Announcement const& announcement_action
           = static_cast<GameplayAction::Announcement const&>(this->current_human_action());
-        cout << "BugReportReplay:\n"
-          << "  making announcement '" << announcement_action.announcement << "'"
-          << " for player " << announcement_action.player
-          << endl;
+        if (this->verbose() & VERBOSE_ACTION)
+          cout << "BugReportReplay:\n"
+            << "  making announcement '" << announcement_action.announcement << "'"
+            << " for player " << announcement_action.player
+            << endl;
 
         // make the announcement in place of the human and tell it the user
         if (!ANNOUNCEMENT::is_reply(announcement_action.announcement))
@@ -1187,10 +1190,11 @@ namespace OS_NS {
       case GameplayAction::SWINES: {
         GameplayAction::Swines const& swines_action
           = static_cast<GameplayAction::Swines const&>(this->current_human_action());
-        cout << "BugReportReplay:\n"
-          << "  announce 'swines' for human player "
-          << swines_action.player
-          << endl;
+        if (this->verbose() & VERBOSE_ACTION)
+          cout << "BugReportReplay:\n"
+            << "  announce 'swines' for human player "
+            << swines_action.player
+            << endl;
         if (!::party.game().swines_announce(::party.game().player(swines_action.player)))
           cerr << "Error announcing 'swines' for human player"
             << swines_action.player
@@ -1200,10 +1204,11 @@ namespace OS_NS {
       case GameplayAction::HYPERSWINES: {
         GameplayAction::Hyperswines const& hyperswines_action
           = static_cast<GameplayAction::Hyperswines const&>(this->current_human_action());
-        cout << "BugReportReplay:\n"
-          << "  announce 'hyperswines' for human player "
-          << hyperswines_action.player
-          << endl;
+        if (this->verbose() & VERBOSE_ACTION)
+          cout << "BugReportReplay:\n"
+            << "  announce 'hyperswines' for human player "
+            << hyperswines_action.player
+            << endl;
         if (!::party.game().hyperswines_announce(::party.game().player(hyperswines_action.player)))
           cerr << "Error announcing 'hyperswines' for human player"
             << hyperswines_action.player
@@ -1230,6 +1235,8 @@ namespace OS_NS {
   void
     BugReportReplay::print_current_human_action() const
     {
+      if (!(this->verbose() & VERBOSE_HUMAN_ACTION))
+        return ;
       switch (this->current_human_action().type) {
       case GameplayAction::CARD_PLAYED: {
         GameplayAction::CardPlayed const& card_played_action
@@ -1237,8 +1244,7 @@ namespace OS_NS {
         cout << "BugReportReplay: Human\n"
           << "  play " << card_played_action.card
           << endl;
-      }
-        break;
+      } break;
 
       case GameplayAction::RESERVATION: {
         GameplayAction::Reservation const& reservation_action
@@ -1348,12 +1354,14 @@ namespace OS_NS {
       this->finished_ = true;
       this->human_finished_ = true;
 
-      cout << "BugReport: finished" << endl;
-      cout << "Message:\n"
-        << "{\n"
-        << this->message()
-        << "}"
-        <<endl;
+      if (this->verbose() & VERBOSE_FINISH) {
+        cout << "BugReport: finished" << endl;
+        cout << "Message:\n"
+          << "{\n"
+          << this->message()
+          << "}"
+          <<endl;
+      }
 
 #ifndef OUTDATED
       // the bug report replay should be kept, so that another start of the
@@ -1379,6 +1387,8 @@ namespace OS_NS {
   void
     BugReportReplay::print_header() const
     {
+      if (!(this->verbose() & VERBOSE_HEADER))
+        return;
       // print the first lines
       cout << "BugReport\n"
         << "\n";
@@ -1482,12 +1492,13 @@ namespace OS_NS {
         }
       } // set the players
 
-      // repeat the message
-      cout << '\n'
-        << "Message:\n"
-        << "{\n"
-        <<   this->message()
-        << "}\n";
+      if (this->verbose() & VERBOSE_MESSAGE)
+        // repeat the message
+        cout << '\n'
+          << "Message:\n"
+          << "{\n"
+          <<   this->message()
+          << "}\n";
 
       return ;
     } // void BugReportReplay::party_get_settings()
@@ -1509,12 +1520,13 @@ namespace OS_NS {
       // (re)set the rules and print the rule differences
       this->set_party_rule();
 
-      // repeat the message
-      cout << '\n'
-        << "Message:\n"
-        << "{\n"
-        <<   this->message()
-        << "}\n";
+      if (this->verbose() & VERBOSE_MESSAGE)
+        // repeat the message
+        cout << '\n'
+          << "Message:\n"
+          << "{\n"
+          <<   this->message()
+          << "}\n";
 
       return ;
     } // void BugReportReplay::party_loaded()
@@ -1538,56 +1550,58 @@ namespace OS_NS {
       // set the party rules
       ::party.rule() = this->rule();
 
-      cout << '\n'
-        << "rule differences:\n"
-        << "{\n";
-      cout << setw(38) << ""
-        << setw(12) << "bug_report"
-        << setw(12) << "hardcoded"
-        << "\n";
-      for (unsigned i = Rule::FIRST; i <= Rule::LAST; i++) {
-        if (   (i >= (Rule::BOOL_FIRST))
-            && (i <= Rule::BOOL_LAST)) {
-          if (   (::party.rule()(Rule::TypeBool(i))
-                  != rule_hardcoded(Rule::TypeBool(i))) ) {
-            cout << setw(38) << name(Rule::TypeBool(i))
-              << setw(12) << ::party.rule()(Rule::TypeBool(i))
-              << setw(12) << rule_hardcoded(Rule::TypeBool(i))
-              << "\n";
-          } // if (rule differs)
-        } else if (   (i >= Rule::UNSIGNED_FIRST)
-                   && (i <= Rule::UNSIGNED_LAST)) {
-          if (   (::party.rule()(Rule::TypeUnsigned(i))
-                  != rule_hardcoded(Rule::TypeUnsigned(i))) ) {
-            cout << setw(38) << name(Rule::TypeUnsigned(i))
-              << setw(12) << ::party.rule()(Rule::TypeUnsigned(i))
-              << setw(12) << rule_hardcoded(Rule::TypeUnsigned(i))
-              << "\n";
-          } // if (rule differs)
-        } else if (   (i >= Rule::UNSIGNED_EXTRA_FIRST)
-                   && (i <= Rule::UNSIGNED_EXTRA_LAST)) {
-          if (   (::party.rule()(Rule::TypeUnsignedExtra(i))
-                  != rule_hardcoded(Rule::TypeUnsignedExtra(i)))) {
-            cout << setw(38) << name(Rule::TypeUnsignedExtra(i))
-              << setw(12) << ::party.rule()(Rule::TypeUnsignedExtra(i))
-              << setw(12) << rule_hardcoded(Rule::TypeUnsignedExtra(i))
-              << "\n";
-          } // if (rule differs)
-        } else if (i == Rule::COUNTING) {
-          if (   (::party.rule()(Rule::COUNTING)
-                  != rule_hardcoded(Rule::COUNTING)) ) {
-            cout << setw(38) << name(Rule::COUNTING)
-              << setw(12) << ::party.rule()(Rule::COUNTING)
-              << setw(12) << rule_hardcoded(Rule::COUNTING)
-              << "\n";
-          } // if (rule differs)
-        } else { // if (i: type unknown)
-          DEBUG_ASSERTION(false,
-                          "BugReportReplay::party_open():\n"
-                          "  unknown ruletype number " << i);
-        } // if (i: type unknown)
-      } // for (unsigned i = Rule::FIRST; i <= Rule::LAST; i++)
-      cout << "}" << endl;
+      if (this->verbose() & VERBOSE_RULES) {
+        cout << '\n'
+          << "rule differences:\n"
+          << "{\n";
+        cout << setw(38) << ""
+          << setw(12) << "bug_report"
+          << setw(12) << "hardcoded"
+          << "\n";
+        for (unsigned i = Rule::FIRST; i <= Rule::LAST; i++) {
+          if (   (i >= (Rule::BOOL_FIRST))
+              && (i <= Rule::BOOL_LAST)) {
+            if (   (::party.rule()(Rule::TypeBool(i))
+                    != rule_hardcoded(Rule::TypeBool(i))) ) {
+              cout << setw(38) << name(Rule::TypeBool(i))
+                << setw(12) << ::party.rule()(Rule::TypeBool(i))
+                << setw(12) << rule_hardcoded(Rule::TypeBool(i))
+                << "\n";
+            } // if (rule differs)
+          } else if (   (i >= Rule::UNSIGNED_FIRST)
+                     && (i <= Rule::UNSIGNED_LAST)) {
+            if (   (::party.rule()(Rule::TypeUnsigned(i))
+                    != rule_hardcoded(Rule::TypeUnsigned(i))) ) {
+              cout << setw(38) << name(Rule::TypeUnsigned(i))
+                << setw(12) << ::party.rule()(Rule::TypeUnsigned(i))
+                << setw(12) << rule_hardcoded(Rule::TypeUnsigned(i))
+                << "\n";
+            } // if (rule differs)
+          } else if (   (i >= Rule::UNSIGNED_EXTRA_FIRST)
+                     && (i <= Rule::UNSIGNED_EXTRA_LAST)) {
+            if (   (::party.rule()(Rule::TypeUnsignedExtra(i))
+                    != rule_hardcoded(Rule::TypeUnsignedExtra(i)))) {
+              cout << setw(38) << name(Rule::TypeUnsignedExtra(i))
+                << setw(12) << ::party.rule()(Rule::TypeUnsignedExtra(i))
+                << setw(12) << rule_hardcoded(Rule::TypeUnsignedExtra(i))
+                << "\n";
+            } // if (rule differs)
+          } else if (i == Rule::COUNTING) {
+            if (   (::party.rule()(Rule::COUNTING)
+                    != rule_hardcoded(Rule::COUNTING)) ) {
+              cout << setw(38) << name(Rule::COUNTING)
+                << setw(12) << ::party.rule()(Rule::COUNTING)
+                << setw(12) << rule_hardcoded(Rule::COUNTING)
+                << "\n";
+            } // if (rule differs)
+          } else { // if (i: type unknown)
+            DEBUG_ASSERTION(false,
+                            "BugReportReplay::party_open():\n"
+                            "  unknown ruletype number " << i);
+          } // if (i: type unknown)
+        } // for (unsigned i = Rule::FIRST; i <= Rule::LAST; i++)
+        cout << "}" << endl;
+      } // if (this->verbose() & VERBOSE_RULES)
 
       { // set some specific rules
         list<Rule::TypeBool> types;
@@ -1603,17 +1617,19 @@ namespace OS_NS {
              t != types.end();
              ++t) {
           if (!::party.rule()(*t)) {
-            cout << "setting rule '" << ::name(*t)
-              << "' to true." << endl;
+            if (this->verbose() & VERBOSE_RULES)
+              cout << "setting rule '" << ::name(*t)
+                << "' to true." << endl;
             ::party.rule().set(*t, true);
           } // if (!::party.rule()(*t))
         } // for t \in types
 
         if (::party.rule()(Rule::SHOW_TRICKS_NUMBER)
             < ::party.rule()(Rule::NUMBER_OF_TRICKS_IN_GAME)) {
-          cout << "setting rule '" << ::name(Rule::SHOW_TRICKS_NUMBER)
-            << "' to " << ::party.rule()(Rule::NUMBER_OF_TRICKS_IN_GAME)
-            << "." << endl;
+          if (this->verbose() & VERBOSE_RULES)
+            cout << "setting rule '" << ::name(Rule::SHOW_TRICKS_NUMBER)
+              << "' to " << ::party.rule()(Rule::NUMBER_OF_TRICKS_IN_GAME)
+              << "." << endl;
           ::party.rule().set(Rule::SHOW_TRICKS_NUMBER,
                              ::party.rule()(Rule::NUMBER_OF_TRICKS_IN_GAME));
         } // if (!::party.rule()(Rule::SHOW_TRICKS_NUMBER))

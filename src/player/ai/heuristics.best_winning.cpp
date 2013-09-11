@@ -172,18 +172,12 @@ Heuristics::best_winning_card(Trick const& trick,
     // should not happen
     break;
   case GAMETYPE::POVERTY:
-#ifdef OUTDATED
-    // 2012-05-23 DK
-    return ( (hi.team() == TEAM::RE)
-            ? (  (hi.no() == game.soloplayer().no())
-               ? Card::EMPTY
-               : BestWinningCard::poverty_re(trick, hi) )
-            : BestWinningCard::poverty_contra(trick, hi) );
-#endif
     if (hi.team() == TEAM::RE)
       return (  (hi.no() == game.soloplayer().no())
               ? Card::EMPTY
               : BestWinningCard::poverty_re(trick, hi) );
+    else
+      return BestWinningCard::poverty_contra(trick, hi);
   case GAMETYPE::GENSCHER:
     break;
   case GAMETYPE::MARRIAGE:

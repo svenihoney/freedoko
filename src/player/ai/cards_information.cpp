@@ -2087,13 +2087,13 @@ CardsInformation::remaining_others(Card const& card) const
  **
  ** @author    Diether Knof
  **
- ** @version   0.7.9
+ ** @version   0.7.12
  **/
 unsigned
 CardsInformation::remaining_others(Card::Color const& color,
                                    Card::Value const& value) const
 {
-  return this->remaining(Card(color, value));
+  return this->remaining_others(Card(color, value));
 } // unsigned CardsInformation::remaining_others(Card::Color color, Card::Value value) const
 
 /**

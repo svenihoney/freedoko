@@ -922,7 +922,7 @@ void
 Game::distributecards()
 {
   ::pseudo_rand_set(this->seed());
-  if (!(FAST_PLAY & FAST_NS::SEED_INFO))
+  if (FAST_PLAY & FAST_NS::SEED_INFO)
     cout << "seed: " << this->seed() << "\n";
 
   vector<Card> all_cards = this->rule().cards();

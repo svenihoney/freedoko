@@ -1,3 +1,9 @@
+2013-09-11 Diether Knof
+	- some small fixes/improvements in heuristics (choose pfund)
+	- added support for individual verbose messages in bug report replays (for quiet references)
+	- references: added subdirectory "_broken" to subdirectories of the references
+	- references: directories containing a file "_skip" are skipped
+
 2013-09-09 Diether Knof
 	- fixed dates of cardset Altenburg expirement
 
@@ -19,7 +25,7 @@
 2013-05-04 Borg Enders
 	- improved trickweighting for dolle after swine owner
 
-2013-04-13	Borg Enders
+2013-04-13 Borg Enders
 	- improved trickweighting for dolle before swine
 
 2013-02-24 Borg Enders
