@@ -5394,7 +5394,7 @@ Heuristics::choose_pfund_before_partner(Trick const& trick,
 
 /**
  ** return lowest allowed Jack or Queen if they are trump
- ** and there is a ace to play, which is not already jabbed,
+ ** and there is an ace to play, which is not already jabbed,
  ** else return empty card
  **
  ** @param     t    current trick
@@ -5450,6 +5450,7 @@ Heuristics::jab_for_ace( Trick const& t, HeuristicInterface const& hi )
         return Card::EMPTY;
     } // if (t.actcardno() == 2)
   } // do not overjab the partner
+
 
   // the ace to jab for
   Card const ace = Heuristics::choose_ace( Trick(t.startplayer()), hi );
@@ -5563,7 +5564,7 @@ Heuristics::jab_for_ace( Trick const& t, HeuristicInterface const& hi )
 
         tempTrick = t;
         tempTrick += HandCard(hi.hand(), c);
-      } // if (special card and
+      } // if (opposite team can win the trick)
 
       bool trickLost = tempTrick.winnercard().less(highest_card_behind_of_opposite_team(tempTrick, hi));
       if(   trickLost
@@ -5572,6 +5573,30 @@ Heuristics::jab_for_ace( Trick const& t, HeuristicInterface const& hi )
         )
         return Card::EMPTY;
     }
+
+    { // only take a high card if there are enough single aces or many points
+      // count the single aces
+      unsigned single_aces = 0;
+      for (vector<Card::Color>::const_iterator
+           color = hi.game().rule().card_colors().begin();
+           color != hi.game().rule().card_colors().end();
+           ++color) {
+        Card const ace = Card(*color, Card::ACE);
+        if (   !ace.istrump(hi.game())
+            && (hi.hand().numberof(ace) == 1)
+            && (hi.cards_information().played(*color) == 0))
+          single_aces += 1;
+      }
+      if (   hi.game().less(Card::CLUB_QUEEN, c)
+          && (single_aces < 2)
+          && (t.points() < 2 + 4 * t.actcardno()))
+        return Card::EMPTY;
+      if (   hi.game().less(hi.trump_card_limit(), c)
+          && (single_aces == 0)
+          && (t.points() < 2 + 4 * t.actcardno()))
+        return Card::EMPTY;
+    } // only take a high card if there are enough single aces
+
 
     return c;
   } // if ( .... (hi.color_runs(ace.color()) == 0) .... )
@@ -7575,8 +7600,8 @@ Heuristics::poverty_overjab_re(Trick const& trick,
     return Card::EMPTY;
 
   // @heuristic::action   Take the best winning card.
-//return Heuristics::best_jabbing_card(trick, hi);
-          return hi.hand().next_jabbing_card(trick.winnercard());
+  //return Heuristics::best_jabbing_card(trick, hi);
+  return hi.hand().next_jabbing_card(trick.winnercard());
 } // Card Heuristics::poverty_overjab_re(Trick trick, HeuristicInterface hi)
 
 

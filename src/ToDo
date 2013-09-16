@@ -2,10 +2,13 @@ Zur nächsten Version 0.7.12
 * Kartensatz Altenburg herausnehmen
   - Pakete
   - Logo
+  - Bildschirmumrandung
   - Auf Internetpräsenz hinweisen
   - Bilder in Dokumentation neu erstellen
 * klopfen: Nur bei normalem Spiel, nicht bei (angesagter) Hochzeit, Solo, Armut, ...
   - In Regeln beschreiben
+* Internetpräsenz
+  - in freenet einstellen
 
 
 
@@ -27,40 +30,49 @@ Refactoring BEST_WINNING_CARD
   - nur noch zwei Farbkarten: wenn gleichwertig, nehme die, unter der keine andere ist; wenn Gegner Stich hat (also letzter Spieler): nehme die kleinere, wenn darunter keine andere ist
   - nur noch gleiche Karten (z.B. zwei Damen, kein anderer Spieler hat Karten dazwischen): kleinere nehmen
 
+/----\
+| DK |
+\----/
 
-DK
+aktuell
+* Symbole: andere (Hochzeit: Ringe, Schweine: Schweine, Hyperschweine ?, Solist: Mensch-ärgere-Dich-Figur)
+* Kompilieren der .src.zip testen
+* mbrola: soundfiles
+
+technisch
+* gtkmm: auf Version 3 umstellen
+* gnet: Auf gtkmm umstellen
+* mit llvm/clang kompilieren
+* log-Modus: automatisch einen Fehlerbericht erstellen und direkt in die Datei schreiben. Damit wird auch ein richtiger Absturz aufgezeichnet.
+* Spiel überspringen (Tunier fortsetzen)
+  über Crash-Log, darin den seed speichern
 * check_references
   - beim ersten Fehler aufhören
   - wenn Spiel beendet ist, Fehler
-  - keine Ausgaben über Regeländerungen, Nachricht, ...
-* 246231.BugReport.FreeDoko
-* 247102.BugReport.FreeDoko
-* 247965.BugReport.FreeDoko
+* seed: schon bekannten überspringen (Wert + 1 nehmen)
+* Windows: aktuelle boost-Bibliothek
+* Kompilieren unter Windows: mit der Command-Shell kompilieren, aber eine sh.exe noch im Pfad
+
+Verbesserungen KI
+* best winning card: lowest trump card limit
 * CardsInformation/TeamInformation: Gewichtung immer wieder neu, um alle Informationen einfließen lassen zu können (z.B. hat nur Kreuz Zehn, daher ist das kein Pfund)
 * GameTree: Bei unbekannten Teams verschiedene Varianten durchprobieren
+* KI generell: restliche Stiche gehen an den Gegner (z.B. Schweine): pfunde noch dem eigenen Team (auch Herz Zehn). Beispiel: ../Bugreports/ai/Choosebestcard/GameTree/111096.BugReport.FreeDoko
+  Sollte vor allen Heuristiken greifen. Dabei auch prüfen, wie früh ich meine Punkte vergeben muss (bei drei Zehnen).
+
+Verbesserungen UI
+* Bug report: Teams der Spieler in Übersicht
+* Kartenvorschlag: gleich selber Karte wählen düfen (mehrere Threads)
+
+Dokumentation
+* Statistiken in Dokumentation (Hochzeit, ...)
+
+Fehlerberichte
+* 247965.BugReport.FreeDoko
 * new Heuristics 123901
 * Heuristics: 001042 (Fleischlos)
 * Heuristics: 016746 (Damensolo)
 * ai/091528: Heuristik "von oben ziehen" (für Endspiel!)
-* Bug report: Teams der Spieler in Übersicht
-* Kompilieren unter Windows: mit der Command-Shell kompilieren, aber eine sh.exe noch im Pfad
 * CardsInformation: Hochzeitler im Klärungsstich gibt seine höchsten Punkte
   ../Bugreports/ai/Heuristics/best_winning_card/259093.BugReport.FreeDoko
-* KI generell: restliche Stiche gehen an den Gegner (z.B. Schweine): pfunde noch dem eigenen Team (auch Herz Zehn). Beispiel: ../Bugreports/ai/Choosebestcard/GameTree/111096.BugReport.FreeDoko
-  Sollte vor allen Heuristiken greifen. Dabei auch prüfen, wie früh ich meine Punkte vergeben muss (bei drei Zehnen).
-* Spiel überspringen (Tunier fortsetzen)
-  über Crash-Log, darin den seed speichern
-* Kompilieren der .src.zip testen
-* mbrola: soundfiles
-* "best winning card" überarbeiten
-* best winning card: lowest trump card limit
 * Referenzen: 043911.Reference.FreeDoko 178033.Reference.FreeDoko
-* Symbole: andere (Hochzeit: Ringe, Schweine: Schweine, Hyperschweine ?, Solist: Mensch-ärgere-Dich-Figur)
-* log-Modus: automatisch einen Fehlerbericht erstellen und direkt in die Datei schreiben. Damit wird auch ein richtiger Absturz aufgezeichnet.
-* seed: schon bekannten überspringen
-
-
-* Kartenvorschlag: gleich selber Karte wählen düfen (mehrere Threads)
-* Windows: aktuelle boost-Bibliothek
-* gnet: Auf gtkmm umstellen
-* Statistiken in Dokumentation (Hochzeit, ...)

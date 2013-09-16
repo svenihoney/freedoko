@@ -157,7 +157,9 @@ namespace UI_GTKMM_NS {
           ::Reservation const& reservation = this->player->reservation();
           switch (reservation.game_type) {
           case GAMETYPE::NORMAL:
-            icon = this->ui->icons->icon(TEAM::RE, this->rotation());
+            icon = this->ui->icons->icon(this->player->hand().contains(Card::CLUB_QUEEN)
+                                         ? TEAM::RE : TEAM::CONTRA,
+                                         this->rotation());
             break;
           case GAMETYPE::POVERTY:
             {

@@ -2254,8 +2254,8 @@ throw (ReadException)
            ++gs, ++gameno) {
         this->add_game_summary(*gs);
 #ifdef DKNOF
-        CLOG << endl;
-        CLOG << **gs << endl;
+        COUT << endl;
+        CLOG << '\n' << **gs << endl;
         for (unsigned i = 0; i < this->bock_multipliers().size(); ++i) {
           CLOG << i << ": " << this->bock_multipliers()[i] << '\n';
           if (this->bock_multipliers()[i] == 0)

@@ -203,8 +203,11 @@ namespace TeamInformationHeuristic {
                  > -(ai.value(Aiconfig::TRUSTING)
                      ? 10 : 20) ) // *Value*
              ) )
-        modifier *= (0.2 + ((0.3 * player.game().trick_current_no())
-                            / player.game().trickno())); // *Value*
+        modifier *= (0.2
+                     + ((0.1 * player.game().trick_current_no())
+                        / player.game().trickno())
+                     + ((0.1 * player.game().trumps_played_no())
+                        / player.game().trumps_no())); // *Value*
 
       switch (team) {
       case TEAM::MAYBE_RE:

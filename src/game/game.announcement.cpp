@@ -362,7 +362,8 @@ Game::announcement_valid(Announcement announcement,
     return ANNOUNCEMENT::NOANNOUNCEMENT;
 
   Announcement const& last_announcement
-    = (this->rule()(Rule::KNOCKING)
+    = ( (   this->rule()(Rule::KNOCKING)
+         && GAMETYPE::is_with_unknown_teams(this->type()))
        ? this->announcement_of_player(player).announcement
        : this->announcement_of_team(player.team()).announcement);
 

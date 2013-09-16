@@ -445,6 +445,30 @@ in_running_game()
  **
  ** @param	game_type	the game type
  **
+ ** @return	whether 'game_type' is a game where the teams are not known in the beginning
+ **
+ ** @author	Diether Knof
+ **
+ ** @version	0.7.12
+ **/
+bool
+GAMETYPE::is_with_unknown_teams(GameType const game_type)
+{
+  switch (game_type) {
+  case GAMETYPE::NORMAL:
+  case GAMETYPE::MARRIAGE_SILENT:
+  case GAMETYPE::GENSCHER:
+    return true;
+  default:
+    return false;
+  } // switch(game_type)
+} // bool GAMETYPE::is_normal(GameType game_type)
+
+/**
+ ** -> return
+ **
+ ** @param	game_type	the game type
+ **
  ** @return	whether 'game_type' is a 'normal' game
  **
  ** @author	Diether Knof

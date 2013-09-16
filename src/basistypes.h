@@ -152,6 +152,7 @@ WRITE_NAME(Team)
       LAST = SOLO_DIAMOND
     }; // enum GameType
     unsigned const NUMBER = LAST - FIRST + 1;
+    bool is_with_unknown_teams(GameType const game_type);
     bool is_normal(GameType const game_type);
     bool is_poverty(GameType const game_type);
     bool is_marriage(GameType const game_type);
