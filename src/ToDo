@@ -5,17 +5,9 @@ Zur nächsten Version 0.7.12
   - Bildschirmumrandung
   - Auf Internetpräsenz hinweisen
   - Bilder in Dokumentation neu erstellen
-* klopfen: Nur bei normalem Spiel, nicht bei (angesagter) Hochzeit, Solo, Armut, ...
-  - In Regeln beschreiben
 * Internetpräsenz
   - in freenet einstellen
 
-
-
-
-https://sourceforge.net/tracker/?func=detail&aid=2832534&group_id=38051&atid=421200
-
-Refactoring BEST_WINNING_CARD
 
 * Monte Carlo: In den ersten Stichen nur zwei Karten durchgehen:
   1) Karte zum stechen
@@ -42,7 +34,6 @@ aktuell
 technisch
 * gtkmm: auf Version 3 umstellen
 * gnet: Auf gtkmm umstellen
-* mit llvm/clang kompilieren
 * log-Modus: automatisch einen Fehlerbericht erstellen und direkt in die Datei schreiben. Damit wird auch ein richtiger Absturz aufgezeichnet.
 * Spiel überspringen (Tunier fortsetzen)
   über Crash-Log, darin den seed speichern
@@ -59,6 +50,7 @@ Verbesserungen KI
 * GameTree: Bei unbekannten Teams verschiedene Varianten durchprobieren
 * KI generell: restliche Stiche gehen an den Gegner (z.B. Schweine): pfunde noch dem eigenen Team (auch Herz Zehn). Beispiel: ../Bugreports/ai/Choosebestcard/GameTree/111096.BugReport.FreeDoko
   Sollte vor allen Heuristiken greifen. Dabei auch prüfen, wie früh ich meine Punkte vergeben muss (bei drei Zehnen).
+* Heuristik "von oben ziehen" (für Endspiel!)
 
 Verbesserungen UI
 * Bug report: Teams der Spieler in Übersicht
@@ -68,11 +60,8 @@ Dokumentation
 * Statistiken in Dokumentation (Hochzeit, ...)
 
 Fehlerberichte
-* 247965.BugReport.FreeDoko
 * new Heuristics 123901
 * Heuristics: 001042 (Fleischlos)
 * Heuristics: 016746 (Damensolo)
-* ai/091528: Heuristik "von oben ziehen" (für Endspiel!)
 * CardsInformation: Hochzeitler im Klärungsstich gibt seine höchsten Punkte
   ../Bugreports/ai/Heuristics/best_winning_card/259093.BugReport.FreeDoko
-* Referenzen: 043911.Reference.FreeDoko 178033.Reference.FreeDoko

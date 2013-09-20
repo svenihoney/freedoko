@@ -527,10 +527,8 @@ namespace UI_GTKMM_NS {
       if (!this->is_realized())
         return ;
 
-      if (round == 0) {
-        this->update_sum();
-        this->update_duty_soli();
-      }
+      this->update_sum();
+      this->update_duty_soli();
 
       if (this->collapse_rounds->get_active())
         if (round > 0)
@@ -557,6 +555,10 @@ namespace UI_GTKMM_NS {
     {
       if (!this->is_realized())
         return ;
+
+      this->graph->draw_all();
+      this->update_sum();
+      this->update_duty_soli();
 
       if (!this->round_rows.empty())
         this->party_points_treeview->collapse_row(this->party_points_list->get_path(this->round_rows.back()));

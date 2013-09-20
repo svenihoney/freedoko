@@ -767,8 +767,8 @@ Party::remaining_rounds() const
     return 0;
 
   return (this->rule()(Rule::NUMBER_OF_ROUNDS)
-          - this->roundno()
-          - (this->starts_new_round(this->gameno()) ? 0 : 1));
+          - this->roundno());
+          //- (this->starts_new_round(this->gameno()) ? 0 : 1));
 } // unsigned Party::remaining_rounds() const
 
 /**
@@ -790,8 +790,7 @@ Party::remaining_normal_games() const
   if (this->is_duty_soli_round())
     return 0;
 
-  return (  ((this->remaining_rounds()
-              - (this->starts_new_round(this->gameno()) ? 1 : 0))
+  return (  (this->remaining_rounds()
              * this->rule()(Rule::NUMBER_OF_GAMES_PER_ROUND))
           + ( this->playerno()
              - ( (this->finished_games() + this->playerno()
@@ -909,7 +908,7 @@ Party::is_last_game() const
   // it must be the last round and the next player to start
   // is the startplayer of the party
   if (   this->rule()(Rule::NUMBER_OF_ROUNDS_LIMITED)
-      && (this->remaining_rounds() == 0)
+      && (this->remaining_rounds() <= 1)
       && ((this->startplayer() + 1) % this->playerno()
           == this->startplayer_first() )
       && (   (::game_status <= GAMESTATUS::GAME_RESERVATION)
@@ -953,7 +952,7 @@ Party::is_finished() const
 {
   return (   (this->remaining_duty_soli() == 0)
           && (   (   this->rule()(Rule::NUMBER_OF_ROUNDS_LIMITED)
-                  && (this->remaining_rounds() == 0) )
+                  && (this->remaining_rounds() <= 1) )
               || (   this->rule()(Rule::POINTS_LIMITED)
                   && (this->remaining_points() <= 0) ) ) );
 } // bool Party::is_finished() const
@@ -1133,14 +1132,6 @@ Party::add_game_summary(GameSummary* const game_summary)
       this->points_ -= game_summary->points(p);
   } // for (p < this->playerno())
 
-  if (   (   ((game_summary->startplayer_no() + 1) % this->playerno())
-          == this->real_startplayer_first())
-      && !this->is_duty_soli_round()
-      && !game_summary->startplayer_stays()) {
-    // end of round
-    this->round_startgame_.push_back(this->finished_games());
-  } // if (end of round)
-
   // add the bock multipliers
   if (this->rule()(Rule::BOCK)) {
     if (!game_summary->bock_triggers().empty()) {
@@ -1277,20 +1268,7 @@ Party::round_startgame(unsigned const roundno) const
     return 0;
 
   // if roundno > current round we have to estimate
-  if (::game_status == GAMESTATUS::GAME_FINISHED) {
-    return (this->gameno()
-            + (this->playerno()
-               - ((this->playerno()
-                   + this->startplayer() - this->startplayer_first()
-                  ) % this->playerno())
-              )
-            + (  (   (this->startplayer() + 1) % this->playerno()
-                  == this->startplayer_first() )
-               ? this->playerno() : 0)
-            + (this->game().startplayer_stays() ? 1 : 0)
-            + (roundno - this->roundno() - 1) * this->playerno()
-           );
-  } else if (::game_status & GAMESTATUS::GAME) {
+  if (::game_status & GAMESTATUS::GAME) {
     return (this->gameno()
             + (this->playerno()
                - ((this->playerno()
@@ -2252,6 +2230,13 @@ throw (ReadException)
            gs = game_summaries.begin();
            gs != game_summaries.end();
            ++gs, ++gameno) {
+        if (   (gameno > 0)
+            && ((*gs)->startplayer_no() == this->real_startplayer_first())
+            && (this->last_game_summary().startplayer_no()
+                != this->real_startplayer_first())
+            && !this->is_duty_soli_round()) {
+          this->round_startgame_.push_back(this->finished_games());
+        }
         this->add_game_summary(*gs);
 #ifdef DKNOF
         COUT << endl;
@@ -2493,8 +2478,11 @@ Party::play()
     this->set_startplayer(this->startplayer());
 
   ::ui->party_start();
-  if (this->gameno() == 0)
+  if (this->gameno() == 0) {
     this->round_startgame_.push_back(0);
+    ::ui->party_start_round(this->roundno());
+  }
+
   try {
     while (::game_status == PARTY_PLAY) {
       // check that the party is not finished, yet
@@ -2514,6 +2502,15 @@ Party::play()
         break;
       }
 
+      if (   (this->gameno() > 0)
+          && (this->startplayer() == this->real_startplayer_first())
+          && !this->is_duty_soli_round()
+          && !this->game_summaries().back()->startplayer_stays()) {
+        // new round
+        this->round_startgame_.push_back(this->finished_games());
+        ::ui->party_start_round(this->roundno());
+      } // if (new round)
+
       if (this->is_duty_soli_round()) {
         if (   !this->game_summaries_.empty()
             && !this->last_game_summary().is_duty_solo())
@@ -2524,9 +2521,6 @@ Party::play()
         while (!remaining_duty_soli(this->startplayer()))
           (this->startplayer_ += 1) %= this->playerno();
       } // if (this->is_duty_soli_round())
-
-      if (this->round_startgame_.back() == this->gameno())
-        ::ui->party_start_round(this->roundno());
 
       // create a new game
       ::game_status = GAME_NEW;
@@ -2606,6 +2600,7 @@ Party::play()
       this->seed_next();
     } // while (game_status == PARTY_PLAY)
 
+    this->round_startgame_.push_back(this->finished_games());
     ::game_status = GAMESTATUS::PARTY_FINISHED;
   } catch (GameStatus const& gamestatus) {
     if (gamestatus != GAMESTATUS::PARTY_FINISHED)

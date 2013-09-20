@@ -53,8 +53,6 @@ class Rating::Min : public Rating
     }
 
   private:
-    // the minimal value
-    int min_value;
 }; // class Rating::Min : public Rating
 
 #endif // #ifndef CLASS_RATING_MIN_HEADER

@@ -1,3 +1,11 @@
+2013-09-20 Diether Knof
+	- reorganized round increasing
+
+2013-09-16 Diether Knof
+	- small improvement in heuristic "jab for ace"
+	- fixed team display in reservation
+	- Knocking is only for normal games, silent marriages and genscher
+
 2013-09-11 Diether Knof
 	- some small fixes/improvements in heuristics (choose pfund)
 	- added support for individual verbose messages in bug report replays (for quiet references)

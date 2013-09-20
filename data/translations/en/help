@@ -44,14 +44,14 @@ Support::support			= \
 
 about					= about
 About::about				= \
-	FreeDoko is a game of ,,Doppelkopf'', programmed by Borg Enders, Diether Knof and Florian Sundermann.\n\
+	FreeDoko is a free game of ,,Doppelkopf''.\n\
 	This program is distributed under the GPL.\n\n\
 	Homepage: http://free-doko.sourceforge.net/\n\
 	E-Mail: freedoko@users.sourceforge.net\n\n\n\
 	Programming:\n\
 	Borg Enders\n\
 	Diether Knof\n\
-	Florian Sundermann\n\
+	Florian Sundermann (inactiv)\n\
 	\n\
 	Ports\n\
 	HPUX: Rainer Dörntge\n\
@@ -60,7 +60,7 @@ About::about				= \
 	SuSE: Toni\n\
 	\n\
 	Translations:\n\
-	French: Yves Caubarrus
+	French: Yves Caubarrus (inactiv)
 
 
 visit homepage 				= \
