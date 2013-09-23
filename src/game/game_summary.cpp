@@ -551,6 +551,26 @@ GameSummary::startplayer_stays() const
  **
  ** @param	-
  **
+ ** @return	the number of the next startplayer
+ **
+ ** @author	Diether Knof
+ **
+ ** @version	0.7.12
+ **/
+unsigned
+GameSummary::next_startplayer_no() const
+{
+  if (this->startplayer_stays())
+    return this->startplayer_no();
+  else
+    return (this->startplayer_no() + 1) % this->players_number();
+} // unsigned GameSummary::next_startplayer_no() const
+
+/**
+ ** -> result
+ **
+ ** @param	-
+ **
  ** @return	the team which gets the points
  **
  ** @author	Diether Knof

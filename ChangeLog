@@ -1,5 +1,8 @@
+2013-09-23 Diether Knof
+	- fixed display of party points graph
+
 2013-09-20 Diether Knof
-	- reorganized round increasing
+	- reorganized round increasing (now: before starting a game, before: at finishing a game)
 
 2013-09-16 Diether Knof
 	- small improvement in heuristic "jab for ace"

@@ -501,6 +501,11 @@ namespace UI_GTKMM_NS {
       this->sensitivity_update();
 
       { // adjust some translations because of changed points
+        CLOG << this->ui->party().remaining_rounds() << endl;
+        CLOG << this->ui->party().is_duty_soli_round() << endl;
+        CLOG << this->ui->party().remaining_games() << endl;
+        CLOG << this->ui->party().remaining_normal_games() << endl;
+        CLOG << this->ui->party().remaining_duty_soli() << endl;
         this->remaining_rounds_number->set_label(DK::Utils::String::to_string(this->ui->party().remaining_rounds()));
         this->remaining_games_number->set_label(DK::Utils::String::to_string(this->ui->party().remaining_games()));
         this->remaining_points_number->set_label(DK::Utils::String::to_string(this->ui->party().remaining_points()));

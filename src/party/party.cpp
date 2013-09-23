@@ -745,10 +745,12 @@ Party::roundno() const
 
 /**
  ** -> result
+ ** Also started rounds are counted.
+ ** If the last game of a round is finished, the round is counted as full.
  **
  ** @param	-
  **
- ** @return	the number of remaining (full) rounds, excluding a duty soli round
+ ** @return	the number of remaining rounds, excluding a duty soli round
  **
  ** @author	Diether Knof
  **
@@ -766,13 +768,20 @@ Party::remaining_rounds() const
   if (this->is_duty_soli_round())
     return 0;
 
+  if (   (this->rule()(Rule::NUMBER_OF_ROUNDS)
+          == this->roundno())
+      && this->starts_new_round(this->gameno()))
+    return 0;
+
   return (this->rule()(Rule::NUMBER_OF_ROUNDS)
-          - this->roundno());
-          //- (this->starts_new_round(this->gameno()) ? 0 : 1));
+          - this->roundno()
+          - (this->starts_new_round(this->gameno()) ? 0 : 1));
 } // unsigned Party::remaining_rounds() const
 
 /**
  ** -> result
+ ** A started game is counted as remaining.
+ ** A finished game (gamestatus = GAME_FINISHED) is not counted as remaining.
  **
  ** @param	-
  **
@@ -993,7 +1002,7 @@ Party::starts_new_round(unsigned const gameno) const
 {
   if ((gameno == 0) && this->round_startgame_.empty())
     return true;
-    if (gameno <= this->round_startgame().back()) {
+  if (gameno <= this->round_startgame().back()) {
     for (vector<unsigned>::const_iterator s = this->round_startgame().begin();
          s != this->round_startgame().end();
          ++s) {
@@ -1947,11 +1956,11 @@ Party::write(ostream& ostr) const
       << "first startplayer = " << Unsigned(this->startplayer_first()) << "\n"
       << "\n";
   } else {
-  ostr << "# first seed (setting) = " << Unsigned(this->seed_first()) << "\n"
-    << "# first startplayer (setting) = " << Unsigned(this->startplayer_first()) << "\n"
-    << "first seed = " << Unsigned(this->real_seed_first()) << "\n"
-    << "first startplayer = " << Unsigned(this->real_startplayer_first()) << "\n"
-    << "\n";
+    ostr << "# first seed (setting) = " << Unsigned(this->seed_first()) << "\n"
+      << "# first startplayer (setting) = " << Unsigned(this->startplayer_first()) << "\n"
+      << "first seed = " << Unsigned(this->real_seed_first()) << "\n"
+      << "first startplayer = " << Unsigned(this->real_startplayer_first()) << "\n"
+      << "\n";
   }
 
   ostr << "rules \n"
@@ -2230,6 +2239,7 @@ throw (ReadException)
            gs = game_summaries.begin();
            gs != game_summaries.end();
            ++gs, ++gameno) {
+        // check for a new round
         if (   (gameno > 0)
             && ((*gs)->startplayer_no() == this->real_startplayer_first())
             && (this->last_game_summary().startplayer_no()
@@ -2237,18 +2247,29 @@ throw (ReadException)
             && !this->is_duty_soli_round()) {
           this->round_startgame_.push_back(this->finished_games());
         }
-        this->add_game_summary(*gs);
-#ifdef DKNOF
-        COUT << endl;
-        CLOG << '\n' << **gs << endl;
-        for (unsigned i = 0; i < this->bock_multipliers().size(); ++i) {
-          CLOG << i << ": " << this->bock_multipliers()[i] << '\n';
-          if (this->bock_multipliers()[i] == 0)
-            SEGFAULT;
+        // check for duty soli round
+        if (!this->is_duty_soli_round()
+            && (   (   this->rule()(Rule::NUMBER_OF_ROUNDS_LIMITED)
+                    && (this->roundno()
+                        >= this->rule()(Rule::NUMBER_OF_ROUNDS)) )
+                || (   this->rule()(Rule::POINTS_LIMITED)
+                    && (this->remaining_points() <= 0) )
+               ) ) {
+          this->duty_soli_round_ = this->roundno();
         }
-#endif
+        this->add_game_summary(*gs);
       } // for (gs \in game_summaries)
 
+      // We have to check for a new round because of the summary window after loading a party
+      // check for a new round
+      if (   (gameno > 0)
+          && (this->last_game_summary().startplayer_no()
+              != this->real_startplayer_first())
+          && (this->last_game_summary().next_startplayer_no()
+              == this->real_startplayer_first())
+          && !this->is_duty_soli_round()) {
+        this->round_startgame_.push_back(this->finished_games());
+      }
       if (!this->is_duty_soli_round()
           && (   (   this->rule()(Rule::NUMBER_OF_ROUNDS_LIMITED)
                   && (this->roundno()
@@ -2485,7 +2506,19 @@ Party::play()
 
   try {
     while (::game_status == PARTY_PLAY) {
-      // check that the party is not finished, yet
+      // check for a new round
+      if (   (this->gameno() > 0)
+          && (this->startplayer() == this->real_startplayer_first())
+          && !this->is_duty_soli_round()
+          && !this->game_summaries().back()->startplayer_stays()) {
+        // new round
+        // when a party is loaded, the round startgame is already set
+        if (this->round_startgame().back() < this->finished_games())
+          this->round_startgame_.push_back(this->finished_games());
+        ::ui->party_start_round(this->roundno());
+      } // if (new round)
+
+      // check for duty soli round
       if (!this->is_duty_soli_round()
           && (   (   this->rule()(Rule::NUMBER_OF_ROUNDS_LIMITED)
                   && (this->roundno()
@@ -2501,15 +2534,6 @@ Party::play()
         ::game_status = GAMESTATUS::PARTY_FINISHED;
         break;
       }
-
-      if (   (this->gameno() > 0)
-          && (this->startplayer() == this->real_startplayer_first())
-          && !this->is_duty_soli_round()
-          && !this->game_summaries().back()->startplayer_stays()) {
-        // new round
-        this->round_startgame_.push_back(this->finished_games());
-        ::ui->party_start_round(this->roundno());
-      } // if (new round)
 
       if (this->is_duty_soli_round()) {
         if (   !this->game_summaries_.empty()

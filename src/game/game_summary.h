@@ -67,6 +67,8 @@ class GameSummary {
     bool is_lust_solo() const;
     // whether the startplayer is not incremented
     bool startplayer_stays() const;
+    // the number of the next startplayer
+    unsigned next_startplayer_no() const;
 
     // the points the player has made with tricks
     unsigned trick_points(unsigned const playerno) const;

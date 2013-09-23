@@ -593,7 +593,7 @@ Game::is_real_solo() const
 } // bool Game::is_real_solo()
 
 /**
- ** -> result
+ ** sets whether this is a duty solo
  **
  ** @param	-
  **
@@ -601,34 +601,37 @@ Game::is_real_solo() const
  **
  ** @author	Diether Knof
  **
- ** @version	0.7.7
+ ** @version	0.7.12
  **/
 bool
-Game::is_duty_solo() const
+Game::set_is_duty_solo()
 {
+  this->is_duty_solo_ = false;
+
   if (   this->party().is_duty_soli_round()
-      && (::game_status <= GAMESTATUS::GAME_RESERVATION))
+      && (::game_status <= GAMESTATUS::GAME_RESERVATION)) {
+    this->is_duty_solo_ = true;
     return true;
+  }
 
-  if (!this->is_real_solo())
-    return false;
+  if (this->is_real_solo()) {
+    Player const& soloplayer = (  (::game_status <= GAMESTATUS::GAME_RESERVATION)
+                                ? this->player_current()
+                                : this->soloplayer());
+    if (   GAMETYPE::is_color_solo(this->type())
+        && this->party().remaining_duty_color_soli(soloplayer))
+      this->is_duty_solo_ = true;
 
-  Player const& soloplayer = (  (::game_status <= GAMESTATUS::GAME_RESERVATION)
-                              ? this->player_current()
-                              : this->soloplayer());
-  if (   GAMETYPE::is_color_solo(this->type())
-      && this->party().remaining_duty_color_soli(soloplayer))
-    return true;
+    if (   GAMETYPE::is_picture_solo(this->type())
+        && this->party().remaining_duty_picture_soli(soloplayer))
+      this->is_duty_solo_ = true;
 
-  if (   GAMETYPE::is_picture_solo(this->type())
-      && this->party().remaining_duty_picture_soli(soloplayer))
-    return true;
+    if (this->party().remaining_duty_free_soli(soloplayer))
+      this->is_duty_solo_ = true;
+  }
 
-  if (this->party().remaining_duty_free_soli(soloplayer))
-    return true;
-
-  return false;
-} // bool Game::is_duty_solo()
+  return this->is_duty_solo();
+} // bool Game::set_is_duty_solo()
 
 /**
  ** -> result

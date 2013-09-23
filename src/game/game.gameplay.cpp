@@ -75,6 +75,7 @@ redistribute: // if the cards have to be redistributed
        ++p)
     (*p)->game_open(*this);
 
+  this->set_is_duty_solo();
   if (::game_status == GAME_REDISTRIBUTE) {
     ::game_status = GAMESTATUS::GAME_NEW;
     this->teaminfo_reset();
@@ -111,6 +112,7 @@ redistribute: // if the cards have to be redistributed
   else
     this->player_current_ = const_cast<Player*>(&this->startplayer());
 
+  this->set_is_duty_solo();
   if (!this->isvirtual())
     ::ui->game_start();
   for (vector<Player*>::iterator player = this->players().begin();

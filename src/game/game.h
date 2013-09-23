@@ -105,8 +105,8 @@ class Game {
   bool is_solo() const;
   // whether this is a real solo
   bool is_real_solo() const;
-  // whether this is a duty solo
-  bool is_duty_solo() const;
+  // set whether this is a duty solo
+  bool set_is_duty_solo();
   // whether it is a marriage and still undetermined
   bool is_undetermined_marriage() const;
 
@@ -451,6 +451,8 @@ class Game {
   PRIV_VAR_R(vector<list<Card> >, cards);
   // player, who is playing a solo (NULL, if no one)
   PRIV_VAR_P(Player, soloplayer);
+  // whether this is a duty solo
+  PRIV_VAR_R(bool, is_duty_solo);
   // which trick selects the team
   PRIV_VAR_R(MarriageSelector, marriage_selector);
   // in which trick the marriage has been determined

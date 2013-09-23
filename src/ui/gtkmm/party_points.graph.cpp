@@ -37,6 +37,7 @@
 
 #include "../../party/party.h"
 #include "../../party/rule.h"
+#include "../../game/game.h"
 
 #include "../../utils/string.h"
 
@@ -298,48 +299,44 @@ namespace UI_GTKMM_NS {
 	  int const points = party.pointsum_till_game(g, p);
 	  if (points < min_points)
 	    min_points = points;
-	  if (points > max_points)
-	    max_points = points;
-	} // for (p < party.playerno())
+          if (points > max_points)
+            max_points = points;
+        } // for (p < party.playerno())
       } // for (g < played_gamesno)
       if (max_points == min_points)
-	max_points += 1;
+        max_points += 1;
 
       // how many games to display
       unsigned gamesno = UINT_MAX;
-      if (party.is_last_game())
-	gamesno = played_gamesno;
-
-      if (party.rule()(Rule::NUMBER_OF_ROUNDS_LIMITED))
-	gamesno = std::min(gamesno,
-			   party.round_startgame(party.rule()(Rule::NUMBER_OF_ROUNDS)));
-      if (   party.rule()(Rule::POINTS_LIMITED)
-	  && (party.points() > 0) )
-	gamesno = std::min(gamesno,
-			   std::max( (  (party.rule()(Rule::POINTS)
-					 * (played_gamesno + 1))
-				      / static_cast<int>(party.points())),
-				    played_gamesno + 1));
-
-      bool const show_duty_round
-        = (   (gamesno < UINT_MAX)
-           && (gamesno >= party.round_startgame(1))
-           && (   party.is_duty_soli_round()
-               || party.remaining_duty_soli() ));
-
-#ifdef OUTDATED
-      if (show_duty_round)
-        gamesno += party.remaining_duty_soli();
-#endif
-      gamesno += (party.playerno() * party.rule()(Rule::NUMBER_OF_DUTY_SOLI));
+      if (party.is_last_game()) {
+        gamesno = played_gamesno;
+        if (::game_status < GAMESTATUS::GAME_FINISHED)
+          gamesno += 1;
+      } else {
+        if (party.rule()(Rule::NUMBER_OF_ROUNDS_LIMITED))
+          gamesno = std::min(gamesno,
+                             party.round_startgame(party.rule()(Rule::NUMBER_OF_ROUNDS)));
+        if (   party.rule()(Rule::POINTS_LIMITED)
+            && (party.points() > 0) )
+          gamesno = std::min(gamesno,
+                             std::max( (  (party.rule()(Rule::POINTS)
+                                           * (played_gamesno + 1))
+                                        / static_cast<int>(party.points())),
+                                      played_gamesno + 1));
+        if (gamesno < UINT_MAX) {
+          gamesno += party.remaining_duty_soli();
+          if (   (::game_status == GAMESTATUS::GAME_FINISHED)
+              && party.game().is_duty_solo())
+            gamesno += 1;
+        }
+      } // if (party.is_last_game())
 
       if (gamesno == UINT_MAX)
         gamesno = played_gamesno;
       if (gamesno < party.round_startgame(1))
         gamesno = party.round_startgame(1);
       // how many rounds to display
-      unsigned const roundsno = (party.round_of_game(gamesno)
-                                 - (show_duty_round ? 1 : 0) );
+      unsigned const roundsno = party.round_of_game(gamesno);
 
 
       // layout:
