@@ -45,7 +45,7 @@ namespace DK {
 	static Date* new_(std::string const& s);
 
       public:
-	// constructor (current date)
+	// constructor (compilation date)
 	Date();
 	// constructor
 	Date(int const year, unsigned const month, unsigned const day);

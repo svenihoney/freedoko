@@ -164,7 +164,7 @@ main(int argc, char* argv[])
     ::all_versions.push_back(new Version(0,7,9,     Date(2011,  3,  6), true));
     ::all_versions.push_back(new Version(0,7,10,    Date(2011,  8, 14), true));
     ::all_versions.push_back(new Version(0,7,11,    Date(2011, 12, 18), true));
-    ::all_versions.push_back(new Version(0,7,12,    Date(2011, 12, 18), false
+    ::all_versions.push_back(new Version(0,7,12,    Date(), false
 #ifdef VERSION_DESCRIPTION
                                          , VERSION_DESCRIPTION
 #endif
