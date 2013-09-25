@@ -228,3 +228,8 @@ ChangeLog::0.7.11        = \
 	* Verlängerung der Lizenz des Altenburg-Kartensatzes\n\
 	* Fehlerkorrekturen\n\
 	* Verbesserungen der KI, insbesondere stärkeres Abstechen
+
+# 0.7.12
+ChangeLog::0.7.12        = \
+	* Ablauf der Lizenz des Altenburg-Kartensatzes\n\
+	* Unterstützung von Symbolsätzen (siehe Einstellungen→Erscheinungsbild→Thema)

@@ -47,7 +47,7 @@
 #include "party_finished.h"
 #include "hand.h"
 #include "icongroup.h"
-#include "cardset_license.h"
+#include "license.h"
 #include "main_window.h"
 #ifdef USE_NETWORK
 #include "network.h"
@@ -100,7 +100,7 @@ namespace UI_GTKMM_NS {
    **
    ** @author    Diether Knof
    **
-   ** @version   0.6.1
+   ** @version   0.7.12
    **/
   void
     UI_GTKMM::cards_changed()
@@ -116,8 +116,8 @@ namespace UI_GTKMM_NS {
       if (this->icons)
         this->icons->update_managed();
 
-      if (this->cardset_license)
-        this->cardset_license->license_update();
+      if (this->license)
+        this->license->license_update();
 
       for (list<Base*>::iterator p = this->parts.begin();
            p != this->parts.end();
@@ -182,6 +182,9 @@ namespace UI_GTKMM_NS {
 
       if (this->table)
         this->table->icons_update();
+
+      if (this->license)
+        this->license->license_update();
 
       this->thrower.dec_depth();
 
@@ -565,6 +568,14 @@ namespace UI_GTKMM_NS {
           this->cards->load_back();
           this->cards_changed();
         }
+        break;
+
+      case Setting::ICONSET:
+        if (this->icons)
+          this->icons->load();
+
+        if (this->cards)
+          this->cards_changed();
         break;
 
       case Setting::OWN_HAND_ON_TABLE_BOTTOM:

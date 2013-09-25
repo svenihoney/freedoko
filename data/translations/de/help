@@ -7,7 +7,10 @@
 license					= Lizenz
 License::of cardset '%scardset%'	= Lizenz des Kartensatzes '%scardset%'
 
+
+program license				= Programmlizenz
 cardset license				= Kartensatzlizenz
+iconset license				= Symbolsatzlizenz
 
 version					= Version
 Version::%sversion% %tabout%		= \

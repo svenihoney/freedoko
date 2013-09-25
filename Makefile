@@ -309,18 +309,18 @@ release_source :
 	    $(RM) -r $$d; \
 	  fi; \
 	done
-	for d in logo.png icon.png translations rules ai cardsets backgrounds sounds; do \
+	for d in logo.png icon.png translations rules ai cardsets icongroups backgrounds sounds; do \
 	  mv $(RELEASE_TMP)/FreeDoko_$(VERSION)/$$d $(RELEASE_TMP)/FreeDoko_$(VERSION)/data/; \
 	done
 #         copy makefiles
-	for d in cardsets backgrounds; do \
+	for d in cardsets icongroups backgrounds; do \
 	  cp data/$$d/Makefile $(RELEASE_TMP)/FreeDoko_$(VERSION)/data/$$d/; \
 	done
 	for f in Makefile bin setup; do\
 	  cp -a data/$$f $(RELEASE_TMP)/FreeDoko_$(VERSION)/data/;\
 	  $(RM) -r `find $(RELEASE_TMP)/FreeDoko_$(VERSION)/data/ -name ".svn"`; \
 	done;
-	for d in translations rules ai cardsets backgrounds sounds; do \
+	for d in translations rules ai cardsets icongroups backgrounds sounds; do \
 	  if test -f $$d/Makefile; then \
 	    cp -a data/$$d/Makefile $(RELEASE_TMP)/FreeDoko_$(VERSION)/data/$$d/;\
 	  fi; \
@@ -359,7 +359,7 @@ install :
 #	Copying the program files
 	echo "Copying the program files"
 	mkdir -p $(DESTDIR)$(DATA_DIRECTORY)
-	for d in logo.png icon.png translations rules ai cardsets backgrounds sounds; do \
+	for d in logo.png icon.png translations rules ai cardsets icongroups backgrounds sounds; do \
 	  cp -a data/$$d $(DESTDIR)$(DATA_DIRECTORY)/; \
 	done
 	chgrp -R games $(DESTDIR)$(DATA_DIRECTORY)

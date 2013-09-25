@@ -49,7 +49,6 @@
 #include "chatter.h"
 #include "help.h"
 #include "license.h"
-#include "cardset_license.h"
 #include "changelog.h"
 #include "support.h"
 #include "about.h"
@@ -102,7 +101,6 @@ namespace UI_GTKMM_NS {
     game_debug(NULL),
     help(NULL),
     license(NULL),
-    cardset_license(NULL),
     changelog(NULL),
     chatter(NULL),
     about(NULL),
@@ -220,7 +218,6 @@ namespace UI_GTKMM_NS {
     delete this->changelog;
     delete this->help;
     delete this->license;
-    delete this->cardset_license;
     delete this->game_debug;
     delete this->players_db;
     delete this->party_settings;
@@ -298,7 +295,6 @@ namespace UI_GTKMM_NS {
       //   main_window < network_log
       //   network < party_settings
       this->license = new License(this);
-      this->cardset_license = new CardsetLicense(this);
       this->changelog = new ChangeLog(this);
       this->support = new Support(this);
       this->about = new About(this);

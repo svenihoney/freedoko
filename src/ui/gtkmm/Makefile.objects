@@ -62,7 +62,6 @@ OBJECTS = \
 	chatter.o \
 	help.o \
 	license.o \
-	cardset_license.o \
 	changelog.o \
 	support.o \
 	about.o \

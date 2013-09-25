@@ -50,8 +50,8 @@ namespace Gtk {
    **/
   FileMenu::FileMenu(sigc::slot1<void, string> signal_slot) :
     Menu(),
-  directories_(),
-  signal_slot_(signal_slot)
+    directories_(),
+    signal_slot_(signal_slot)
   {
     this->realize();
     this->signal_show().connect(sigc::mem_fun(*this, &FileMenu::update));
@@ -71,10 +71,10 @@ namespace Gtk {
    ** @version	0.5.4
    **/
   FileMenu::FileMenu(sigc::slot1<void, string> signal_slot,
-		     string const& directory) :
+                     string const& directory) :
     Menu(),
-  directories_(1, directory),
-  signal_slot_(signal_slot)
+    directories_(1, directory),
+    signal_slot_(signal_slot)
   {
     this->realize();
     this->signal_show().connect(sigc::mem_fun(*this, &FileMenu::update));
@@ -94,10 +94,10 @@ namespace Gtk {
    ** @version	0.5.4
    **/
   FileMenu::FileMenu(sigc::slot1<void, string> signal_slot,
-		     vector<string> const& directories) :
+                     vector<string> const& directories) :
     Menu(),
-  directories_(directories),
-  signal_slot_(signal_slot)
+    directories_(directories),
+    signal_slot_(signal_slot)
   {
     this->realize();
     this->signal_show().connect(sigc::mem_fun(*this, &FileMenu::update));
@@ -254,86 +254,86 @@ namespace Gtk {
     FileMenu::update()
     {
       { // remove all childs
-	Glib::ListHandle<Widget*> children = this->get_children();
+        Glib::ListHandle<Widget*> children = this->get_children();
 
-	for (Glib::ListHandle<Widget*>::iterator child = children.begin();
-	     child != children.end();
-	     child++)
-	  this->remove(**child);
+        for (Glib::ListHandle<Widget*>::iterator child = children.begin();
+             child != children.end();
+             child++)
+          this->remove(**child);
       } // remove all childs
 
       this->show_all();
 
       string* const subdirname
-	= static_cast<string*>(this->get_data("subdirname"));
+        = static_cast<string*>(this->get_data("subdirname"));
 
       bool first_directory = true;
       for (vector<string>::const_iterator directory
-	   = this->directories_.begin();
-	   directory != this->directories_.end();
-	   directory++) {
-	if (!Glib::file_test(*directory, Glib::FILE_TEST_EXISTS))
-	  continue;
+           = this->directories_.begin();
+           directory != this->directories_.end();
+           directory++) {
+        if (!Glib::file_test(*directory, Glib::FILE_TEST_EXISTS))
+          continue;
 
-	if (!first_directory)
-	  this->add(*(Gtk::manage(new Gtk::SeparatorMenuItem())));
-	else
-	  first_directory = false;
+        if (!first_directory)
+          this->add(*(Gtk::manage(new Gtk::SeparatorMenuItem())));
+        else
+          first_directory = false;
 
-	Glib::Dir dir(*directory);
+        Glib::Dir dir(*directory);
 
-	for (Glib::DirIterator filename = dir.begin();
-	     filename != dir.end();
-	     ++filename) {
+        for (Glib::DirIterator filename = dir.begin();
+             filename != dir.end();
+             ++filename) {
 #ifndef RELEASE
-	  if (*filename == ".svn")
-	    continue;
+          if (*filename == ".svn")
+            continue;
 #endif
-	  Gtk::MenuItem* item
-	    = Gtk::manage(new Gtk::MenuItem(*filename));
+          Gtk::MenuItem* item
+            = Gtk::manage(new Gtk::MenuItem(*filename));
 
-	  if (this->accept(*directory + "/" + *filename)) {
-	    dynamic_cast<Gtk::Label*>(item->get_child())->set_text(this->item_label((subdirname ? *subdirname : ""), *filename));
-	    if (subdirname)
-	      item->signal_activate().connect(sigc::bind<string>(this->signal_slot_, *subdirname + "/" + *filename));
-	    else
-	      item->signal_activate().connect(sigc::bind<string>(this->signal_slot_, *filename));
+          if (this->accept(*directory + "/" + *filename)) {
+            dynamic_cast<Gtk::Label*>(item->get_child())->set_text(this->item_label((subdirname ? *subdirname : ""), *filename));
+            if (subdirname)
+              item->signal_activate().connect(sigc::bind<string>(this->signal_slot_, *subdirname + "/" + *filename));
+            else
+              item->signal_activate().connect(sigc::bind<string>(this->signal_slot_, *filename));
 
-	    this->add(*item);
-	  } else { // if !(this->accept(*directory + "/" + *filename))
-	    if (Glib::file_test(*directory + "/" + *filename,
-				Glib::FILE_TEST_IS_DIR)) {
+            this->add(*item);
+          } else { // if !(this->accept(*directory + "/" + *filename))
+            if (Glib::file_test(*directory + "/" + *filename,
+                                Glib::FILE_TEST_IS_DIR)) {
 #if 0
-	      FileMenu* subdir = Gtk::manage(new FileMenu(this->signal_slot_,
-							  *directory
-							  + "/" + *filename));
+              FileMenu* subdir = Gtk::manage(new FileMenu(this->signal_slot_,
+                                                          *directory
+                                                          + "/" + *filename));
 #endif
-	      FileMenu* subdir
-		= Gtk::manage(this->create_new(*directory
-					       + "/" + *filename));
-	      if (subdirname)
-		subdir->set_data("subdirname", new string(*subdirname
-							  + "/" + *filename));
-	      else
-		subdir->set_data("subdirname", new string(*filename));
+              FileMenu* subdir
+                = Gtk::manage(this->create_new(*directory
+                                               + "/" + *filename));
+              if (subdirname)
+                subdir->set_data("subdirname", new string(*subdirname
+                                                          + "/" + *filename));
+              else
+                subdir->set_data("subdirname", new string(*filename));
 
-	      item->set_submenu(*subdir);
-	      this->add(*item);
-	      //item->show();
+              item->set_submenu(*subdir);
+              this->add(*item);
+              //item->show();
 
-	    } // if (Glib::file_test(*directory + "/" + *filename, Glib::FILE_TEST_IS_DIR))
-	  } // if !(this->accept(*directory + "/" + *filename))
-	} // for (filename \in dir)
+            } // if (Glib::file_test(*directory + "/" + *filename, Glib::FILE_TEST_IS_DIR))
+          } // if !(this->accept(*directory + "/" + *filename))
+        } // for (filename \in dir)
 
-	dir.close();
+        dir.close();
       } // for (directory \in this->directories_)
 
       if (this->get_children().size() == 0) {
-	// There is no child, so add a stop image.
-	Gtk::MenuItem* stop
-	  = Gtk::manage(new Gtk::MenuItem(*Gtk::manage(new Gtk::Image(Gtk::Stock::STOP, Gtk::ICON_SIZE_MENU))));
-	stop->set_sensitive(false);
-	this->add(*stop);
+        // There is no child, so add a stop image.
+        Gtk::MenuItem* stop
+          = Gtk::manage(new Gtk::MenuItem(*Gtk::manage(new Gtk::Image(Gtk::Stock::STOP, Gtk::ICON_SIZE_MENU))));
+        stop->set_sensitive(false);
+        this->add(*stop);
       } // if (this->get_children().size() == 1)
 
       this->show_all();

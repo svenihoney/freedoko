@@ -36,15 +36,15 @@
 
 #ifdef USE_NETWORK
 #ifdef RELEASE
-#define PROGRESS_PER_BASE (1.0 / 33)
-#else
 #define PROGRESS_PER_BASE (1.0 / 32)
+#else
+#define PROGRESS_PER_BASE (1.0 / 31)
 #endif
 #else
 #ifdef RELEASE
-#define PROGRESS_PER_BASE (1.0 / 31)
-#else
 #define PROGRESS_PER_BASE (1.0 / 30)
+#else
+#define PROGRESS_PER_BASE (1.0 / 29)
 #endif
 #endif
 // + 1 (Translations)

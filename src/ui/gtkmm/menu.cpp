@@ -47,7 +47,6 @@
 #include "bug_report_replay.h"
 #include "help.h"
 #include "license.h"
-#include "cardset_license.h"
 #include "changelog.h"
 #include "support.h"
 #include "about.h"
@@ -133,7 +132,6 @@ namespace UI_GTKMM_NS {
     help(NULL),
     help_index(NULL),
     license(NULL),
-    cardset_license(NULL),
     changelog(NULL),
     support(NULL),
     about(NULL),
@@ -373,11 +371,6 @@ namespace UI_GTKMM_NS {
                                     ::translation("Menu::Item::license")
                                     + "...");
 
-        this->cardset_license = Gtk::manage(new Gtk::ImageMenuItem("cardset license"));
-        this->ui->translations->add(*(dynamic_cast<Gtk::Label*>(this->cardset_license->get_child())),
-                                    ::translation("Menu::Item::cardset license")
-                                    + "...");
-
         this->changelog = Gtk::manage(new Gtk::ImageMenuItem("changelog"));
         this->ui->translations->add(*(dynamic_cast<Gtk::Label*>(this->changelog->get_child())),
                                     ::translation("Menu::Item::changelog")
@@ -456,7 +449,6 @@ namespace UI_GTKMM_NS {
       this->help->set_submenu(*this->help_menu);
       this->help_menu->append(*this->help_index);
       this->help_menu->append(*this->license);
-      this->help_menu->append(*this->cardset_license);
       this->help_menu->append(*this->changelog);
       this->help_menu->append(*this->support);
       this->help_menu->append(*this->about);
@@ -626,8 +618,6 @@ namespace UI_GTKMM_NS {
                                                                    &Help::show_manual));
         this->license->signal_activate().connect(sigc::mem_fun0(*this->ui->license,
                                                                 &Gtk::Window::present));
-        this->cardset_license->signal_activate().connect(sigc::mem_fun0(*(this->ui->cardset_license),
-                                                                        &Gtk::Window::present));
         this->changelog->signal_activate().connect(sigc::mem_fun0(*(this->ui->changelog),
                                                                   &Gtk::Window::present));
         this->about->signal_activate().connect(sigc::mem_fun0(*(this->ui->about),
@@ -763,11 +753,6 @@ namespace UI_GTKMM_NS {
                                        GDK_l,
                                        Gdk::CONTROL_MASK,
                                        Gtk::ACCEL_VISIBLE);
-        this->cardset_license->add_accelerator("activate",
-                                               this->main_window->get_accel_group(),
-                                               GDK_L,
-                                               Gdk::CONTROL_MASK,
-                                               Gtk::ACCEL_VISIBLE);
 #endif
       } // keys
 

@@ -76,12 +76,14 @@ namespace UI_GTKMM_NS {
 	MARRIAGE_CLUB,
 	MARRIAGE_SPADE,
 	MARRIAGE_HEART,
+	MARRIAGE_PARTNER,
 	GENSCHER,
 	POVERTY,
 	POVERTY_TRUMPS_0,
 	POVERTY_TRUMPS_1,
 	POVERTY_TRUMPS_2,
 	POVERTY_TRUMPS_3,
+	POVERTY_PARTNER,
 	SWINES_CLUB,
 	SWINES_SPADE,
 	SWINES_HEART,
@@ -232,8 +234,9 @@ namespace UI_GTKMM_NS {
       void load();
 
       Gdk::ScaledPixbufRotations load(Type const type);
-
     private:
+      Gdk::ScaledPixbufRotations load_from_file(string const name_a,
+                                                string const name_b = "");
       Gdk::ScaledPixbufRotations construct(Card const card1);
       Gdk::ScaledPixbufRotations construct(Card const card1,
 					   Card const card2);

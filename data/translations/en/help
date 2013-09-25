@@ -7,7 +7,9 @@
 license					= license
 License::of cardset '%scardset%'	= license of the cardset '%scardset%'
 
+program license				= program license
 cardset license				= cardset license
+iconset license				= iconset license
 
 version					= version
 Version::%sversion% %tabout%		= \

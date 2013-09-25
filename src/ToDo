@@ -7,6 +7,9 @@ Zur nächsten Version 0.7.12
   - Bilder in Dokumentation neu erstellen
 * Internetpräsenz
   - in freenet einstellen
+* Icongroups
+  - debian Paket
+* Soundsatz in Lizenzen mit aufnehmen
 
 
 * Monte Carlo: In den ersten Stichen nur zwei Karten durchgehen:
@@ -27,7 +30,6 @@ Zur nächsten Version 0.7.12
 \----/
 
 aktuell
-* Symbole: andere (Hochzeit: Ringe, Schweine: Schweine, Hyperschweine ?, Solist: Mensch-ärgere-Dich-Figur)
 * Kompilieren der .src.zip testen
 * mbrola: soundfiles
 
@@ -47,14 +49,20 @@ technisch
 Verbesserungen KI
 * best winning card: lowest trump card limit
 * CardsInformation/TeamInformation: Gewichtung immer wieder neu, um alle Informationen einfließen lassen zu können (z.B. hat nur Kreuz Zehn, daher ist das kein Pfund)
-* GameTree: Bei unbekannten Teams verschiedene Varianten durchprobieren
+* ChooseBestCard (Weighting): Alle Karten durchprobieren auslagern (Code ist für alle gleich)
+  - Nicht: MonteCarlo: Jab or Serve
+* ChooseBestCard: Bei unbekannten Teams verschiedene Varianten durchprobieren
 * KI generell: restliche Stiche gehen an den Gegner (z.B. Schweine): pfunde noch dem eigenen Team (auch Herz Zehn). Beispiel: ../Bugreports/ai/Choosebestcard/GameTree/111096.BugReport.FreeDoko
   Sollte vor allen Heuristiken greifen. Dabei auch prüfen, wie früh ich meine Punkte vergeben muss (bei drei Zehnen).
-* Heuristik "von oben ziehen" (für Endspiel!)
+* Endspielheuristiken
+  - Heuristik "von oben ziehen" (für Endspiel!)
+  - Karten gleich (da keine gegnerische dazwischen und gleiche Punkte, zum Beispiel Karo und Pik Dame: nimm die niedrige
+    o auch für ChooseBestCard: andere Karte nicht beachten
 
 Verbesserungen UI
 * Bug report: Teams der Spieler in Übersicht
 * Kartenvorschlag: gleich selber Karte wählen düfen (mehrere Threads)
+* Fehlermeldungen in ein Fenster zusammenfassen
 
 Dokumentation
 * Statistiken in Dokumentation (Hochzeit, ...)
@@ -65,3 +73,6 @@ Fehlerberichte
 * Heuristics: 016746 (Damensolo)
 * CardsInformation: Hochzeitler im Klärungsstich gibt seine höchsten Punkte
   ../Bugreports/ai/Heuristics/best_winning_card/259093.BugReport.FreeDoko
+
+DokoLounge
+* Doko zählt auch beim Solo

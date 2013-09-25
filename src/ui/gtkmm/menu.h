@@ -191,7 +191,6 @@ namespace UI_GTKMM_NS {
     Gtk::MenuItem* help;
     Gtk::ImageMenuItem* help_index;
     Gtk::ImageMenuItem* license;
-    Gtk::ImageMenuItem* cardset_license;
     Gtk::ImageMenuItem* changelog;
     Gtk::ImageMenuItem* support;
     Gtk::ImageMenuItem* about;

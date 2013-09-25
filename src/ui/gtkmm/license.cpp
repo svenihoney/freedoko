@@ -43,6 +43,7 @@
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/textview.h>
 #include <gtkmm/alignment.h>
+#include <gtkmm/notebook.h>
 
 namespace UI_GTKMM_NS {
 
@@ -60,7 +61,9 @@ namespace UI_GTKMM_NS {
   License::License(Base* const parent) :
     Base(parent),
   StickyDialog("License", false),
-  text(NULL),
+  program_text(NULL),
+  cardset_text(NULL),
+  iconset_text(NULL),
   close_button(NULL)
   {
     this->ui->add_window(*this);
@@ -89,7 +92,6 @@ namespace UI_GTKMM_NS {
   } // License::~License()
 
   /**
-   **
    ** create all subelements
    **
    ** @param     -
@@ -98,8 +100,7 @@ namespace UI_GTKMM_NS {
    ** 
    ** @author    Diether Knof
    **
-   ** @version   0.5.4
-   **
+   ** @version   0.7.12
    **/
   void
     License::init()
@@ -110,9 +111,11 @@ namespace UI_GTKMM_NS {
 
       this->set_skip_taskbar_hint();
 
-      this->text = Gtk::manage(new Gtk::TextView());
-      this->ui->translations->add(*this->text,
+      this->program_text = Gtk::manage(new Gtk::TextView());
+      this->ui->translations->add(*this->program_text,
 				    ::translation("%stext%", ::GPL_string));
+      this->cardset_text = Gtk::manage(new Gtk::TextView());
+      this->iconset_text = Gtk::manage(new Gtk::TextView());
 
       this->close_button
 	= Gtk::manage(new Gtk::StockButton(Gtk::Stock::CLOSE, "close"));
@@ -137,22 +140,54 @@ namespace UI_GTKMM_NS {
 	  = Gtk::manage(new Gtk::Alignment(Gtk::ALIGN_CENTER, Gtk::ALIGN_CENTER,
 					   0, 0));
 	alignment->set_border_width(parent->ui->logo->get_width() / 20);
-	Gtk::Image* image = Gtk::manage(new Gtk::Image(parent->ui->logo));
-	alignment->add(*image);
+        Gtk::Image* image = Gtk::manage(new Gtk::Image(parent->ui->logo));
+        alignment->add(*image);
 
-	this->get_vbox()->pack_start(*alignment, Gtk::PACK_SHRINK);
+        this->get_vbox()->pack_start(*alignment, Gtk::PACK_SHRINK);
       } // the image
-      { // the text
-	Gtk::ScrolledWindow* text_window = Gtk::manage(new Gtk::ScrolledWindow());
-	text_window->add(*(this->text));
-	text_window->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-	this->text->set_editable(false);
-	this->text->set_wrap_mode(Gtk::WRAP_WORD);
-	this->text->set_cursor_visible(false);
+      { // a notebook whith the different licenses
+        Gtk::Notebook* notebook = Gtk::manage(new Gtk::Notebook);
+        //notebook->set_tab_pos(Gtk::POS_LEFT);
+        { // the program text
+          Gtk::ScrolledWindow* text_window = Gtk::manage(new Gtk::ScrolledWindow());
+          text_window->add(*(this->program_text));
+          text_window->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+          this->program_text->set_editable(false);
+          this->program_text->set_wrap_mode(Gtk::WRAP_WORD);
+          this->program_text->set_cursor_visible(false);
 
-	this->get_vbox()->add(*text_window);
-      } // the text
+          Gtk::Label* label = Gtk::manage(new Gtk::Label("program license"));
+          this->ui->translations->add(*label, ::translation("program license"));
+          notebook->append_page(*text_window, *label);
+        } // the program text
+        { // the cardset text
+          Gtk::ScrolledWindow* text_window = Gtk::manage(new Gtk::ScrolledWindow());
+          text_window->add(*(this->cardset_text));
+          text_window->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+          this->cardset_text->set_editable(false);
+          this->cardset_text->set_wrap_mode(Gtk::WRAP_WORD);
+          this->cardset_text->set_cursor_visible(false);
 
+          Gtk::Label* label = Gtk::manage(new Gtk::Label("iconset license"));
+          this->ui->translations->add(*label, ::translation("cardset license"));
+          notebook->append_page(*text_window, *label);
+        } // the cardset text
+        { // the iconset text
+          Gtk::ScrolledWindow* text_window = Gtk::manage(new Gtk::ScrolledWindow());
+          text_window->add(*(this->iconset_text));
+          text_window->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+          this->iconset_text->set_editable(false);
+          this->iconset_text->set_wrap_mode(Gtk::WRAP_WORD);
+          this->iconset_text->set_cursor_visible(false);
+
+          Gtk::Label* label = Gtk::manage(new Gtk::Label("iconset license"));
+          this->ui->translations->add(*label, ::translation("iconset license"));
+          notebook->append_page(*text_window, *label);
+        } // the iconset text
+        this->get_vbox()->add(*notebook);
+      } // a notebook whith the different licenses
+
+      this->license_update();
       this->show_all_children();
 
       // signals
@@ -160,6 +195,36 @@ namespace UI_GTKMM_NS {
 
       return ;
     } // void License::init()
+
+  /**
+   ** updates the license
+   **
+   ** @param     -
+   **
+   ** @return    -
+   **
+   ** @author    Diether Knof
+   **
+   ** @version   0.7.12
+   **/
+  void
+    License::license_update()
+    {
+      if (!this->is_realized())
+        return ;
+
+      if (::setting(Setting::CARDSET_LICENSE).empty())
+        this->cardset_text->get_buffer()->set_text("???");
+      else
+        this->cardset_text->get_buffer()->set_text(::setting(Setting::CARDSET_LICENSE));
+
+      if (::setting(Setting::ICONSET_LICENSE).empty())
+        this->iconset_text->get_buffer()->set_text("???");
+      else
+        this->iconset_text->get_buffer()->set_text(::setting(Setting::ICONSET_LICENSE));
+
+      return ;
+    } // void License::license_update()
 
 } // namespace UI_GTKMM_NS
 

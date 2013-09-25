@@ -319,7 +319,7 @@ finish party			= beende Turnier
 
 Cannot construct the icon for the announcement '%tannouncement%'.\n\
 Keeping the old one.	= \
-	Kann das Symbol für die Ansage'%tannouncement%' nicht erzeuge.\n\
+	Kann das Symbol für die Ansage '%tannouncement%' nicht erzeugen.\n\
 	Behalte das alte Symbol.
 
 # replay bug report

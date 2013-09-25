@@ -138,6 +138,8 @@ Setting::cards height			= Kartenhöhe
 #   theme
 Setting::Group::appearance		= Erscheinungsbild
 Setting::cardset			= Kartenspiel
+Setting::iconset from cardset		= Symbole vom Kartensatz
+Setting::iconset			= Symbole
 Setting::background			= Hintergrund
 Setting::cards back			= Kartenrückseite
 
@@ -180,6 +182,7 @@ Setting::sound extension		= Dateiendung der Sprachdateien
 Setting::cardsets directory		= Kartenspielverzeichnis
 Setting::cards directory		= Kartenverzeichnis
 Setting::cards back directory		= Kartenrückseitenverzeichnis
+Setting::iconsets directory		= Symbolsatzverzeichnis
 Setting::icons directory		= Symbolverzeichnis
 Setting::backgrounds directory		= Hintergrundverzeichnis
 Setting::sounds directory		= Soundverzeichnis

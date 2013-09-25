@@ -102,6 +102,7 @@ namespace UI_GTKMM_NS {
       void background_selected(string const background);
       void cardset_selected(string const cardset);
       void cards_back_selected(string const cards_back);
+      void iconset_selected(string const iconset);
       
       void font_accepted(Gtk::FontSelectionDialog* const font_selector);
       void font_declined(Gtk::FontSelectionDialog* const font_selector);
@@ -147,6 +148,7 @@ namespace UI_GTKMM_NS {
       Gtk::FileMenu* background_menu;
       Gtk::FileMenu* cardset_menu;
       Gtk::FileMenu* cards_back_menu;
+      Gtk::FileMenu* iconset_menu;
       vector<Gtk::FontSelectionDialog*> font_selector;
       vector<Gtk::ColorSelectionDialog*> color_selector;
 

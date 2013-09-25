@@ -1,3 +1,7 @@
+2013-09-25 Diether Knof
+	- added support for separate iconset
+	- merged licenses (program, cardset, iconset) into one window
+
 2013-09-23 Diether Knof
 	- fixed display of party points graph
 

@@ -144,6 +144,7 @@ class Setting {
       LANGUAGE,
       CARDSET,
       CARDS_BACK,
+      ICONSET,
       BACKGROUND,
       NAME_FONT,
       NAME_FONT_COLOR,
@@ -166,6 +167,7 @@ class Setting {
       STRING_CONST_FIRST = STRING_LAST + 1,
 
       CARDSET_LICENSE = STRING_CONST_FIRST,
+      ICONSET_LICENSE,
 
       PUBLIC_DATA_DIRECTORY,
       PRIVATE_DATA_DIRECTORY,
@@ -179,6 +181,8 @@ class Setting {
       CARDSETS_DIRECTORY,
       CARDS_DIRECTORY,
       CARDS_BACK_DIRECTORY,
+      ICONS_FROM_CARDSET_DIRECTORY,
+      ICONSETS_DIRECTORY,
       ICONS_DIRECTORY,
       BACKGROUNDS_DIRECTORY,
       SOUNDS_DIRECTORY,
@@ -310,6 +314,8 @@ class Setting {
     vector<string> string_;
     // the cardset license (string const setting)
     string cardset_license_;
+    // the iconset license (string const setting)
+    string iconset_license_;
     // cards order setting
     CardsOrder* cards_order_;
 

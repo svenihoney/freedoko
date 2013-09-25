@@ -55,8 +55,13 @@ namespace UI_GTKMM_NS {
     private:
       void init();
 
+    public:
+     void license_update(); 
+
     private:
-      Gtk::TextView* text;
+      Gtk::TextView* program_text;
+      Gtk::TextView* cardset_text;
+      Gtk::TextView* iconset_text;
       Gtk::StockButton* close_button;
 
     private: // unused

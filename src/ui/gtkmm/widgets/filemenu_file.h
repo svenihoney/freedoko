@@ -60,9 +60,12 @@ namespace Gtk {
 
       virtual bool accept(string const filename) const
       {
-        return (Glib::file_test(filename, Glib::FILE_TEST_IS_DIR)
-                && Glib::file_test(filename + "/" + this->file,
-                                   Glib::FILE_TEST_IS_REGULAR));
+        if (this->file == ".")
+          return (Glib::file_test(filename, Glib::FILE_TEST_IS_DIR));
+        else
+          return (Glib::file_test(filename, Glib::FILE_TEST_IS_DIR)
+                  && Glib::file_test(filename + "/" + this->file,
+                                     Glib::FILE_TEST_IS_REGULAR));
       }
 
     private:

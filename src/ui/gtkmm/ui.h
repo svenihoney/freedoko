@@ -320,7 +320,6 @@ namespace UI_GTKMM_NS {
 
     Help* help;
     License* license;
-    CardsetLicense* cardset_license;
     ChangeLog* changelog;
     Chatter* chatter;
     Support* support;

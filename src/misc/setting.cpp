@@ -373,6 +373,9 @@ Setting::set_to_hardcoded()
       this->set(CARDS_BACK, *back);
     }
   } // set the cards back
+  { // set the icons
+    this->set(ICONSET, "default");
+  } // set the icons
   { // set the background
     list<string> backgrounds;
 
@@ -478,11 +481,12 @@ Setting::set_data_directories()
   // make each name unique
   for (list<string>::iterator d = this->data_directories_.begin();
        d != this->data_directories_.end();
-      )
-    if (std::find(this->data_directories_.begin(), d, *d) != d)
-      d = this->data_directories_.erase(d);
-    else
-      ++d;
+      ++d)
+    if (   (d->size() >= 2)
+        && ((*d)[0] == '.')
+        && ((*d)[1] == '/'))
+      d->erase(0, 2);
+  std::unique(this->data_directories_.begin(), this->data_directories_.end());
 
   return ;
 } // Setting::set_data_directories()
@@ -501,10 +505,15 @@ Setting::set_data_directories()
 void
 Setting::add_data_directory(string const& path)
 {
+  string d = (   (path.length() >= 2)
+              && (path[0] == '.')
+              && (path[1] == '/')
+              ? string(path, 2)
+              : path);
   if (std::find(this->data_directories_.begin(),
-                this->data_directories_.end(), path)
+                this->data_directories_.end(), d)
       == this->data_directories_.end()) {
-    this->data_directories_.push_back(path);
+    this->data_directories_.push_back(d);
     ::translator.dir_scan();
     ::translator.load();
   }
@@ -512,7 +521,7 @@ Setting::add_data_directory(string const& path)
 } // void Setting::add_data_directory(string const& path)
 
 /**
- ** write the data diretories in the stream, separated by newlines
+ ** write the data directories in the stream, separated by newlines
  **
  ** @param	ostr     stream to write into
  ** @param	indent   indention of each line, default: ""
@@ -528,7 +537,7 @@ Setting::write_data_directories(ostream& ostr, string const& indent) const
 {
   for (list<string>::const_iterator d = this->data_directories_.begin();
        d != this->data_directories_.end();
-      ++d)
+       ++d)
     ostr << indent << *d << '\n';
   return ostr;
 } // ostream& Setting::write_data_directories(ostream& ostr, string const& indent)
@@ -550,7 +559,7 @@ Setting::data_directories_string(string const& indent) const
   string l;
   for (list<string>::const_iterator d = this->data_directories_.begin();
        d != this->data_directories_.end();
-      ++d)
+       ++d)
     l += indent + *d + "\n";
   return l;
 } // string Setting::data_directories_string(string const& indent)
@@ -740,6 +749,9 @@ Setting::operator()(TypeString const type) const
     case CARDS_BACK:
       value = "default";
       break;
+    case ICONSET:
+      value = "default";
+      break;
     case BACKGROUND:
       value = "default";
       break;
@@ -879,6 +891,10 @@ Setting::operator()(TypeString const type) const
     value = ((*this)(CARDS_BACK_DIRECTORY) + "/"
              + value);
     break;
+  case ICONSET:
+    value = ((*this)(ICONSETS_DIRECTORY) + "/"
+             + value);
+    break;
   case BACKGROUND:
     value = ((*this)(BACKGROUNDS_DIRECTORY) + "/"
              + value);
@@ -919,6 +935,8 @@ Setting::operator()(TypeStringConst const type) const
   switch(type) {
   case CARDSET_LICENSE:
     return this->value(CARDSET_LICENSE);
+  case ICONSET_LICENSE:
+    return this->value(ICONSET_LICENSE);
   case PUBLIC_DATA_DIRECTORY:
     return DK::Utils::File::filename_expand(this->value(PUBLIC_DATA_DIRECTORY));
   case PRIVATE_DATA_DIRECTORY:
@@ -951,6 +969,11 @@ Setting::operator()(TypeStringConst const type) const
     return ((*this)(CARDSET) + "/"
             + this->value(type));
   case ICONS_DIRECTORY:
+    return (this->value(ICONSETS_DIRECTORY)
+            + "/" + this->value(ICONSET));
+  case ICONSETS_DIRECTORY:
+    return this->value(type);
+  case ICONS_FROM_CARDSET_DIRECTORY:
     return ((*this)(CARDSET) + "/"
             + this->value(type));
   case BACKGROUNDS_DIRECTORY:
@@ -1313,6 +1336,8 @@ Setting::path(TypeStringConst const type) const
   switch (type) {
   case CARDSET_LICENSE:
     return "";
+  case ICONSET_LICENSE:
+    return "";
 
   case PUBLIC_DATA_DIRECTORY:
   case PRIVATE_DATA_DIRECTORY:
@@ -1349,6 +1374,8 @@ Setting::path(TypeStringConst const type) const
   case CARDSETS_DIRECTORY:
   case CARDS_DIRECTORY:
   case CARDS_BACK_DIRECTORY:
+  case ICONS_FROM_CARDSET_DIRECTORY:
+  case ICONSETS_DIRECTORY:
   case ICONS_DIRECTORY:
   case BACKGROUNDS_DIRECTORY:
   case SOUNDS_DIRECTORY:
@@ -1565,6 +1592,8 @@ Setting::value(TypeStringConst const type) const
   switch(type) {
   case CARDSET_LICENSE:
     return this->cardset_license_;
+  case ICONSET_LICENSE:
+    return this->iconset_license_;
   case PUBLIC_DATA_DIRECTORY:
     {
       string value;
@@ -1670,8 +1699,12 @@ Setting::value(TypeStringConst const type) const
     return "cards";
   case CARDS_BACK_DIRECTORY:
     return "backs";
-  case ICONS_DIRECTORY:
+  case ICONS_FROM_CARDSET_DIRECTORY:
     return "icons";
+  case ICONSETS_DIRECTORY:
+    return "iconsets";
+  case ICONS_DIRECTORY:
+    return "default";
   case BACKGROUNDS_DIRECTORY:
     return "backgrounds";
   case SOUNDS_DIRECTORY:
@@ -1992,6 +2025,7 @@ Setting::set(TypeString const type, string const& value)
     case BACKGROUND:
     case CARDS_BACK:
     case CARDSET:
+    case ICONSET:
     case LANGUAGE:
       if (this->path(type).empty()) {
         this->string_[type - STRING_FIRST] = old_value;
@@ -2011,6 +2045,7 @@ Setting::set(TypeString const type, string const& value)
       ::translator.load();
       break;
     case CARDSET:
+    case ICONSET:
       { // read the license
         list<string> license_files;
         license_files.push_back("copyright");
@@ -2019,35 +2054,47 @@ Setting::set(TypeString const type, string const& value)
         license_files.push_back("license");
         license_files.push_back("License");
         license_files.push_back("LICENSE");
+        license_files.push_back("copyright.txt");
+        license_files.push_back("Copyright.txt");
+        license_files.push_back("COPYRIGHT.txt");
+        license_files.push_back("license.txt");
+        license_files.push_back("License.txt");
+        license_files.push_back("LICENSE.txt");
 
-        string directory = this->path(CARDSET);
+        string directory = this->path(type);
 
-        this->cardset_license_.clear();
+        string license_text;
 
         for (list<string>::const_iterator license
              = license_files.begin();
              ((license != license_files.end())
-              && this->cardset_license_.empty());
+              && license_text.empty());
              license++) {
 
           if (DK::Utils::File::isfile(directory + "/"
                                       + *license)) {
-            this->cardset_license_ = DK::Utils::String::getfile(directory + "/"
-                                                                + *license);
+            license_text = DK::Utils::String::getfile(directory + "/"
+                                                      + *license);
           } else if (DK::Utils::File::isfile(directory + "/../"
                                              + *license)) {
-            this->cardset_license_ = DK::Utils::String::getfile(directory + "/../"
-                                                                + *license);
+            license_text = DK::Utils::String::getfile(directory + "/../"
+                                                      + *license);
           } // if (license found)
         } // for (license \in license_files)
 
-        if (this->cardset_license_.empty())
+        if (license_text.empty())
           // no license found
-          this->cardset_license_ = "license not found :-(";
+          license_text = "license not found :-(";
 
+        if (type == CARDSET) {
+          this->cardset_license_ = license_text;
+        } else {
+          this->iconset_license_ = license_text;
+        }
       } // read the license
-
-      this->search_cards_back();
+      if (type == CARDSET) {
+        this->search_cards_back();
+      }
       break;
 
     default:
@@ -2619,13 +2666,10 @@ Setting::update_path(TypeString const type)
                          + this->value(CARDS_BACK)
                          + "." + (*this)(GRAPHIC_EXTENSION));
     // check for the file
-    // check for the file
-    ifstream istr(file.c_str());
-    if (istr.good()) {
+    if (DK::Utils::File::isfile(file)) {
       this->string_path_[type - STRING_FIRST] = file;
       break;
     }
-
 
     list<string> const datadir = this->data_directories();
 
@@ -2636,9 +2680,7 @@ Setting::update_path(TypeString const type)
                            + this->value(CARDS_BACK_DIRECTORY) + "/"
                            + this->value(CARDS_BACK)
                            + "." + (*this)(GRAPHIC_EXTENSION));
-      // check for the file
-      ifstream istr(file.c_str());
-      if (istr.good()) {
+      if (DK::Utils::File::isfile(file)) {
         this->string_path_[type - STRING_FIRST] = file;
         break;
       }
@@ -2646,6 +2688,22 @@ Setting::update_path(TypeString const type)
 
     break;
   } // case CARDS_BACK:
+
+  case ICONSET: {
+    // search a directory
+    list<string> const datadir = this->data_directories();
+
+    for (list<string>::const_iterator dd = datadir.begin();
+         dd != datadir.end();
+         dd++) {
+      string const dir = (*dd + "/" + (*this)(ICONSET));
+      if (DK::Utils::File::isdirectory(dir)) {
+        this->string_path_[type - STRING_FIRST] = dir;
+        break;
+      }
+    } // for (dd \in datadir)
+    break;
+  } // case ICONSET:
 
   case BACKGROUND: {
     // search the directory
@@ -2660,8 +2718,7 @@ Setting::update_path(TypeString const type)
                            + "." + (*this)(GRAPHIC_EXTENSION)
                           );
       // check for the file
-      ifstream istr(file.c_str());
-      if (istr.good()) {
+      if (DK::Utils::File::isfile(file)) {
         this->string_path_[type - STRING_FIRST] = file;
         break;
       }
@@ -2888,6 +2945,9 @@ Setting::write(ostream& ostr) const
     << ::name(CARDS_BACK) << " = "
     << this->value(CARDS_BACK) << "\n"
 
+    << ::name(ICONSET) << " = "
+    << this->value(ICONSET) << "\n"
+
     << ::name(BACKGROUND) << " = "
     << this->value(BACKGROUND) << "\n"
 
@@ -3085,6 +3145,8 @@ name(Setting::TypeString const& type)
     return "cardset";
   case Setting::CARDS_BACK:
     return "cards back";
+  case Setting::ICONSET:
+    return "iconset";
   case Setting::BACKGROUND:
     return "background";
   case Setting::NAME_FONT:
@@ -3129,6 +3191,8 @@ name(Setting::TypeStringConst const& type)
   switch(type) {
   case Setting::CARDSET_LICENSE:
     return "cardset license";
+  case Setting::ICONSET_LICENSE:
+    return "iconset license";
   case Setting::PUBLIC_DATA_DIRECTORY:
     return "public data directory";
   case Setting::PRIVATE_DATA_DIRECTORY:
@@ -3153,6 +3217,10 @@ name(Setting::TypeStringConst const& type)
     return "cards directory";
   case Setting::CARDS_BACK_DIRECTORY:
     return "cards back directory";
+  case Setting::ICONS_FROM_CARDSET_DIRECTORY:
+    return "icons from cardsets directory";
+  case Setting::ICONSETS_DIRECTORY:
+    return "iconsets directory";
   case Setting::ICONS_DIRECTORY:
     return "icons directory";
   case Setting::BACKGROUNDS_DIRECTORY:

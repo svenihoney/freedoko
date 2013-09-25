@@ -247,7 +247,7 @@ namespace UI_GTKMM_NS {
             possible_icons.push_back(icon);
           } else if (   (::game_status >= GAMESTATUS::GAME_START)
                      && (this->player->team() == TEAM::RE) ) {
-            icon = this->ui->icons->icon(TEAM::RE, this->rotation());
+            icon = this->ui->icons->icon(Icons::POVERTY_PARTNER, this->rotation());
             possible_icons.push_back(icon);
           }
           break;
@@ -271,7 +271,11 @@ namespace UI_GTKMM_NS {
               possible_icons.push_back(this->ui->icons->icon(MarriageSelector(s),
                                                              this->rotation()));
           } else if (game.marriage_selector() == MARRIAGE_SELECTOR::TEAM_SET) {
+            if (team == TEAM::RE) {
+            icon = this->ui->icons->icon(Icons::MARRIAGE_PARTNER, this->rotation());
+            } else {
             icon = this->ui->icons->icon(team, this->rotation());
+            }
           } // if !(this->player == soloplayer)
           break;
         case GAMETYPE::MARRIAGE_SILENT:

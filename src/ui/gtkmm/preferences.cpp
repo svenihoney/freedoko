@@ -88,6 +88,7 @@ namespace UI_GTKMM_NS {
     background_menu(NULL),
     cardset_menu(NULL),
     cards_back_menu(NULL),
+    iconset_menu(NULL),
     font_selector(),
     color_selector(),
 #ifndef RELEASE
@@ -205,6 +206,8 @@ namespace UI_GTKMM_NS {
       this->cards_back_menu
         = Gtk::manage(new Gtk::FileMenuFilterExtension(sigc::mem_fun(*this, &Preferences::cards_back_selected),
                                                        ::setting(Setting::GRAPHIC_EXTENSION)));
+      this->iconset_menu
+        = Gtk::manage(new Gtk::FileMenuFilterFile(sigc::mem_fun(*this, &Preferences::iconset_selected), "License.txt"));
 
       this->close_button->grab_default();
 
@@ -299,6 +302,18 @@ namespace UI_GTKMM_NS {
             }
             break;
 
+          case Setting::ICONSET:
+            this->type_string.push_back(Gtk::manage(new Gtk::Button("type")));
+            dynamic_cast<Gtk::Button*>(this->type_string.back())->signal_clicked().connect(sigc::mem_fun(*(this->iconset_menu), &Gtk::FileMenu::show));
+            for (list<string>::const_iterator
+                 d = ::setting.data_directories().begin();
+                 d != ::setting.data_directories().end();
+                 ++d) {
+              this->iconset_menu->add_directory(*d + "/"
+                                                   + ::setting(Setting::ICONSETS_DIRECTORY));
+            }
+            break;
+
           case Setting::CARDS_BACK:
             this->type_string.push_back(Gtk::manage(new Gtk::Button("type")));
             dynamic_cast<Gtk::Button*>(this->type_string.back())->signal_clicked().connect(sigc::mem_fun(*(this->cards_back_menu), &Gtk::FileMenu::show));
@@ -356,8 +371,9 @@ namespace UI_GTKMM_NS {
 
           } // switch(t)
           this->type_string.back()->set_data("type", new Setting::TypeString(Setting::TypeString(t)));
-          if ( (t != Setting::CARDSET)
+          if (   (t != Setting::CARDSET)
               && (t != Setting::CARDS_BACK)
+              && (t != Setting::ICONSET)
               && (t != Setting::BACKGROUND) ) {
             if (dynamic_cast<Gtk::StockButton*>(this->type_string.back()) != NULL)
               this->ui->translations->add(*(dynamic_cast<Gtk::StockButton*>(this->type_string.back())),
@@ -365,7 +381,7 @@ namespace UI_GTKMM_NS {
             else if (dynamic_cast<Gtk::Button*>(this->type_string.back()) != NULL)
               this->ui->translations->add(*(dynamic_cast<Gtk::Button*>(this->type_string.back())),
                                           ::translation(Setting::TypeString(t)));
-          } // if (t != CARDSET | CARDS_BACK | BACKGROUND)
+          } // if (t != CARDSET | CARDS_BACK | ICONSET | BACKGROUND)
         } // for (t \in Setting::STRING)
       } // create the buttons
 
@@ -614,6 +630,15 @@ namespace UI_GTKMM_NS {
               hbox->pack_end(*(this->type_string[Setting::CARDS_BACK
                                - Setting::STRING_FIRST]), true, true);
             } // cards back
+            { // iconset
+              Gtk::HBox* hbox = Gtk::manage(new Gtk::HBox(false, 1 ex));
+              vbox->add(*hbox);
+
+              hbox->pack_start(*(this->type_string_label[Setting::ICONSET
+                                 - Setting::STRING_FIRST]), false, true);
+              hbox->pack_end(*(this->type_string[Setting::ICONSET
+                               - Setting::STRING_FIRST]), true, true);
+            } // iconset
             { // background
               Gtk::HBox* hbox = Gtk::manage(new Gtk::HBox(false, 1 ex));
               vbox->add(*hbox);
@@ -1129,6 +1154,7 @@ namespace UI_GTKMM_NS {
             this->cards_back_menu->add_directory(*d + "/"
                                                  + ::setting(Setting::CARDS_BACK_DIRECTORY));
         case Setting::CARDS_BACK:
+        case Setting::ICONSET:
         case Setting::BACKGROUND:
           dynamic_cast<Gtk::Button*>(this->type_string[type - Setting::STRING_FIRST])->set_label(::setting.value(Setting::TypeString(type)));
           break;
@@ -1258,6 +1284,9 @@ namespace UI_GTKMM_NS {
           break;
         case Setting::CARDS_BACK:
           // -> Preferences::cards_back_selected()
+          break;
+        case Setting::ICONSET:
+          // -> Preferences::iconset_selected()
           break;
         case Setting::BACKGROUND:
           // -> Preferences::background_selected()
@@ -1487,6 +1516,25 @@ namespace UI_GTKMM_NS {
 
       return ;
     } // void Preferences::cards_back_selected(string const cards_back)
+
+  /**
+   ** change of the iconset
+   **
+   ** @param     iconset   new iconset
+   **
+   ** @return    -
+   **
+   ** @author    Diether Knof
+   **
+   ** @version   0.7.12
+   **/
+  void
+    Preferences::iconset_selected(string const iconset)
+    {
+      ::setting.set(Setting::ICONSET, iconset);
+
+      return ;
+    } // void Preferences::iconset_selected(string const iconset)
 
   /**
    **
