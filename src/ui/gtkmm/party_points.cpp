@@ -57,6 +57,7 @@
 #include <gtkmm/radiobutton.h>
 #include <gtkmm/label.h>
 #include <gtkmm/main.h>
+#include <gdk/gdkkeysyms.h>
 
 
 //#define OFFSET_ROUND	0
