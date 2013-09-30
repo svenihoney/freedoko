@@ -140,6 +140,7 @@ class Party {
   unsigned remaining_duty_free_soli(Player const& player) const;
 
   bool write(ostream& ostr) const;
+  bool write_pointstable(ostream& ostr) const;
   bool read(istream& istr) throw (ReadException);
 
   // save the party

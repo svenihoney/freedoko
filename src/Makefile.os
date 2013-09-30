@@ -49,15 +49,18 @@ ifeq ($(OPERATING_SYSTEM), Linux_to_Windows)
 	override CPPFLAGS += -DWINDOWS
 	C_INCLUDE_PATH ?= $(MINGW_DIR)/include
 	LIBRARY_PATH ?= $(MINGW_DIR)/lib
+	INCLUDE ?= -I/usr/mingw32/usr/include
+	LIBS ?= -I/usr/mingw32/usr/lib
 	#INCLUDE ?= -nostdinc
 	#INCLUDE += -I$(C_INCLUDE_PATH) -I$(C_INCLUDE_PATH)/c++/3.2.3
+	INCLUDE += -I$(C_INCLUDE_PATH)
 	#LIBS = -nostdlib
-	LIBS ?= -L$(LIBRARY_PATH)
+	#LIBS ?= -L$(LIBRARY_PATH)
 	ifeq ($(USE_UI_GTKMM), true)
 #		INCLUDE_GTKMM ?= -I$(MINGW_DIR)/include/gtkmm-2.0 -I$(MINGW_DIR)/lib/gtkmm-2.0/include -I$(MINGW_DIR)/include/gtk-2.0 -I$(MINGW_DIR)/lib/sigc++-1.2/include -I$(MINGW_DIR)/include/sigc++-1.2 -I$(MINGW_DIR)/include/glib-2.0 -I$(MINGW_DIR)/lib/glib-2.0/include -I$(MINGW_DIR)/lib/gtk-2.0/include -I$(MINGW_DIR)/include/pango-1.0 -I$(MINGW_DIR)/include/atk-1.0
 #		LIBS_GTKMM ?= -L$(MINGW_DIR)/lib -lgtkmm-2.0 -lgdkmm-2.0 -latkmm-1.0 -lgtk-win32-2.0 -lpangomm-1.0 -lglibmm-2.0 -lsigc-1.2 -lgdk-win32-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lpangowin32-1.0 -lgdi32 -lpango-1.0 -lgobject-2.0 -lgmodule-2.0 -lglib-2.0
-		INCLUDE_GTKMM ?= $(shell pkg-config --cflags gtkmm-2.4)
-		LIBS_GTKMM ?= $(shell pkg-config --libs gtkmm-2.4)
+		#INCLUDE_GTKMM ?= $(shell pkg-config --cflags gtkmm-2.4)
+		#LIBS_GTKMM ?= $(shell pkg-config --libs gtkmm-2.4)
 	endif
 	ifeq ($(USE_NETWORK), true)
 		# all gnet headers in 'include/gnet/'

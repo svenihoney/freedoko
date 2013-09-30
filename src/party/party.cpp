@@ -50,6 +50,8 @@
 #include "../runtime.h"
 #endif
 
+#include <ctime>
+
 
 /**
  ** constructor:
@@ -754,7 +756,7 @@ Party::roundno() const
  **
  ** @author	Diether Knof
  **
- ** @version	0.7.7
+ ** @version	0.7.12
  **/
 unsigned
 Party::remaining_rounds() const
@@ -775,7 +777,9 @@ Party::remaining_rounds() const
 
   return (this->rule()(Rule::NUMBER_OF_ROUNDS)
           - this->roundno()
-          - (this->starts_new_round(this->gameno()) ? 0 : 1));
+          - ((   this->starts_new_round(this->gameno() + 1)
+             && (::game_status == GAMESTATUS::GAME_FINISHED)
+            ) ? 1 : 0));
 } // unsigned Party::remaining_rounds() const
 
 /**
@@ -884,7 +888,7 @@ Party::is_duty_soli_round() const
       && !GAMETYPE::is_real_solo(this->last_game_summary().game_type()))
     return false;
 
-  return (this->roundno() == this->duty_soli_round());
+  return (this->roundno() >= this->duty_soli_round());
 } // bool Party::is_duty_soli_round() const
 
 /**
@@ -917,7 +921,11 @@ Party::is_last_game() const
   // it must be the last round and the next player to start
   // is the startplayer of the party
   if (   this->rule()(Rule::NUMBER_OF_ROUNDS_LIMITED)
-      && (this->remaining_rounds() <= 1)
+      && (this->remaining_rounds()
+          <= (  (   (::game_status == GAMESTATUS::GAME_FINISHED)
+                 || (::game_status <= GAMESTATUS::PARTY_LOADED))
+              ? 0u
+              : 1u))
       && ((this->startplayer() + 1) % this->playerno()
           == this->startplayer_first() )
       && (   (::game_status <= GAMESTATUS::GAME_RESERVATION)
@@ -961,7 +969,7 @@ Party::is_finished() const
 {
   return (   (this->remaining_duty_soli() == 0)
           && (   (   this->rule()(Rule::NUMBER_OF_ROUNDS_LIMITED)
-                  && (this->remaining_rounds() <= 1) )
+                  && (this->remaining_rounds() == 0) )
               || (   this->rule()(Rule::POINTS_LIMITED)
                   && (this->remaining_points() <= 0) ) ) );
 } // bool Party::is_finished() const
@@ -2005,6 +2013,71 @@ Party::write(ostream& ostr) const
 } // bool Party::write(ostream& ostr) const
 
 /**
+ ** write the party points into the output stream
+ **
+ ** @param	ostr	output stream
+ **
+ ** @return	whether the writing was successful
+ **
+ ** @author	Diether Knof
+ **
+ ** @version	0.7.12
+ **/
+bool
+Party::write_pointstable(ostream& ostr) const
+{
+  ostr << '\n';
+  ostr << "party\n" ;
+  ostr << "gameno: " << this->gameno() << '\n';
+  ostr << "round startgame" << '\n';
+  for (unsigned r = 0; r < this->round_startgame().size(); ++r)
+    ostr << r << ": " << this->round_startgame(r) << '\n';
+
+  ostr << "game ";
+  for (unsigned p = 0; p < this->playerno(); ++p)
+    ostr << "| " << this->player(p).name() << ' ';
+  ostr << "| bm ";
+  ostr << "| gametype \n";
+  ostr << "-----";
+  for (unsigned p = 0; p < this->playerno(); ++p)
+    ostr << "+-" << setw(this->player(p).name().length())
+      << "-" << '-';
+  ostr << "+----";
+  ostr << "+-----\n";
+  for (unsigned g = 0; g < this->gameno(); ++g) {
+    if (this->starts_new_round(g)) {
+      if (this->round_of_game(g) == this->duty_soli_round())
+      ostr << "-duty";
+      else
+      ostr << "-" << setw(3) << this->round_of_game(g) << " ";
+      for (unsigned p = 0; p < this->playerno(); ++p)
+        ostr << "+-" << setw(this->player(p).name().length())
+          << "-" << '-';
+      ostr << "+----";
+      ostr << "+-----\n";
+    }
+    ostr << setw(3) << g << "  ";
+    for (unsigned p = 0; p < this->playerno(); ++p)
+      ostr << "| " << setw(this->player(p).name().length())
+        << this->game_summary(g).points(p)
+        << ' ';
+    ostr << "|" << setw(3);
+    if (this->bock_multiplier(g) == 1)
+      ostr << " ";
+    else
+      ostr << this->bock_multiplier(g);
+    ostr << ' ';
+    ostr << "| ";
+    ostr << (this->game_summary(g).is_solo() ? '*' : ' ');
+    if (!this->game_summary(g).bock_triggers().empty())
+      ostr << this->game_summary(g).bock_triggers().size();
+    ostr << '\n';
+  } // for (g < this->gameno())
+
+  return ostr.good();
+} // bool Party::write_pointstable(ostream& ostr) const
+
+/**
  ** reads the party from the input stream
  **
  ** @param	istr	input stream
@@ -2240,10 +2313,12 @@ throw (ReadException)
            gs != game_summaries.end();
            ++gs, ++gameno) {
         // check for a new round
+        // ToDo: in the duty soli round not all players do play, so the check of the startplayer should be able to accept skipped players
         if (   (gameno > 0)
-            && ((*gs)->startplayer_no() == this->real_startplayer_first())
             && (this->last_game_summary().startplayer_no()
                 != this->real_startplayer_first())
+            && (this->last_game_summary().next_startplayer_no()
+                == this->real_startplayer_first())
             && !this->is_duty_soli_round()) {
           this->round_startgame_.push_back(this->finished_games());
         }
@@ -2251,7 +2326,11 @@ throw (ReadException)
         if (!this->is_duty_soli_round()
             && (   (   this->rule()(Rule::NUMBER_OF_ROUNDS_LIMITED)
                     && (this->roundno()
-                        >= this->rule()(Rule::NUMBER_OF_ROUNDS)) )
+                        >= this->rule()(Rule::NUMBER_OF_ROUNDS))
+                    && !this->last_game_summary().startplayer_stays()
+                    && (this->last_game_summary().next_startplayer_no()
+                        == this->real_startplayer_first())
+                   )
                 || (   this->rule()(Rule::POINTS_LIMITED)
                     && (this->remaining_points() <= 0) )
                ) ) {

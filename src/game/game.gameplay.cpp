@@ -43,6 +43,9 @@
 #include "../os/bug_report_replay.h"
 extern OS_NS::BugReportReplay* bug_report_replay;
 
+#include <ctime>
+
+
 #ifdef DKNOF
 #include "../card/weighted_card_list.h"
 #endif

@@ -232,6 +232,12 @@ $(PROGRAM) : show_settings objects $(DIRECTORIES)
 	  -o $@
 	@echo "$(PROGRAM) compiled successfully"
 
+ifeq ($(OPERATING_SYSTEM), Linux)
+.PHONY: FreeDoko.exe
+FreeDoko.exe :
+	$(MAKE) OSTYPE=Linux_to_Windows $@
+endif
+
 # compile FreeDoko for a release
 .PHONY: release_bin
 release_bin : Makefile.local logo.png

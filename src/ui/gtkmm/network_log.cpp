@@ -46,7 +46,7 @@
 
 #include "../../utils/string.h"
 
-#include <time.h>
+#include <ctime>
 
 namespace UI_GTKMM_NS {
 

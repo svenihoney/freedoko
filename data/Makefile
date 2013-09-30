@@ -27,8 +27,9 @@ release :
 	$(MAKE) -C ../src icon.png
 	cp ../src/logo.png ../src/icon.png $(RELEASE_TMP)/FreeDoko_$(VERSION)/
 	$(MAKE) -C cardsets release
-	test -f sounds/Makefile && $(MAKE) -C sounds release
+	$(MAKE) -C iconsets release
 	$(MAKE) -C backgrounds release
+	$(MAKE) -C sounds release
 endif
 
 ifeq ($(SHELLTYPE), sh)

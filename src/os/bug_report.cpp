@@ -57,6 +57,7 @@
 // for 'mkdir'
 #include <sys/stat.h>
 #endif
+#include <ctime>
 
 // the bug report
 OS_NS::BugReport* bug_report = NULL;

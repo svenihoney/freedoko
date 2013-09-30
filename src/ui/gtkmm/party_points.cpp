@@ -250,7 +250,7 @@ namespace UI_GTKMM_NS {
               this->party_points_sum_treeview->append_column("0",
                                                              this->party_points_model->playerpoints[p]);
               this->party_points_sum_treeview->get_column(p + OFFSET_PLAYER)->set_resizable(false);
-              this->party_points_sum_treeview->get_column(p + OFFSET_PLAYER)->set_alignment(Gtk::ALIGN_CENTER);
+              this->duty_soli_treeview->get_column(p + OFFSET_PLAYER)->set_alignment(Gtk::ALIGN_CENTER);
             } // for (p < ::party.playerno())
             this->party_points_treeview->append_column("game points",
                                                        this->party_points_model->gamepoints_str);
@@ -426,8 +426,8 @@ namespace UI_GTKMM_NS {
         this->remaining_points_label
           = Gtk::manage(new Gtk::Label("remaining points"));
         this->ui->translations->add(*this->remaining_points_label,
-                                    ::translation("remaining points: %upoints%",
-                                                  0u));
+                                    ::translation("remaining points: %ipoints%",
+                                                  0));
 
         Gtk::Box* box = Gtk::manage(new Gtk::HBox(true));
         box->pack_start(*this->remaining_rounds_label, Gtk::PACK_SHRINK, 1 em);
@@ -1182,10 +1182,10 @@ namespace UI_GTKMM_NS {
                                       );
       if (party.rule()(Rule::POINTS_LIMITED))
         this->ui->translations->change(*this->remaining_points_label,
-                                       ::translation("remaining points: %upoints%",
+                                       ::translation("remaining points: %ipoints%",
                                                      ( (party.remaining_points() > 0)
-                                                      ? static_cast<unsigned>(party.remaining_points())
-                                                      : 0u) ) );
+                                                      ? party.remaining_points()
+                                                      : 0) ) );
       if (   party.rule()(Rule::NUMBER_OF_ROUNDS_LIMITED)
           || party.rule()(Rule::POINTS_LIMITED))
         this->remaining_rounds_label->get_parent()->set_border_width(1 ex);

@@ -1,3 +1,9 @@
+2013-09-30 Diether Knof
+	- fixed detecting of round startgames when loading a party
+
+2013-09-26 Diether Knof
+	- fixed detecting of last game in the tournament
+
 2013-09-25 Diether Knof
 	- added support for separate iconset
 	- merged licenses (program, cardset, iconset) into one window

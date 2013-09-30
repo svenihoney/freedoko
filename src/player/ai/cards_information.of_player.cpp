@@ -49,8 +49,8 @@
 // whether to print information of the information flow
 #define CONDITION_INFORMATION_FLOW \
   false \
-&& (this->cards_information().player().no() == 1) \
-&& (this->playerno() == 3)
+&& (this->cards_information().player().no() == 0) \
+&& (this->playerno() == 0)
 #define CONDITION_INFORMATION_ESTIMATED_HAND \
   false \
 && (this->cards_information().player().no() == 1) \
@@ -1539,10 +1539,12 @@ CardsInformation::OfPlayer::add_must_have(Card::TColor const& tcolor,
                                           unsigned const no)
 {
 #ifdef CONDITION_INFORMATION_FLOW
-  if (CONDITION_INFORMATION_FLOW)
-    if (this->must_have(tcolor) < no)
+  if (CONDITION_INFORMATION_FLOW) {
+    if (this->must_have(tcolor) < no) {
       cout << "CardsInformation(" << this->cards_information().player().no() << ")::OfPlayer(" << this->playerno() << ")::"
         << "add_must_have(tcolor = " << tcolor << ", no = " << no << ")\n";
+    }
+  }
 #endif
 
   if (no > this->can_have(tcolor)) {
@@ -2007,6 +2009,8 @@ CardsInformation::OfPlayer::add_can_have(Card::TColor const& tcolor,
                     << *this
                    );
 #ifdef INFO_THROW
+    clog << this->game() << endl;
+    clog << *this << endl;
     clog << __FILE__ << '#' << __LINE__ << "  " << "\n  CardsInformation(" << this->cards_information().player().no()
       << ")::OfPlayer(" << this->playerno() << ")::"
       << "throw in add_can_have(" << tcolor << ", " << no << ")\n";
@@ -2337,8 +2341,8 @@ CardsInformation::OfPlayer::update_information(Card::TColor const& tcolor)
         - this->can_have(tcolor)) {
       this->add_must_have(tcolor,
                           this->player().cards_to_play()
-                          - this->tcolor_can_have_.cards_no()
-                          + this->can_have(tcolor));
+                          - (this->tcolor_can_have_.cards_no()
+                             - this->can_have(tcolor)));
     }
   } // minimum must have
   { // maximum can have

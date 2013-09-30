@@ -280,6 +280,7 @@ WVirtualGames::weighting(Card const& card_) const
         // or:   remove last played card,
         //       remove it from the hand of the player
         //       and try again
+        //       This is not possible, because the information is missing here. -> possible in gametree
         cerr << "WVirtualGames: invalid game\n"
           << "  line " << __LINE__ << '\n'
           << "  ignoring card"
@@ -374,6 +375,7 @@ WVirtualGames::weighting(Card const& card_) const
           // or:   remove last played card,
           //       remove it from the hand of the player
           //       and try again
+          //       This is not possible, because the information is missing here. -> possible in gametree
           cerr << "WVirtualGames: invalid game\n"
             << "  line " << __LINE__ << '\n'
             << "ignoring card\n"
@@ -449,7 +451,7 @@ WVirtualGames::weighting(Card const& card_) const
       for (vector<Player*>::const_iterator p = game_virt.players_begin();
            p != game_virt.players_end();
            ++p)
-        cerr << (*p)->name() << '\n'
+        cerr << '\n' << (*p)->name() << '\n'
           << (*p)->hand();
       cerr << '\n';
       cerr << "previous trick = " << game_virt.trick_current_no() - 1 << endl;

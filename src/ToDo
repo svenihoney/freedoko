@@ -1,10 +1,7 @@
 Zur nächsten Version 0.7.12
 * Kartensatz Altenburg herausnehmen
   - Pakete
-  - Logo
-  - Bildschirmumrandung
-  - Auf Internetpräsenz hinweisen
-  - Bilder in Dokumentation neu erstellen
+  - In Internetpräsenz hinweisen
 * Internetpräsenz
   - in freenet einstellen
 * Icongroups
@@ -68,6 +65,8 @@ Dokumentation
 * Statistiken in Dokumentation (Hochzeit, ...)
 
 Fehlerberichte
+* ui 163709
+* asserts 011771
 * new Heuristics 123901
 * Heuristics: 001042 (Fleischlos)
 * Heuristics: 016746 (Damensolo)

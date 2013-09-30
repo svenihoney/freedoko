@@ -32,6 +32,8 @@
 
 #include "../game/game.h"
 
+#include <ctime>
+
 namespace OS_NS {
 
   /**
