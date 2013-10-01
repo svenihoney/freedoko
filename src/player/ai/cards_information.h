@@ -91,6 +91,9 @@ class CardsInformation {
   OfPlayer& of_player(Player const& player);
   OfPlayer& of_player(unsigned const playerno);
 
+  // how many of the players still have unknown cards
+  unsigned remaining_unknown_players() const;
+
   // the color runs (without the current trick)
   unsigned color_runs(Card::TColor const& tcolor) const;
   // the trump runs (without the current trick)
@@ -145,6 +148,8 @@ class CardsInformation {
   void do_update() const;
   // updates 'can have' according to 'remaining cards'
   void update_remaining_cards();
+  // check joined hands
+  void check_joined_hands();
 #ifdef DKNOF
   public:
 #endif
@@ -199,6 +204,9 @@ class CardsInformation {
   unsigned known(Card const& card) const;
   // how many of 'card' are remaining and unknown where
   unsigned remaining_unknown(Card const& card) const;
+
+  // the joined "can have" information of both players
+  CardCounter joined_can_have(OfPlayer const& p1, OfPlayer const& p2) const;
 
   // the information from the game
 

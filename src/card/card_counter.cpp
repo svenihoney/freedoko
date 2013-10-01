@@ -346,6 +346,7 @@ CardCounter::erase(Card const& card)
 {
   return this->max_set(card, 0);
 } // bool CardCounter::erase(Card const& card)
+
 /**
  ** increments the counter of 'card'
  **
@@ -368,6 +369,31 @@ CardCounter::inc(Card const& card)
 
   return ;
 } // void CardCounter::inc(Card const& card)
+
+/**
+ ** adds 'n' to the counter of 'card'
+ **
+ ** @param	card	card to add
+ ** @param	n	number to add
+ **
+ ** @return	-
+ **
+ ** @author	Diether Knof
+ **
+ ** @version	0.7.12
+ **/
+void
+CardCounter::add(Card const& card, unsigned const n)
+{
+  this->map<Card, unsigned>::operator[](card) += n;
+  for (unsigned i = 0; i < n; ++i)
+  this->cards_.push_back(card);
+  this->cards_no_ += n;
+
+  this->no_[card.to_int()] += n;
+
+  return ;
+} // void CardCounter::add(Card card, unsigned n)
 
 /**
  ** decrements the counter of 'card'

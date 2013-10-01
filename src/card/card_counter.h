@@ -79,6 +79,8 @@ class CardCounter : private map<Card, unsigned> {
   bool erase(Card const& card);
   // increment the counter of 'card'
   void inc(Card const& card);
+  // add 'n' to the counter of 'card'
+  void add(Card const& card, unsigned const n);
   // decrement the counter of 'card'
   void dec(Card const& card);
 

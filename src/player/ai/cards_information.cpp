@@ -1,4 +1,4 @@
- /*********************************************************************
+/*********************************************************************
  *
  *   FreeDoko a Doppelkopf-Game
  *
@@ -766,6 +766,29 @@ CardsInformation::of_player(unsigned const playerno)
 /**
  ** -> result
  **
+ ** @param     -
+ **
+ ** @return    how many of the players still have unknown cards
+ **
+ ** @author    Diether Knof
+ **
+ ** @version   0.7.12
+ **/
+unsigned
+CardsInformation::remaining_unknown_players() const
+{
+  unsigned n = 0;
+  for (vector<OfPlayer>::iterator p = this->of_player_.begin();
+       p != this->of_player_.end();
+       ++p)
+    if (!p->all_known())
+      n += 1;
+  return n;
+} // unsigned CardsInformation::remaining_unknown_players() const
+
+/**
+ ** -> result
+ **
  ** @param     tcolor   trump color
  **
  ** @return    the number of runs of tcolor (without the current trick)
@@ -1180,8 +1203,6 @@ CardsInformation::queue_update(Card::TColor const& tcolor)
  ** @author    Diether Knof
  **
  ** @version   0.7.6
- **
- ** @todo      recalc the weighting for all cards
  **/
 void
 CardsInformation::do_update() const
@@ -1211,6 +1232,10 @@ CardsInformation::do_update() const
       p->update_tcolor_information();
     } // for (p \in this->of_player_)
   } // while (!this->cards_to_update().empty())
+
+  const_cast<CardsInformation*>(this)->check_joined_hands();
+  if (!this->cards_to_update.empty())
+    this->do_update();
 
 #ifdef SELF_CHECK
   this->self_check();
@@ -1249,6 +1274,82 @@ CardsInformation::queue_update_all()
 
   return ;
 } // void CardsInformation::queue_update_all()
+
+/**
+ ** check joined hands
+ ** Check whether two players can have so many cards between them as they still have to play. Then the other players cannot have the cards.
+ **
+ ** @param     -
+ **
+ ** @return    -
+ **
+ ** @author    Diether Knof
+ **
+ ** @version   0.7.12
+ **/
+void
+CardsInformation::check_joined_hands()
+{
+  if (this->remaining_unknown_players() <= 2)
+    return;
+
+  for (vector<OfPlayer>::iterator p1 = this->of_player_.begin();
+       p1 != this->of_player_.end();
+       ++p1) {
+    if (p1->all_known())
+      continue;
+    for (vector<OfPlayer>::iterator p2 = p1 + 1;
+         p2 != this->of_player_.end();
+         ++p2) {
+      if (p2->all_known())
+        continue;
+      if (   (p1->can_have_.cards_no()
+              > this->cardno_to_play(p1->player())
+              + this->cardno_to_play(p2->player()))
+          || (p2->can_have_.cards_no()
+              > this->cardno_to_play(p1->player())
+              + this->cardno_to_play(p2->player())))
+        continue;
+
+      // check the joined cards
+      CardCounter const can_have = this->joined_can_have(*p1, *p2);
+      if (can_have.cards_no()
+          < this->cardno_to_play(p1->player())
+          + this->cardno_to_play(p2->player())) {
+        if (this->game().isvirtual())
+          DEBUG_THROW(InvalidGameException, InvalidGameException());
+        else
+          DEBUG_ASSERTION(false, "throwing in real game");
+      }
+
+      if (can_have.cards_no() 
+          == this->cardno_to_play(p1->player())
+          + this->cardno_to_play(p2->player())) {
+        for (vector<OfPlayer>::iterator p = this->of_player_.begin();
+             p != this->of_player_.end();
+             ++p) {
+          if ((p == p1) || (p == p2))
+            continue;
+          if (p->all_known())
+            continue;
+          // all cards of can_have must be shared between p1 and p2
+          for (CardCounter::const_iterator c = can_have.begin();
+               c != can_have.end();
+               ++c)
+            p->add_can_have(c->first,
+                            this->game().rule()(Rule::NUMBER_OF_SAME_CARDS)
+                            - this->played(c->first) - c->second);
+        } // for (p)
+        if (   !this->in_recalcing
+            && this->auto_update())
+          this->do_update();
+
+      } // if (cards shared between p1 and p2)
+    } // for (p2)
+  } // for (p1)
+
+  return ;
+} // void CardsInformation::check_joined_hands()
 
 /**
  ** updates 'can have' according to 'remaining cards'
@@ -1709,10 +1810,10 @@ CardsInformation::recalc_weightings() const
          = this->game().players_begin();
          player != this->game().players_end();
          player++) {
-        if ((*player)->no() == this->player().no())
-          player_virt.push_back(this->player().Ai::clone());
-        else
-          player_virt.push_back(this->player().Player::clone());
+      if ((*player)->no() == this->player().no())
+        player_virt.push_back(this->player().Ai::clone());
+      else
+        player_virt.push_back(this->player().Player::clone());
       player_virt.back()->set_no(player_virt.size() - 1);
       player_virt.back()->set_name((*player)->name());
       player_virt.back()->set_team(this->player().team_information().guessed_team(player_virt.size() - 1));
@@ -2029,6 +2130,35 @@ CardsInformation::remaining_unknown(Card const& card) const
   return (this->game().rule()(Rule::NUMBER_OF_SAME_CARDS)
           - this->known(card));
 } // unsigned CardsInformation::remaining_unknown(Card card) const
+
+/**
+ ** -> result
+ **
+ ** @param     card   the card
+ **
+ ** @return    the joined "can have" information of both players
+ **
+ ** @author    Diether Knof
+ **
+ ** @version   0.7.12
+ **/
+CardCounter
+CardsInformation::joined_can_have(OfPlayer const& p1, OfPlayer const& p2) const
+{
+  CardCounter can_have = p1.can_have_;
+  for (CardCounter::const_iterator c = p2.can_have_.begin();
+       c != p2.can_have_.end();
+       ++c) {
+    Card const& card = c->first;
+    can_have.add(card, c->second);
+    can_have.max_set(card,
+                     this->game().rule()(Rule::NUMBER_OF_SAME_CARDS) 
+                     - this->played(card));
+    // ToDo: check must have of other players
+  } // for (c)
+
+  return can_have;
+} // CardCounter CardsInformation::joined_can_have(OfPlayer p1, OfPlayer p2) const
 
 /**
  ** -> result
@@ -2386,7 +2516,7 @@ CardsInformation::announcement_made(Announcement const& announcement,
     if ( (this->of_player_[player.no()].played(Card::CLUB_QUEEN) == 0)
         && (this->forgotten_tricks_no() == 0) ) {
       this->of_player_[player.no()].add_must_have(Card::CLUB_QUEEN);
-      }
+    }
   } else if (this->game().teaminfo(player) == TEAM::CONTRA) {
     this->of_player_[player.no()].add_cannot_have(Card::CLUB_QUEEN);
   } else {
