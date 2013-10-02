@@ -280,10 +280,11 @@ Gametree::weighting(Card const& card_) const
       player_virt.push_back(real_ai.Ai::clone());
       dynamic_cast<Aiconfig*>(player_virt.back())->set_aitype_for_all_tricks(AITYPE::NO_CHOOSEBESTCARD);
     } else { // if !(this->with_heuristics())
-      if ((*player)->no() == this->vgi().no())
+      if ((*player)->no() == this->vgi().no()) {
         player_virt.push_back(real_ai.Ai::clone());
-      else
+      } else {
         player_virt.push_back(real_ai.Player::clone());
+      }
     } // if !(this->with_heuristics())
     player_virt.back()->set_no(player_virt.size() - 1);
     player_virt.back()->set_name((*player)->name());

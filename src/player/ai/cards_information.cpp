@@ -860,6 +860,10 @@ CardsInformation::possible_hand(Player const& player) const
 Hand const&
 CardsInformation::possible_hand(unsigned const playerno) const
 {
+#ifdef UPDATE_ON_DEMAND
+  this->do_update();
+#endif
+
   if (this->hands_outdated)
     this->recalc_hands();
   return this->possible_hands_[playerno];
@@ -900,6 +904,10 @@ CardsInformation::estimated_hand(Player const& player) const
 Hand const&
 CardsInformation::estimated_hand(unsigned const playerno) const
 {
+#ifdef UPDATE_ON_DEMAND
+  this->do_update();
+#endif
+
   if (this->hands_outdated) {
     this->recalc_hands();
   }
@@ -1233,7 +1241,9 @@ CardsInformation::do_update() const
     } // for (p \in this->of_player_)
   } // while (!this->cards_to_update().empty())
 
+#ifdef DKNOF
   const_cast<CardsInformation*>(this)->check_joined_hands();
+#endif
   if (!this->cards_to_update.empty())
     this->do_update();
 

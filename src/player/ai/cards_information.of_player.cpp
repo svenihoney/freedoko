@@ -725,7 +725,7 @@ CardsInformation::OfPlayer::possible_hand() const
 {
   DEBUG_ASSERTION((this->can_have_.cards_no()
                    >= this->player().cards_to_play()),
-                  "CardsInformation::OfPlayer::possible_hand():\n"
+                  "CardsInformation(" << this->cards_information().player().no() << ")::OfPlayer(" << this->playerno() << ")::possible_hand():\n"
                   "  can_have.cards_no() = " << this->can_have_.cards_no()
                   << " < " << this->player().cards_to_play()
                   << " = this->player().cards_to_play()");
