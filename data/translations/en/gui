@@ -53,7 +53,10 @@ new party			= new party
 continue party			= continue party
 gamenumber: %ugameno%		= game %ugameno%
 roundnumber: %uroundno%		= round %uroundno%
+remaining rounds: %urounds%	= remaining rounds: %urounds%
+remaining points: %ipoints%	= remaining points: %ipoints%
 next startplayer: %sname%	= next startplayer: %sname%
+points				= points
 duty soli			= duty soli
 
 # settings of the party
@@ -98,8 +101,8 @@ connection			= connection
 new connection			= new connection
 connect				= connect
 local addresses			= local addresses
-listeners			= listeners
 new listener			= new listener
+listeners			= listeners
 create listener			= create listener
 open port			= open port
 port				= port
@@ -116,6 +119,19 @@ clear network			= clear network
 synchronize network		= synchronize network
 # chat
 send				= send
+
+# DokoLounge
+DokoLounge                      = DokoLounge
+DokoLounge: Lounge              = DokoLounge: Lounge
+name: %sname%                   = name: %sname%
+create account                  = create account
+login                           = login         
+logout                          = logout        
+klingel                         = klingel       
+hilfe                           = hilfe         
+blog                            = blog          
+pinnwand                        = pinnwand      
+mail                            = mail
 
 # rules
 # -> rules
@@ -259,13 +275,17 @@ collapse rounds			= collapse rounds
 expand rounds			= expand rounds
 table				= table
 graph				= graph
-remaining rounds: %urounds%	= remaining rounds: %urounds%
-remaining points: %upoints%	= remaining points: %upoints%
+remaining rounds		= remaining rounds
+remaining games			= remaining games
+remaining points		= remaining points
 bock                            = bock
 duty free soli 			= free duty soli
 duty color soli 		= duti color soli
 duty picture soli 		= duty picture soli
 duty soli round 		= duty soli round
+duty free soli: %usoli% 	= duty free soli: %usoli%
+duty color soli: %usoli% 	= duty color soli: %usoli%
+duty picture soli: %usoli% 	= duty picture soli: %usoli%
 
 # game overview
 show game overview		= show game overview

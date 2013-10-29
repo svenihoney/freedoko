@@ -75,8 +75,8 @@ AiConfig::future limit			= limit for calcualtion of future tricks
 
 AiConfig::trusting			= trusting
 AiConfig::aggressive			= aggressive
-AiConfig::hands known			= knows the hands of the other players
 AiConfig::teams known			= knows the teams of the other players
+AiConfig::hands known			= knows the hands of the other players
 AiConfig::estimate hands		= estimate the hands of the other players
 AiConfig::first card fehl creation	= create a 'Fehlcard' with first card
 AiConfig::remember tricks		= number of remembered tricks

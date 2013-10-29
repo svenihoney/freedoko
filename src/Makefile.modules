@@ -12,6 +12,8 @@ USE_UI_GTKMM	?= true
 # It is not necessary for single players
 # The network does use the 'GNet' library (http://live.gnome.org/GNetLibrary)
 USE_NETWORK	?= true
+# DokoLounge (www.doko-lounge.de), work in progress
+USE_NETWORK_DOKOLOUNGE	?= false
 
 # sound support (experimental, use at your own risk)
 ifeq ($(OPERATING_SYSTEM), Linux)

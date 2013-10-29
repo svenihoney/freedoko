@@ -5,4 +5,5 @@ OBJECTS = \
 	  server.os.o \
 	listener.o \
 	connection.o \
+	  interpreter.o \
 	  actor.o

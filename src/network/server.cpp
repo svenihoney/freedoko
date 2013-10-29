@@ -204,23 +204,23 @@ namespace Network {
    **
    ** @param     port   port to listen on
    **
-   ** @return    whether the creating was successful
+   ** @return    pointer to the listener, NULL if failed
    **
    ** @author    Diether Knof
    **
    ** @version   0.7.2
    **/
-  bool
+  Listener*
     Server::create_listener(unsigned const port)
     {
       Listener* listener = Listener::new_(*this, port);
       if (listener == NULL)
-	return false;
+	return NULL;
 
       this->new_listener(listener);
 
-      return true;
-    } // bool Server::create_listener(unsigned port)
+      return listener;
+    } // Listener* Server::create_listener(unsigned port)
 
   /**
    ** there is a new listener
@@ -276,26 +276,29 @@ namespace Network {
    **
    ** @param     address   address to connect to
    ** @param     port      port to connect to
+   ** @param     type      type of the interpreter
    **
-   ** @return    whether the creating was successful
+   ** @return    pointer to the connection, NULL if failed
    **
    ** @author    Diether Knof
    **
-   ** @version   0.7.2
+   ** @version   0.7.12
    **/
-  bool
-    Server::create_connection(string const& address, unsigned const port)
+  Connection*
+    Server::create_connection(string const& address, unsigned const port,
+                              InterpreterType const type)
+                              
     {
-      Connection* connection = Connection::new_(*this, address, port);
+      Connection* connection = Connection::new_(*this, address, port, type);
       if (connection == NULL)
-	return false;
+	return NULL;
 
       connection->set_relation(Connection::PARENT);
       connection->set_type(Connection::PLAYER);
       this->new_connection(connection);
 
-      return true;
-    } // bool Server::create_connection(string address, unsigned port)
+      return connection;
+    } // Connection* Server::create_connection(string address, unsigned port, InterpreterType type)
 
   /**
    ** a new connection is added

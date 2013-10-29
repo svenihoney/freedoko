@@ -163,17 +163,15 @@ namespace UI_GTKMM_NS {
   } // Preferences::~Preferences()
 
   /**
-   **
    ** creates all subelements
    **
    ** @param     -
    **
    ** @return    -
    **
-   ** @version   0.5.4
-   **
    ** @author    Diether Knof
    **
+   ** @version   0.7.12
    **/
   void
     Preferences::init()
@@ -275,7 +273,7 @@ namespace UI_GTKMM_NS {
           this->ui->translations->add(*(this->type_string_label.back()),
                                       ::translation(Setting::TypeString(Setting::TypeString(t))) + ":");
 
-          switch (t) {
+          switch (static_cast<Setting::TypeString>(t)) {
           case Setting::NAME:
             this->type_string.push_back(Gtk::manage(new Gtk::Entry()));
             dynamic_cast<Gtk::Entry*>(this->type_string.back())->signal_focus_out_event().connect(sigc::bind<int const>(sigc::mem_fun(*this, &Preferences::focus_out_event), t));
@@ -290,6 +288,13 @@ namespace UI_GTKMM_NS {
             //dynamic_cast<Gtk::Button*>(this->type_string.back())->signal_clicked().connect(sigc::bind<guint, guint32>(sigc::mem_fun(*(this->language_menu), &Gtk::Menu::popup), 0, 0));
             break;
 
+#ifdef USE_NETWORK_DOKOLOUNGE
+          case Setting::DOKOLOUNGE_NAME:
+          case Setting::DOKOLOUNGE_PASSWORD:
+            this->type_string.push_back(Gtk::manage(new Gtk::Entry()));
+            dynamic_cast<Gtk::Entry*>(this->type_string.back())->signal_focus_out_event().connect(sigc::bind<int const>(sigc::mem_fun(*this, &Preferences::focus_out_event), t));
+            break;
+#endif
           case Setting::CARDSET:
             this->type_string.push_back(Gtk::manage(new Gtk::Button("type")));
             dynamic_cast<Gtk::Button*>(this->type_string.back())->signal_clicked().connect(sigc::mem_fun(*(this->cardset_menu), &Gtk::FileMenu::show));
@@ -465,6 +470,27 @@ namespace UI_GTKMM_NS {
                         - Setting::STRING_FIRST]));
           } // browser
         } // General
+
+#ifdef USE_NETWORK_DOKOLOUNGE
+        { // DokoLounge
+          Gtk::VBox* vbox = this->add_group_vbox("DokoLounge");
+
+          { // name
+            ADD_ALIGNMENT_HBOX;
+            hbox->add(*this->type_string_label[Setting::DOKOLOUNGE_NAME
+                        - Setting::STRING_FIRST]);
+            hbox->add(*this->type_string[Setting::DOKOLOUNGE_NAME
+                        - Setting::STRING_FIRST]);
+          } // name
+          { // password
+            ADD_ALIGNMENT_HBOX;
+            hbox->add(*this->type_string_label[Setting::DOKOLOUNGE_PASSWORD
+                        - Setting::STRING_FIRST]);
+            hbox->add(*this->type_string[Setting::DOKOLOUNGE_PASSWORD
+                        - Setting::STRING_FIRST]);
+          } // password
+        } // DokoLounge
+#endif
         { // Behaviour
           Gtk::VBox* vbox = this->add_group_vbox("behaviour");
 
@@ -1070,7 +1096,6 @@ namespace UI_GTKMM_NS {
     } // void Preferences::setting_update(int const type)
 
   /**
-   **
    ** update the setting 'type'
    **
    ** @param     type   		the type of the setting
@@ -1079,12 +1104,11 @@ namespace UI_GTKMM_NS {
    **
    ** @return    -
    **
-   ** @version   0.5.4
-   **
    ** @author    Diether Knof
    **
-   ** @todo	style of the font and color buttons
+   ** @version   0.7.12
    **
+   ** @todo	style of the font and color buttons
    **/
   void
     Preferences::update(int const type, bool const update_sensitivity)
@@ -1131,7 +1155,7 @@ namespace UI_GTKMM_NS {
         } // switch(type)
       } else if ((type >= Setting::STRING_FIRST)
                  && (type <= Setting::STRING_LAST)) {
-        switch(type) {
+        switch (static_cast<Setting::TypeString const>(type)) {
         case Setting::NAME:
           dynamic_cast<Gtk::Entry*>(this->type_string[type - Setting::STRING_FIRST])->set_text(::setting(Setting::TypeString(type)));
           break;
@@ -1145,6 +1169,12 @@ namespace UI_GTKMM_NS {
                                            ::translation("%stext%",
                                                          ::translator.name()));
           break;
+#ifdef USE_NETWORK_DOKOLOUNGE
+        case Setting::DOKOLOUNGE_NAME:
+        case Setting::DOKOLOUNGE_PASSWORD:
+          dynamic_cast<Gtk::Entry*>(this->type_string[type - Setting::STRING_FIRST])->set_text(::setting(Setting::TypeString(type)));
+          break;
+#endif
         case Setting::CARDSET:
           this->cards_back_menu->clear_directories();
           for (list<string>::const_iterator
@@ -1225,17 +1255,15 @@ namespace UI_GTKMM_NS {
     } // void Preferences::update(int const type, bool const update_sensitivity = true)
 
   /**
-   **
    ** a setting has been changed by the user
    **
    ** @param     type   the type of the setting
    **
    ** @return    -
    **
-   ** @version   0.5.4
-   **
    ** @author    Diether Knof
    **
+   ** @version   0.7.12
    **/
   void
     Preferences::change(int const type)
@@ -1272,13 +1300,20 @@ namespace UI_GTKMM_NS {
       }
       else if ((type >= Setting::STRING_FIRST)
                && (type <= Setting::STRING_LAST)) {
-        switch(type) {
+          switch (static_cast<Setting::TypeString const>(type)) {
         case Setting::NAME:
           ::setting.set(static_cast<Setting::TypeString>(type),
                         dynamic_cast<Gtk::Entry*>(this->type_string[type - Setting::STRING_FIRST])->get_text());
           break;
         case Setting::LANGUAGE:
           break;
+#ifdef USE_NETWORK_DOKOLOUNGE
+        case Setting::DOKOLOUNGE_NAME:
+        case Setting::DOKOLOUNGE_PASSWORD:
+          ::setting.set(static_cast<Setting::TypeString>(type),
+                        dynamic_cast<Gtk::Entry*>(this->type_string[type - Setting::STRING_FIRST])->get_text());
+          break;
+#endif
         case Setting::CARDSET:
           // -> Preferences::cardset_selected()
           break;
@@ -1312,7 +1347,7 @@ namespace UI_GTKMM_NS {
           ::setting.set(static_cast<Setting::TypeString>(type),
                         dynamic_cast<Gtk::Entry*>(this->type_string[type - Setting::STRING_FIRST])->get_text());
           break;
-        } // switch(type)
+          } // switch(type)
       } // if (type == ())
       // cards order is managed in 'setting.cards_order.cpp'
 

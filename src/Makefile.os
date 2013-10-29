@@ -280,6 +280,9 @@ endif
 endif
 ifeq ($(USE_NETWORK), true)
 	override CPPFLAGS += -DUSE_NETWORK
+ifeq ($(USE_NETWORK_DOKOLOUNGE), true)
+	override CPPFLAGS += -DUSE_NETWORK_DOKOLOUNGE
+endif
 endif
 ifeq ($(USE_THREADS), true)
 	override CPPFLAGS += -DUSE_THREADS

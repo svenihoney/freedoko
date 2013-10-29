@@ -36,4 +36,13 @@
 //#define NETWORK_LOG_ON_STDOUT
 #endif
 
+namespace Network {
+      enum InterpreterType {
+        FREEDOKO
+#ifdef USE_NETWORK_DOKOLOUNGE
+          ,DOKOLOUNGE
+#endif
+      }; // enum InterpreterType
+}
+
 #endif // #ifndef HEADER_NETWORK_CONSTANTS

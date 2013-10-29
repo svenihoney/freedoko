@@ -75,6 +75,11 @@ namespace UI_GTKMM_NS {
 #ifdef USE_NETWORK
   class Network;
   class NetworkLog;
+#ifdef USE_NETWORK_DOKOLOUNGE
+  namespace DokoLounge {
+    class Lounge;
+  }
+#endif
 #endif
   class BugReport;
   class BugReportReplay;
@@ -182,19 +187,19 @@ namespace UI_GTKMM_NS {
     // the player 'player' has accepted the poverty trumps
     // and has returned 'cardno' cards with 'trumpno' trumps
     void poverty_take_accepted(Player const& player,
-			       unsigned const cardno,
-			       unsigned const trumpno);
+                               unsigned const cardno,
+                               unsigned const trumpno);
     // 'player' shifts cards
     HandCards poverty_shift(Player& player);
     // returns whether 'player' accepts the poverty
     bool poverty_take_accept(Player& player,
-			     unsigned const cardno);
+                             unsigned const cardno);
     // the player changes the cards of the poverty
     HandCards poverty_cards_change(Player& player,
-				   HandCards const& cards);
+                                   HandCards const& cards);
     // the poverty player 'player' gets 'cards'
     void poverty_cards_get_back(Player& player,
-				HandCards const& cards);
+                                HandCards const& cards);
 
     // returns the selected partner for a genscher
     Player const* genscher_partner();
@@ -203,7 +208,7 @@ namespace UI_GTKMM_NS {
     void redraw_all();
     void gametype_changed();
     void players_switched(Player const& player_a,
-			  Player const& player_b);
+                          Player const& player_b);
     void player_changed(Player const& player);
     void name_changed(Player const& player);
     void voice_changed(Player const& player);
@@ -230,7 +235,7 @@ namespace UI_GTKMM_NS {
 
     // 'player' has chatted 'message'
     void chat(string const& player, string const& message,
-	      bool const self = true);
+              bool const self = true);
 #ifdef USE_NETWORK
     // a new listener was created
     void network_listener_new(::Network::Listener const& listener);
@@ -244,8 +249,8 @@ namespace UI_GTKMM_NS {
     void network_connection_deleted(::Network::Connection const& connection);
     // there was network traffic over the given connection
     void network_traffic(::Network::Connection const& connection,
-			 ::Network::TrafficType const traffic_type,
-			 string const& text);
+                         ::Network::TrafficType const traffic_type,
+                         string const& text);
 #endif
 
     // the status message has changed
@@ -263,7 +268,7 @@ namespace UI_GTKMM_NS {
     void program_updated(DK::Utils::Version const& old_version);
     // information for the user
     void information(Translator::Translation const& message,
-		     INFORMATION::Type const type,
+                     INFORMATION::Type const type,
                      bool const force_show = false);
     // show the help
     void show_help(string const& location);
@@ -290,6 +295,8 @@ namespace UI_GTKMM_NS {
 
     public: // the gtkmm part
     Thrower thrower;
+
+    int base_objects_number;
 
     Gtk::Main* kit;
     Glib::RefPtr<Gdk::Colormap> colormap;
@@ -329,6 +336,9 @@ namespace UI_GTKMM_NS {
 #ifdef USE_NETWORK
     Network* network;
     NetworkLog* network_log;
+#ifdef USE_NETWORK_DOKOLOUNGE
+    DokoLounge::Lounge* dokolounge;
+#endif
 #endif
 
     BugReport* bug_report;

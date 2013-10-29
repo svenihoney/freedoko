@@ -1,3 +1,6 @@
+2013-10-27 Diether Knof
+	- begun with support for DokoLounge
+
 2013-10-01 Diether Knof
 	- cards information: added check, whether two players share as many "can have" cards as they still have to play (the other players cannot have these cards, then).
 

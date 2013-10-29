@@ -59,8 +59,8 @@ namespace UI_GTKMM_NS {
 
     private: // unused
       Base();
-      Base(Base const& main_window);
-      Base& operator=(Base const& main_window);
+      Base(Base const&);
+      Base& operator=(Base const&);
   }; // class Base
 
 } // namespace UI_GTKMM_NS

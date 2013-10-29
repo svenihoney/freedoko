@@ -93,7 +93,6 @@ AiConfig::limit queen \
 	= Minimale Stichpunkte für bevorzugten Dameneinsatz
 AiConfig::limit dolle \
 	= Minimale Stichpunkte für bevorzugten Dolleneinsatz
-#last fehlcreation       = Letzter Stich, in dem eine Fehlfarbe durch Abschmeißen erzeugt werden darf 
 AiConfig::last fehlcreation \
 	= Letzter Stich, um Fehlfarbe zu erzeugen
 AiConfig::last tricks without heuristics \

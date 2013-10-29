@@ -4,6 +4,9 @@ SUBDIR = ./network
 include $(DEPTH)/Makefile.os
 
 DIRECTORIES = actor gnet FreeDoko
+ifeq ($(USE_NETWORK_DOKOLOUNGE), true)
+  DIRECTORIES = DokoLounge
+endif
 
 include Makefile.objects
 

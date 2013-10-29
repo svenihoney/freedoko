@@ -5,7 +5,6 @@
 Warning::network unstable =\
 	Die Netzwerkunterstützung ist noch intensiv in der Entwicklung. Daher werden vermutlich Probleme auftreten.
 
-
 Network::name			= Name
 Network::address		= Adresse
 Network::port			= Port

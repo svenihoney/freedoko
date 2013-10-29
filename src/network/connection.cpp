@@ -38,7 +38,6 @@
 #include "exceptions.h"
 
 #include "gnet/connection.h"
-#include "FreeDoko/interpreter.h"
 
 #include "../party/party.h"
 #include "../party/rule.h"
@@ -54,27 +53,29 @@ namespace Network {
   /**
    ** constructor
    **
-   ** @param	server		the corresponding server
-   ** @param	address		address to connect to
-   ** @param	port		port to connect to
+   ** @param	server    the corresponding server
+   ** @param	address   address to connect to
+   ** @param	port      port to connect to
+   ** @param	type      the interpreter type
    **
    ** @return	-
    **
    ** @author	Diether Knof
    **
-   ** @version	0.7.0
+   ** @version	0.7.12
    **/
   Connection*
-    Connection::new_(Server& server,
-		     string const& address, unsigned const port)
+    Connection::new_(Server& server, 
+		     string const& address, unsigned const port,
+                     InterpreterType const type)
     {
       try {
-	return new GNet::Connection(server, address, port);
+	return new GNet::Connection(server, address, port, type);
       } catch (ConnectionFailureException const&) {
 	return NULL;
       }
       return NULL;
-    } // static Connection* Connection::new_(Server& server, string address, unsigned port)
+    } // static Connection* Connection::new_(Server& server, string address, unsigned port, InterpreterType type)
 
   /**
    ** constructor
@@ -107,7 +108,7 @@ namespace Network {
     outgoing_bytes_(0)
   {
 #ifndef OUTDATED
-    this->interpreter_ = new FreeDoko::Interpreter(*this);
+    this->interpreter_ = Interpreter::new_(*this, FREEDOKO);
 #endif
     return ;
   } // Connection::Connection(Server server)
@@ -115,20 +116,22 @@ namespace Network {
   /**
    ** constructor
    **
-   ** @param	server	the corresponding server
-   ** @param	address		address to connect to
-   ** @param	port		port to connect to
+   ** @param	server    the corresponding server
+   ** @param	address   address to connect to
+   ** @param	port      port to connect to
+   ** @param	type      interpreter type
    **
    ** @return	-
    **
    ** @author	Diether Knof
    **
-   ** @version	0.7.0
+   ** @version	0.7.12
    **
    ** @todo	select the interpreter automatically
    **/
   Connection::Connection(Server& server,
-			 string const& address, unsigned const port) :
+			 string const& address, unsigned const port,
+                         InterpreterType const type) :
     players(),
     players_bak(),
     server_(&server),
@@ -148,10 +151,10 @@ namespace Network {
     outgoing_bytes_(0)
   {
 
-    this->interpreter_ = new FreeDoko::Interpreter(*this);
+    this->interpreter_ = Interpreter::new_(*this, type);
 
     return ;
-  } // Connection::Connection(Server server)
+  } // Connection::Connection(Server server, string address, unsigned port, InterpreterType type)
 
   /**
    ** destructor

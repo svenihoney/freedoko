@@ -17,8 +17,8 @@ GameStatus::game new			= Spiel: neu
 GameStatus::game init			= Spiel: initilisieren
 GameStatus::game reservation		= Spiel: Vorbehalte
 GameStatus::game redistribute		= Spiel: Karten neu verteilen
-GameStatus::game poverty shift		= Spiel: Trumpfarmut schieben
 GameStatus::game start			= Spiel: Start
+GameStatus::game poverty shift		= Spiel: Trumpfarmut schieben
 GameStatus::game play			= Spiel: im Spiel
 GameStatus::game full trick		= Spiel: voller Stich
 GameStatus::game trick taken		= Spiel: Stich genommen
@@ -108,7 +108,6 @@ BockTrigger::re lost                      = Re verloren
 BockTrigger::contra lost                  = Contra verloren
 BockTrigger::heart trick                  = Herzstich
 BockTrigger::black                        = schwarz gespielt
-
 
 # specialpoint
 SpecialPoint::specialpoint		= Extrapunkt

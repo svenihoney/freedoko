@@ -136,6 +136,9 @@ namespace UI_GTKMM_NS {
       Gtk::StockButton* configure_rules;
 #ifdef USE_NETWORK
       Gtk::StockButton* configure_network;
+#ifdef USE_NETWORK_DOKOLOUNGE
+      Gtk::StockButton* dokolounge;
+#endif
 #endif
 
     private: // unused

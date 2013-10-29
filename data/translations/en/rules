@@ -1,6 +1,6 @@
 # FreeDoko translation: part rules
 # language: english
-# version: 0.7.5
+# version: 0.7.12
 
 rule					= rule
 rules					= rules
@@ -84,6 +84,8 @@ Rule::marriage first foreign		= first foreign
 Rule::marriage first color		= first color
 Rule::marriage first single color	= first single color
 Rule::marriage first trump		= first trump
+Rule::marriage first one decides	= first trick desides
+Rule::marriage before poverty		= marriage before poverty
 
 Rule::genscher				= genscher
 
@@ -180,9 +182,10 @@ Counting::plus-minus		= plus-minus
 
 
 # extra informations
-Rule::Information::Title::with nines	= Informaiton: game with nines
+Rule::Information::Title::with nines	= Information: game with nines
 Rule::Information::with nines	= \
   You have chosen to play with nines. So you should adjust the latest announcements trick in the group 'announcement' as well as the marriage determination in the group 'marriage'. Also we suggest that you adjust the AI (reset to hardcoded or change manually).
+
 Rule::Information::Title::without nines	= Informaiton: game without nines
 Rule::Information::without nines	= \
   You have chosen to play without nines. So you should adjust the latest announcements trick in the group 'announcement' as well as the marriage determination in the group 'marriage'. Also we suggest that you adjust the AI (reset to hardcoded or change manually).

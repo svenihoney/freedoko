@@ -71,6 +71,7 @@
 
 #ifdef USE_NETWORK
 #include "network/server.h"
+#include "network/FreeDoko/interpreter.h"
 #endif
 
 #include "os/seed.h"
@@ -629,10 +630,10 @@ main(int argc, char* argv[])
       } else { // if !(version_old == NULL)
 #ifdef RELEASE
         // give information if the version is updated
-        if (*version_old < *::version)
+        if (*version_old < *::version) {
           ::ui->program_updated(*version_old);
+        }
 #endif
-
         delete version_old;
       } // if (version_old != NULL)
 
@@ -712,7 +713,8 @@ main(int argc, char* argv[])
 #ifdef USE_NETWORK
           if (!network_connection.empty()) {
             ::server->create_connection(network_connection,
-                                        Network::Server::FREEDOKO_STANDARD_PORT);
+                                        Network::Server::FREEDOKO_STANDARD_PORT,
+                                        Network::FREEDOKO);
             network_connection.clear();
             ::game_status = GAMESTATUS::PARTY_NEW;
           }

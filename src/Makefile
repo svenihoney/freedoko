@@ -203,6 +203,7 @@ show_modules :
 	@echo '    USE_SOUND_APLAY     : $(USE_SOUND_APLAY)'
 	@echo '    USE_SOUND_PLAYSOUND : $(USE_SOUND_PLAYSOUND)'
 	@echo '  USE_NETWORK  : $(USE_NETWORK)'
+	@echo '    USE_NETWORK_DOKOLOUNGE  : $(USE_NETWORK_DOKOLOUNGE)'
 
 # show the flags used for compiling
 .PHONY: show_flags
@@ -247,6 +248,7 @@ ifeq ($(OPERATING_SYSTEM), Windows)
 	  "USE_UI_TEXT=false" \
 	  "USE_UI_GTKMM=true" \
 	  "USE_NETWORK=true" \
+	  "USE_NETWORK_DOKOLOUNGE=false" \
 	  "USE_BOOST=false" \
 	  "USE_SOUND_ALUT=false" \
 	  "USE_SOUND_COMMAND=false" \
@@ -262,6 +264,7 @@ else
 	  "USE_UI_TEXT=false" \
 	  "USE_UI_GTKMM=true" \
 	  "USE_NETWORK=true" \
+	  "USE_NETWORK_DOKOLOUNGE=false" \
 	  "USE_BOOST=false" \
 	  "USE_SOUND_ALUT=true" \
 	  "USE_SOUND_COMMAND=false" \

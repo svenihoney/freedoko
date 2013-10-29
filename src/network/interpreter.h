@@ -34,23 +34,28 @@
 #include "connection.h"
 
 namespace Network {
-
   /**
    ** base class for an interpreter for network traffic
    **
    ** @author	Diether Knof
    **/
   class Connection::Interpreter {
+
     public:
       class Sender;
       class Receiver;
 
     public:
+      // create a new interpreter
+      static Interpreter* new_(Connection& connection,
+                               InterpreterType const type);
+
+    public:
       // constructor
       Interpreter(Connection& connection, Sender& sender, Receiver& receiver) :
-	connection_(&connection),
-	sender_(&sender), receiver_(&receiver)
-      { }
+        connection_(&connection),
+        sender_(&sender), receiver_(&receiver)
+    { }
 
       // destructor
       virtual ~Interpreter()

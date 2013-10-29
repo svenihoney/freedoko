@@ -56,6 +56,9 @@
 #ifdef USE_NETWORK
 #include "network.h"
 #include "network_log.h"
+#ifdef USE_NETWORK_DOKOLOUNGE
+#include "dokolounge/lounge.h"
+#endif
 #endif
 #include "bug_report.h"
 #include "bug_report_replay.h"
@@ -83,6 +86,7 @@ namespace UI_GTKMM_NS {
     UI(UI_TYPE::GTKMM_DOKO),
     Base(this, this),
     thrower(),
+    base_objects_number(0),
     kit(NULL),
     colormap(NULL),
     logo(NULL),
@@ -108,6 +112,9 @@ namespace UI_GTKMM_NS {
 #ifdef USE_NETWORK
     network(NULL),
     network_log(NULL),
+#ifdef USE_NETWORK_DOKOLOUNGE
+    dokolounge(NULL),
+#endif
 #endif
     bug_report(NULL),
     bug_report_replay(NULL),
@@ -121,6 +128,18 @@ namespace UI_GTKMM_NS {
 
       this->kit = new Gtk::Main(argc_gtkmm, argv_gtkmm);
     }
+
+    // count the number of objects
+    this->base_objects_number = 29;
+#ifndef RELEASE
+    this->base_objects_number += 1; // gameinfo
+#endif
+#ifdef USE_NETWORK
+    this->base_objects_number += 1; // network, log
+#ifdef USE_NETWORK_DOKOLOUNGE
+    this->base_objects_number += 1; // lounge
+#endif
+#endif
 
     this->translations = new Translations(this);
 
@@ -212,6 +231,9 @@ namespace UI_GTKMM_NS {
 #ifdef USE_NETWORK
     delete this->network_log;
     delete this->network;
+#ifdef USE_NETWORK_DOKOLOUNGE
+    delete this->dokolounge;
+#endif
 #endif
     delete this->about;
     delete this->chatter;
@@ -310,6 +332,9 @@ namespace UI_GTKMM_NS {
 #ifdef USE_NETWORK
       this->network = new Network(this);
       this->network_log = new NetworkLog(this);
+#ifdef USE_NETWORK_DOKOLOUNGE
+      this->dokolounge = new DokoLounge::Lounge(this);
+#endif
 #endif
       this->party_summary = new PartySummary(this);
       this->party_settings = new PartySettings(this);

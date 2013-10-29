@@ -45,31 +45,33 @@ namespace Network {
     /**
      ** constructor
      **
-     ** @param	server		the corresponding server
-     ** @param	address		address to connect to
-     ** @param	port		port to connect to
+     ** @param     server    the corresponding server
+     ** @param     address   address to connect to
+     ** @param     port      port to connect to
+     ** @param     type      interpreter type
      **
-     ** @return	-
+     ** @return    -
      **
-     ** @author	Diether Knof
+     ** @author    Diether Knof
      **
-     ** @version	0.7.1
+     ** @version   0.7.12
      **/
     Connection::Connection(::Network::Server& server,
-			   string const& address, unsigned const port) :
-      Network::Connection(server, address, port),
+                           string const& address, unsigned const port,
+                           InterpreterType const type) :
+      Network::Connection(server, address, port, type),
       socket(),
       iochannel(NULL),
       watch(0)
     {
       this->socket = gnet_tcp_socket_connect(address.c_str(), port);
       if (!this->socket)
-	throw ConnectionFailureException();
+        throw ConnectionFailureException();
 
       this->set_relation(PARENT);
 
       this->gnet_init();
-    } // Connection::Connection(Server& server, string address, unsigned port)
+    } // Connection::Connection(Server& server, string address, unsigned port, InterpreterType type)
 
     /**
      ** constructor
@@ -84,15 +86,15 @@ namespace Network {
      ** @version	0.7.0
      **/
     Connection::Connection(::Network::Server& server,
-			   GTcpSocket* client_socket) :
+                           GTcpSocket* client_socket) :
       Network::Connection(server),
       socket(client_socket),
       iochannel(NULL),
       watch(0)
     {
       if (client_socket == NULL) {
-	cerr << "Connection error" << endl;
-	exit (EXIT_FAILURE);
+        cerr << "Connection error" << endl;
+        exit (EXIT_FAILURE);
       }
 
       this->set_relation(CHILD);
@@ -132,59 +134,59 @@ namespace Network {
     void
       Connection::gnet_init()
       {
-	{ // get some information of the client
-	  // internet address of the client
-	  GInetAddr*
-	    client_address = gnet_tcp_socket_get_remote_inetaddr(this->socket);
-	  if (client_address == NULL) {
-	    cerr << "Error getting the client address" << endl;
-	    exit(EXIT_FAILURE);
-	  }
+        { // get some information of the client
+          // internet address of the client
+          GInetAddr*
+            client_address = gnet_tcp_socket_get_remote_inetaddr(this->socket);
+          if (client_address == NULL) {
+            cerr << "Error getting the client address" << endl;
+            exit(EXIT_FAILURE);
+          }
 
-	  { // address of the connected computer
-	    //gchar* name = gnet_inetaddr_get_canonical_name(client_address);
-	    gchar* name = gnet_inetaddr_get_name(client_address);
-	    this->address_ = name;
-	    this->port_ = gnet_inetaddr_get_port(client_address);
+          { // address of the connected computer
+            //gchar* name = gnet_inetaddr_get_canonical_name(client_address);
+            gchar* name = gnet_inetaddr_get_name(client_address);
+            this->address_ = name;
+            this->port_ = gnet_inetaddr_get_port(client_address);
 
-	    // first set the name to the address
-	    this->set_name(this->address());
+            // first set the name to the address
+            this->set_name(this->address());
 
-	    g_free(name);
-	    gnet_inetaddr_delete(client_address);
-	  }
-	} // get some information of the client
+            g_free(name);
+            gnet_inetaddr_delete(client_address);
+          }
+        } // get some information of the client
 
-	// create an io channel to the client
-	this->iochannel = gnet_tcp_socket_get_io_channel(this->socket);
-	if (this->iochannel == NULL) {
-	  cerr << "Error getting the client iochannel" << endl;
-	  exit(EXIT_FAILURE);
-	}
+        // create an io channel to the client
+        this->iochannel = gnet_tcp_socket_get_io_channel(this->socket);
+        if (this->iochannel == NULL) {
+          cerr << "Error getting the client iochannel" << endl;
+          exit(EXIT_FAILURE);
+        }
 
-	this->watch = 
-	  g_io_add_watch(this->iochannel,
-			 static_cast<GIOCondition>(G_IO_IN
-						   //| G_IO_OUT
-						   | G_IO_ERR
-						   | G_IO_HUP
-						   | G_IO_NVAL), // watch flags
-			 async_client_iofunc, this);
+        this->watch = 
+          g_io_add_watch(this->iochannel,
+                         static_cast<GIOCondition>(G_IO_IN
+                                                   //| G_IO_OUT
+                                                   | G_IO_ERR
+                                                   | G_IO_HUP
+                                                   | G_IO_NVAL), // watch flags
+                         async_client_iofunc, this);
 
-	if (this->name().empty()) {
-	  cerr << "Error getting the client name" << endl;
+        if (this->name().empty()) {
+          cerr << "Error getting the client name" << endl;
 #ifdef POSTPONED
-	  exit(EXIT_FAILURE);
+          exit(EXIT_FAILURE);
 #endif
-	}
-	if (this->port() == 0) {
-	  cerr << "Error getting the client port" << endl;
+        }
+        if (this->port() == 0) {
+          cerr << "Error getting the client port" << endl;
 #ifdef POSTPONED
-	  exit(EXIT_FAILURE);
+          exit(EXIT_FAILURE);
 #endif
-	}
+        }
 
-	return ;
+        return ;
       } // void Connection::gnet_init()
 
     /**

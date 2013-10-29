@@ -1112,7 +1112,7 @@ namespace UI_GTKMM_NS {
 	= this->new_connection_address->get_text();
       unsigned const port
 	= static_cast<unsigned>(this->new_connection_port->get_value_as_int());
-      ::server->create_connection(address, port);
+      ::server->create_connection(address, port, ::Network::FREEDOKO);
 
       return ;
     } // void Network::connect_event()

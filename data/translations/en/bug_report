@@ -24,7 +24,8 @@ BugReport::created directory '%sdirectory%'	= \
 BugReport::could not save at '%sfilename%', trying '%sfilename2%'. = \
 	Could not save the bug report at '%sfilename%', trying '%sfilename2%'.
 BugReport::could not save			= \
-	Could not save the bug report :-(. \nPlease report manually.
+	Could not save the bug report :-(. \n\
+        Please report manually.
 
 BugReport::write seed: %useed%			= \
 	Trying to output the seed: %useed%
@@ -47,7 +48,6 @@ BugReport::automatic creation, %sfilename%, %scontact%	= \
 	Please send it to %scontact%.\n\
 	Thank you.
 
-
 BugReport::automatic report creation failed		= \
 	Sorry, you have found a bug :-(\n\
 	A bug report cannot be generated, \
@@ -63,3 +63,6 @@ Press <Return> to create segmentation fault.	= \
 	Press <Return> to create segmentation fault.
 Creating segmentation fault.			= \
 	Creating segmentation fault.
+
+replayed bug report: %sbug report% = \
+        replayed bug report: %sbug report%

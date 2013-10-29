@@ -73,14 +73,15 @@ namespace Network {
     public:
 
     // creates a listener on the port 'port'
-    bool create_listener(unsigned const port);
+    Listener* create_listener(unsigned const port);
     // the listener is created
     void new_listener(Listener* const listener);
     // the listener is deleted
     void delete_listener(Listener* const listener);
 
     // creates a new connection
-    bool create_connection(string const& address, unsigned const port);
+    Connection* create_connection(string const& address, unsigned const port,
+                                 InterpreterType const type);
     // the connection is created
     void new_connection(Connection* const connection);
     // the connection is deleted

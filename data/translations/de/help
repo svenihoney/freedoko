@@ -1,6 +1,6 @@
 # FreeDoko translation: help
 # language: deutsch
-# version: 0.7.5
+# version: 0.7.12
 
 
 # help menu
@@ -77,3 +77,5 @@ License: InnoCard expired =\
 	Die Nutzung des Kartensatz 'InnoCard' ist nur bis zum 31. Dezember 2009 gestattet. Andere Kartensätze finden Sie unter http://free-doko.sourceforge.net/de/Dateien.html.
 License: Elite expired =\
 	Die Nutzung des Kartensatz 'Elite' ist nur bis zum 31. Dezember 2009 gestattet. Andere Kartensätze finden Sie unter http://free-doko.sourceforge.net/de/Dateien.html.
+cardset replaced: %sorig%, %sreplacement% =\
+        Der Kartensatz %sorig% wurde durch %sreplacement% ersetzt.

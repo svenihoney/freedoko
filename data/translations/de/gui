@@ -120,8 +120,20 @@ synchronize network		= synchronisiere
 # chat
 send				= sende
 
+# DokoLounge
+DokoLounge                      = DokoLounge
+DokoLounge: Lounge              = DokoLounge: Lounge
+name: %sname%                   = Name: %sname%
+create account                  = Account erstellen
+login                           = Einloggen
+logout                          = Ausloggen
+klingel                         = Klingel
+hilfe                           = Hilfe
+blog                            = Blog
+pinnwand                        = Pinnwand
+
 # rules
-# -> text.rules
+# -> rules
 announcement with maximal cards	= max. Blattgröße
 save rules			= Regeln speichern
 adjust rules 			= Regeln anpassen
@@ -322,7 +334,7 @@ Keeping the old one.	= \
 	Kann das Symbol für die Ansage '%tannouncement%' nicht erzeugen.\n\
 	Behalte das alte Symbol.
 
-# replay bug report
+# replay a bug report
 BugReportReplay::Group::general	= allgemein
 BugReportReplay::Group::actions	= Aktionen
 BugReportReplay::Group::human actions	= Menschaktionen

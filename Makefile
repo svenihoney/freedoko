@@ -284,8 +284,9 @@ release_manual :
 release_source :
 	$(MAKE) release_directory
 	$(MAKE) release_data
+	mkdir $(RELEASE_TMP)/src
 #	source (only svn files)
-	for f in `svn status -v Makefile* src/ | awk '/^[?D]/ {print $$NF}'`; do \
+	for f in `svn status -v Makefile* src/ | awk '/^[^?D]/ {print $$NF}'`; do \
 	  if [ -d $$f ]; then \
 	    mkdir $(RELEASE_TMP)/FreeDoko_$(VERSION)/$$f; \
 	  else \

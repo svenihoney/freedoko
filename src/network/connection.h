@@ -33,6 +33,7 @@
 
 #include "types.h"
 
+#include "server.h"
 #include "../basistypes.h"
 
 #include "../misc/translation.h"
@@ -52,8 +53,6 @@ class Hand;
 class Card;
 
 namespace Network {
-
-  class Server;
 
   /**
    ** base class for a network connection
@@ -84,12 +83,18 @@ namespace Network {
     public:
       // create a new connection
       static Connection* new_(Server& server,
-			      string const& address, unsigned const port);
+			      string const& address, unsigned const port,
+                              InterpreterType const type);
     protected:
       // constructor
       Connection(Server& server);
       // constructor
-      Connection(Server& server, string const& address, unsigned const port);
+      Connection(Server& server,
+                 InterpreterType const type);
+      // constructor
+      Connection(Server& server,
+                 string const& address, unsigned const port,
+                 InterpreterType const type);
     public:
       // destructor
       virtual ~Connection();
@@ -175,18 +180,18 @@ string name(Network::Connection::Type const& type);
 WRITE_NAME(Network::Connection::Relation)
 WRITE_NAME(Network::Connection::Type)
 
-inline
-Translator::Translation translation(Network::Connection::Relation const&
-				    relation)
+  inline
+  Translator::Translation translation(Network::Connection::Relation const&
+                                      relation)
 { return Translator::Translation(::translator,
-				 "Network::Connection::Relation::"
-				 + ::name(relation));
+                                 "Network::Connection::Relation::"
+                                 + ::name(relation));
 }
 inline
 Translator::Translation translation(Network::Connection::Type const& type)
 { return Translator::Translation(::translator,
-				 "Network::Connection::Type::"
-				 + ::name(type));
+                                 "Network::Connection::Type::"
+                                 + ::name(type));
 }
 
 #endif // #ifndef CLASS_NETWORK_CONNECTION_HEADER

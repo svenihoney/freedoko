@@ -142,6 +142,12 @@ class Setting {
 
       NAME = STRING_FIRST,
       LANGUAGE,
+
+#ifdef USE_NETWORK_DOKOLOUNGE
+      DOKOLOUNGE_NAME,
+      DOKOLOUNGE_PASSWORD,
+#endif
+
       CARDSET,
       CARDS_BACK,
       ICONSET,

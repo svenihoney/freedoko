@@ -1,6 +1,6 @@
 # FreeDoko translation: help
 # language: english
-# version: 0.7.5
+# version: 0.7.12
 
 
 # help menu
@@ -64,12 +64,10 @@ About::about				= \
 	Translations:\n\
 	French: Yves Caubarrus (inactiv)
 
-
 visit homepage 				= \
 	visit homepage
 cardset internet page			= \
 	cardsets in the internet
-
 
 
 License: Altenburg expired =\
@@ -78,3 +76,5 @@ License: InnoCard expired =\
 	The usage of the cardset 'InnoCard' is only granted till 31. december 2009. You can find other cardsets at http://free-doko.sourceforge.net/en/files.html.
 License: Elite expired =\
 	The usage of the cardset 'Elite' is only granted till 31. december 2009. You can find other cardsets at http://free-doko.sourceforge.net/en/files.html.
+cardset replaced: %sorig%, %sreplacement% =\
+        The cardset %sorig% was replaced by %sreplacement%.

@@ -20,7 +20,6 @@ Message::network support	= \
 Error::could not create listener on port %uport%	= \
 	Error: could not create listener on port %uport%.
 
-
 Error::loading default cardset %scardset%		= \
 	Could not load the standard cardset '%scardset%'.\n\
 	Is the installation complete?

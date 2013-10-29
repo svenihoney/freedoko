@@ -61,6 +61,12 @@ ifeq ($(USE_UI_GTKMM), true)
 	OBJECTS_UI += $(patsubst %,ui/gtkmm/%,$(OBJECTS))
 	include ui/gtkmm/widgets/Makefile.objects
 	OBJECTS_UI += $(patsubst %,ui/gtkmm/widgets/%,$(OBJECTS))
+ifeq ($(USE_NETWORK), true)
+ifeq ($(USE_NETWORK_DOKOLOUNGE), true)
+	include ui/gtkmm/dokolounge/Makefile.objects
+	OBJECTS_UI += $(patsubst %,ui/gtkmm/dokolounge/%,$(OBJECTS))
+  endif
+  endif
 endif
 
 ifeq ($(USE_SOUND), true)
@@ -80,6 +86,12 @@ ifeq ($(USE_NETWORK), true)
 	OBJECTS_NETWORK += $(patsubst %,network/FreeDoko/%,$(OBJECTS))
 	include network/FreeDoko/parser/Makefile.objects
 	OBJECTS_NETWORK += $(patsubst %,network/FreeDoko/parser/%,$(OBJECTS))
+ifeq ($(USE_NETWORK_DOKOLOUNGE), true)
+	include network/DokoLounge/Makefile.objects
+	OBJECTS_NETWORK += $(patsubst %,network/DokoLounge/%,$(OBJECTS))
+	include network/DokoLounge/parser/Makefile.objects
+	OBJECTS_NETWORK += $(patsubst %,network/DokoLounge/parser/%,$(OBJECTS))
+  endif
 endif
 
 OBJECTS := $(OBJECTS_ROOT)

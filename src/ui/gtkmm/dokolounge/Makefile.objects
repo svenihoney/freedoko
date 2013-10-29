@@ -1,0 +1,3 @@
+# All object-files
+OBJECTS = \
+	  lounge.o

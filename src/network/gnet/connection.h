@@ -53,11 +53,16 @@ namespace Network {
       public:
 	// constructor
 	Connection(::Network::Server& server,
-		   string const& address, unsigned const port);
+		   string const& address, unsigned const port,
+                   InterpreterType const type);
 	// constructor
 	Connection(::Network::Server& server, GTcpSocket* client_socket);
 	// destructor
 	~Connection();
+
+        
+        // connect
+		   bool connect(string const& address, unsigned const port);
 
         // check for network traffic
         void update();

@@ -1,6 +1,6 @@
 # FreeDoko translation: part settings
 # language: english
-# version: 0.7.5
+# version: 0.7.12
 
 setting				= setting
 settings			= settings
@@ -40,6 +40,7 @@ Setting::show all hands			= show all hands
 Setting::show ai information hands	= show hands (AI information)
 Setting::show ai information teams	= show teams (AI information)
 Setting::show trickpiles points		= show trickpiles points
+
 
 # information windows
 Setting::Group::information windows \
@@ -108,6 +109,13 @@ Setting::network connections urgency hint \
 Setting::network chat urgency hint \
 	= chat hint
 
+Setting::Group::DokoLounge \
+        = Dokolounge
+Setting::DokoLounge name \
+        = Name
+Setting::DokoLounge password \
+        = Passwort
+
 # cards order
 Setting::Group::cards order		= cards order
 Setting::cards order			= cards order
@@ -137,6 +145,8 @@ Setting::cards height			= cards height
 #   theme
 Setting::Group::theme			= theme
 Setting::cardset			= cardset
+Setting::iconset from cardset		= iconset from cardset
+Setting::iconset			= iconset
 Setting::background			= background
 Setting::cards back			= cards back
 
@@ -161,7 +171,7 @@ Setting::show bug report button in game finished window	= show bug report button
 Setting::save bug reports on desktop	= save bug reports on desktop
 
 
-# the browser
+# commands for external programs
 Setting::play sound command		= sound playing program
 Setting::browser command		= browser command
 
@@ -179,6 +189,7 @@ Setting::sound extension		= sound extension
 Setting::cardsets directory		= cardsets directory
 Setting::cards directory		= cards directory
 Setting::cards back directory		= cards back directory
+Setting::iconsets directory		= Symbolsatzverzeichnis
 Setting::icons directory		= icons directory
 Setting::backgrounds directory		= backgrounds directory
 Setting::sounds directory		= sounds directory

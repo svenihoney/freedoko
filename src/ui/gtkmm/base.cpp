@@ -34,20 +34,7 @@
 
 #include "ui.h"
 
-#ifdef USE_NETWORK
-#ifdef RELEASE
-#define PROGRESS_PER_BASE (1.0 / 32)
-#else
-#define PROGRESS_PER_BASE (1.0 / 31)
-#endif
-#else
-#ifdef RELEASE
-#define PROGRESS_PER_BASE (1.0 / 30)
-#else
-#define PROGRESS_PER_BASE (1.0 / 29)
-#endif
-#endif
-// + 1 (Translations)
+#define PROGRESS_PER_BASE (1.0 / this->ui->base_objects_number)
 
 namespace UI_GTKMM_NS {
 
@@ -69,12 +56,12 @@ namespace UI_GTKMM_NS {
   {
     // note: the parent object must not be fully initialized
 
-    if (   (::game_status == GAMESTATUS::PROGRAMSTART)
-	|| (::game_status == GAMESTATUS::PARTY_INITIAL_LOADED) )
-      this->ui->add_progress(PROGRESS_PER_BASE);
-
-    if (this != this->ui)
+    if (this != this->ui) {
       this->ui->add_part(*this);
+      if (   (::game_status == GAMESTATUS::PROGRAMSTART)
+          || (::game_status == GAMESTATUS::PARTY_INITIAL_LOADED) )
+        this->ui->add_progress(PROGRESS_PER_BASE);
+    }
 
     return ;
   } // Base::Base(Base* const parent)
@@ -97,12 +84,12 @@ namespace UI_GTKMM_NS {
     ui(ui),
     parent(parent)
   {
-    if (   (::game_status == GAMESTATUS::PROGRAMSTART)
-	|| (::game_status == GAMESTATUS::PARTY_INITIAL_LOADED) )
-      this->ui->add_progress(PROGRESS_PER_BASE);
-
-    if (this != this->ui)
+    if (this != this->ui) {
       this->ui->parts.push_back(this);
+    if (   (::game_status == GAMESTATUS::PROGRAMSTART)
+        || (::game_status == GAMESTATUS::PARTY_INITIAL_LOADED) )
+      this->ui->add_progress(PROGRESS_PER_BASE);
+    }
 
     return ;
   } // Base::Base(Base* const parent, UI_GTKMM* const ui)
@@ -124,8 +111,8 @@ namespace UI_GTKMM_NS {
   {
     if (this != this->ui)
       this->ui->parts.erase(std::find(this->ui->parts.begin(),
-				      this->ui->parts.end(),
-				      this));
+                                      this->ui->parts.end(),
+                                      this));
 
     return ;
   } // virtual Base::~Base()

@@ -40,6 +40,9 @@
 #include "bug_report.h"
 #ifdef USE_NETWORK
 #include "network.h"
+#ifdef USE_NETWORK_DOKOLOUNGE
+#include "dokolounge/lounge.h"
+#endif
 #endif
 #include "first_run.h"
 #include "program_updated.h"
@@ -95,6 +98,9 @@ namespace UI_GTKMM_NS {
     configure_rules()
 #ifdef USE_NETWORK
       ,configure_network()
+#ifdef USE_NETWORK_DOKOLOUNGE
+      ,dokolounge()
+#endif
 #endif
   {
     this->ui->add_window(*this);
@@ -232,8 +238,14 @@ namespace UI_GTKMM_NS {
       this->configure_network
         = Gtk::manage(new Gtk::StockButton("configure network"));
 #endif
-      this->ui->translations->add(*(this->configure_network),
+      this->ui->translations->add(*this->configure_network,
                                   ::translation("network"));
+#ifdef USE_NETWORK_DOKOLOUNGE
+      this->dokolounge
+        = Gtk::manage(new Gtk::StockButton("DokoLounge"));
+      this->ui->translations->add(*this->dokolounge,
+                                  ::translation("DokoLounge"));
+#endif
 #endif
 
 
@@ -292,12 +304,13 @@ namespace UI_GTKMM_NS {
             vbox->add(*this->configure_rules);
             vbox->add(*this->configure_players);
 #ifdef USE_NETWORK
-            {
-              vbox->add(*Gtk::manage(new Gtk::Alignment(Gtk::ALIGN_CENTER,
-                                                        Gtk::ALIGN_CENTER,
-                                                        1, 0)));
-            }
-            vbox->add(*(this->configure_network));
+            vbox->add(*Gtk::manage(new Gtk::Alignment(Gtk::ALIGN_CENTER,
+                                                      Gtk::ALIGN_CENTER,
+                                                      1, 0)));
+            vbox->add(*this->configure_network);
+#ifdef USE_NETWORK_DOKOLOUNGE
+            vbox->add(*this->dokolounge);
+#endif
 #endif
           } // configure
 
@@ -439,6 +452,12 @@ namespace UI_GTKMM_NS {
         this->configure_network->signal_clicked().connect(sigc::mem_fun(*this,
                                                                         &PartySettings::show_network_unstable_warning)
                                                          );
+#endif
+        
+#ifdef USE_NETWORK_DOKOLOUNGE
+        this->dokolounge->signal_clicked().connect(sigc::mem_fun0(*this->ui->dokolounge,
+                                                                  &Gtk::Window::present)
+                                                  );
 #endif
 #endif
       } // signals
@@ -721,9 +740,9 @@ namespace UI_GTKMM_NS {
       this->rule_number_of_rounds->set_value(rule(Rule::NUMBER_OF_ROUNDS));
       {
         int const value = rule(Rule::NUMBER_OF_ROUNDS);
-      this->rule_number_of_rounds->set_range(rule.min(Rule::NUMBER_OF_ROUNDS),
-                                             rule.max(Rule::NUMBER_OF_ROUNDS));
-      this->rule_number_of_rounds->set_value(value);
+        this->rule_number_of_rounds->set_range(rule.min(Rule::NUMBER_OF_ROUNDS),
+                                               rule.max(Rule::NUMBER_OF_ROUNDS));
+        this->rule_number_of_rounds->set_value(value);
       }
 
       this->rule_points_limited->set_active(rule(Rule::POINTS_LIMITED));
@@ -733,9 +752,9 @@ namespace UI_GTKMM_NS {
       this->rule_points->set_sensitive(rule(Rule::POINTS_LIMITED));
       {
         int const value = rule(Rule::POINTS);
-      this->rule_points->set_range(rule.min(Rule::POINTS),
-                                   rule.max(Rule::POINTS));
-      this->rule_points->set_value(value);
+        this->rule_points->set_range(rule.min(Rule::POINTS),
+                                     rule.max(Rule::POINTS));
+        this->rule_points->set_value(value);
       }
 
       return ;

@@ -75,7 +75,6 @@ Rule::min number of throwing nines and kings	= minimale Anzahl zu schmeißende N
 Rule::throw with richness		= mit Reichtum schmeißen
 Rule::throw with richness %unumber% 	= mit %unumber% Punkten schmeißen
 Rule::min richness for throwing         = minimale Punkte um zu schmeißen
-
 Rule::throw when fox highest trump	= schmeiße, wenn Fuchs höchster Trumpf
 
 # marriage
@@ -154,7 +153,6 @@ Rule::announcement reply		= Gegenansage
 Rule::announcement strict limit		= strikte Grenzen
 Rule::announcement re/contra doubles	= Re/Kontra verdoppelt Punkte
 Rule::announcement re/contra doubles -- knocking= keine 120 verdoppelt Punkte
-
 Rule::announcement contra doubles against re = Re/Kontra verdoppelt Punkt 'gegen die Alten'
 Rule::announcement contra doubles against re -- knocking= keine 120 verdoppelt Punkt 'gegen die Alten'
 Rule::announcement no 120		= Re/Kontra
@@ -176,6 +174,7 @@ Rule::number of players per team	= Anzahl an Spielern pro Team
 Rule::number of tricks in game		= Anzahl an Stichen im Spiel
 
 # counting
+Rule::Group::counting			= Zählart
 Rule::counting				= Zählart
 Counting::plus				= plus
 Counting::minus				= minus

@@ -230,6 +230,10 @@ Setting::set_to_hardcoded()
   this->set(LANGUAGE,			"");
 
   this->set(NAME,			"");
+#ifdef USE_NETWORK_DOKOLOUNGE
+  this->set(DOKOLOUNGE_NAME,			"");
+  this->set(DOKOLOUNGE_PASSWORD,			"");
+#endif
 
   this->set(SHOW_SPLASH_SCREEN,		true);
   this->set(SPLASH_SCREEN_TRANSPARENT,	false);
@@ -682,6 +686,14 @@ Setting::operator()(TypeString const type) const
 #endif
 #endif
       break;
+#ifdef USE_NETWORK_DOKOLOUNGE
+    case DOKOLOUNGE_NAME:
+      value = (*this)(NAME);
+      break;
+    case DOKOLOUNGE_PASSWORD:
+      value = "";
+      break;
+#endif
     case LANGUAGE:
       value = "en";
 #ifdef LINUX
@@ -900,6 +912,10 @@ Setting::operator()(TypeString const type) const
              + value);
     break;
   case NAME:
+#ifdef USE_NETWORK_DOKOLOUNGE
+  case DOKOLOUNGE_NAME:
+  case DOKOLOUNGE_PASSWORD:
+#endif
   case LANGUAGE:
   case NAME_FONT:
   case NAME_FONT_COLOR:
@@ -2041,6 +2057,10 @@ Setting::set(TypeString const type, string const& value)
     switch(type) {
     case NAME:
       break;
+#ifdef USE_NETWORK_DOKOLOUNGE
+  case DOKOLOUNGE_NAME:
+  case DOKOLOUNGE_PASSWORD:
+#endif
     case LANGUAGE:
       ::translator.load();
       break;
@@ -2396,6 +2416,20 @@ Setting::load(string const& filename, bool filename_not_exists_output)
 
   } // while (istr.good())
 
+#ifdef POSTPONED
+  // since version 0.7.12 (from 2014)
+  // replace Altenburg cardset with innocard
+  if (this->value(CARDSET) == "Altenburg/french") {
+    this->set_value(CARDSET, "InnoCard/french");
+    ::ui->information(::translation("cardset replaced: %sorig%, %sreplacement%", "Altenburg/french", "InnoCard/french"), INFORMATION::NORMAL);
+  }
+  if (this->value(CARDSET) == "Altenburg/german") {
+    this->set_value(CARDSET, "xskat/german");
+    ::ui->information(::translation("cardset replaced: %sorig%, %sreplacement%", "Altenburg/german", "xskat/german"), INFORMATION::NORMAL);
+  }
+#endif
+
+
   return ;
 } // void Setting::load(string const& filename, bool filename_not_exists_output)
 
@@ -2590,6 +2624,10 @@ Setting::update_path(TypeString const type)
 
   switch(type) {
   case NAME:
+#ifdef USE_NETWORK_DOKOLOUNGE
+  case DOKOLOUNGE_NAME:
+  case DOKOLOUNGE_PASSWORD:
+#endif
   case NAME_FONT:
   case NAME_FONT_COLOR:
   case NAME_ACTIVE_FONT_COLOR:
@@ -2765,6 +2803,13 @@ Setting::write(ostream& ostr) const
 
     << ::name(LANGUAGE) << " = "
     << this->value(LANGUAGE) << "\n"
+
+#ifdef USE_NETWORK_DOKOLOUNGE
+    << ::name(DOKOLOUNGE_NAME) << " = "
+    << this->value(DOKOLOUNGE_NAME) << "\n"
+    << ::name(DOKOLOUNGE_PASSWORD) << " = "
+    << this->value(DOKOLOUNGE_PASSWORD) << "\n"
+#endif
 
     << ::name(SOUND) << " = "
     << this->value(SOUND) << "\n"
@@ -3141,6 +3186,12 @@ name(Setting::TypeString const& type)
     return "name";
   case Setting::LANGUAGE:
     return "language";
+#ifdef USE_NETWORK_DOKOLOUNGE
+  case Setting::DOKOLOUNGE_NAME:
+    return "DokoLounge name";
+  case Setting::DOKOLOUNGE_PASSWORD:
+    return "DokoLounge password";
+#endif
   case Setting::CARDSET:
     return "cardset";
   case Setting::CARDS_BACK:
