@@ -34,10 +34,16 @@
 
 #include "lounge.h"
 
+#include "help.h"
+#include "blog.h"
+#include "pin_board.h"
+#include "messages.h"
+
 #include "../ui.h"
 #include "../translations.h"
 #include "../../../misc/setting.h"
 
+#include "../../../misc/lounge.h"
 #include "../../../network/server.h"
 #include "../../../network/connection.h"
 #include "../../../network/DokoLounge/sender.h"
@@ -68,7 +74,11 @@ namespace UI_GTKMM_NS {
       Gtk::StickyDialog("DokoLounge: Lounge"),
       connection(NULL),
       sender(NULL),
-      name(NULL),
+      help(NULL), // subwindows/subelements
+      blog(NULL),
+      pin_board(NULL),
+      messages(NULL),
+      name(NULL), // widgets
       create_account_button(NULL),
       login_button(NULL),
       logout_button(NULL),
@@ -76,7 +86,7 @@ namespace UI_GTKMM_NS {
       hilfe_button(NULL),
       blog_button(NULL),
       pinnwand_button(NULL),
-      mail_button(NULL),
+      messages_button(NULL),
       close_button(NULL)
     {
       this->ui->add_window(*this);
@@ -94,7 +104,7 @@ namespace UI_GTKMM_NS {
      ** 
      ** @author    Diether Knof
      **
-     ** @version   0.7.3
+     ** @version   0.7.12
      **/
     Lounge::~Lounge()
     { 
@@ -104,7 +114,32 @@ namespace UI_GTKMM_NS {
         delete this->connection;
         this->connection = NULL;
       }
+        delete this->blog;
     } // Lounge::~Lounge()
+
+    /**
+     ** the lounge is shown
+     **
+     ** @param     -
+     **
+     ** @return    -
+     ** 
+     ** @author    Diether Knof
+     **
+     ** @version   0.7.12
+     **/
+    void
+      Lounge::on_show()
+      {
+#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+        this->Gtk::Window::on_show();
+#endif
+
+        if (::setting(Setting::DOKOLOUNGE_AUTO_LOGIN))
+          this->login_signal();
+
+        return;
+      } // void Lounge::on_show()
 
     /**
      ** create all subelements
@@ -120,6 +155,11 @@ namespace UI_GTKMM_NS {
     void
       Lounge::init()
       {
+        this->help = new Help(this);
+        this->blog = new Blog(this);
+        this->pin_board = new PinBoard(this);
+        this->messages = new Messages(this);
+
         this->ui->translations->add(*this, ::translation("FreeDoko %ttitle%",
                                                          ::translation("DokoLounge: Lounge")));
         this->set_icon(this->ui->icon);
@@ -187,11 +227,11 @@ namespace UI_GTKMM_NS {
                                       ::translation("pinnwand"));
           vbox->add(*this->pinnwand_button);
 
-          this->mail_button
-            = Gtk::manage(new Gtk::StockButton("mail"));
-          this->ui->translations->add(*this->mail_button,
-                                      ::translation("mail"));
-          vbox->add(*this->mail_button);
+          this->messages_button
+            = Gtk::manage(new Gtk::StockButton("messages"));
+          this->ui->translations->add(*this->messages_button,
+                                      ::translation("messages"));
+          vbox->add(*this->messages_button);
 
           this->get_vbox()->add(*vbox);
         } // main area
@@ -207,10 +247,174 @@ namespace UI_GTKMM_NS {
           this->language_update();
         } // the text
 
+        this->sensitivity_update();
         this->show_all_children();
 
         return ;
       } // void Lounge::init()
+
+    /**
+     ** update the sensitivity
+     **
+     ** @param     -
+     **
+     ** @return    -
+     ** 
+     ** @author    Diether Knof
+     **
+     ** @version   0.7.12
+     **/
+    void
+      Lounge::sensitivity_update()
+      {
+        if (!this->is_realized())
+          return;
+
+        bool const logged_in = ::lounge->is_logged_in();
+        this->create_account_button->set_sensitive(!logged_in);
+        this->login_button->set_sensitive(         !logged_in);
+
+        this->logout_button->set_sensitive(         logged_in);
+        this->klingel_button->set_sensitive(        logged_in);
+        this->hilfe_button->set_sensitive(          logged_in);
+        this->blog_button->set_sensitive(           logged_in);
+        this->pinnwand_button->set_sensitive(       logged_in);
+        this->messages_button->set_sensitive(           logged_in);
+
+        return;
+      } // void Lounge::sensitivity_update()
+
+    /**
+     ** the game has logged in
+     **
+     ** @param     name   name of the player
+     **
+     ** @return    -
+     ** 
+     ** @author    Diether Knof
+     **
+     ** @version   0.7.12
+     **/
+    void
+      Lounge::logged_in(string const& name)
+      {
+        this->ui->translations->change(*this->name,
+                                       ::translation("Name: %sname%",
+                                                     ::lounge->name()));
+        this->sensitivity_update();
+        return;
+      } // void Lounge::logged_in(string name)
+
+    /**
+     ** the game is logged out
+     **
+     ** @param     -
+     **
+     ** @return    -
+     ** 
+     ** @author    Diether Knof
+     **
+     ** @version   0.7.12
+     **/
+    void
+      Lounge::logged_out()
+      {
+        this->ui->translations->change(*this->name,
+                                       ::translation("Name: %sname%",
+                                                     ::setting(Setting::DOKOLOUNGE_NAME)));
+        this->sensitivity_update();
+        return;
+      } // void Lounge::logged_out()
+
+    /**
+     ** a chat entry has been added
+     **
+     ** @param     entry    new chat entry
+     **
+     ** @return    -
+     ** 
+     ** @author    Diether Knof
+     **
+     ** @version   0.7.12
+     **/
+    void
+      Lounge::chat_entry_added(::LoungeChatEntry const& entry)
+      {
+        cout << "chat entry: " << entry.player << ": " << entry.text << endl;
+        return;
+      } // void Lounge::chat_entry_added(::LoungeChatEntry entry)
+
+    /**
+     ** the help has changed
+     **
+     ** @param     text   new help text
+     **
+     ** @return    -
+     ** 
+     ** @author    Diether Knof
+     **
+     ** @version   0.7.12
+     **/
+    void
+      Lounge::help_changed(string const& text)
+      {
+        this->help->show(text);
+        return;
+      } // void Lounge::help_changed(string text)
+
+    /**
+     ** the blog has changed
+     **
+     ** @param     text   new blog text
+     **
+     ** @return    -
+     ** 
+     ** @author    Diether Knof
+     **
+     ** @version   0.7.12
+     **/
+    void
+      Lounge::blog_changed(string const& text)
+      {
+        this->blog->show(text);
+        return;
+      } // void Lounge::blog_changed(string text)
+
+    /**
+     ** the pin_board has changed
+     **
+     ** @param     text   new pin_board text
+     **
+     ** @return    -
+     ** 
+     ** @author    Diether Knof
+     **
+     ** @version   0.7.12
+     **/
+    void
+      Lounge::pin_board_changed(string const& text)
+      {
+        this->pin_board->show(text);
+        return;
+      } // void Lounge::pin_board_changed(string text)
+
+    /**
+     ** the messages has changed
+     **
+     ** @param     text   new messages text
+     **
+     ** @return    -
+     ** 
+     ** @author    Diether Knof
+     **
+     ** @version   0.7.12
+     **/
+    void
+      Lounge::messages_changed(string const& text)
+      {
+        this->messages->show(text);
+        return;
+      } // void Lounge::messages_changed(string text)
 
     /**
      ** connect to the server
@@ -254,7 +458,7 @@ namespace UI_GTKMM_NS {
           this->hilfe_button->signal_clicked().connect(sigc::mem_fun(*this, &Lounge::hilfe_signal));
           this->blog_button->signal_clicked().connect(sigc::mem_fun(*this, &Lounge::blog_signal));
           this->pinnwand_button->signal_clicked().connect(sigc::mem_fun(*this, &Lounge::pinnwand_signal));
-          this->mail_button->signal_clicked().connect(sigc::mem_fun(*this, &Lounge::mail_signal));
+          this->messages_button->signal_clicked().connect(sigc::mem_fun(*this, &Lounge::messages_signal));
         } // create the signals
         return;
       } // void Lounge::connect_server()
@@ -421,7 +625,7 @@ namespace UI_GTKMM_NS {
       } // void Lounge::pinnwand_signal()
 
     /**
-     ** mail from DokoLounge
+     ** messages from DokoLounge
      **
      ** @param     -
      **
@@ -432,14 +636,14 @@ namespace UI_GTKMM_NS {
      ** @version   0.7.12
      **/
     void
-      Lounge::mail_signal()
+      Lounge::messages_signal()
       {
         if (!this->sender)
           return;
 
-        this->sender->mail();
+        this->sender->messages();
         return;
-      } // void Lounge::mail_signal()
+      } // void Lounge::messages_signal()
 
   } // namespace DokoLounge
 } // namespace UI_GTKMM_NS

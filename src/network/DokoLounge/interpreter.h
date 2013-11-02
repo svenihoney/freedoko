@@ -57,6 +57,9 @@ namespace Network {
         // destructor
         ~Interpreter();
 
+      // close the connection
+        void close_connection();
+
         // variables
         Sender& sender();
         Receiver& receiver();

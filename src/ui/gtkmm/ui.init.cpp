@@ -113,7 +113,7 @@ namespace UI_GTKMM_NS {
     network(NULL),
     network_log(NULL),
 #ifdef USE_NETWORK_DOKOLOUNGE
-    dokolounge(NULL),
+    lounge(NULL),
 #endif
 #endif
     bug_report(NULL),
@@ -232,7 +232,7 @@ namespace UI_GTKMM_NS {
     delete this->network_log;
     delete this->network;
 #ifdef USE_NETWORK_DOKOLOUNGE
-    delete this->dokolounge;
+    delete this->lounge;
 #endif
 #endif
     delete this->about;
@@ -333,7 +333,7 @@ namespace UI_GTKMM_NS {
       this->network = new Network(this);
       this->network_log = new NetworkLog(this);
 #ifdef USE_NETWORK_DOKOLOUNGE
-      this->dokolounge = new DokoLounge::Lounge(this);
+      this->lounge = new DokoLounge::Lounge(this);
 #endif
 #endif
       this->party_summary = new PartySummary(this);

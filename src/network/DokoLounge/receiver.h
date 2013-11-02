@@ -56,22 +56,14 @@ namespace Network {
 	bool received(string const& text);
 
       private:
-	// the text was received
-	bool received_line(string const& text);
-
-	// act according to a simple message
-	bool act_simple(string const& message);
-	// act according to a special message
-	bool act_special(string const& message);
-	// act in the right order
-	bool act_normal_in_order(Time const& time, unsigned const& counter,
-				 string const& message);
-	// act according to a normal message
-	bool act_normal(string const& message);
+        // interpret the command
+        bool interpret_command(string const& keyword, string const& text);
 
       private:
 	// a line was not send in total
 	string pending_line;
+	// keyword to wait for
+	string pending_keyword;
 	// a parser
 	Network::DokoLounge::Parser::Base* parser;
 

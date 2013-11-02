@@ -36,6 +36,11 @@
 #include "thrower.h"
 
 #include "../../misc/translation.h"
+#ifdef USE_NETWORK
+#ifdef USE_NETWORK_DOKOLOUNGE
+class LoungeChatEntry;
+#endif
+#endif
 
 namespace Gtk {
   class Main;
@@ -138,6 +143,19 @@ namespace UI_GTKMM_NS {
 
     // the language has changed
     void language_changed();
+
+#ifdef USE_NETWORK
+#ifdef USE_NETWORK_DOKOLOUNGE
+    // the lounge
+    void lounge_logged_in(string const& name);
+    void lounge_logged_out();
+    void lounge_chat_entry_added(::LoungeChatEntry const& entry);
+    void lounge_help_changed(string const& text);
+    void lounge_blog_changed(string const& text);
+    void lounge_pin_board_changed(string const& text);
+    void lounge_messages_changed(string const& text);
+#endif
+#endif
 
 
     // the parts of a party
@@ -337,7 +355,7 @@ namespace UI_GTKMM_NS {
     Network* network;
     NetworkLog* network_log;
 #ifdef USE_NETWORK_DOKOLOUNGE
-    DokoLounge::Lounge* dokolounge;
+    DokoLounge::Lounge* lounge;
 #endif
 #endif
 

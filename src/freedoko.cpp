@@ -58,6 +58,11 @@
 #include "misc/translations.h"
 #include "misc/bug_report.h"
 #include "misc/references_check.h"
+#ifdef USE_NETWORK
+#ifdef USE_NETWORK_DOKOLOUNGE
+#include "misc/lounge.h"
+#endif
+#endif
 
 #include "party/party.h"
 #include "player/aiconfig.h"
@@ -129,6 +134,11 @@ main(int argc, char* argv[])
 
   ::ui = new UI_Wrap;
   ::bug_report = new OS_NS::BugReport;
+#ifdef USE_NETWORK
+#ifdef USE_NETWORK_DOKOLOUNGE
+  ::lounge = new Lounge;
+#endif
+#endif
 
   try {
     // game status
@@ -836,7 +846,16 @@ main(int argc, char* argv[])
     throw;
   } // try
 
+  ::ui->quit();
+
   // clean up
+#ifdef USE_NETWORK
+  static_cast<UI_Wrap*>(::ui)->remove(::server);
+  delete ::server;
+#ifdef USE_NETWORK_DOKOLOUNGE
+  delete ::lounge;
+#endif
+#endif
   delete ::references_check;
   delete ::ui;
 

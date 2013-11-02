@@ -231,8 +231,9 @@ Setting::set_to_hardcoded()
 
   this->set(NAME,			"");
 #ifdef USE_NETWORK_DOKOLOUNGE
-  this->set(DOKOLOUNGE_NAME,			"");
-  this->set(DOKOLOUNGE_PASSWORD,			"");
+  this->set(DOKOLOUNGE_NAME,		"");
+  this->set(DOKOLOUNGE_PASSWORD,	"");
+  this->set(DOKOLOUNGE_AUTO_LOGIN,      false);
 #endif
 
   this->set(SHOW_SPLASH_SCREEN,		true);
@@ -1160,6 +1161,9 @@ Setting::dependencies(TypeBool const& type) const
   case SHOW_BUG_REPORT_BUTTON_IN_GAME_FINISHED_WINDOW:
   case SAVE_BUG_REPORTS_ON_DESKTOP:
   case SOUND:
+#ifdef USE_NETWORK_DOKOLOUNGE
+  case DOKOLOUNGE_AUTO_LOGIN:
+#endif
   case AUTOMATIC_CARD_SUGGESTION:
   case ANNOUNCE_SWINES_AUTOMATICALLY:
   case SHOW_IF_VALID:
@@ -2809,6 +2813,8 @@ Setting::write(ostream& ostr) const
     << this->value(DOKOLOUNGE_NAME) << "\n"
     << ::name(DOKOLOUNGE_PASSWORD) << " = "
     << this->value(DOKOLOUNGE_PASSWORD) << "\n"
+    << ::name(DOKOLOUNGE_AUTO_LOGIN) << " = "
+    << this->value(DOKOLOUNGE_AUTO_LOGIN) << "\n"
 #endif
 
     << ::name(SOUND) << " = "
@@ -3062,6 +3068,10 @@ name(Setting::TypeBool const& type)
     return "save bug reports on desktop";
   case Setting::SOUND:
     return "sound";
+#ifdef USE_NETWORK_DOKOLOUNGE
+  case Setting::DOKOLOUNGE_AUTO_LOGIN:
+    return "DokoLounge auto login";
+#endif
   case Setting::AUTOMATIC_CARD_SUGGESTION:
     return "automatic card suggestion";
   case Setting::ANNOUNCE_SWINES_AUTOMATICALLY:

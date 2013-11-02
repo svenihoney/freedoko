@@ -43,6 +43,9 @@ namespace OS_NS {
   class BugReportReplay;
 }
 #ifdef USE_NETWORK
+#ifdef USE_NETWORK_DOKOLOUNGE
+class LoungeChatEntry;
+#endif
 namespace Network {
   class Listener;
   class Connection;
@@ -88,6 +91,8 @@ class OS {
 
   // initialize the OS
   virtual void main_init(int& argc, char**& argv)		{ }
+    // quit the program
+    virtual void quit() { }
 
   // updates the OS
   virtual void update()					{ }
@@ -96,6 +101,19 @@ class OS {
   virtual void sleep(unsigned const sleep_usec)		{ this->update(); }
   // updates the language
   virtual void language_changed()			{ }
+
+#ifdef USE_NETWORK
+#ifdef USE_NETWORK_DOKOLOUNGE
+    // the lounge
+    virtual void lounge_logged_in(string const& name) { }
+    virtual void lounge_logged_out() { }
+    virtual void lounge_chat_entry_added(::LoungeChatEntry const& entry) { }
+    virtual void lounge_help_changed(string const& text) { }
+    virtual void lounge_blog_changed(string const& text) { }
+    virtual void lounge_pin_board_changed(string const& text) { }
+    virtual void lounge_messages_changed(string const& text) { }
+#endif
+#endif
 
   // the parts of a party
   virtual void party_open(Party const& party); // call from childs

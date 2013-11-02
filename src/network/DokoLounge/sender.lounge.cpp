@@ -33,6 +33,7 @@
 #include "sender.h"
 
 #include "../../misc/setting.h"
+#include "../../misc/lounge.h"
 
 namespace Network {
   namespace DokoLounge {
@@ -128,6 +129,7 @@ namespace Network {
      Interpreter::Sender::logout()
      {
        this->send_name_command("Abmelden");
+       ::lounge->logged_out();
 
        return ;
      } // void Interpreter::Sender::logout()
@@ -226,13 +228,13 @@ namespace Network {
     ** @version   0.7.12
     **/
    void
-     Interpreter::Sender::mail()
+     Interpreter::Sender::messages()
      {
        this->send_command("maillesen",
                           this->name_command("name"));
 
        return ;
-     } // void Interpreter::Sender::mail()
+     } // void Interpreter::Sender::messages()
 
   } // namespace DokoLounge
 } // namespace Network

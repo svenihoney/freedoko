@@ -99,6 +99,9 @@ namespace Network {
       // destructor
       virtual ~Connection();
 
+      // close this connection
+      void close();
+
       // check for network traffic
       virtual void update() { }
 
@@ -125,9 +128,6 @@ namespace Network {
     protected:
       // received
       void received(string const& text);
-
-      // close this connection
-      void close();
 
     public:
       // the connected players

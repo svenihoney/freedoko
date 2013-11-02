@@ -76,7 +76,7 @@ namespace Network {
         void pinnwand_refresh();
         void pinnwand_senden();
         // Eigene Pinnwand
-        void mail();
+        void messages();
         // Rangliste
         void rangliste();
         void rangliste2();

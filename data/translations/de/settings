@@ -115,6 +115,8 @@ Setting::DokoLounge name \
         = Name
 Setting::DokoLounge password \
         = Passwort
+Setting::DokoLounge auto login \
+        = automatisch anmelden
 
 # cards order
 Setting::Group::cards order		= Kartensortierung

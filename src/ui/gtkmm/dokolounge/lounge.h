@@ -35,6 +35,16 @@
 
 #include "../base.h"
 #include "../widgets/sticky_dialog.h"
+
+namespace UI_GTKMM_NS {
+  namespace DokoLounge {
+    class Help;
+    class Blog;
+    class PinBoard;
+    class Messages;
+  }; // namespace DokoLounge 
+}; // namespace UI_GTKMM_NS 
+
 namespace Gtk {
   class Label;
   class StockButton;
@@ -43,73 +53,102 @@ namespace Gtk {
 
 namespace UI_GTKMM_NS {
   namespace DokoLounge {
-  class Lounge : public Base, public Gtk::StickyDialog {
-    public:
-      // constructor
-      Lounge(Base* const parent);
-      // destructor
-      ~Lounge();
+    class Lounge : public Base, public Gtk::StickyDialog {
+      public:
+        // constructor
+        Lounge(Base* const parent);
+        // destructor
+        ~Lounge();
 
-    private:
-      // initialize the Lounge
-      void init();
+        // the lounge is shown
+        void on_show();
 
-      // close the window
-      void close();
+        // the game is logged in
+        void logged_in(string const& name);
+        // the game is logged out
+        void logged_out();
 
-      // connect to the server
-      void connect_server();
-      // connect to the server
-      void create_account_signal();
-      // connect to the server
-      void login_signal();
+        // a chat entry has been added
+        void chat_entry_added(::LoungeChatEntry const& entry);
+        // the help has been changed
+        void help_changed(string const& text);
+        // the blog has been changed
+        void blog_changed(string const& text);
+        // the pin board has been changed
+        void pin_board_changed(string const& text);
+        // the messages has been changed
+        void messages_changed(string const& text);
 
-      // logout
-      void logout_signal();
-      // klingel
-      void klingel_signal();
-      // hilfe
-      void hilfe_signal();
-      // blog
-      void blog_signal();
-      // pinnwand
-      void pinnwand_signal();
-      // mail
-      void mail_signal();
 
-    private:
-      ::Network::Connection* connection;
-      ::Network::DokoLounge::Interpreter::Sender* sender;
+      private:
+        // initialize the Lounge
+        void init();
+        // update the sensitivity
+        void sensitivity_update();
 
-      Gtk::Label* name;
-      Gtk::StockButton* create_account_button;
-      Gtk::StockButton* login_button;
-      Gtk::StockButton* logout_button;
-      Gtk::StockButton* klingel_button;
-      Gtk::StockButton* hilfe_button;
-      Gtk::StockButton* blog_button;
-      Gtk::StockButton* pinnwand_button;
-      Gtk::StockButton* mail_button;
+        // close the window
+        void close();
 
-      /*
-         Hilfe
-         Blog
-         Globale Pinnwand
-         Persönliche Pinnwand
-         Spielerliste
-         Tischliste
-         Rangliste
-         Chat
-         */
+        // connect to the server
+        void connect_server();
+        // connect to the server
+        void create_account_signal();
+        // connect to the server
+        void login_signal();
 
-      // close button
-      Gtk::StockButton* close_button;
+        // signals
 
-    private: // unused
-      Lounge();
-      Lounge(Lounge const&);
-      Lounge& operator=(Lounge const&);
-  }; // class Lounge
+        // logout
+        void logout_signal();
+        // klingel
+        void klingel_signal();
+        // hilfe
+        void hilfe_signal();
+        // blog
+        void blog_signal();
+        // pinnwand
+        void pinnwand_signal();
+        // messages
+        void messages_signal();
+
+      private:
+        ::Network::Connection* connection;
+        ::Network::DokoLounge::Interpreter::Sender* sender;
+
+        Help* help;
+        Blog* blog;
+        PinBoard* pin_board;
+        Messages* messages;
+
+        Gtk::Label* name;
+        Gtk::StockButton* create_account_button;
+        Gtk::StockButton* login_button;
+        Gtk::StockButton* logout_button;
+        Gtk::StockButton* klingel_button;
+        Gtk::StockButton* hilfe_button;
+        Gtk::StockButton* blog_button;
+        Gtk::StockButton* pinnwand_button;
+        Gtk::StockButton* messages_button;
+
+        /*
+           Hilfe
+           Blog
+           Globale Pinnwand
+           Persönliche Pinnwand
+           Spielerliste
+           Tischliste
+           Rangliste
+           Chat
+           */
+
+        // close button
+        Gtk::StockButton* close_button;
+
+      private: // unused
+        Lounge();
+        Lounge(Lounge const&);
+        Lounge& operator=(Lounge const&);
+    }; // class Lounge
   } // namespace DokoLounge
 } // namespace UI_GTKMM_NS
 

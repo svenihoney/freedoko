@@ -99,6 +99,9 @@ namespace Network {
     // OS
     //////
 
+    // quit the program
+    void quit();
+
     // use for check on network traffic
     void update();
     // synchronize with the parent/childs

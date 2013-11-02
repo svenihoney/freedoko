@@ -74,6 +74,23 @@ namespace Network {
     } // Interpreter::~Interpreter()
 
     /**
+     ** close the connection
+     **
+     ** @param     -
+     **
+     ** @return    -
+     **
+     ** @author    -
+     **
+     ** @version   0.7.12
+     **/
+    void
+    Interpreter::close_connection()
+    {
+      this->sender().logout();
+    } // void Interpreter::close_connection()
+
+    /**
      ** -> result
      **
      ** @param     -

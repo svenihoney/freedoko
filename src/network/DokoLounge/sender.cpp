@@ -34,6 +34,7 @@
 
 #include "../server.h"
 #include "../../misc/setting.h"
+#include "../../misc/lounge.h"
 
 #include "../../utils/string.h"
 
@@ -49,7 +50,7 @@ namespace Network {
      **
      ** @author    Diether Knof
      **
-     ** @version   0.7.1
+     ** @version   0.7.12
      **/
     Interpreter::Sender::Sender(Interpreter& interpreter) :
       Connection::Interpreter::Sender(interpreter)
@@ -64,7 +65,7 @@ namespace Network {
      **
      ** @author    Diether Knof
      **
-     ** @version   0.7.1
+     ** @version   0.7.12
      **/
     Interpreter::Sender::~Sender()
     { }

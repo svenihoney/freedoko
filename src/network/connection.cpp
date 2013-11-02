@@ -196,8 +196,8 @@ namespace Network {
       } // for (p)
     } // if !(::game_status <= GAMESTATUS::PARTY_LOADED)
 
-    delete this->actor_;
     delete this->interpreter_;
+    delete this->actor_;
   } // Connection::~Connection()
 
   /**
@@ -444,6 +444,7 @@ namespace Network {
   void
     Connection::close()
     {
+      this->interpreter().close_connection();
       this->server().delete_connection(this);
 
       this->relation_ = ORPHAN;

@@ -39,6 +39,7 @@
 
 #include "../../party/party.h"
 #include "../../game/gameplay_action.h"
+#include "../../misc/lounge.h"
 
 #include <cstring>
 
@@ -100,11 +101,12 @@ Spieler ist einem Tisch beigetreten
      **
      ** @author	Diether Knof
      **
-     ** @version	0.7.1
+     ** @version	0.7.12
      **/
     Interpreter::Receiver::Receiver(Interpreter& interpreter) :
       Connection::Interpreter::Receiver(interpreter),
       pending_line(),
+      pending_keyword(),
       parser(NULL)
     { }
 
@@ -153,89 +155,127 @@ Spieler ist einem Tisch beigetreten
     bool
       Interpreter::Receiver::received(string const& text)
       {
-        cout << "< " << text << endl;
+        if (this->pending_keyword.empty()) {
+          // check the keyword
+          if (text.size() < 5) {
+            cerr << "DokoLounge: received text is too short: '" << text << "'" << endl;
+            return true;
+          }
+          if (!(   (text[0] == '<')
+                && (text[1] == '<') )) {
+            cerr << "DokoLounge: received text does not begin with '<<': '" << text << "'" << endl;
+            return true;
+          }
+          if (text.find(">>") == string::npos) {
+            cerr << "DokoLounge: received text does not contain a '>>': '" << text << "'" << endl;
+            return true;
+          }
+          // save the keyword and the text
+          this->pending_keyword = string(text, 2, text.find(">>") - 2);
+          this->pending_line = text;
+
+        } else { // if !(this->pending_keyword.empty())
+          // just add the text to the one already gotten
+          this->pending_line += text;
+        } // if !(this->pending_keyword.empty())
+
+        string::size_type const n
+          = this->pending_line.find("<</" + this->pending_keyword + ">>");
+        if (n != string::npos) {
+          this->interpret_command(this->pending_keyword,
+                                  string(this->pending_line, ("<<" + this->pending_keyword + ">>").size(), n - ("<<" + this->pending_keyword + ">>").size()));
+          string const t = string(this->pending_line,
+                                  n + ("<</" + this->pending_keyword + ">>").size());
+          this->pending_keyword.clear();
+          this->pending_line.clear();
+          if (!t.empty())
+            return this->received(t);
+          return true;
+        }
+
         return false;
       } // bool Interpreter::Receiver::received(string text)
 
     /**
-     ** a line has been received
+     ** interpret the command
      **
-     ** @param     line	received line
+     ** @param     keyword     keyword (command)
+     ** @param     text        command text
      **
-     ** @return    whether the line was accepted (or saved for later)
+     ** @return    whether the keyword was known
      **
      ** @author    Diether Knof
      **
      ** @version   0.7.12
      **/
     bool
-      Interpreter::Receiver::received_line(string const& line)
+      Interpreter::Receiver::interpret_command(string const& keyword,
+                                               string const& text)
       {
-        // ignore empty lines
-        if (line.empty())
+        if (keyword == "neuesKonto") {
+          // Fehler beim neuen Konto
+          CLOG << "neuesKonto: " << text << endl;
           return true;
-
-        cout << "< " << line << endl;
+        } else if (keyword == "deinName") {
+          // Anmeldung
+          ::lounge->logged_in(text);
+          return true;
+        } else if (keyword == "bell") {
+          // Die Klingel wurde geläutet
+          CLOG << "bell: " << text << endl;
+          return true;
+        } else if (keyword == "alert") {
+          CLOG << "alert: " << text << endl;
+          return true;
+        } else if (keyword == "alerthead") {
+          CLOG << "alerthead: " << text << endl;
+          return true;
+        } else if (keyword == "alerttext") {
+          CLOG << "alerttext: " << text << endl;
+          return true;
+        } else if (keyword == "bu1") {
+          CLOG << "bu1: " << text << endl;
+          return true;
+        } else if (keyword == "bu2") {
+          CLOG << "bu2: " << text << endl;
+          return true;
+        } else if (keyword == "hilfe") {
+          // Hilfetext
+          ::lounge->set_help(latin1_to_utf8(text));
+          return true;
+        } else if (keyword == "blogtxt") {
+          // Blogtext
+          ::lounge->set_blog(latin1_to_utf8(text));
+          return true;
+        } else if (keyword == "PinnwandData") {
+          // Pinnwand
+          ::lounge->set_pin_board(latin1_to_utf8(text));
+          return true;
+        } else if (keyword == "mail") {
+          // Eigene Pinnwand / Nachrichten
+          ::lounge->set_messages(latin1_to_utf8(text));
+          return true;
+        } else if (keyword == "fuxbauchat") {
+          // Chat, mit Farbe
+          ::lounge->add_chat_entry("", text);
+          return true;
+        } else if (keyword == "LobbySpieler") {
+          CLOG << "LobbySpieler: " << text << endl;
+          return true;
+        } else if (keyword == "Tischart") {
+          CLOG << "Tischart: " << text << endl;
+          return true;
+        } else if (keyword == "alleTische") {
+          CLOG << "alleTische: " << text << endl;
+          return true;
+        } else {
+          cout << "unknown keyword: " << keyword << " -- " << text << endl;
+          return false;
+        } // if (keyword == ...)
 
         return false;
-      } // bool Interpreter::Receiver::received_line(string line)
+      } // bool Interpreter::Receiver::interpret_command(string keyword, string text)
 
-    /**
-     ** act according to a simple message
-     **
-     ** @param     message   simple message
-     **
-     ** @return    whether the message could be interpreted
-     **
-     ** @author    Diether Knof
-     **
-     ** @version   0.7.2
-     **
-     ** @todo      bye
-     **/
-    bool
-      Interpreter::Receiver::act_simple(string const& message)
-      {
-        return false;
-      } // bool Interpreter::Receiver::act_simple(string message)
-
-    /**
-     ** act according to a special message
-     **
-     ** @para      message   special message
-     **
-     ** @return    whether the message could be interpreted
-     **
-     ** @author    Diether Knof
-     **
-     ** @version   0.7.1
-     **
-     ** @todo      bye
-     **/
-    bool
-      Interpreter::Receiver::act_special(string const& message)
-      {
-        cerr << "DokoLounge::Interpreter::Receiver::act_special(message)\n"
-          << "  I do not know the special message '" << message << "' :-("
-          << endl;
-        return false;
-      } // bool Interpreter::Receiver::act_special(string message)
-
-    /**
-     ** act according to a normal message
-     **
-     ** @param     message   normal message
-     **
-     ** @return    whether the message could be interpreted
-     **
-     ** @author    Diether Knof
-     **
-     ** @version   0.7.2
-     **/
-    bool Interpreter::Receiver::act_normal(string const& message)
-    {
-      return false;
-    } // bool Interpreter::Receiver::act_normal(string message)
 
   } // namespace DokoLounge
 } // namespace Network

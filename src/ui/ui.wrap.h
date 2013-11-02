@@ -49,6 +49,8 @@ class UI_Wrap : public UI {
 
     // initialize the ui
     void init(int& argc, char**& argv);
+    // quit the program
+    void quit();
 
     // updates the UI
     void update();
@@ -57,6 +59,19 @@ class UI_Wrap : public UI {
     void sleep(unsigned const sleep_msec);
     // the language has changed
     void language_changed();
+
+#ifdef USE_NETWORK
+#ifdef USE_NETWORK_DOKOLOUNGE
+    // the lounge
+    void lounge_logged_in(string const& name);
+    void lounge_logged_out();
+    void lounge_chat_entry_added(::LoungeChatEntry const& entry);
+    void lounge_help_changed(string const& text);
+    void lounge_blog_changed(string const& text);
+    void lounge_pin_board_changed(string const& text);
+    void lounge_messages_changed(string const& text);
+#endif
+#endif
 
     // the parts of a party
     void party_open(Party& party);

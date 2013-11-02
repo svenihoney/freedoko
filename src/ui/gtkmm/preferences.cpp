@@ -489,6 +489,11 @@ namespace UI_GTKMM_NS {
             hbox->add(*this->type_string[Setting::DOKOLOUNGE_PASSWORD
                         - Setting::STRING_FIRST]);
           } // password
+          { // auto login
+            ADD_ALIGNMENT;
+            alignment->add(*(this->type_bool[Setting::DOKOLOUNGE_AUTO_LOGIN
+                             - Setting::BOOL_FIRST]));
+          } // auto login
         } // DokoLounge
 #endif
         { // Behaviour

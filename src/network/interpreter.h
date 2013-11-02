@@ -61,6 +61,9 @@ namespace Network {
       virtual ~Interpreter()
       { }
 
+      // close the connection
+      virtual void close_connection() { }
+
     private:
       // the corresponding connection
       PRIV_VAR_P_RW(Connection, connection);

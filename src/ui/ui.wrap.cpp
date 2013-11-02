@@ -35,6 +35,9 @@
 #ifdef USE_NETWORK
 #include "../network/listener.h"
 #include "../network/connection.h"
+#ifdef USE_NETWORK_DOKOLOUNGE
+#include "../misc/lounge.h"
+#endif
 #endif
 
 
@@ -269,9 +272,23 @@ UI_Wrap::init(int& argc, char**& argv)
   this->ui->init(argc, argv);
   return ;
 }
+WRAP_FUNCTION_VOID_0(quit)
 WRAP_FUNCTION_VOID_0(update)
 WRAP_FUNCTION_VOID_1(sleep, unsigned const)
 WRAP_FUNCTION_VOID_0(language_changed)
+
+#ifdef USE_NETWORK
+#ifdef USE_NETWORK_DOKOLOUNGE
+    // the lounge
+WRAP_FUNCTION_VOID_1(lounge_logged_in, string const&)
+WRAP_FUNCTION_VOID_0(lounge_logged_out)
+WRAP_FUNCTION_VOID_1(lounge_chat_entry_added, ::LoungeChatEntry const&)
+WRAP_FUNCTION_VOID_1(lounge_help_changed, string const&)
+WRAP_FUNCTION_VOID_1(lounge_blog_changed, string const&)
+WRAP_FUNCTION_VOID_1(lounge_pin_board_changed, string const&)
+WRAP_FUNCTION_VOID_1(lounge_messages_changed, string const&)
+#endif
+#endif
 
 WRAP_FUNCTION_VOID_1(party_open, Party&)
 WRAP_FUNCTION_VOID_0(party_get_settings)

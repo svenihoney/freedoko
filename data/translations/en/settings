@@ -112,9 +112,11 @@ Setting::network chat urgency hint \
 Setting::Group::DokoLounge \
         = Dokolounge
 Setting::DokoLounge name \
-        = Name
+        = name
 Setting::DokoLounge password \
-        = Passwort
+        = password
+Setting::DokoLounge auto login \
+        = auto login
 
 # cards order
 Setting::Group::cards order		= cards order

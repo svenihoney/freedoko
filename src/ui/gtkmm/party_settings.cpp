@@ -455,7 +455,7 @@ namespace UI_GTKMM_NS {
 #endif
         
 #ifdef USE_NETWORK_DOKOLOUNGE
-        this->dokolounge->signal_clicked().connect(sigc::mem_fun0(*this->ui->dokolounge,
+        this->dokolounge->signal_clicked().connect(sigc::mem_fun0(*this->ui->lounge,
                                                                   &Gtk::Window::present)
                                                   );
 #endif

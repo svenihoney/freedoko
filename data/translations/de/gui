@@ -131,6 +131,11 @@ klingel                         = Klingel
 hilfe                           = Hilfe
 blog                            = Blog
 pinnwand                        = Pinnwand
+messages                        = Nachrichten
+DokoLounge: Help                = DokoLounge: Hilfe
+DokoLounge: Blog                = DokoLounge: Blog
+DokoLounge: PinBoard            = DokoLounge: Pinnwand
+DokoLounge: Mail                = DokoLounge: Nachrichten
 
 # rules
 # -> rules

@@ -398,14 +398,34 @@ namespace Network {
   void
     Server::clear()
     {
-      while (!this->listeners().empty())
-	this->delete_listener(this->listeners().front());
-
-      while (!this->connections().empty())
+      while (!this->connections().empty()) {
+	this->connections().front()->close();
 	this->delete_connection(this->connections().front());
+      }
+
+      while (!this->listeners().empty()) {
+	this->delete_listener(this->listeners().front());
+      }
 
       return ;
     } // void Server::clear()
+
+  /**
+   ** the program is quit: clear the network
+   **
+   ** @param     -
+   **
+   ** @return    -
+   **
+   ** @author    Diether Knof
+   **
+   ** @version   0.7.12
+   **/
+  void
+    Server::quit()
+    {
+      this->clear();
+    } // void Server::quit()
 
   /**
    ** check for network traffic

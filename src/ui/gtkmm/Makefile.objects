@@ -11,6 +11,7 @@ OBJECTS = \
 	    ui.game.gameplay.o \
 	  ui.trick.o \
 	  ui.update.o \
+	  ui.lounge.o \
 	thrower.o \
 	translations.o \
 	cards.o \
