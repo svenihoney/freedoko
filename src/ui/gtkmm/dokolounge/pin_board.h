@@ -43,11 +43,12 @@ namespace UI_GTKMM_NS {
   namespace DokoLounge {
 
   /**
-   **
    ** @brief	the pinboard
    **
    ** @author	Diether Knof
    **
+   ** @todo     title
+   ** @todo     seperate individual entries
    **/
   class PinBoard : public Base, public Gtk::StickyDialog {
     public:

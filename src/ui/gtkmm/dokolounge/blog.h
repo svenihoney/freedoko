@@ -46,6 +46,8 @@ namespace UI_GTKMM_NS {
    ** @brief	the blog
    **
    ** @author	Diether Knof
+   **
+   ** @todo     title
    **/
   class Blog : public Base, public Gtk::StickyDialog {
     public:

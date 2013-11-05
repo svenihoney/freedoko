@@ -1613,7 +1613,7 @@ Trick::specialpoints(vector<Team> const& teams) const
         && rule(Rule::EXTRAPOINT_CATCH_CHARLIE)
         && (!rule(Rule::EXTRAPOINT_CATCH_CHARLIE_ONLY_WITH_DIAMOND_QUEEN)
             || (this->winnercard() == Card(Card::DIAMOND, Card::QUEEN)) )
-        && (this->winnerplayer() != this->player_of_card(i))) {
+        && (local_winnerteam != teams[this->player_of_card(i).no()])) {
 
       fl_caught_charlie=true;
 
@@ -1623,8 +1623,8 @@ Trick::specialpoints(vector<Team> const& teams) const
       sp.push_back(s);
       // check for double charlies caught
       if (rule(Rule::EXTRAPOINT_CATCH_DOUBLE_CHARLIE))
-        for (unsigned n=i+1; n<actcardno(); n++) {
-          if ( (card(n)==Card::CHARLIE)
+        for (unsigned n = i + 1; n < actcardno(); ++n) {
+          if (   (card(n) == Card::CHARLIE)
               && (teams[this->player_of_card(n).no()] != s.team) ) {
             Specialpoints s(SPECIALPOINT::CAUGHT_CHARLIE,
                             local_winnerteam);

@@ -46,6 +46,8 @@ namespace UI_GTKMM_NS {
    ** @brief	the help
    **
    ** @author	Diether Knof
+   **
+   ** @todo     title
    **/
   class Help : public Base, public Gtk::StickyDialog {
     public:
