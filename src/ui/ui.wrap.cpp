@@ -287,6 +287,9 @@ WRAP_FUNCTION_VOID_1(lounge_help_changed, string const&)
 WRAP_FUNCTION_VOID_1(lounge_blog_changed, string const&)
 WRAP_FUNCTION_VOID_1(lounge_pin_board_changed, string const&)
 WRAP_FUNCTION_VOID_1(lounge_messages_changed, string const&)
+WRAP_FUNCTION_VOID_2(lounge_alert, string const&, string const&)
+WRAP_FUNCTION_VOID_1(lounge_players_changed, vector<Lounge::Player> const&)
+WRAP_FUNCTION_VOID_1(lounge_tables_changed, vector<Lounge::Table> const&)
 #endif
 #endif
 

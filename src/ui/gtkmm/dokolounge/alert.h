@@ -30,8 +30,8 @@
 #ifdef USE_NETWORK
 #ifdef USE_NETWORK_DOKOLOUNGE
 
-#ifndef GTKMM_DOKOLOUNGE_MESSAGES_HEADER
-#define GTKMM_DOKOLOUNGE_MESSAGES_HEADER
+#ifndef GTKMM_DOKOLOUNGE_ALERT_HEADER
+#define GTKMM_DOKOLOUNGE_ALERT_HEADER
 
 #include "../base.h"
 #include "../widgets/sticky_dialog.h"
@@ -43,22 +43,19 @@ namespace UI_GTKMM_NS {
   namespace DokoLounge {
 
   /**
-   ** @brief	the messages
+   ** @brief	the alert
    **
    ** @author	Diether Knof
    **
-   ** @todo     test
    ** @todo     title
-   ** @todo     send messages
-   ** @todo     seperate individual entries (?)
    **/
-  class Messages : public Base, public Gtk::StickyDialog {
+  class Alert : public Base, public Gtk::StickyDialog {
     public:
-      Messages(Base* const parent);
-      ~Messages();
+      Alert(Base* const parent);
+      ~Alert();
 
-      void show(string const& text);
-      void update_text(string const& text);
+      void show(string const& title, string const& text);
+      void update_text(string const& title, string const& text);
 
     private:
       void init();
@@ -67,15 +64,15 @@ namespace UI_GTKMM_NS {
       Gtk::TextView* text;
 
     private: // unused
-      Messages();
-      Messages(Messages const&);
-      Messages& operator=(Messages const&);
-  }; // class Messages : public Base, public Gtk::StickyDialog
+      Alert();
+      Alert(Alert const&);
+      Alert& operator=(Alert const&);
+  }; // class Alert : public Base, public Gtk::StickyDialog
 
   } // namespace DokoLounge {
 } // namespace UI_GTKMM_NS
 
-#endif // #ifdef GTKMM_DOKOLOUNGE_MESSAGES_HEADER
+#endif // #ifdef GTKMM_DOKOLOUNGE_ALERT_HEADER
 
 #endif // #ifdef USE_UI_GTKMM
 #endif // #ifdef USE_NETWORK

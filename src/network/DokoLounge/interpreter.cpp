@@ -52,8 +52,7 @@ namespace Network {
      **/
     Interpreter::Interpreter(Connection& connection) :
       Connection::Interpreter(connection,
-			      *new Sender(*this), *new Receiver(*this) ),
-      account_()
+			      *new Sender(*this), *new Receiver(*this) )
     { }
 
     /**
@@ -87,7 +86,8 @@ namespace Network {
     void
     Interpreter::close_connection()
     {
-      this->sender().logout();
+      if (::lounge->is_logged_in())
+        this->sender().logout();
     } // void Interpreter::close_connection()
 
     /**

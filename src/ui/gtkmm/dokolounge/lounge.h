@@ -42,12 +42,18 @@ namespace UI_GTKMM_NS {
     class Blog;
     class PinBoard;
     class Messages;
+    class Alert;
   }; // namespace DokoLounge 
 }; // namespace UI_GTKMM_NS 
+
+#include "../../../misc/lounge.h"
 
 namespace Gtk {
   class Label;
   class StockButton;
+  class Table;
+  class TextView;
+  class Entry;
 }; // namespace Gtk
 #include "../../../network/DokoLounge/sender.h"
 
@@ -78,6 +84,12 @@ namespace UI_GTKMM_NS {
         void pin_board_changed(string const& text);
         // the messages has been changed
         void messages_changed(string const& text);
+        // an alert
+        void show_alert(string const& title, string const& text);
+        // the players have been changed
+        void players_changed(vector< ::Lounge::Player> const& players);
+        // the tables have been changed
+        void tables_changed(vector< ::Lounge::Table> const& tables);
 
 
       private:
@@ -100,6 +112,8 @@ namespace UI_GTKMM_NS {
 
         // logout
         void logout_signal();
+        // refresh
+        void refresh_signal();
         // klingel
         void klingel_signal();
         // hilfe
@@ -110,6 +124,8 @@ namespace UI_GTKMM_NS {
         void pinnwand_signal();
         // messages
         void messages_signal();
+        // chat signal
+        void chat_signal();
 
       private:
         ::Network::Connection* connection;
@@ -119,30 +135,31 @@ namespace UI_GTKMM_NS {
         Blog* blog;
         PinBoard* pin_board;
         Messages* messages;
+        Alert* alert;
 
         Gtk::Label* name;
         Gtk::StockButton* create_account_button;
         Gtk::StockButton* login_button;
         Gtk::StockButton* logout_button;
+        Gtk::StockButton* refresh_button;
         Gtk::StockButton* klingel_button;
         Gtk::StockButton* hilfe_button;
         Gtk::StockButton* blog_button;
         Gtk::StockButton* pinnwand_button;
         Gtk::StockButton* messages_button;
+        Gtk::Table* players_list;
+        Gtk::Table* tables_list;
+        Gtk::TextView* chat_messages;
+        Gtk::Entry* chat_line;
 
         /*
-           Hilfe
-           Blog
-           Globale Pinnwand
-           Persönliche Pinnwand
-           Spielerliste
-           Tischliste
            Rangliste
-           Chat
            */
 
         // close button
         Gtk::StockButton* close_button;
+
+        queue<Gdk::Color> player_colors;
 
       private: // unused
         Lounge();

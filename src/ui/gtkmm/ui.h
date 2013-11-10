@@ -38,7 +38,7 @@
 #include "../../misc/translation.h"
 #ifdef USE_NETWORK
 #ifdef USE_NETWORK_DOKOLOUNGE
-class LoungeChatEntry;
+#include "../../misc/lounge.h"
 #endif
 #endif
 
@@ -154,6 +154,9 @@ namespace UI_GTKMM_NS {
     void lounge_blog_changed(string const& text);
     void lounge_pin_board_changed(string const& text);
     void lounge_messages_changed(string const& text);
+    void lounge_alert(string const& title, string const& text);
+    void lounge_players_changed(vector< ::Lounge::Player> const& players);
+    void lounge_tables_changed(vector< ::Lounge::Table> const& tables);
 #endif
 #endif
 

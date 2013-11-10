@@ -5,4 +5,5 @@ OBJECTS = \
 	  sender.lounge.o \
 	  sender.party.o \
 	  sender.game.o \
-	receiver.o
+	receiver.o \
+	  receiver.lounge.o

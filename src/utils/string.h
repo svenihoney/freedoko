@@ -43,6 +43,11 @@ namespace DK {
       // remove all leading and trailing blanks
       std::string remove_blanks(std::string const& s);
 
+      // remove all trailing newlines
+      std::string& remove_trailing_newlines(std::string& s);
+      // replace double newlines with one
+      std::string& remove_double_newlines(std::string& s);
+
       // return the first word
       std::string word_first(std::string const& text);
       // remove the first word
@@ -65,6 +70,9 @@ namespace DK {
       // split 'line' according to 'separator'
       std::list<std::string> split(std::string const& line,
                                    char const separator);
+
+      // convert from latin1 to utf8
+      std::string latin1_to_utf8(std::string text);
 
       // converts the argument to a string, using 'strstream'
       template<typename T>

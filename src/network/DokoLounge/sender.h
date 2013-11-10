@@ -64,6 +64,9 @@ namespace Network {
         // logout
         void logout();
 
+        // refresh
+        void refresh();
+
         // Klingel
         void klingel();
         // hilfe

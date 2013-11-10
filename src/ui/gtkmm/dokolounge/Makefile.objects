@@ -4,4 +4,5 @@ OBJECTS = \
 	    blog.o \
 	    help.o \
 	    pin_board.o \
-	    messages.o
+	    messages.o \
+	    alert.o

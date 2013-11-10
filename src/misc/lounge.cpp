@@ -33,6 +33,7 @@
 
 #include "lounge.h"
 #include "../ui/ui.h"
+#include "../utils/string.h"
 
 Lounge* lounge;
 
@@ -50,10 +51,12 @@ Lounge* lounge;
 Lounge::Lounge() :
   name_(),
   chat_(),
-  help_(),
-  blog_(),
-  pin_board_(),
-  messages_()
+  help_("empty"),
+  blog_("empty"),
+  pin_board_("empty"),
+  messages_("empty"),
+  alert_title_("empty"),
+  alert_("empty")
 {
   return;
 } // Lounge::Lounge()
@@ -137,8 +140,9 @@ Lounge::logged_out()
 /**
  ** add a chat entry
  **
- ** @param     player   player who has chatted
+ ** @param     type     the chat type
  ** @param     text     chat text
+ ** @param     player   player who has chatted
  **
  ** @return    -
  ** 
@@ -147,12 +151,37 @@ Lounge::logged_out()
  ** @version   0.7.12
  **/
 void
-Lounge::add_chat_entry(string const& player, string const& text)
+Lounge::add_chat_entry(LoungeChatEntry::Type const& type,
+                       string const& text, string const& player)
 {
-  this->chat_.push_back(LoungeChatEntry(player, text));
+  this->chat_.push_back(LoungeChatEntry(type, text, player));
   ::ui->lounge_chat_entry_added(this->chat().back());
   return;
-} // void Lounge::add_chat_entry(string const& player, string const& text)
+} // void Lounge::add_chat_entry(Type type, string text, string player)
+
+/**
+ ** add a chat entry
+ **
+ ** @param     type     the chat type
+ ** @param     text     chat text
+ ** @param     player   player who has chatted
+ ** @param     color    color
+ **
+ ** @return    -
+ ** 
+ ** @author    Diether Knof
+ **
+ ** @version   0.7.12
+ **/
+void
+Lounge::add_chat_entry(LoungeChatEntry::Type const& type,
+                       string const& text, string const& player,
+                       LoungeChatEntry::Color const& color)
+{
+  this->chat_.push_back(LoungeChatEntry(type, text, player, color));
+  ::ui->lounge_chat_entry_added(this->chat().back());
+  return;
+} // void Lounge::add_chat_entry(Type type, string text, string player, LoungeChatEntry::Color color)
 
 /**
  ** sets the help text
@@ -172,9 +201,7 @@ Lounge::set_help(string const& text)
     return;
 
   this->help_ = text;
-  while (   (this->help()[this->help().size() - 1] == '\n')
-         || (this->help()[this->help().size() - 1] == '\r') )
-    this->help_.resize(this->help().size() - 1);
+  DK::Utils::String::remove_trailing_newlines(this->help_);
   ::ui->lounge_help_changed(this->help());
   return;
 } // void Lounge::set_help(string const& text)
@@ -197,9 +224,7 @@ Lounge::set_blog(string const& text)
     return;
 
   this->blog_ = text;
-  while (   (this->blog()[this->blog().size() - 1] == '\n')
-         || (this->blog()[this->blog().size() - 1] == '\r') )
-    this->blog_.resize(this->blog().size() - 1);
+  DK::Utils::String::remove_trailing_newlines(this->blog_);
   ::ui->lounge_blog_changed(this->blog());
   return;
 } // void Lounge::set_blog(string const& text)
@@ -215,6 +240,8 @@ Lounge::set_blog(string const& text)
  ** @author    Diether Knof
  **
  ** @version   0.7.12
+ **
+ ** @todo      seperate individual entries
  **/
 void
 Lounge::set_pin_board(string const& text)
@@ -223,9 +250,8 @@ Lounge::set_pin_board(string const& text)
     return;
 
   this->pin_board_ = text;
-  while (   (this->pin_board()[this->pin_board().size() - 1] == '\n')
-         || (this->pin_board()[this->pin_board().size() - 1] == '\r') )
-    this->pin_board_.resize(this->pin_board().size() - 1);
+  DK::Utils::String::remove_trailing_newlines(this->pin_board_);
+  DK::Utils::String::remove_double_newlines(this->pin_board_);
   ::ui->lounge_pin_board_changed(this->pin_board());
   return;
 } // void Lounge::set_pin_board(string const& text)
@@ -241,6 +267,8 @@ Lounge::set_pin_board(string const& text)
  ** @author    Diether Knof
  **
  ** @version   0.7.12
+ **
+ ** @todo      seperate individual entries
  **/
 void
 Lounge::set_messages(string const& text)
@@ -249,12 +277,102 @@ Lounge::set_messages(string const& text)
     return;
 
   this->messages_ = text;
-  while (   (this->messages()[this->messages().size() - 1] == '\n')
-         || (this->messages()[this->messages().size() - 1] == '\r') )
-    this->messages_.resize(this->messages().size() - 1);
+  DK::Utils::String::remove_trailing_newlines(this->messages_);
   ::ui->lounge_messages_changed(this->messages());
   return;
-} // void Lounge::set_messages(string const& text)
+} // void Lounge::set_messages(string text)
+
+/**
+ ** sets the alert
+ **
+ ** @param     title    alert title
+ ** @param     text     the alert text
+ **
+ ** @return    -
+ ** 
+ ** @author    Diether Knof
+ **
+ ** @version   0.7.12
+ **
+ ** @todo      buttons
+ **/
+void
+Lounge::set_alert(string const& title, string const& text)
+{
+  if (   (this->alert_title() == title)
+      && (this->alert() == text) )
+    return;
+
+  this->alert_title_ = title;
+  this->alert_ = text;
+  ::ui->lounge_alert(this->alert_title(), this->alert());
+  return;
+} // void Lounge::set_alert(string title, string text)
+
+/**
+ ** sets the players
+ **
+ ** @param     players   players
+ **
+ ** @return    -
+ ** 
+ ** @author    Diether Knof
+ **
+ ** @version   0.7.12
+ **/
+void
+Lounge::set_player_list(vector<Lounge::Player> const& players)
+{
+  this->players_ = players;
+  ::ui->lounge_players_changed(this->players());
+  return;
+} // void Lounge::set_player_list(vector<Lounge::Player> players)
+
+/**
+ ** sets the tables
+ **
+ ** @param     tables   tables
+ **
+ ** @return    -
+ ** 
+ ** @author    Diether Knof
+ **
+ ** @version   0.7.12
+ **/
+void
+Lounge::set_table_list(vector<Lounge::Table> const& tables)
+{
+  this->tables_ = tables;
+  ::ui->lounge_tables_changed(this->tables());
+  return;
+} // void Lounge::set_table_list(vector<Lounge::Table> tables)
+
+/**
+ ** the name of the type
+ **
+ ** @param     type  chat entry type
+ **
+ ** @return    -
+ ** 
+ ** @author    Diether Knof
+ **
+ ** @version   0.7.12
+ **/
+string
+name(LoungeChatEntry::Type const& type)
+{
+  switch(type) {
+  case LoungeChatEntry::SYSTEM:
+    return "system";
+  case LoungeChatEntry::PLAYER:
+    return "player";
+  case LoungeChatEntry::PLAYER_WHISPER:
+    return "whisper";
+  case LoungeChatEntry::PLAYER_FOR_ALL:
+    return "for all";
+  }; // switch(type)
+  return "";
+} // string name(LoungeChatEntry::Type const& type)
 
 #endif // #ifdef USE_NETWORK_DOKOLOUNGE
 #endif // #ifdef USE_NETWORK

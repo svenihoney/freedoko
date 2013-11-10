@@ -59,11 +59,27 @@ namespace Network {
         // interpret the command
         bool interpret_command(string const& keyword, string const& text);
 
+        // interpret a chat message
+        void interpret_chat(string text);
+        // interpret an alert
+        void interpret_alert(string text);
+        // interpret player list
+        void interpret_player_list(string text);
+        // interpret table list (Besetzung)
+        void interpret_table_list(string text);
+        // interpret table types
+        void interpret_table_types(string text);
+
+        // returns the text part of <<part>>text<</part>>
+        static string text_of_part(string const& text, string const& part);
+        // gets the next part of 'text' and remove it from text
+        static bool strip_next_part(string& text, string& keyword, string& entry);
+        // gets the name of 'text' and remove it from text
+        static bool strip_next_name(string& text, string& name, string& entry);
+
       private:
 	// a line was not send in total
 	string pending_line;
-	// keyword to wait for
-	string pending_keyword;
 	// a parser
 	Network::DokoLounge::Parser::Base* parser;
 

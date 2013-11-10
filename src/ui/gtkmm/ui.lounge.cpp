@@ -172,6 +172,64 @@ namespace UI_GTKMM_NS {
       return ;
     } // void UI_GTKMM::lounge_messages_changed(string text)
 
+  /**
+   ** an alert from the lounge
+   **
+   ** @param     title   alert title
+   ** @param     text    text of the alert
+   **
+   ** @return    -
+   **
+   ** @author    Diether Knof
+   **
+   ** @version   0.7.12
+   **/
+  void
+    UI_GTKMM::lounge_alert(string const& title, string const& text)
+    {
+      if (this->lounge)
+        this->lounge->show_alert(title, text);
+      return ;
+    } // void UI_GTKMM::lounge_alert(string title, string text)
+
+  /**
+   ** the players have changed
+   **
+   ** @param     players    players list
+   **
+   ** @return    -
+   **
+   ** @author    Diether Knof
+   **
+   ** @version   0.7.12
+   **/
+  void
+    UI_GTKMM::lounge_players_changed(vector< ::Lounge::Player> const& players)
+    {
+      if (this->lounge)
+        this->lounge->players_changed(players);
+      return ;
+    } // void UI_GTKMM::lounge_players_changed(vector< ::Lounge::Player> players)
+
+  /**
+   ** the tables have changed
+   **
+   ** @param     tables    tables list
+   **
+   ** @return    -
+   **
+   ** @author    Diether Knof
+   **
+   ** @version   0.7.12
+   **/
+  void
+    UI_GTKMM::lounge_tables_changed(vector< ::Lounge::Table> const& tables)
+    {
+      if (this->lounge)
+        this->lounge->tables_changed(tables);
+      return ;
+    } // void UI_GTKMM::lounge_tables_changed(vector< ::Lounge::Table> tables)
+
 
 } // namespace UI_GTKMM_NS
 

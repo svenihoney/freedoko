@@ -84,7 +84,7 @@ namespace Network {
     string const&
     Interpreter::Sender::account() const
     {
-      return static_cast<Network::DokoLounge::Interpreter const&>(this->interpreter()).account();
+      return ::lounge->name();
     } // string Interpreter::Sender::account() const
 
     /**
@@ -222,7 +222,7 @@ namespace Network {
      **
      ** @author    Diether Knof
      **
-     ** @version   0.7.1
+     ** @version   0.7.12
      **/
     void
       Interpreter::Sender::chat(string const& text)
@@ -230,6 +230,9 @@ namespace Network {
 #if 0
         this->send("chat: " + text);
 #endif
+        // /f: <<fluestern>><<sender>>Sender<</sender>><<empfaenger>>Empfänger<</empfaenger>><<message>>Text<</message>><</fluestern>>
+    // /a: sende "<<anAlle><<name>>" + MeinName + "<</name>><<mess>>" + cs + "<</mess>><</anAlle>>"
+        this->send_name_command("fuxbauchat", text);
         return ;
       } // void Interpreter::Sender::chat(string text)
 

@@ -40,8 +40,18 @@
 #include "../../party/party.h"
 #include "../../game/gameplay_action.h"
 #include "../../misc/lounge.h"
+#include "../../utils/string.h"
 
 #include <cstring>
+
+#define EXPECT_KEYWORD(KW) \
+        this->strip_next_part(text, keyword, entry); \
+        if (keyword != KW) { \
+          CLOG << "'interpret alert': unknown keyword '" << keyword << "' expected '" << KW << "'\n" \
+            << "entry: " << entry << "\n" \
+            << "remaining text: " << text << "\n"; \
+          return; \
+        } else
 
 namespace Network {
   namespace DokoLounge {
@@ -90,7 +100,7 @@ Anzahl der Spieler hat sich geändert
 Spieler ist einem Tisch beigetreten
 <<Tischart>><<Tischanz>>5<</Tischanz>><<1>>Sonderregeln<</1>><<2>>Lerntisch<</2>><<3>>Sonderregeln<</3>><<4>>DDV<</4>><<5>>Sonderregeln<</5>><</Tischart>>
 < <<alleTische>>(TischSpieler01)Diether,frei,frei,frei||(TischSpieler02)frei,frei,frei,frei||(TischSpieler03)frei,frei,frei,frei||(TischSpieler04)frei,frei,frei,frei||(TischSpieler05)frei,frei,frei,frei||<</alleTische>><<Tischart>><<Tischanz>>5<</Tischanz>><<1>>Sonderregeln<</1>><<2>>Lerntisch<</2>><<3>>Sonderregeln<</3>><<4>>DDV<</4>><<5>>Sonderregeln<</5>><</Tischart>><<alleTische>>(TischSpieler01)Diether,frei,frei,frei||(TischSpieler02)frei,frei,frei,frei||(TischSpieler03)frei,frei,frei,frei||(TischSpieler04)frei,frei,frei,frei||(TischSpieler05)frei,frei,frei,frei||<</alleTische>>
-       */
+*/
 
     /**
      ** constructor
@@ -106,7 +116,6 @@ Spieler ist einem Tisch beigetreten
     Interpreter::Receiver::Receiver(Interpreter& interpreter) :
       Connection::Interpreter::Receiver(interpreter),
       pending_line(),
-      pending_keyword(),
       parser(NULL)
     { }
 
@@ -153,47 +162,29 @@ Spieler ist einem Tisch beigetreten
      ** @version   0.7.12
      **/
     bool
-      Interpreter::Receiver::received(string const& text)
+        Interpreter::Receiver::received(string const& text)
       {
-        if (this->pending_keyword.empty()) {
-          // check the keyword
-          if (text.size() < 5) {
-            cerr << "DokoLounge: received text is too short: '" << text << "'" << endl;
-            return true;
-          }
-          if (!(   (text[0] == '<')
-                && (text[1] == '<') )) {
-            cerr << "DokoLounge: received text does not begin with '<<': '" << text << "'" << endl;
-            return true;
-          }
-          if (text.find(">>") == string::npos) {
-            cerr << "DokoLounge: received text does not contain a '>>': '" << text << "'" << endl;
-            return true;
-          }
-          // save the keyword and the text
-          this->pending_keyword = string(text, 2, text.find(">>") - 2);
-          this->pending_line = text;
+        // add the text to the one already gotten
+        this->pending_line += DK::Utils::String::latin1_to_utf8(text);
 
-        } else { // if !(this->pending_keyword.empty())
-          // just add the text to the one already gotten
-          this->pending_line += text;
-        } // if !(this->pending_keyword.empty())
+        CLOG << text << endl;
+        string keyword;
+        string entry;
+        while (strip_next_part(this->pending_line, keyword, entry)) {
+          { // hack
+            // <<alert>><</alert>>...<<alerttext>><</alerttext>>
+            if (keyword == "alert") {
+              this->pending_line = "<<alerttext>>" + this->pending_line;
+            }
+            if (keyword == "alerttext") {
+              entry += "<</alerttext>>";
+            }
+          } // hack
 
-        string::size_type const n
-          = this->pending_line.find("<</" + this->pending_keyword + ">>");
-        if (n != string::npos) {
-          this->interpret_command(this->pending_keyword,
-                                  string(this->pending_line, ("<<" + this->pending_keyword + ">>").size(), n - ("<<" + this->pending_keyword + ">>").size()));
-          string const t = string(this->pending_line,
-                                  n + ("<</" + this->pending_keyword + ">>").size());
-          this->pending_keyword.clear();
-          this->pending_line.clear();
-          if (!t.empty())
-            return this->received(t);
-          return true;
-        }
+          this->interpret_command(keyword, entry);
 
-        return false;
+        } // while (strip_next_part(this->pending_line, keyword, entry))
+        return !keyword.empty();
       } // bool Interpreter::Receiver::received(string text)
 
     /**
@@ -212,6 +203,7 @@ Spieler ist einem Tisch beigetreten
       Interpreter::Receiver::interpret_command(string const& keyword,
                                                string const& text)
       {
+        CLOG << "< " << keyword << endl;
         if (keyword == "neuesKonto") {
           // Fehler beim neuen Konto
           CLOG << "neuesKonto: " << text << endl;
@@ -225,45 +217,37 @@ Spieler ist einem Tisch beigetreten
           CLOG << "bell: " << text << endl;
           return true;
         } else if (keyword == "alert") {
-          CLOG << "alert: " << text << endl;
-          return true;
-        } else if (keyword == "alerthead") {
-          CLOG << "alerthead: " << text << endl;
+          // ignore it, see hack
           return true;
         } else if (keyword == "alerttext") {
-          CLOG << "alerttext: " << text << endl;
-          return true;
-        } else if (keyword == "bu1") {
-          CLOG << "bu1: " << text << endl;
-          return true;
-        } else if (keyword == "bu2") {
-          CLOG << "bu2: " << text << endl;
+          // contains alert, alerthead, bu1, bu2, alerttext
+          this->interpret_alert(text);
           return true;
         } else if (keyword == "hilfe") {
           // Hilfetext
-          ::lounge->set_help(latin1_to_utf8(text));
+          ::lounge->set_help(text);
           return true;
         } else if (keyword == "blogtxt") {
           // Blogtext
-          ::lounge->set_blog(latin1_to_utf8(text));
+          ::lounge->set_blog(text);
           return true;
         } else if (keyword == "PinnwandData") {
           // Pinnwand
-          ::lounge->set_pin_board(latin1_to_utf8(text));
+          ::lounge->set_pin_board(text);
           return true;
         } else if (keyword == "mail") {
           // Eigene Pinnwand / Nachrichten
-          ::lounge->set_messages(latin1_to_utf8(text));
+          ::lounge->set_messages(text);
           return true;
         } else if (keyword == "fuxbauchat") {
-          // Chat, mit Farbe
-          ::lounge->add_chat_entry("", text);
+          // Chat, mit Farbe/Spielername
+          this->interpret_chat(text);
           return true;
         } else if (keyword == "LobbySpieler") {
-          CLOG << "LobbySpieler: " << text << endl;
+          this->interpret_player_list(text);
           return true;
         } else if (keyword == "Tischart") {
-          CLOG << "Tischart: " << text << endl;
+          this->interpret_table_types(text);
           return true;
         } else if (keyword == "alleTische") {
           CLOG << "alleTische: " << text << endl;
@@ -275,6 +259,107 @@ Spieler ist einem Tisch beigetreten
 
         return false;
       } // bool Interpreter::Receiver::interpret_command(string keyword, string text)
+
+    /**
+     ** -> result
+     **
+     ** @param     text    text
+     ** @param     part    part to search
+     **
+     ** @return    the text of <<part>>text<</part>>
+     **
+     ** @author    Diether Knof
+     **
+     ** @version   0.7.12
+     **/
+    string
+      Interpreter::Receiver::text_of_part(string const& text, string const& part)
+      {
+        if (   (text.find("<<" + part + ">>") == string::npos)
+            || (text.find("<</" + part + ">>") == string::npos)
+            || (text.find("<<" + part + ">>")
+                > text.find("<</" + part + ">>")) ) {
+          return "";
+        }
+        return string(text,
+                      text.find("<<" + part + ">>") + string("<<" + part + ">>").size(),
+                      text.find("<</" + part + ">>") - text.find("<<" + part + ">>") - string("<<" + part + ">>").size());
+      } // static string Interpreter::Receiver::text_of_part(string text, string part)
+
+    /**
+     ** gets the next part of 'text' and remove it from text
+     ** <<part>>entry<</part>>moretext
+     **
+     ** @param     text      text (will be changed)
+     ** @param     keyword   keyword of the part (will be overwritten)
+     ** @param     entry     entry of the part (will be overwritten)
+     **
+     ** @return    whether a part was found
+     **
+     ** @author    Diether Knof
+     **
+     ** @version   0.7.12
+     **/
+    bool
+      Interpreter::Receiver::strip_next_part(string& text,
+                                             string& keyword, string& entry)
+      {
+        if (text.size() < 2 + 1 + 2 + 3 + 1 + 2) // minimum: <<a>><</a>>
+          return false;
+
+        if (!(   (text[0] == '<')
+              && (text[1] == '<') ) )
+          return false;
+
+        if (text.find(">>") == string::npos) {
+          return false;
+        }
+        string const keyword_t = string(text, 2, text.find(">>") - 2);
+
+        string::size_type const n = text.find("<</" + keyword_t + ">>");
+        if (n == string::npos)
+          return false;
+
+        keyword = keyword_t;
+        entry = string(text,
+                       ("<<" + keyword + ">>").size(),
+                       n - ("<<" + keyword + ">>").size());
+        text.erase(0, n + ("<</" + keyword + ">>").size());
+
+        return true;
+      } // bool Interpreter::Receiver::strip_next_part(string& text, string& keyword, string& entry)
+
+    /**
+     ** gets the next part of 'text' and remove it from text
+     ** Name: moretext
+     **
+     ** @param     text      text (will be changed)
+     ** @param     name      name of the part (will be overwritten)
+     ** @param     entry     entry of the part (will be overwritten)
+     **
+     ** @return    whether a name was found
+     **
+     ** @author    Diether Knof
+     **
+     ** @version   0.7.12
+     **/
+    bool
+      Interpreter::Receiver::strip_next_name(string& text,
+                                             string& name, string& entry)
+      {
+        if (text.size() < 1 + 2 + 1) // minimum: N: x
+          return false;
+
+        if (text.find(": ") == string::npos) {
+          return false;
+        }
+
+        name = string(text, 2, text.find(": ") - 2);
+        entry = string(text, (name + ": ").size());
+        text.erase(0, (name + ": ").size());
+
+        return true;
+      } // bool Interpreter::Receiver::strip_next_name(string& text, string& name, string& entry)
 
 
   } // namespace DokoLounge

@@ -48,7 +48,7 @@ namespace OS_NS {
 }
 #ifdef USE_NETWORK
 #ifdef USE_NETWORK_DOKOLOUNGE
-class LoungeChatEntry;
+#include "../misc/lounge.h"
 #endif
 namespace Network {
   class Listener;
@@ -123,6 +123,9 @@ class UI {
     virtual void lounge_blog_changed(string const& text) { }
     virtual void lounge_pin_board_changed(string const& text) { }
     virtual void lounge_messages_changed(string const& text) { }
+    virtual void lounge_alert(string const& title, string const& text) { }
+    virtual void lounge_players_changed(vector<Lounge::Player> const& players) { }
+    virtual void lounge_tables_changed(vector<Lounge::Table> const& tables) { }
 #endif
 #endif
 

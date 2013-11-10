@@ -84,8 +84,6 @@ extern const Null_OStr null_ostr;
 
 // reads a line from the input stream
 string read_line(std::istream& istr);
-// converts from latin1 to utf8
-string latin1_to_utf8(string text);
 
 // generate an error
 void generate_error(string const error_message = "generated error");

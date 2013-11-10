@@ -136,6 +136,10 @@ DokoLounge: Help                = DokoLounge: Hilfe
 DokoLounge: Blog                = DokoLounge: Blog
 DokoLounge: PinBoard            = DokoLounge: Pinnwand
 DokoLounge: Mail                = DokoLounge: Nachrichten
+DokoLounge: Alert               = DokoLounge: Hinweis
+player list                     = Spielerliste
+table list                      = Tischliste
+chat                            = Chat
 
 # rules
 # -> rules

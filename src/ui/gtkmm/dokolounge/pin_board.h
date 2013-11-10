@@ -48,7 +48,8 @@ namespace UI_GTKMM_NS {
    ** @author	Diether Knof
    **
    ** @todo     title
-   ** @todo     seperate individual entries
+   ** @todo     seperate individual entries (p.e. name bold)
+   ** @todo     send entries
    **/
   class PinBoard : public Base, public Gtk::StickyDialog {
     public:

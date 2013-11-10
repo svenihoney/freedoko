@@ -155,34 +155,6 @@ read_line(std::istream& istr)
 } // string read_line(istream& istr)
 
 /**
- ** converts from latin1 to utf8
- **
- ** @param     text   text in latin1 encoding
- **
- ** @return    text in utf8 encoding
- **
- ** @author    Diether Knof
- **
- ** @version   0.7.12
- **/
-string
-latin1_to_utf8(string text)
-{
-  for (string::iterator c = text.begin();
-       c != text.end();
-       ++c) {
-    if(static_cast<unsigned char>(*c) >= 0x80) {
-      // thanks to http://stackoverflow.com/questions/5586214/how-to-convert-char-from-iso-8859-1-to-utf-8-in-c-multiplatformly for the code
-      c = text.insert(c, 0xc0 | (*c & 0xc0) >> 6);// first byte, simplified since our range is only 8-bits
-      ++c;
-      *c = (0x80 | (*c & 0x3f));
-    }
-
-  } // for (c)
-  return text;
-} // string latin1_to_utf8(string text)
-
-/**
  ** generates an error
  **
  ** @param	error_message	error message

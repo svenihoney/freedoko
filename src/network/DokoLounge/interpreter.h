@@ -64,10 +64,6 @@ namespace Network {
         Sender& sender();
         Receiver& receiver();
 
-      private:
-        PRIV_VAR_R(string, account);
-
-
       private: // unused
         Interpreter();
         Interpreter(Interpreter const&);

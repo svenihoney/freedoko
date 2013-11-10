@@ -107,8 +107,6 @@ namespace Network {
                           //+ this->command("AppName", "FreeDoko " + static_cast<string>(*::version))
                           + this->command("version", "DokoClient50")
                          );
-       // Es gibt keine Rückmeldung, ob das Anmelden erfolgreich war.
-       dynamic_cast<Network::DokoLounge::Interpreter&>(this->interpreter()).account_ = ::setting(Setting::DOKOLOUNGE_NAME);
 
        return ;
      } // void Interpreter::Sender::login()
@@ -133,6 +131,26 @@ namespace Network {
 
        return ;
      } // void Interpreter::Sender::logout()
+
+   /**
+    ** refresh
+    ** example: <<Refresh>>Name<</Refresh>>
+    **
+    ** @param     -
+    **
+    ** @return    -
+    **
+    ** @author    Diether Knof
+    **
+    ** @version   0.7.12
+    **/
+   void
+     Interpreter::Sender::refresh()
+     {
+       this->send_name_command("Refresh");
+
+       return ;
+     } // void Interpreter::Sender::refresh()
 
 
    /**
