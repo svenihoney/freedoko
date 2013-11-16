@@ -35,6 +35,10 @@
 
 #include "../base.h"
 #include "../widgets/sticky_dialog.h"
+#include "../widgets/scaled_pixbuf.h"
+
+#include <map>
+using std::map;
 
 namespace UI_GTKMM_NS {
   namespace DokoLounge {
@@ -127,6 +131,10 @@ namespace UI_GTKMM_NS {
         // chat signal
         void chat_signal();
 
+
+        // the icon of player 'player'
+        Gdk::ScaledPixbuf& icon(string const& player);
+
       private:
         ::Network::Connection* connection;
         ::Network::DokoLounge::Interpreter::Sender* sender;
@@ -160,6 +168,7 @@ namespace UI_GTKMM_NS {
         Gtk::StockButton* close_button;
 
         queue<Gdk::Color> player_colors;
+        std::map<string, Gdk::ScaledPixbuf> player_icons;
 
       private: // unused
         Lounge();

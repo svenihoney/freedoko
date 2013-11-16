@@ -299,6 +299,31 @@ namespace Gdk {
     } // void ScaledPixbuf::set_scaling(double const scaling)
 
   /**
+   ** set the scaling such that at max width x height place is needed
+   **
+   ** @param	width    maximum width
+   ** @param	height   maximum height
+   **
+   ** @return	-
+   ** 
+   ** @author	Diether Knof
+   **
+   ** @version	0.7.12
+   **/
+  void
+    ScaledPixbuf::set_to_max_size(int const width, int const height)
+    {
+      if (   (this->get_orig_width() == 0)
+          || (this->get_orig_height() == 0))
+        return;
+      this->set_scaling(min(1.0,
+                            min(width / static_cast<double>(this->get_orig_width()),
+                                height / static_cast<double>(this->get_orig_height())
+                               )));
+      return;
+    } // void ScaledPixbuf::set_to_max_size(int const width, int const height)
+
+  /**
    **
    ** -> result
    **
@@ -315,8 +340,8 @@ namespace Gdk {
     ScaledPixbuf::get_width() const
     {
       return (!this->scaled_pixbuf_
-	      ? static_cast<int>(this->get_orig_width() * this->get_scaling())
-	      : this->scaled_pixbuf_->get_width());
+              ? static_cast<int>(this->get_orig_width() * this->get_scaling())
+              : this->scaled_pixbuf_->get_width());
     } // int ScaledPixbuf::get_width() const
 
   /**
@@ -336,8 +361,8 @@ namespace Gdk {
     ScaledPixbuf::get_height() const
     {
       return (!this->scaled_pixbuf_
-	      ? static_cast<int>(this->get_orig_height() * this->scaling_)
-	      : this->scaled_pixbuf_->get_height());
+              ? static_cast<int>(this->get_orig_height() * this->scaling_)
+              : this->scaled_pixbuf_->get_height());
     } // int ScaledPixbuf::get_height() const
   /**
    **
@@ -394,17 +419,17 @@ namespace Gdk {
     ScaledPixbuf::scale() 
     {
       if (!this->orig_pixbuf_)
-	return;
+        return;
 
       if (this->scaling_ == 1)
-	this->scaled_pixbuf_ = this->orig_pixbuf_->copy();
+        this->scaled_pixbuf_ = this->orig_pixbuf_->copy();
       else
-	this->scaled_pixbuf_
-	  = this->orig_pixbuf_->scale_simple(static_cast<int>(this->get_orig_width()
-							      * this->scaling_),
-					     static_cast<int>(this->get_orig_height()
-							      * this->scaling_),
-					     Gdk::INTERP_TILES);
+        this->scaled_pixbuf_
+          = this->orig_pixbuf_->scale_simple(static_cast<int>(this->get_orig_width()
+                                                              * this->scaling_),
+                                             static_cast<int>(this->get_orig_height()
+                                                              * this->scaling_),
+                                             Gdk::INTERP_TILES);
       // If you do not like the scaled images, try the following:
       //				     Gdk::INTERP_NEAREST);
       //				     Gdk::INTERP_BILINEAR);

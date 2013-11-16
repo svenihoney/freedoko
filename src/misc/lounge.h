@@ -114,6 +114,8 @@ class Lounge {
 
     // whether the player is logged in
     bool is_logged_in() const;
+    // the player
+    Player const& player(string const& name) const;
 
     // logged in
     void logged_in(string const& name);

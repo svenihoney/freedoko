@@ -59,6 +59,7 @@ namespace Gdk {
 
       virtual double get_scaling() const;
       virtual void set_scaling(double const scaling);
+      virtual void set_to_max_size(int const width, int const height);
 
       virtual int get_width() const;
       virtual int get_height() const;

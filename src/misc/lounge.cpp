@@ -92,6 +92,27 @@ Lounge::is_logged_in() const
   return !this->name().empty();
 } // bool Lounge::is_logged_in() const
 
+/**
+ ** -> result
+ **
+ ** @param     name   the name of the player
+ **
+ ** @return    the player 'name'
+ ** 
+ ** @author    Diether Knof
+ **
+ ** @version   0.7.12
+ **/
+Lounge::Player const&
+Lounge::player(string const& name) const
+{
+  for (vector<Player>::const_iterator p = this->players().begin();
+       p != this->players().end();
+       ++p)
+    if (p->name == name)
+      return *p;
+  return this->players()[0];
+} // Lounge::Player const& Lounge::player(string name) const
 
 /**
  ** the game has logged in at DokoLounge

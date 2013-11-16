@@ -105,7 +105,8 @@ namespace UI_GTKMM_NS {
       chat_messages(NULL),
       chat_line(NULL),
       close_button(NULL),
-      player_colors()
+      player_colors(),
+      player_icons()
     {
       this->ui->add_window(*this);
       this->signal_realize().connect(sigc::mem_fun(*this, &Lounge::init));
@@ -161,7 +162,7 @@ namespace UI_GTKMM_NS {
         delete this->connection;
         this->connection = NULL;
       }
-        delete this->blog;
+      delete this->blog;
     } // Lounge::~Lounge()
 
     /**
@@ -258,7 +259,7 @@ namespace UI_GTKMM_NS {
               = Gtk::manage(new Gtk::StockButton("logout"));
             this->ui->translations->add(*this->logout_button,
                                         ::translation("logout"));
-// add at the end
+            // add at the end
 
 #if 0
             this->refresh_button
@@ -498,14 +499,14 @@ namespace UI_GTKMM_NS {
         if (tag == 0) {
           iter = this->chat_messages->get_buffer()->insert(iter, text);
         } else {
-        if (entry.player.empty()) {
-          iter = this->chat_messages->get_buffer()->insert_with_tag(iter, text, tag);
-        }
-        else {
-          iter = this->chat_messages->get_buffer()->insert_with_tag(iter,
-                                                                    text,
-                                                                    tag);
-        }
+          if (entry.player.empty()) {
+            iter = this->chat_messages->get_buffer()->insert_with_tag(iter, text, tag);
+          }
+          else {
+            iter = this->chat_messages->get_buffer()->insert_with_tag(iter,
+                                                                      text,
+                                                                      tag);
+          }
         }
         // insert_with_tag(..., tag = entry.player)
         this->chat_messages->scroll_to(iter);
@@ -903,14 +904,20 @@ namespace UI_GTKMM_NS {
     void
       Lounge::players_changed(vector< ::Lounge::Player> const& players)
       {
-        this->players_list->resize(players.size(), 1);
+        this->players_list->resize(players.size(), 2);
         this->players_list->children().clear();
 
         cout << "Players: " << players.size() << "\n";
         for (unsigned i = 0; i < players.size(); ++i) {
           cout << "  " << i << ": " << players[i].name << "\n";
-          this->players_list->attach(*Gtk::manage(new Gtk::Label(players[i].name)),
+          // image
+      Gtk::Image* image = Gtk::manage(new Gtk::Image(this->player_icons[players[i].name]));
+          this->players_list->attach(*image,
                                      0, 1, i, i+1
+                                    );
+                                     // name
+          this->players_list->attach(*Gtk::manage(new Gtk::Label(players[i].name)),
+                                     1, 2, i, i+1
                                     );
           // set color for chat
           if (this->chat_messages->get_buffer()->get_tag_table()->lookup(players[i].name + "::" + ::name(LoungeChatEntry::PLAYER)) == 0) {
@@ -958,6 +965,29 @@ namespace UI_GTKMM_NS {
         this->tables_list->show_all_children();
         return ;
       } // void Lounge::tables_changed(vector< ::Lounge::Table> tables)
+
+    /**
+     ** -> result
+     ** the icon is loaded if needed
+     **
+     ** @param     tables    tables list
+     **
+     ** @return    -
+     **
+     ** @author    Diether Knof
+     **
+     ** @version   0.7.12
+     **/
+    Gdk::ScaledPixbuf&
+        Lounge::icon(string const& player)
+        {
+          string const icon_name = ::lounge->player(player).icon;
+          if (this->player_icons.find(icon_name) == this->player_icons.end()) {
+            this->player_icons[icon_name] = Gdk::ScaledPixbuf(icon_name);
+          }
+
+          return this->player_icons[icon_name];
+        } // Gdk::ScaledPixbuf& Lounge::icon(string player)
 
   } // namespace DokoLounge
 } // namespace UI_GTKMM_NS

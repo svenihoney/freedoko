@@ -983,8 +983,10 @@ Setting::operator()(TypeStringConst const type) const
             + this->value(type));
   case BACKGROUNDS_DIRECTORY:
     return this->value(type);
+#ifdef USE_NETWORK_DOKOLOUNGE
   case DOKOLOUNGE_DIRECTORY:
     return this->value(type);
+#endif
   case SOUNDS_DIRECTORY:
     return (this->value(type) + "/" + ::translator.token());
   case AI_DIRECTORY:
@@ -1388,7 +1390,9 @@ Setting::path(TypeStringConst const type) const
   case ICONSETS_DIRECTORY:
   case ICONS_DIRECTORY:
   case BACKGROUNDS_DIRECTORY:
+#ifdef USE_NETWORK_DOKOLOUNGE
   case DOKOLOUNGE_DIRECTORY:
+#endif
   case SOUNDS_DIRECTORY:
   case AI_DIRECTORY:
   case PARTIES_DIRECTORY:
@@ -1718,8 +1722,10 @@ Setting::value(TypeStringConst const type) const
     return "default";
   case BACKGROUNDS_DIRECTORY:
     return "backgrounds";
+#ifdef USE_NETWORK_DOKOLOUNGE
   case DOKOLOUNGE_DIRECTORY:
     return "Doko-Lounge";
+#endif
   case SOUNDS_DIRECTORY:
     return "sounds";
   case AI_DIRECTORY:
@@ -3300,8 +3306,10 @@ name(Setting::TypeStringConst const& type)
     return "icons directory";
   case Setting::BACKGROUNDS_DIRECTORY:
     return "backgrounds directory";
+#ifdef USE_NETWORK_DOKOLOUNGE
   case Setting::DOKOLOUNGE_DIRECTORY:
     return "dokolounge directory";
+#endif
   case Setting::SOUNDS_DIRECTORY:
     return "sounds directory";
   case Setting::AI_DIRECTORY:
