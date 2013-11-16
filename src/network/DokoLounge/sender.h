@@ -104,7 +104,7 @@ namespace Network {
         void pong(unsigned const number);
 
         // send the chat text
-        void chat(string const& text);
+        void chat(string const& text_);
 
         // send the name
         void name();

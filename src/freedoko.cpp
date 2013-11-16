@@ -649,6 +649,8 @@ main(int argc, char* argv[])
 
     } // read the version of the last usage of FreeDoko and write the new version
 
+    ::setting.check_for_outdated_cardset();
+
     // add the bug report in the ui.wrap,
     // so it gets the information of the gameplay
     static_cast<UI_Wrap*>(::ui)->append(::bug_report);

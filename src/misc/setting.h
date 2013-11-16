@@ -195,6 +195,9 @@ class Setting {
       ICONS_DIRECTORY,
       BACKGROUNDS_DIRECTORY,
       SOUNDS_DIRECTORY,
+#ifdef USE_NETWORK_DOKOLOUNGE
+      DOKOLOUNGE_DIRECTORY,
+#endif
       AI_DIRECTORY,
       PARTIES_DIRECTORY,
       RULES_DIRECTORY,
@@ -292,6 +295,9 @@ class Setting {
 
     bool save() const;
     bool save(string const& filename) const;
+
+    // check whether a cardset is outdated and replaces it
+    void check_for_outdated_cardset();
 
     // write of the settings
     ostream& write(ostream& ostr) const;

@@ -225,14 +225,43 @@ namespace Network {
      ** @version   0.7.12
      **/
     void
-      Interpreter::Sender::chat(string const& text)
+      Interpreter::Sender::chat(string const& text_)
       {
+        string text = text_;
 #if 0
         this->send("chat: " + text);
 #endif
-        // /f: <<fluestern>><<sender>>Sender<</sender>><<empfaenger>>Empfänger<</empfaenger>><<message>>Text<</message>><</fluestern>>
-    // /a: sende "<<anAlle><<name>>" + MeinName + "<</name>><<mess>>" + cs + "<</mess>><</anAlle>>"
-        this->send_name_command("fuxbauchat", text);
+        if (   (text.size() >= 2)
+            && (text[0] == '/')
+            && (text[1] == 'a') ) {
+          // for all
+          // /a: sende "<<anAlle><<name>>" + MeinName + "<</name>><<mess>>" + cs + "<</mess>><</anAlle>>"
+          text.erase(0, 2);
+          while (!text.empty() && (text[0] == ' ') )
+            text.erase(0, 1);
+
+        this->send_command("anAlle",
+                           this->command("name", this->account())
+                           + this->command("mess", text));
+        } else if (   (text.size() >= 3)
+                   && (text[0] == '/')
+                   && (text[1] == 'f') ) {
+          // whisper (flüsern)
+          // /f: <<fluestern>><<sender>>Sender<</sender>><<empfaenger>>Empfänger<</empfaenger>><<message>>Text<</message>><</fluestern>>
+          text.erase(0, 2);
+          while (!text.empty() && (text[0] == ' ') )
+            text.erase(0, 1);
+          string const receiver = string(text, 0, text.find(" "));
+          text.erase(0, text.find(" "));
+          while (!text.empty() && (text[0] == ' ') )
+            text.erase(0, 1);
+          this->send_command("fluestern",
+                             this->command("sender", this->account())
+                             + this->command("empfaenger", receiver)
+                             + this->command("message", text));
+        } else {
+          this->send_name_command("fuxbauchat", text);
+        }
         return ;
       } // void Interpreter::Sender::chat(string text)
 

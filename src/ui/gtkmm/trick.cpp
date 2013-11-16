@@ -214,9 +214,11 @@ namespace UI_GTKMM_NS {
                            ) / 2,
                          0, 0);
       rec.set_width(outline.get_width()
-                    + 2 * (outline.get_x() - rec.get_x()) );
+                    + 2 * (outline.get_x() - rec.get_x())
+                    + 1);
       rec.set_height(outline.get_height()
-                     + 2 * (outline.get_y() - rec.get_y()) );
+                     + 2 * (outline.get_y() - rec.get_y())
+                     + 1);
 
       int x, y;
       this->table().get_pointer(x, y);

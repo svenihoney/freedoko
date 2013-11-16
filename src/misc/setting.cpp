@@ -53,13 +53,11 @@
 #include "../utils/string.h"
 #include "../utils/windows.h"
 
-#include "../text/Altenburg.string"
-
 
 // the date of the exipration of the Altenburg cardset
 DK::Utils::Date const Setting::ALTENBURG_EXPIRATION_DATE(2013, 12, 31);
 // the date of the exipration of the InnoCard cardset
-DK::Utils::Date const Setting::INNOCARD_EXPIRATION_DATE(2009, 12, 31);
+DK::Utils::Date const Setting::INNOCARD_EXPIRATION_DATE(2014, 12, 31);
 // the date of the exipration of the Elite cardset
 DK::Utils::Date const Setting::ELITE_EXPIRATION_DATE(2009, 12, 31);
 
@@ -301,32 +299,22 @@ Setting::set_to_hardcoded()
   { // set the cardset
     list<string> cardsets;
     if ((*this)(LANGUAGE) == "de") {
-      if (DK::Utils::Date() <= Setting::ALTENBURG_EXPIRATION_DATE)
-        cardsets.push_back("Altenburg/french");
+      if (DK::Utils::Date() <= Setting::INNOCARD_EXPIRATION_DATE)
+        cardsets.push_back("InnoCard/french");
       cardsets.push_back("xskat/french");
-      if (DK::Utils::Date() <= Setting::ALTENBURG_EXPIRATION_DATE)
-        cardsets.push_back("Altenburg/german");
+      if (DK::Utils::Date() <= Setting::INNOCARD_EXPIRATION_DATE)
+        cardsets.push_back("InnoCard/german");
       cardsets.push_back("xskat/german");
     } else if ((*this)(LANGUAGE) == "de-alt") {
-      if (DK::Utils::Date() <= Setting::ALTENBURG_EXPIRATION_DATE)
-        cardsets.push_back("Altenburg/german");
       cardsets.push_back("xskat/german");
     } else { // english and so
-      if (DK::Utils::Date() <= Setting::ALTENBURG_EXPIRATION_DATE)
-        cardsets.push_back("Altenburg/english");
       if (DK::Utils::Date() <= Setting::INNOCARD_EXPIRATION_DATE)
-        cardsets.push_back("InnoCard");
-      if (DK::Utils::Date() <= Setting::ELITE_EXPIRATION_DATE)
-        cardsets.push_back("Elite");
+        cardsets.push_back("InnoCard/english");
       cardsets.push_back("dondorf");
     } // if (language == )
-    if (DK::Utils::Date() <= Setting::ALTENBURG_EXPIRATION_DATE)
-      cardsets.push_back("Altenburg/french");
-    cardsets.push_back("xskat/french");
     if (DK::Utils::Date() <= Setting::INNOCARD_EXPIRATION_DATE)
-      cardsets.push_back("InnoCard");
-    if (DK::Utils::Date() <= Setting::ELITE_EXPIRATION_DATE)
-      cardsets.push_back("Elite");
+      cardsets.push_back("InnoCard/french");
+    cardsets.push_back("xskat/french");
     cardsets.push_back("dondorf");
     cardsets.push_back("kdecarddecks/spaced");
     cardsets.push_back("pysol/gpl");
@@ -486,7 +474,7 @@ Setting::set_data_directories()
   // make each name unique
   for (list<string>::iterator d = this->data_directories_.begin();
        d != this->data_directories_.end();
-      ++d)
+       ++d)
     if (   (d->size() >= 2)
         && ((*d)[0] == '.')
         && ((*d)[1] == '/'))
@@ -995,6 +983,8 @@ Setting::operator()(TypeStringConst const type) const
             + this->value(type));
   case BACKGROUNDS_DIRECTORY:
     return this->value(type);
+  case DOKOLOUNGE_DIRECTORY:
+    return this->value(type);
   case SOUNDS_DIRECTORY:
     return (this->value(type) + "/" + ::translator.token());
   case AI_DIRECTORY:
@@ -1398,6 +1388,7 @@ Setting::path(TypeStringConst const type) const
   case ICONSETS_DIRECTORY:
   case ICONS_DIRECTORY:
   case BACKGROUNDS_DIRECTORY:
+  case DOKOLOUNGE_DIRECTORY:
   case SOUNDS_DIRECTORY:
   case AI_DIRECTORY:
   case PARTIES_DIRECTORY:
@@ -1727,6 +1718,8 @@ Setting::value(TypeStringConst const type) const
     return "default";
   case BACKGROUNDS_DIRECTORY:
     return "backgrounds";
+  case DOKOLOUNGE_DIRECTORY:
+    return "Doko-Lounge";
   case SOUNDS_DIRECTORY:
     return "sounds";
   case AI_DIRECTORY:
@@ -2062,8 +2055,8 @@ Setting::set(TypeString const type, string const& value)
     case NAME:
       break;
 #ifdef USE_NETWORK_DOKOLOUNGE
-  case DOKOLOUNGE_NAME:
-  case DOKOLOUNGE_PASSWORD:
+    case DOKOLOUNGE_NAME:
+    case DOKOLOUNGE_PASSWORD:
 #endif
     case LANGUAGE:
       ::translator.load();
@@ -2420,22 +2413,39 @@ Setting::load(string const& filename, bool filename_not_exists_output)
 
   } // while (istr.good())
 
-#ifdef POSTPONED
+  return ;
+} // void Setting::load(string const& filename, bool filename_not_exists_output)
+
+/**
+ ** check whether a cardset is outdated and replaces it
+ **
+ ** @param	-
+ **
+ ** @return	-
+ **
+ ** @author	Diether Knof
+ **
+ ** @version	0.7.12
+ **/
+void
+Setting::check_for_outdated_cardset()
+{
   // since version 0.7.12 (from 2014)
   // replace Altenburg cardset with innocard
   if (this->value(CARDSET) == "Altenburg/french") {
-    this->set_value(CARDSET, "InnoCard/french");
+    this->set(CARDSET, "InnoCard/french");
     ::ui->information(::translation("cardset replaced: %sorig%, %sreplacement%", "Altenburg/french", "InnoCard/french"), INFORMATION::NORMAL);
   }
+  if (this->value(CARDSET) == "Altenburg/english") {
+    this->set(CARDSET, "InnoCard/english");
+    ::ui->information(::translation("cardset replaced: %sorig%, %sreplacement%", "Altenburg/english", "InnoCard/english"), INFORMATION::NORMAL);
+  }
   if (this->value(CARDSET) == "Altenburg/german") {
-    this->set_value(CARDSET, "xskat/german");
+    this->set(CARDSET, "xskat/german");
     ::ui->information(::translation("cardset replaced: %sorig%, %sreplacement%", "Altenburg/german", "xskat/german"), INFORMATION::NORMAL);
   }
-#endif
-
-
-  return ;
-} // void Setting::load(string const& filename, bool filename_not_exists_output)
+  return;
+} // void Setting::check_for_outdated_cardset()
 
 /**
  ** save the settings in the default file
@@ -2543,27 +2553,28 @@ Setting::create_themes_list()
   this->clear_themes_list();
 
   Theme* theme;
-  { // Altenburg french
-    theme = new Theme("französisch (Altenburg)");
-    theme->set(CARDSET, "Altenburg/french");
+  { // InnoCard french
+    theme = new Theme("französisch (InnoCard)");
+    theme->set(CARDSET, "InnoCard/french");
     theme->set(CARDS_BACK, "penguin");
     theme->set(LANGUAGE, "de");
     this->themes_.push_back(theme);
-  } // Altenburg french
-  { // Altenburg german
-    theme = new Theme("deutsch (Altenburg)");
-    theme->set(CARDSET, "Altenburg/german");
+  } // InnoCard french
+  { // xskat german
+    theme = new Theme("deutsch (xskat)");
+    theme->set(CARDSET, "xskat/german");
     theme->set(CARDS_BACK, "penguin");
     theme->set(LANGUAGE, "de-alt");
     this->themes_.push_back(theme);
-  } // Altenburg german
-  { // Altenburg english
-    theme = new Theme("english (Altenburg)");
-    theme->set(CARDSET, "Altenburg/english");
+  } // xskat german
+  { // InnoCard english
+    theme = new Theme("english (InnoCard)");
+    theme->set(CARDSET, "InnoCard/english");
     theme->set(CARDS_BACK, "penguin");
     theme->set(LANGUAGE, "en");
     this->themes_.push_back(theme);
-  } // Altenburg german
+  } // InnoCard english
+#if 0
   { // dondorf english
     theme = new Theme("english (dondorf)");
     theme->set(CARDSET, "dondorf");
@@ -2571,16 +2582,19 @@ Setting::create_themes_list()
     theme->set(LANGUAGE, "en");
     this->themes_.push_back(theme);
   } // dondorf english
+#endif
+#if 0
   { // autumn
     theme = new Theme(::translation("Setting::Theme::autumn"));
     theme->set(CARDS_BACK, "leaves");
     theme->set(BACKGROUND, "grass-with-leaves");
     this->themes_.push_back(theme);
   } // autumn
+#endif
   { // christmas
     theme = new Theme(::translation("Setting::Theme::christmas"));
     theme->set(CARDS_BACK, "christmas/candle");
-    theme->set(BACKGROUND, "additional/christmas/sky");
+    theme->set(BACKGROUND, "christmas/sky");
     this->themes_.push_back(theme);
   } // christmas
 
@@ -3286,6 +3300,8 @@ name(Setting::TypeStringConst const& type)
     return "icons directory";
   case Setting::BACKGROUNDS_DIRECTORY:
     return "backgrounds directory";
+  case Setting::DOKOLOUNGE_DIRECTORY:
+    return "dokolounge directory";
   case Setting::SOUNDS_DIRECTORY:
     return "sounds directory";
   case Setting::AI_DIRECTORY:

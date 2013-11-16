@@ -3,7 +3,7 @@ DEPTH = ..
 include $(DEPTH)/Makefile.os
 
 .PHONY: all
-all : gpl.dos.string help.dos.string Altenburg.dos.string
+all : gpl.dos.string help.dos.string
 
 include $(DEPTH)/Makefile.subdir
 #include $(DEPTH)/Makefile.rules

@@ -61,6 +61,10 @@
 #include <gtkmm/entry.h>
 
 // todo: use dummy connection (text output) for debugging
+//
+// Umlaute konvertieren
+// Eigenes Flüstern farbig
+// Fett
 
 namespace UI_GTKMM_NS {
   namespace DokoLounge {
@@ -325,11 +329,12 @@ namespace UI_GTKMM_NS {
             Gtk::Frame* frame = Gtk::manage(new Gtk::Frame("Table list"));
             this->ui->translations->add(*dynamic_cast<Gtk::Label*>(frame->get_label_widget()),
                                         ::translation("Table list"));
-            this->tables_list = Gtk::manage(new Gtk::Table(1, 1));
+            Gtk::Alignment* alignment = Gtk::manage(new Gtk::Alignment(Gtk::ALIGN_CENTER, Gtk::ALIGN_TOP, 1, 0));
             Gtk::ScrolledWindow* scroll_window = Gtk::manage(new Gtk::ScrolledWindow());
-            scroll_window->add(*this->tables_list);
             scroll_window->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-            
+            this->tables_list = Gtk::manage(new Gtk::Table(1, 1));
+            alignment->add(*this->tables_list);
+            scroll_window->add(*alignment);
             frame->add(*scroll_window);
             box->add(*frame);
           } // table list
@@ -337,11 +342,12 @@ namespace UI_GTKMM_NS {
             Gtk::Frame* frame = Gtk::manage(new Gtk::Frame("Player list"));
             this->ui->translations->add(*dynamic_cast<Gtk::Label*>(frame->get_label_widget()),
                                         ::translation("player list"));
-            this->players_list = Gtk::manage(new Gtk::Table(1, 1));
+            Gtk::Alignment* alignment = Gtk::manage(new Gtk::Alignment(Gtk::ALIGN_CENTER, Gtk::ALIGN_TOP, 1, 0));
             Gtk::ScrolledWindow* scroll_window = Gtk::manage(new Gtk::ScrolledWindow());
-            scroll_window->add(*this->players_list);
             scroll_window->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-
+            this->players_list = Gtk::manage(new Gtk::Table(1, 1));
+            alignment->add(*this->players_list);
+            scroll_window->add(*alignment);
             frame->add(*scroll_window);
             box->add(*frame);
           } // player list
@@ -463,13 +469,14 @@ namespace UI_GTKMM_NS {
           text.append("\n");
 
         Glib::RefPtr<Gtk::TextBuffer::Tag> tag;
-        if (entry.with_color) {
+        if (   entry.with_color
+            && (entry.type != LoungeChatEntry::PLAYER_FOR_ALL)) {
           Gdk::Color color;
           color.set_rgb_p(entry.color.r, entry.color.g, entry.color.b);
           tag = this->chat_messages->get_buffer()->create_tag();
           tag->property_foreground_gdk() = color;
         } else if (!entry.player.empty()) {
-          tag = this->chat_messages->get_buffer()->get_tag_table()->lookup(entry.player);
+          tag = this->chat_messages->get_buffer()->get_tag_table()->lookup(entry.player + "::" + ::name(entry.type));
         }
         Gtk::TextBuffer::iterator iter = this->chat_messages->get_buffer()->end();
 
@@ -866,13 +873,12 @@ namespace UI_GTKMM_NS {
      ** @author    Diether Knof
      **
      ** @version   0.7.12
-     **
-     ** @todo      interpret /a and /f
      **/
     void
       Lounge::chat_signal()
       {
-        this->sender->chat(this->chat_line->get_text());
+        string text = this->chat_line->get_text();
+        this->sender->chat(Glib::convert(text, "latin1", "utf8"));
         this->chat_line->set_text("");
         this->chat_line->grab_focus();
         return ;
@@ -907,9 +913,16 @@ namespace UI_GTKMM_NS {
                                      0, 1, i, i+1
                                     );
           // set color for chat
-          if (this->chat_messages->get_buffer()->get_tag_table()->lookup(players[i].name) == 0) {
-            Glib::RefPtr<Gtk::TextBuffer::Tag> tag = this->chat_messages->get_buffer()->create_tag(players[i].name);
+          if (this->chat_messages->get_buffer()->get_tag_table()->lookup(players[i].name + "::" + ::name(LoungeChatEntry::PLAYER)) == 0) {
+            Glib::RefPtr<Gtk::TextBuffer::Tag> tag;
+            tag = this->chat_messages->get_buffer()->create_tag(players[i].name + "::" + ::name(LoungeChatEntry::PLAYER));
             tag->property_foreground_gdk() = player_colors.front();
+            tag = this->chat_messages->get_buffer()->create_tag(players[i].name + "::" + ::name(LoungeChatEntry::PLAYER_WHISPER));
+            tag->property_foreground_gdk() = player_colors.front();
+            tag->property_style() = Pango::STYLE_ITALIC;
+            tag = this->chat_messages->get_buffer()->create_tag(players[i].name + "::" + ::name(LoungeChatEntry::PLAYER_FOR_ALL));
+            tag->property_foreground_gdk() = player_colors.front();
+            tag->property_weight() = Pango::WEIGHT_BOLD;
             player_colors.push(player_colors.front());
             player_colors.pop();
           }
@@ -932,14 +945,10 @@ namespace UI_GTKMM_NS {
     void
       Lounge::tables_changed(vector< ::Lounge::Table> const& tables)
       {
-        cout << "Tables: " << tables.size() << "\n";
-        for (unsigned i = 0; i < tables.size(); ++i)
-          cout << "  " << i << ": " << tables[i].type << "\n";
-
         this->tables_list->resize(tables.size(), 1);
         this->tables_list->children().clear();
 
-        cout << "Players: " << tables.size() << "\n";
+        cout << "Tables: " << tables.size() << "\n";
         for (unsigned i = 0; i < tables.size(); ++i) {
           cout << "  " << i << ": " << tables[i].type << "\n";
           this->tables_list->attach(*Gtk::manage(new Gtk::Label(tables[i].type)),
