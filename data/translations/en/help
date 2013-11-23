@@ -56,10 +56,10 @@ About::about				= \
 	Florian Sundermann (inactiv)\n\
 	\n\
 	Ports\n\
-	HPUX: Rainer Dörntge\n\
 	FreeBSD: Thomas Gellekum\n\
 	gentoo: Rafael Kolless\n\
 	SuSE: Toni\n\
+	HPUX: Rainer Dörntge (since 0.7.12 no more support)\n\
 	\n\
 	Translations:\n\
 	French: Yves Caubarrus (inactiv)

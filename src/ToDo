@@ -1,12 +1,11 @@
 Zur nächsten Version 0.7.12
 * Kartensatz Altenburg herausnehmen
-  - Pakete
   - In Internetpräsenz hinweisen
-* Internetpräsenz
-  - in freenet einstellen
-* Icongroups
-  - debian Paket
-* Soundsatz in Lizenzen mit aufnehmen
+* data/setup/debian und rpm raus
+  - Dokumentation und homepage anpassen (auch hpux)
+* Internetpräsenz:
+  - weitere Kartensätze
+  - Hintergründe rausnehmen
 
 
 * Monte Carlo: In den ersten Stichen nur zwei Karten durchgehen:
@@ -27,8 +26,9 @@ Zur nächsten Version 0.7.12
 \----/
 
 aktuell
-* Kompilieren der .src.zip testen
-* mbrola: soundfiles
+* Kartenhintergrund: mit imagemagick erstellen
+* mbrola: Sprachdateien
+* Sprachdateien: Lizenz
 
 technisch
 * gtkmm: auf Version 3 umstellen

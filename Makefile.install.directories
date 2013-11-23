@@ -69,4 +69,4 @@ RELEASE_DEST = /home/dknof/Programme/FreeDoko_$(VERSION).release
 #FREEDOKO_EXE = /home/Daten/Daten.Windows/FreeDoko/src/FreeDoko.exe
 FREEDOKO_EXE = /home/dknof/Programme/FreeDoko/src/FreeDoko.exe
 # where the additional cardsets are
-CARDSETS = /home/dknof/Daten/FreeDoko/cardsets
+CARDSETS = /home/dknof/Daten/FreeDoko/more_data/cardsets

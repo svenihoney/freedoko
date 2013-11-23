@@ -10,6 +10,8 @@ include $(DEPTH)/../Makefile.version
 #USE_BOOST = false
 # network support (gnet)
 #USE_NETWORK  = true
+# support for DokoLounge (http://www.doko-lounge.de), in developement
+#USE_NETWORK_DOKOLOUNGE  = false
 # user interface (gtkmm) -- set to 'true'
 #USE_UI_GTKMM = true
 

@@ -1590,6 +1590,58 @@ Setting::search_background()
   return ;
 } // void Setting::search_background()
 
+#ifdef USE_NETWORK_DOKOLOUNGE
+/**
+ ** -> result
+ **
+ ** @param     icon   icon name
+ **
+ ** @return    path to the dokolounge icon
+ **
+ ** @author    Diether Knof
+ **
+ ** @version   0.7.12
+ **/
+string 
+Setting::dokolounge_icon(string const& icon) const
+{
+  string icon_path;
+
+  list<string> const datadir = this->data_directories();
+
+  // search any background
+  for (list<string>::const_iterator dd = datadir.begin();
+       dd != datadir.end();
+       ++dd) {
+    string const directory = (*dd + "/" + (*this)(DOKOLOUNGE_DIRECTORY) + "/faces");
+
+    DIR *dir = opendir(directory.c_str());
+
+    if (dir == NULL)
+      continue;
+
+    if (dir != NULL) {
+      struct dirent *entry;
+
+      // search all entries in the directory
+      while ((entry = readdir(dir)) != NULL) {
+        if ((strcmp(entry->d_name, ".") == 0)
+            || (strcmp(entry->d_name, "..") == 0))
+          continue;
+        if (DK::Utils::File::isfile(directory + "/" + entry->d_name)) {
+          string const basename = DK::Utils::File::basename(entry->d_name);
+          if (basename == icon)
+            return directory + "/" + basename;
+        } // if (DK::Utils::File::isfile(entry->d_name))
+      } // while (entry != NULL) ;
+      closedir(dir);
+    } // if (dir != NULL)
+  } // for (dd \in datadir)
+
+  return "";
+} // string Setting::dokolounge_icon(string icon) const
+#endif
+
 /**
  ** -> result
  **

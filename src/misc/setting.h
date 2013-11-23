@@ -302,6 +302,11 @@ class Setting {
     // write of the settings
     ostream& write(ostream& ostr) const;
 
+#ifdef USE_NETWORK_DOKOLOUNGE
+    // the path for the icon
+    string dokolounge_icon(string const& icon) const;
+#endif
+
   private:
     // set to the hardcoded values
     void set_to_hardcoded();

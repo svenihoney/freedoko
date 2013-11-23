@@ -153,7 +153,7 @@ ifeq ($(OPERATING_SYSTEM), Linux)
 .PHONY: release
 release : clean
 	-chmod -R +w $(RELEASE_DEST)
-	-rm -r $(RELEASE_DEST)
+	-rm -r $(RELEASE_DEST)/*
 	mkdir -p $(RELEASE_DEST)
 #	source
 	$(MAKE) release_source
@@ -167,10 +167,10 @@ release : clean
 	tar czf $(RELEASE_DEST)/FreeDoko_$(VERSION).Linux.tgz -C $(RELEASE_TMP) FreeDoko_$(VERSION)
 	$(RM) $(RELEASE_TMP)/FreeDoko_$(VERSION)/FreeDoko
 #	- Windows
-	$(MAKE) release_Windows
-	$(RM) $(RELEASE_TMP)/FreeDoko_$(VERSION)/FreeDoko
+	#$(MAKE) release_Windows
+	#$(RM) $(RELEASE_TMP)/FreeDoko_$(VERSION)/FreeDoko
 #	packages
-	$(MAKE) release_debian
+#	$(MAKE) release_debian
 
 # create the debian packages
 .PHONY: release_debian
@@ -202,7 +202,7 @@ release_Windows:
 	#$(RM) -r `find $(RELEASE_TMP)/FreeDoko_$(VERSION)/ -name ".svn"`
 	$(MAKE) -C data/setup/Windows setup
 	mv data/setup/Windows/FreeDoko_$(VERSION).Setup.exe $(RELEASE_DEST)/
-	-mv data/setup/Windows/FreeDoko_$(VERSION)-dev.Setup.exe $(RELEASE_DEST)/
+	-test -f data/setup/Windows/FreeDoko_$(VERSION)-dev.Setup.exe && mv data/setup/Windows/FreeDoko_$(VERSION)-dev.Setup.exe $(RELEASE_DEST)/
 	chmod +x $(RELEASE_DEST)/*.exe
 	$(RM) -r $(RELEASE_TMP)/FreeDoko_$(VERSION)/gtkmm_2.4_dll \
 	         $(RELEASE_TMP)/FreeDoko_$(VERSION)/gnet.dll \

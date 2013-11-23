@@ -671,6 +671,8 @@ namespace UI_GTKMM_NS {
      ** @author    Diether Knof
      **
      ** @version   0.7.12
+     ** 
+     ** @todo      set the icon to tux.jpg -- perhaps in the settings, then check it after the login
      **/
     void
       Lounge::create_account_signal()
@@ -896,10 +898,13 @@ namespace UI_GTKMM_NS {
      **
      ** @version   0.7.12
      **
-     ** @todo      Icon
+     ** @todo      Icongröße beschränken
+     ** @todo      Wo ist der Spieler?
      ** @todo      beobachten
      ** @todo      Nachricht schreiben
      ** @todo      einspringen
+     ** @todo      verschiedene Spaltenbreite
+     ** @todo      eigenes Icon prüfen und gegebenenfalls neu zusenden
      **/
     void
       Lounge::players_changed(vector< ::Lounge::Player> const& players)
@@ -911,11 +916,11 @@ namespace UI_GTKMM_NS {
         for (unsigned i = 0; i < players.size(); ++i) {
           cout << "  " << i << ": " << players[i].name << "\n";
           // image
-      Gtk::Image* image = Gtk::manage(new Gtk::Image(this->player_icons[players[i].name]));
+          Gtk::Image* image = Gtk::manage(new Gtk::Image(this->icon(players[i].name)));
           this->players_list->attach(*image,
                                      0, 1, i, i+1
                                     );
-                                     // name
+          // name
           this->players_list->attach(*Gtk::manage(new Gtk::Label(players[i].name)),
                                      1, 2, i, i+1
                                     );
@@ -979,15 +984,19 @@ namespace UI_GTKMM_NS {
      ** @version   0.7.12
      **/
     Gdk::ScaledPixbuf&
-        Lounge::icon(string const& player)
-        {
-          string const icon_name = ::lounge->player(player).icon;
-          if (this->player_icons.find(icon_name) == this->player_icons.end()) {
-            this->player_icons[icon_name] = Gdk::ScaledPixbuf(icon_name);
-          }
+      Lounge::icon(string const& player)
+      {
+        string const icon_name = ::lounge->player(player).icon;
+        if (this->player_icons.find(icon_name) == this->player_icons.end()) {
+          string icon_path = ::setting.dokolounge_icon(icon_name);
+          if (icon_path.empty())
+            icon_path = ::setting.dokolounge_icon("face1.jpg");
+          CLOG << icon_path << endl;
+          this->player_icons[icon_name] = Gdk::ScaledPixbuf(icon_path);
+        }
 
-          return this->player_icons[icon_name];
-        } // Gdk::ScaledPixbuf& Lounge::icon(string player)
+        return this->player_icons[icon_name];
+      } // Gdk::ScaledPixbuf& Lounge::icon(string player)
 
   } // namespace DokoLounge
 } // namespace UI_GTKMM_NS

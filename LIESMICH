@@ -6,6 +6,8 @@ Das Handbuch befindet sich im Verzeichnis 'doc/manual/de'.
 Die offizielle Internetseite ist: http://free-doko.sourceforge.net/de/
 
 Systemvoraussetzungen:
-* gtkmm-Bibliothek (http://www.gtkmm.org/)
-* gnet-Bibliothek  (http://live.gnome.org/GNetLibrary)
-* ggf. alut-Bibliothek  (http://connect.creativelabs.com/openal/)
+* obligatorisch
+  - gtkmm-Bibliothek (http://www.gtkmm.org/)
+* optional
+  - Netzwerk: gnet-Bibliothek  (http://live.gnome.org/GNetLibrary)
+  - Sound:    alut-Bibliothek  (http://connect.creativelabs.com/openal/)

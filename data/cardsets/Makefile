@@ -19,8 +19,8 @@ ifeq ($(SHELLTYPE), sh)
 	@# In order to add all cardsets to the release
 	@# uncomment the following line, add a trailing backslash
 	@# and remove the line after
-	@#for d in Altenburg kdecarddecks pysol gnome-games openclipart; do
-	for d in Altenburg; do \
+	@#for d in InnoCard freedoko-pingucards gnome-games kdecarddecks openclipart pysol; do
+	for d in InnoCard freedoko-pingucards; do \
 	  if [ -d $(CARDSETS)/$$d ]; then \
 	    tar -c --exclude=.svn -C $(CARDSETS) $$d \
 	      | tar -xC $(RELEASE_TMP)/FreeDoko_$(VERSION)/cardsets/; \
