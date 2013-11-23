@@ -106,7 +106,7 @@ int TrickWeighting::modi_dolle_swines(VirtualGamesInterface const& vgi,
              ai.hand().numberofhyperswines() +
              ai.hand().numberof( Card::DOLLE ) != ai.hand().numberoftrumps() )
          {
-           modi -= 10;
+           modi -= 10; // reference
          }
 
          //high trump serving is generally not a good choice
@@ -202,6 +202,14 @@ int TrickWeighting::modi_dolle_swines(VirtualGamesInterface const& vgi,
        { // swine behind dolle
          modi -= 15;  // reference 176246
        }
+
+     if(  trick.cardno_of_player(card.player()) == 1
+             && card.isdolle()
+             && (ai.game().swines_owner() != NULL  //2do extend to hyperswine, do same for swine hyperswine
+                  && trick.cardno_of_player(*ai.game().swines_owner()) >1 ) )
+           { // swine behind dolle
+             modi -= 3;  // reference 010523
+           }
 
      if(  card.isdolle()
          && (ai.game().swines_owner() != NULL  //2do extend to hyperswine, do same for swine hyperswine
