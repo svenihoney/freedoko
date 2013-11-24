@@ -253,7 +253,7 @@ ifeq ($(OPERATING_SYSTEM), Windows)
 	  "USE_SOUND_ALUT=false" \
 	  "USE_SOUND_COMMAND=false" \
 	  "USE_SOUND_PLAYSOUND=true" \
-	  "CXXFLAGS=-march=i686 -Wall -Werror -Wno-parentheses -pipe -Os" \
+	  "CXXFLAGS=-march=i686 -pipe -Os" \
 	  "CPPFLAGS=-DRELEASE -DVERSION_DESCRIPTION='\"$(OPERATING_SYSTEM_NAME) binary\"'" \
 	  "LIBS=-mwindows" \
 	  $(PROGRAM)
