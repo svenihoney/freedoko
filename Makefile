@@ -162,13 +162,13 @@ release : clean
 #	simple packages
 	$(MAKE) release_directory
 	$(MAKE) release_data
+#	- Windows
+	$(MAKE) release_Windows
+	$(RM) $(RELEASE_TMP)/FreeDoko_$(VERSION)/FreeDoko
 #	- Linux
 	$(MAKE) release_linux_binary
 	tar czf $(RELEASE_DEST)/FreeDoko_$(VERSION).Linux.tgz -C $(RELEASE_TMP) FreeDoko_$(VERSION)
 	$(RM) $(RELEASE_TMP)/FreeDoko_$(VERSION)/FreeDoko
-#	- Windows
-	#$(MAKE) release_Windows
-	#$(RM) $(RELEASE_TMP)/FreeDoko_$(VERSION)/FreeDoko
 #	packages
 #	$(MAKE) release_debian
 

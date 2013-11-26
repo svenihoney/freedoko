@@ -1,11 +1,13 @@
 Zur nächsten Version 0.7.12
-* Kartensatz Altenburg herausnehmen
-  - In Internetpräsenz hinweisen
 * data/setup/debian und rpm raus
   - Dokumentation und homepage anpassen (auch hpux)
 * Internetpräsenz:
   - weitere Kartensätze
   - Hintergründe rausnehmen
+  - Screenshots: Altenburg durch InnoCard ersetzen
+  - Dateien-Seite durchgehen
+* Kartensatz Altenburg herausnehmen
+  - In Internetpräsenz hinweisen
 
 
 * Monte Carlo: In den ersten Stichen nur zwei Karten durchgehen:

@@ -10,7 +10,7 @@ endif
 
 DIRECTORIES = widgets
 ifeq ($(USE_NETWORK_DOKOLOUNGE), true)
-  DIRECTORIES = dokolounge
+  DIRECTORIES += dokolounge
 endif
 
 include Makefile.objects

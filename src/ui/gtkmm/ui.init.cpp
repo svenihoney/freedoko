@@ -131,6 +131,10 @@ namespace UI_GTKMM_NS {
 
     // count the number of objects
     this->base_objects_number = 29;
+#ifdef RELEASE
+    this->base_objects_number += 2; // ?
+#endif
+
 #ifndef RELEASE
     this->base_objects_number += 1; // gameinfo
 #endif
