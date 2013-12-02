@@ -7,7 +7,7 @@ OBJECTS = \
 	  setting.cardsorder.o \
 	bug_report.o \
 	references_check.o
-ifeq ($(USE_UI_GTKMM), true)
+ifeq ($(USE_NETWORK), true)
 ifeq ($(USE_NETWORK_DOKOLOUNGE), true)
   OBJECTS += lounge.o
 endif

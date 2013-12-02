@@ -269,7 +269,7 @@ else
 	  "USE_SOUND_ALUT=true" \
 	  "USE_SOUND_COMMAND=false" \
 	  "USE_SOUND_PLAYSOUND=false" \
-	  "CXXFLAGS=-march=i686 -Wall -Werror -Wno-parentheses -pipe -Os" \
+	  "CXXFLAGS=-mtune=generic -Wall -Werror -Wno-parentheses -pipe -Os" \
 	  "CPPFLAGS=-DRELEASE -DVERSION_DESCRIPTION='\"$(OPERATING_SYSTEM_NAME) binary\"'" \
 	  $(PROGRAM)
 	$(MAKE) strip

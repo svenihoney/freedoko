@@ -1964,7 +1964,7 @@ Setting::set(TypeBool const type, bool const value)
   bool const old_value = this->bool_[type - BOOL_FIRST];
   this->bool_[type - BOOL_FIRST] = value;
 
-  if (   ui
+  if (   ::ui
       && (this == &::setting))
     ::ui->setting_changed(type, &old_value);
 
@@ -2775,31 +2775,45 @@ Setting::update_path(TypeString const type)
 
   case CARDS_BACK: {
 
-    string const file = (this->path(CARDSET) + "/"
-                         + this->value(CARDS_BACK_DIRECTORY) + "/"
-                         + this->value(CARDS_BACK)
-                         + "." + (*this)(GRAPHIC_EXTENSION));
-    // check for the file
-    if (DK::Utils::File::isfile(file)) {
-      this->string_path_[type - STRING_FIRST] = file;
-      break;
-    }
+    list<string> backs; // backs to search
+    backs.push_back(this->value(CARDS_BACK));
+    backs.push_back("penguin");
+    backs.push_back("back");
+    backs.push_back("back01");
+    backs.push_back("deck1");
+    for (list<string>::const_iterator back = backs.begin();
+         back != backs.end();
+         ++back) {
+      string file = (this->path(CARDSET) + "/"
+                     + this->value(CARDS_BACK_DIRECTORY) + "/"
+                     + *back + "." + (*this)(GRAPHIC_EXTENSION));
+      // check for the file
+      if (!DK::Utils::File::isfile(file)) {
+        list<string> const datadir = this->data_directories();
 
-    list<string> const datadir = this->data_directories();
-
-    for (list<string>::const_iterator dd = datadir.begin();
-         dd != datadir.end();
-         dd++) {
-      string const file = (*dd + "/" + (*this)(CARDSET) + "/"
-                           + this->value(CARDS_BACK_DIRECTORY) + "/"
-                           + this->value(CARDS_BACK)
-                           + "." + (*this)(GRAPHIC_EXTENSION));
-      if (DK::Utils::File::isfile(file)) {
-        this->string_path_[type - STRING_FIRST] = file;
-        break;
+        for (list<string>::const_iterator dd = datadir.begin();
+             dd != datadir.end();
+             dd++) {
+          file = (*dd + "/" + (*this)(CARDSET) + "/"
+                  + this->value(CARDS_BACK_DIRECTORY) + "/"
+                  + *back + "." + (*this)(GRAPHIC_EXTENSION));
+          if (DK::Utils::File::isfile(file)) {
+            break;
+          }
+        } // for (dd \in datadir)
       }
-    } // for (dd \in datadir)
 
+      if (DK::Utils::File::isfile(file)) {
+        if (*back == this->value(CARDS_BACK)) {
+          this->string_path_[type - STRING_FIRST] = file;
+          break;
+        } else {
+          this->set(CARDS_BACK, *back);
+          break;
+        }
+      }
+
+    } // for (back \in backs)
     break;
   } // case CARDS_BACK:
 

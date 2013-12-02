@@ -81,3 +81,27 @@ Um FreeDoko unter Microsoft Windows selbst kompilieren und nutzen zu können sin
 * Tip: Ein schöneres Aussehen bekommt FreeDoko, wenn in der Datei 'C:\MinGW\etc\gtk-2.0\gtkrc' als Thema 'Default' gewählt wird:
     gtk-theme-name = "Default"
   Weitere Themen sind im Verzeichnis 'C:\MinGW\share\themes'.
+
+
+-----
+Überarbeitung
+-----
+
+Nicht verwenden, beim Starten stürzt FreeDoko ab
+
+1) MinGW installieren
+MinGW (http://mingw.org) enthält den Compiler
+* mingw-get-setup.exe herunterladen (von http://sourceforge.net/projects/mingw/files/Installer/mingw-get-setup.exe/download)
+* Setup ausführen
+  - Im Installations-Manager die folgenden Pakete (Basic Setup) auswählen
+#    o mingw-developer-toolkit
+    o mingw32-base
+    o mingw32-gcc-g++
+
+2) gtkmm installieren
+gtkmm wird für die graphische Darstellung in FreeDoko verwendet
+* gtkmm herunterladen
+  - http://ftp.gnome.org/pub/gnome/binaries/win32/gtkmm/2.22/gtkmm-win32-devel-2.22.0-2.exe
+* gtkmm (und damit auch GTK+) installieren, Zielpfad ist C:/MinGW (oder wohin MinGW installiert wurde, nicht den Vorschlag C:/gtkmm übernehmen)
+
+...

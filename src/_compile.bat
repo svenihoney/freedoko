@@ -3,7 +3,7 @@
 SETLOCAL
 
 REM mingw32
-PATH %PATH%;C:\MinGW32\bin;C:\MinGW32\lib
+PATH %PATH%;C:\MinGW\bin;C:\MinGW\lib
 
 REM Sonst Probleme mit Microsoft Visual Studio
 SET INCLUDE=
@@ -11,7 +11,7 @@ SET INCLUDE=
 if exist FreeDoko.exe del FreeDoko.exe
 
 REM compile
-make
+mingw32-make
 
 if not exist FreeDoko.exe goto end
 

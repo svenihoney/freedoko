@@ -149,7 +149,7 @@ ifeq ($(OPERATING_SYSTEM), MSYS)
 		INCLUDE_GTKMM ?= $(shell pkg-config --cflags gtkmm-2.4)
 		LIBS_GTKMM ?= $(shell pkg-config --libs gtkmm-2.4)
 		# because of error with auto-import (see 'ld'-documentation for 'enable-auto-import'
-		LIBS_GTKMM += -enable-runtime-pseudo-reloc
+		LIBS_GTKMM += -Wl,-enable-runtime-pseudo-reloc
 	endif
 	ifeq ($(USE_NETWORK), true)
 #		# all gnet headers in 'include/gnet/'
@@ -229,7 +229,7 @@ ifeq ($(OPERATING_SYSTEM), Windows)
 	  	  -lgdi32
 #		LIBS_GTKMM += -rpath gtkmm_2.4_dll
 #		# because of error with auto-import (see 'ld'-documentation for 'enable-auto-import'
-		LIBS_GTKMM += -enable-runtime-pseudo-reloc
+		LIBS_GTKMM += -Wl,-enable-runtime-pseudo-reloc
 	endif
 	ifeq ($(USE_NETWORK), true)
 #		# all gnet headers in 'include/gnet/'
