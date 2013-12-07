@@ -231,5 +231,7 @@ ChangeLog::0.7.11        = \
 
 # 0.7.12
 ChangeLog::0.7.12        = \
-	* Ablauf der Lizenz des Altenburg-Kartensatzes\n\
-	* Unterstützung von Symbolsätzen (siehe Einstellungen→Erscheinungsbild→Thema)
+	* Der Altenburg-Kartensatz ist durch den InnoCard-Kartensatz ersetzt\n\
+	* Unterstützung von Symbolsätzen (siehe Einstellungen→Erscheinungsbild→Thema)\n\
+	* Verbesserungen der KI\n\
+	* Fehlerkorrekturen

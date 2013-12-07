@@ -1,15 +1,3 @@
-Zur nächsten Version 0.7.12
-* data/setup/debian und rpm raus
-  - Dokumentation und homepage anpassen (auch hpux)
-* Internetpräsenz:
-  - weitere Kartensätze
-  - Hintergründe rausnehmen
-  - Screenshots: Altenburg durch InnoCard ersetzen
-  - Dateien-Seite durchgehen
-* Kartensatz Altenburg herausnehmen
-  - In Internetpräsenz hinweisen
-
-
 * Monte Carlo: In den ersten Stichen nur zwei Karten durchgehen:
   1) Karte zum stechen
   2) Karte zum abwerfen
@@ -26,6 +14,12 @@ Zur nächsten Version 0.7.12
 /----\
 | DK |
 \----/
+Zur nächsten Version 0.7.12
+* Internetpräsenz:
+  - Screenshots: Altenburg durch InnoCard ersetzen
+* Alte Dateien mit Altenburg löschen (auch debian repository)
+
+
 
 aktuell
 * Kartenhintergrund: mit imagemagick erstellen

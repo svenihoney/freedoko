@@ -484,12 +484,12 @@ Windows_copy : clean
 .PHONY: Windows_update
 Windows_update :
 	@for f in $$(find src/  -name "*.cpp" -o -name "*.h"); do \
-	  if ! diff -bB $$f /home/Daten/Daten.Windows/FreeDoko/$$f >/dev/null; then \
+	  if ! diff -bB $$f /home/Systeme/qemu/FreeDoko/$$f >/dev/null; then \
 	    echo "copying $$f"; \
-	    cp $$f /home/Daten/Daten.Windows/FreeDoko/$$f; \
+	    cp $$f /home/Systeme/qemu/FreeDoko/$$f; \
 	  fi; \
 	done
-	chmod g+w /home/Daten/Daten.Windows/FreeDoko -R
+	chmod g+w /home/Systeme/qemu/FreeDoko -R
 
 # create a backup of the whole directory
 # private target

@@ -2616,6 +2616,7 @@ Setting::create_themes_list()
     theme->set(CARDSET, "InnoCard/french");
     theme->set(CARDS_BACK, "penguin");
     theme->set(LANGUAGE, "de");
+    theme->set(BACKGROUND, "table");
     this->themes_.push_back(theme);
   } // InnoCard french
   { // xskat german
@@ -2623,6 +2624,7 @@ Setting::create_themes_list()
     theme->set(CARDSET, "xskat/german");
     theme->set(CARDS_BACK, "penguin");
     theme->set(LANGUAGE, "de-alt");
+    theme->set(BACKGROUND, "table");
     this->themes_.push_back(theme);
   } // xskat german
   { // InnoCard english
@@ -2630,6 +2632,7 @@ Setting::create_themes_list()
     theme->set(CARDSET, "InnoCard/english");
     theme->set(CARDS_BACK, "penguin");
     theme->set(LANGUAGE, "en");
+    theme->set(BACKGROUND, "table");
     this->themes_.push_back(theme);
   } // InnoCard english
 #if 0

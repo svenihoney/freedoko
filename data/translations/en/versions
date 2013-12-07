@@ -199,3 +199,10 @@ ChangeLog::0.7.11        = \
 	* expanded license of the altenburg cardsets\n\
 	* bug fixes\n\
 	* ai improvements, especially jabbing of tricks
+
+# 0.7.12
+ChangeLog::0.7.12        = \
+	* changed carset from Altenburg to InnoCard\n\
+	* support for iconsets\n\
+	* ai improvements\n\
+	* bug fixes
