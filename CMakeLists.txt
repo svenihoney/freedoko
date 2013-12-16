@@ -7,8 +7,10 @@ project(FreeDoko)
 
 #pkg_check_modules(GTKMM gtkmm-2.4)
 find_package(GTK2 2.4 REQUIRED gtkmm)
+add_definitions(-DUSE_UI_GTKMM)
 if(NOT CMAKE_CROSSCOMPILING)
   find_package(PkgConfig)
+  pkg_check_modules(GTKMM gtkmm-2.4)
   pkg_check_modules(GNET gnet-2.0)
 endif(NOT CMAKE_CROSSCOMPILING)
 
