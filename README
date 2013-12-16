@@ -3,3 +3,5 @@ FreeDoko is a free implementation of the cardgame 'Doppelkopf'.
 The english documentation is in the directory 'doc/en/'.
 
 The official internet adress is: http://free-doko.sourceforge.net/en/.
+
+This is the standard source code, modified to build with CMAKE.
