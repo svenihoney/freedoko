@@ -8054,7 +8054,16 @@ Heuristics::say_no90( HeuristicInterface const& hi ,const Game& g )
       value += 1 * hi.hand().numberofdolle(); // reference 139722
   }
 
-
+  if( (   hi.game().type() == GAMETYPE::MARRIAGE
+		 && hi.game().marriage_selector() == MARRIAGE_SELECTOR::TEAM_SET
+         &&  hi.team() == TEAM::RE
+         && hi.cards_information().played(Card::CLUB_QUEEN) == 0
+         && hi.hand().numberoftrumps() >= g.tricks_remaining_no() - 1
+        )
+     )
+  {
+	 value +=3;
+  }
 
   for( vector<Card::Color>::const_iterator
       c = hi.game().rule().card_colors().begin();
