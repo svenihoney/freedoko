@@ -2,12 +2,12 @@ include(CMakeChecks.txt)
 include(CMakeMacros.txt)
 
 include_directories(SYSTEM
-  ${GTKMM_INCLUDE_DIRS} 
+  ${GTKMM_INCLUDE_DIRS}
   ${GNET_INCLUDE_DIRS}
-  ${ALUT_INCLUDE_DIRS} 
+  ${ALUT_INCLUDE_DIRS}
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_BINARY_DIR}/player
-)
+  )
 
 if(GTKMM_FOUND)
   add_definitions( -DUSE_UI_GTKMM )
@@ -46,7 +46,7 @@ if(CMAKE_SYSTEM_NAME MATCHES Linux.*)
 endif(CMAKE_SYSTEM_NAME MATCHES Linux.*)
 
 link_directories(
-	    ${GTKMM_LIBRARY_DIRS} ${GNET_LIBRARY_DIRS} ${ALUT_LIBRARY_DIRS} )
+  ${GTKMM_LIBRARY_DIRS} ${GNET_LIBRARY_DIRS} ${ALUT_LIBRARY_DIRS} )
 
 if(MSVC)
   # Force to always compile with W4
@@ -66,7 +66,7 @@ ADD_CUSTOM_COMMAND(
   COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/logo.free.png ${CMAKE_CURRENT_BINARY_DIR}/logo.png
   COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/icon.png ${CMAKE_CURRENT_BINARY_DIR}/icon.png
   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/logo.free.png
-)
+  )
 ADD_CUSTOM_TARGET(copy_logos DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/logo.png)
 
 add_subdirectory(card)
@@ -81,29 +81,28 @@ add_subdirectory(utils)
 add_subdirectory(text)
 
 add_executable(FreeDoko
-  basistypes.cpp  
-  constants.cpp 
-  debug.cpp 
-  freedoko.cpp 
+  basistypes.cpp
+  constants.cpp
+  debug.cpp
+  freedoko.cpp
   runtime.cpp
   utils.cpp
 
   ${FREEDOKO_SOURCES}
-)
+  )
 
 add_dependencies(FreeDoko copy_logos aiconfigs texts)
 
-target_link_libraries(FreeDoko 
+target_link_libraries(FreeDoko
   ${GTKMM_LIBRARIES} ${GNET_LIBRARIES} ${ALUT_LIBRARIES}
   ${Boost_LIBRARIES}
   ${CMAKE_THREAD_LIBS_INIT}
-)
+  )
 
 install(TARGETS FreeDoko
-        RUNTIME DESTINATION games)
+  RUNTIME DESTINATION games)
 install(FILES icon.png
-        DESTINATION ${DATA_INSTALL_DIR})
+  DESTINATION ${DATA_INSTALL_DIR})
 install(FILES logo.free.png
-        DESTINATION ${DATA_INSTALL_DIR}
-		RENAME logo.png )
-
+  DESTINATION ${DATA_INSTALL_DIR}
+  RENAME logo.png )

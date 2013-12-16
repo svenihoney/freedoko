@@ -8,5 +8,6 @@ set(LOCAL_SOURCES
   server.cpp
   types.cpp
   connection.cpp
+  interpreter.cpp
 )
 toglobalsources(${LOCAL_SOURCES})

@@ -62,7 +62,6 @@ set(LOCAL_SOURCES
   chatter.cpp
   help.cpp
   license.cpp
-  cardset_license.cpp
   changelog.cpp
   support.cpp
   about.cpp
