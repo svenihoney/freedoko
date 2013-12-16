@@ -59,12 +59,19 @@
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/frame.h>
 #include <gtkmm/entry.h>
+#include <gtkmm/eventbox.h>
 
 // todo: use dummy connection (text output) for debugging
 //
 // Umlaute konvertieren
 // Eigenes Flüstern farbig
 // Fett
+// neuer Tisch
+// Tisch löschen
+// chat: Str-Return: an alle
+// chat: Shift-Return: an letzten Empfänger flüstern
+// Tastenkombinationen: an Hauptfenster durchreichen
+// Größe vom Kartensatz abhängig machen
 
 namespace UI_GTKMM_NS {
   namespace DokoLounge {
@@ -106,7 +113,8 @@ namespace UI_GTKMM_NS {
       chat_line(NULL),
       close_button(NULL),
       player_colors(),
-      player_icons()
+      player_icons(),
+      table_icons()
     {
       this->ui->add_window(*this);
       this->signal_realize().connect(sigc::mem_fun(*this, &Lounge::init));
@@ -334,6 +342,7 @@ namespace UI_GTKMM_NS {
             Gtk::ScrolledWindow* scroll_window = Gtk::manage(new Gtk::ScrolledWindow());
             scroll_window->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
             this->tables_list = Gtk::manage(new Gtk::Table(1, 1));
+            this->tables_list->set_row_spacings(1 ex);
             alignment->add(*this->tables_list);
             scroll_window->add(*alignment);
             frame->add(*scroll_window);
@@ -347,6 +356,7 @@ namespace UI_GTKMM_NS {
             Gtk::ScrolledWindow* scroll_window = Gtk::manage(new Gtk::ScrolledWindow());
             scroll_window->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
             this->players_list = Gtk::manage(new Gtk::Table(1, 1));
+            this->players_list->set_row_spacings(1 ex);
             alignment->add(*this->players_list);
             scroll_window->add(*alignment);
             frame->add(*scroll_window);
@@ -888,6 +898,42 @@ namespace UI_GTKMM_NS {
       } // void Lounge::chat_signal()
 
     /**
+     ** the player enters the table
+     **
+     ** @param     table   table number
+     **
+     ** @return    -
+     ** 
+     ** @author    Diether Knof
+     **
+     ** @version   0.7.13
+     **/
+    void
+      Lounge::enter_table_signal(int const table)
+      {
+        //this->sender->enter_table(table);
+        return ;
+      } // void Lounge::enter_table_signal(int const table)
+
+    /**
+     ** the player follows another player
+     **
+     ** @param     name   player to follow
+     **
+     ** @return    -
+     ** 
+     ** @author    Diether Knof
+     **
+     ** @version   0.7.13
+     **/
+    void
+      Lounge::follow_player_signal(string const& name)
+      {
+        //this->sender->follow_player(name);
+        return ;
+      } // void Lounge::follow_player_signal(string const name)
+
+    /**
      ** the players have changed
      **
      ** @param     players    players list
@@ -899,45 +945,61 @@ namespace UI_GTKMM_NS {
      ** @version   0.7.12
      **
      ** @todo      Icongröße beschränken
+     ** @todo      Eigenen Spieler fett
+     ** @todo      Abstand zwischen den Spielern
      ** @todo      Wo ist der Spieler?
      ** @todo      beobachten
      ** @todo      Nachricht schreiben
-     ** @todo      einspringen
      ** @todo      verschiedene Spaltenbreite
      ** @todo      eigenes Icon prüfen und gegebenenfalls neu zusenden
      **/
     void
       Lounge::players_changed(vector< ::Lounge::Player> const& players)
       {
-        this->players_list->resize(players.size(), 2);
+        this->players_list->resize(players.size(), 1);
         this->players_list->children().clear();
 
         cout << "Players: " << players.size() << "\n";
+        Gtk::Table* table;
+        Gtk::Image* image; 
+        Gtk::Label* label;
         for (unsigned i = 0; i < players.size(); ++i) {
           cout << "  " << i << ": " << players[i].name << "\n";
-          // image
-          Gtk::Image* image = Gtk::manage(new Gtk::Image(this->icon(players[i].name)));
-          this->players_list->attach(*image,
+          int const location = ::lounge->player_location(players[i].name);
+          table = Gtk::manage(new Gtk::Table(2, 2));
+          image = Gtk::manage(new Gtk::Image(this->player_icon(players[i].name)));
+          // name
+          table->attach(*image, 0, 1, 0, 2);
+          table->attach(*Gtk::manage(new Gtk::Label(players[i].name)),
+                        1, 2, 0, 1
+                       );
+          if (location >= 0) {
+            label = Gtk::manage(new Gtk::Label(""));
+            this->ui->translations->add(*label,
+                                        ::translation("table %itable% (%stype%)",
+                                                      location + 1,
+                                                      ::lounge->table(static_cast<unsigned>(location)).type));
+            table->attach(*label, 1, 2, 1, 2);
+          }
+          this->players_list->attach(*table,
                                      0, 1, i, i+1
                                     );
-          // name
-          this->players_list->attach(*Gtk::manage(new Gtk::Label(players[i].name)),
-                                     1, 2, i, i+1
-                                    );
-          // set color for chat
-          if (this->chat_messages->get_buffer()->get_tag_table()->lookup(players[i].name + "::" + ::name(LoungeChatEntry::PLAYER)) == 0) {
-            Glib::RefPtr<Gtk::TextBuffer::Tag> tag;
-            tag = this->chat_messages->get_buffer()->create_tag(players[i].name + "::" + ::name(LoungeChatEntry::PLAYER));
-            tag->property_foreground_gdk() = player_colors.front();
-            tag = this->chat_messages->get_buffer()->create_tag(players[i].name + "::" + ::name(LoungeChatEntry::PLAYER_WHISPER));
-            tag->property_foreground_gdk() = player_colors.front();
-            tag->property_style() = Pango::STYLE_ITALIC;
-            tag = this->chat_messages->get_buffer()->create_tag(players[i].name + "::" + ::name(LoungeChatEntry::PLAYER_FOR_ALL));
-            tag->property_foreground_gdk() = player_colors.front();
-            tag->property_weight() = Pango::WEIGHT_BOLD;
-            player_colors.push(player_colors.front());
-            player_colors.pop();
-          }
+
+          { // set color for chat
+            if (this->chat_messages->get_buffer()->get_tag_table()->lookup(players[i].name + "::" + ::name(LoungeChatEntry::PLAYER)) == 0) {
+              Glib::RefPtr<Gtk::TextBuffer::Tag> tag;
+              tag = this->chat_messages->get_buffer()->create_tag(players[i].name + "::" + ::name(LoungeChatEntry::PLAYER));
+              tag->property_foreground_gdk() = player_colors.front();
+              tag = this->chat_messages->get_buffer()->create_tag(players[i].name + "::" + ::name(LoungeChatEntry::PLAYER_WHISPER));
+              tag->property_foreground_gdk() = player_colors.front();
+              tag->property_style() = Pango::STYLE_ITALIC;
+              tag = this->chat_messages->get_buffer()->create_tag(players[i].name + "::" + ::name(LoungeChatEntry::PLAYER_FOR_ALL));
+              tag->property_foreground_gdk() = player_colors.front();
+              tag->property_weight() = Pango::WEIGHT_BOLD;
+              player_colors.push(player_colors.front());
+              player_colors.pop();
+            }
+          } // set color for chat
         }
         this->players_list->show_all_children();
         return ;
@@ -953,6 +1015,13 @@ namespace UI_GTKMM_NS {
      ** @author    Diether Knof
      **
      ** @version   0.7.12
+     **
+     ** @todo      Eigenen Spieler fett
+     ** @todo      Icon der Spieler -- testen
+     ** @todo      Abstand zwischen den Tischen
+     ** @todo      Spieler beobachten -- testen
+     ** @todo      „Spieler beobachten“ ersetzen durch „einspringen“
+     ** @todo      Tisch betreten -- testen
      **/
     void
       Lounge::tables_changed(vector< ::Lounge::Table> const& tables)
@@ -960,14 +1029,55 @@ namespace UI_GTKMM_NS {
         this->tables_list->resize(tables.size(), 1);
         this->tables_list->children().clear();
 
+        bool const at_table = (::lounge->player_location() >= 0);
         cout << "Tables: " << tables.size() << "\n";
-        for (unsigned i = 0; i < tables.size(); ++i) {
-          cout << "  " << i << ": " << tables[i].type << "\n";
-          this->tables_list->attach(*Gtk::manage(new Gtk::Label(tables[i].type)),
-                                    0, 1, i, i+1
-                                   );
-        }
+        for (unsigned t = 0; t < tables.size(); ++t) {
+          cout << "  " << t << ": " << tables[t].type << "\n";
+          Gtk::Table* table = Gtk::manage(new Gtk::Table(4, 3));
+          table->set_row_spacings(2);
+          Gtk::Image* image = Gtk::manage(new Gtk::Image(this->table_icon(tables[t].type)));
+          Gtk::EventBox* box = Gtk::manage(new Gtk::EventBox());
+          box->add(*image);
+          if (!at_table) {
+            box->add_events(Gdk::BUTTON_PRESS_MASK);
+#ifdef POSTPONED
+            // does not work, compile error
+            box->signal_button_press_event().connect(sigc::bind<int const>(sigc::mem_fun(*this, &Lounge::enter_table_signalw), t));
+#endif
+          } // if (!at_table)
+          table->attach(*box, 0, 1, 0, 4);
+          for (unsigned p = 0; p < tables[t].players.size(); ++p) {
+            cout << "     " << p << " " << tables[t].players[p] << "\n";
+            string name = tables[t].players[p];
+            if (!name.empty()) {
+              table->attach(*Gtk::manage(new Gtk::Image(this->player_table_icon(name))),
+                            1, 2, p, p + 1);
+            }
+            if (at_table) {
+              Gtk::Label* label;
+              if (name.empty()) {
+                label = Gtk::manage(new Gtk::Label("--"));
+              } else {
+                label = Gtk::manage(new Gtk::Label(name));
+              }
+              table->attach(*label, 2, 3, p, p + 1);
+            } else { // if !(at_table)
+              Gtk::Button* button;
+              if (name.empty()) {
+                button = Gtk::manage(new Gtk::Button("--"));
+                button->signal_clicked().connect(sigc::bind<int const>(sigc::mem_fun(*this, &Lounge::enter_table_signal), t));
+              } else {
+                button = Gtk::manage(new Gtk::Button(name));
+                // ToDo: Ersetzen durch Einspringen
+                button->signal_clicked().connect(sigc::bind<string const& >(sigc::mem_fun(*this, &Lounge::follow_player_signal), name));
+              }
+              table->attach(*button, 2, 3, p, p + 1);
+            } // if !(at_table)
+          } // for (unsigned p < tables[t].players.size())
+          this->tables_list->attach(*table, 0, 1, t, t+1);
+        } // for (t < tables.size)
         this->tables_list->show_all_children();
+        this->players_changed(::lounge->players());
         return ;
       } // void Lounge::tables_changed(vector< ::Lounge::Table> tables)
 
@@ -975,28 +1085,81 @@ namespace UI_GTKMM_NS {
      ** -> result
      ** the icon is loaded if needed
      **
-     ** @param     tables    tables list
+     ** @param     player   player name
      **
-     ** @return    -
+     ** @return    the player icon for the tables list
      **
      ** @author    Diether Knof
      **
      ** @version   0.7.12
      **/
     Gdk::ScaledPixbuf&
-      Lounge::icon(string const& player)
+      Lounge::player_icon(string const& player)
       {
         string const icon_name = ::lounge->player(player).icon;
         if (this->player_icons.find(icon_name) == this->player_icons.end()) {
-          string icon_path = ::setting.dokolounge_icon(icon_name);
+          string icon_path = ::setting.dokolounge_player_icon(icon_name);
           if (icon_path.empty())
-            icon_path = ::setting.dokolounge_icon("face1.jpg");
-          CLOG << icon_path << endl;
+            icon_path = ::setting.dokolounge_player_icon("face1.jpg");
           this->player_icons[icon_name] = Gdk::ScaledPixbuf(icon_path);
         }
 
+        this->player_icons[icon_name].set_to_max_size(100, 150);
         return this->player_icons[icon_name];
-      } // Gdk::ScaledPixbuf& Lounge::icon(string player)
+      } // Gdk::ScaledPixbuf& Lounge::player_icon(string player)
+
+    /**
+     ** -> result
+     ** the icon is loaded if needed
+     **
+     ** @param     player   player name
+     **
+     ** @return    the player icon for the table
+     **
+     ** @author    Diether Knof
+     **
+     ** @version   0.7.12
+     **/
+    Gdk::ScaledPixbuf&
+      Lounge::player_table_icon(string const& player)
+      {
+        string const icon_name = ::lounge->player(player).icon;
+        if (this->player_icons.find(icon_name) == this->player_icons.end()) {
+          string icon_path = ::setting.dokolounge_player_icon(icon_name);
+          if (icon_path.empty())
+            icon_path = ::setting.dokolounge_player_icon("face1.jpg");
+          this->player_icons[icon_name] = Gdk::ScaledPixbuf(icon_path);
+        }
+
+        this->player_icons[icon_name].set_to_max_size(30, 30);
+        return this->player_icons[icon_name];
+      } // Gdk::ScaledPixbuf& Lounge::player_table_icon(string player)
+
+    /**
+     ** -> result
+     ** the icon is loaded if needed
+     **
+     ** @param     type   table type
+     **
+     ** @return    the table icon
+     **
+     ** @author    Diether Knof
+     **
+     ** @version   0.7.13
+     **/
+    Gdk::ScaledPixbuf&
+      Lounge::table_icon(string const& type)
+      {
+        if (this->table_icons.find(type) == this->table_icons.end()) {
+          string icon_path = ::setting.dokolounge_table_icon("Lobby" + type + "150.jpg");
+          if (icon_path.empty())
+            icon_path = ::setting.dokolounge_table_icon("tischhintergrund.jpg");
+          this->table_icons[type] = Gdk::ScaledPixbuf(icon_path);
+          this->table_icons[type].set_to_max_size(200, 150);
+        }
+
+        return this->table_icons[type];
+      } // Gdk::ScaledPixbuf& Lounge::table_icon(string type)
 
   } // namespace DokoLounge
 } // namespace UI_GTKMM_NS

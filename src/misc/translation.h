@@ -100,6 +100,9 @@ class Translator::Translation {
     Translation(Translator const& translator, string const& text,
 		Translation const& t0,
 		Translation const& t1);
+    Translation(Translator const& translator, string const& text,
+		int const i0,
+		string const& s1);
 
     // three arguments
     Translation(Translator const& translator, string const& text,

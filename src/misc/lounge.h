@@ -114,8 +114,15 @@ class Lounge {
 
     // whether the player is logged in
     bool is_logged_in() const;
+    // whether the player is
+    int player_location() const;
     // the player
     Player const& player(string const& name) const;
+    // the location of the player
+    int player_location(string const& name) const;
+
+    // the table i
+    Table const& table(unsigned const t) const;
 
     // logged in
     void logged_in(string const& name);
@@ -142,6 +149,14 @@ class Lounge {
     void set_player_list(vector<Player> const& players);
     // set the table list
     void set_table_list(vector<Table> const& tables);
+    // set the table number
+    void set_table_number(unsigned const table_number);
+    // set the table type
+    void set_table_type(unsigned const table,
+                        string const& type);
+    // set the table players
+    void set_table_players(unsigned const table,
+                           vector<string> const& players);
 
   private:
     PRIV_VAR_R(string, name); // the name of the player, if logged in

@@ -209,6 +209,35 @@ Translator::Translation::Translation(Translator const& translator,
  ** @param	translator	the corresponding translator
  ** @param	text		the text to translate
  ** @param	s0		string to be inserted
+ ** @param	i1		integer to be inserted
+ **
+ ** @return	-
+ **
+ ** @author	Diether Knof
+ **
+ ** @version	0.7.13
+ **/
+Translator::Translation::Translation(Translator const& translator,
+                                     string const& text,
+                                     string const& s0,
+                                     int const i1) :
+  translator(&translator),
+  text(text),
+  type(2),
+  word(2)
+{
+  type[0] = STRING;
+  word[0].s = new string(s0);
+  type[1] = INT;
+  word[1].i = i1;
+}
+
+/**
+ ** constructor: text with one string and one unsigned
+ **
+ ** @param	translator	the corresponding translator
+ ** @param	text		the text to translate
+ ** @param	s0		string to be inserted
  ** @param	u1		unsigned to be inserted
  **
  ** @return	-
@@ -376,6 +405,37 @@ Translator::Translation::Translation(Translator const& translator,
   type[1] = TRANSLATION;
   word[1].t = new Translation(t1);
 }
+
+/**
+ ** constructor: text with one string and one unsigned
+ **
+ ** @param	translator	the corresponding translator
+ ** @param	text		the text to translate
+ ** @param	s0		string to be inserted
+ ** @param	i1		integer to be inserted
+ **
+ ** @return	-
+ **
+ ** @author	Diether Knof
+ **
+ ** @version	0.7.13
+ **/
+Translator::Translation::Translation(Translator const& translator,
+                                     string const& text,
+                                     int const i0,
+                                     string const& s1) :
+  translator(&translator),
+  text(text),
+  type(2),
+  word(2)
+{
+  type[0] = INT;
+  word[0].i = i0;
+  type[1] = STRING;
+  word[1].s = new string(s1);
+}
+
+
 
 /**
  ** constructor: text with three strings

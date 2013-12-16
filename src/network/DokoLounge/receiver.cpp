@@ -223,7 +223,7 @@ Spieler ist einem Tisch beigetreten
           this->interpret_table_types(text);
           return true;
         } else if (keyword == "alleTische") {
-          CLOG << "alleTische: " << DK::Utils::String::latin1_to_utf8(text) << endl;
+          this->interpret_table_list(text);
           return true;
         } else {
           cout << "unknown keyword: " << keyword << " -- " << DK::Utils::String::latin1_to_utf8(text) << endl;

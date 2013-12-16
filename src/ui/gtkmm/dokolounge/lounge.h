@@ -131,9 +131,20 @@ namespace UI_GTKMM_NS {
         // chat signal
         void chat_signal();
 
+        // enter a table
+        void enter_table_signal(int const table);
+        // enter a table
+        void enter_table_signalw(Gtk::Widget* widget, int const table);
+        // follow a player
+        void follow_player_signal(string const& name);
+
 
         // the icon of player 'player'
-        Gdk::ScaledPixbuf& icon(string const& player);
+        Gdk::ScaledPixbuf& player_icon(string const& player);
+        // the icon of player 'player' for the table
+        Gdk::ScaledPixbuf& player_table_icon(string const& player);
+        // the icon of table type 'type'
+        Gdk::ScaledPixbuf& table_icon(string const& type);
 
       private:
         ::Network::Connection* connection;
@@ -169,6 +180,7 @@ namespace UI_GTKMM_NS {
 
         queue<Gdk::Color> player_colors;
         std::map<string, Gdk::ScaledPixbuf> player_icons;
+        std::map<string, Gdk::ScaledPixbuf> table_icons;
 
       private: // unused
         Lounge();

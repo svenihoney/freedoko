@@ -119,6 +119,15 @@ Translator::Translation translation(char const* const text,
 				    Translator::Translation const& t1)
 { return Translator::Translation(::translator, text, t0, t1); }
 
+
+// first: integer
+inline
+Translator::Translation translation(char const* const text,
+				    int const i0,
+				    string const& s1)
+{ return Translator::Translation(::translator, text, i0, s1); }
+
+
 // three arguments
 
 // first: string

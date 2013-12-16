@@ -107,6 +107,10 @@ namespace Network {
                           //+ this->command("AppName", "FreeDoko " + static_cast<string>(*::version))
                           + this->command("version", "DokoClient50")
                          );
+#if 0
+          this->send(this->command("fuxbauchat",
+                             "Diether: /newpassword Test1234"));
+#endif
 
        return ;
      } // void Interpreter::Sender::login()

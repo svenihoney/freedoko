@@ -303,8 +303,14 @@ class Setting {
     ostream& write(ostream& ostr) const;
 
 #ifdef USE_NETWORK_DOKOLOUNGE
+    // the path for the player icon
+    string dokolounge_player_icon(string const& icon) const;
+    // the path for the table icon
+    string dokolounge_table_icon(string const& icon) const;
+  private:
     // the path for the icon
-    string dokolounge_icon(string const& icon) const;
+    string dokolounge_icon(string const& subdir, string const& icon) const;
+  public:
 #endif
 
   private:

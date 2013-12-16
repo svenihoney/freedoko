@@ -1594,7 +1594,8 @@ Setting::search_background()
 /**
  ** -> result
  **
- ** @param     icon   icon name
+ ** @param     subdir   subdirectory with the corresponding icon
+ ** @param     icon     icon name
  **
  ** @return    path to the dokolounge icon
  **
@@ -1603,17 +1604,17 @@ Setting::search_background()
  ** @version   0.7.12
  **/
 string 
-Setting::dokolounge_icon(string const& icon) const
+Setting::dokolounge_icon(string const& subdir, string const& icon) const
 {
   string icon_path;
 
   list<string> const datadir = this->data_directories();
 
-  // search any background
   for (list<string>::const_iterator dd = datadir.begin();
        dd != datadir.end();
        ++dd) {
-    string const directory = (*dd + "/" + (*this)(DOKOLOUNGE_DIRECTORY) + "/faces");
+    string const directory = (*dd + "/" + (*this)(DOKOLOUNGE_DIRECTORY)
+                              + "/" + subdir);
 
     DIR *dir = opendir(directory.c_str());
 
@@ -1639,7 +1640,41 @@ Setting::dokolounge_icon(string const& icon) const
   } // for (dd \in datadir)
 
   return "";
-} // string Setting::dokolounge_icon(string icon) const
+} // string Setting::dokolounge_icon(string subdir, string icon) const
+
+/**
+ ** -> result
+ **
+ ** @param     icon   icon name
+ **
+ ** @return    path to the dokolounge player icon
+ **
+ ** @author    Diether Knof
+ **
+ ** @version   0.7.13
+ **/
+string 
+Setting::dokolounge_player_icon(string const& icon) const
+{
+  return this->dokolounge_icon("faces", icon);
+} // string Setting::dokolounge_player_icon(string const& icon) const
+
+/**
+ ** -> result
+ **
+ ** @param     icon   icon name
+ **
+ ** @return    path to the dokolounge table icon
+ **
+ ** @author    Diether Knof
+ **
+ ** @version   0.7.13
+ **/
+string 
+Setting::dokolounge_table_icon(string const& icon) const
+{
+  return this->dokolounge_icon(".", icon);
+} // string Setting::dokolounge_table_icon(string const& icon) const
 #endif
 
 /**

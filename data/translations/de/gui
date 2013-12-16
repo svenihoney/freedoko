@@ -140,6 +140,7 @@ DokoLounge: Alert               = DokoLounge: Hinweis
 player list                     = Spielerliste
 table list                      = Tischliste
 chat                            = Chat
+table %itable% (%stype%)        = Tisch %itable% (%stype%)
 
 # rules
 # -> rules

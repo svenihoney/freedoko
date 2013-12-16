@@ -36,6 +36,7 @@
 #include "../utils/string.h"
 
 Lounge* lounge;
+Lounge::Table dummy_table("dummy");
 
 /**
  ** constructor
@@ -95,6 +96,25 @@ Lounge::is_logged_in() const
 /**
  ** -> result
  **
+ ** @param     -
+ **
+ ** @return    on which table the player sits (-1 if at no table, -2 if not logged in)
+ ** 
+ ** @author    Diether Knof
+ **
+ ** @version   0.7.13
+ **/
+int
+Lounge::player_location() const
+{
+  if (!this->is_logged_in())
+    return -2;
+  return player_location(this->name());
+} // int Lounge::player_location() const
+
+/**
+ ** -> result
+ **
  ** @param     name   the name of the player
  **
  ** @return    the player 'name'
@@ -113,6 +133,52 @@ Lounge::player(string const& name) const
       return *p;
   return this->players()[0];
 } // Lounge::Player const& Lounge::player(string name) const
+
+/**
+ ** -> result
+ **
+ ** @param     name   the name of the player
+ **
+ ** @return    the location of the player (table no or -1 for Lounge)
+ ** 
+ ** @author    Diether Knof
+ **
+ ** @version   0.7.13
+ **/
+int
+Lounge::player_location(string const& name) const
+{
+  for (unsigned i = 0; i < this->tables_.size(); ++i)
+    if (std::find(this->table(i).players.begin(),
+                  this->table(i).players.end(),
+                  name)
+        != this->table(i).players.end())
+      return static_cast<int>(i);
+  return -1;
+} // int Lounge::player_location(string name) const
+
+/**
+ ** -> result
+ **
+ ** @param     t   number of the table
+ **
+ ** @return    the table t
+ ** 
+ ** @author    Diether Knof
+ **
+ ** @version   0.7.13
+ **/
+Lounge::Table const&
+Lounge::table(unsigned const t) const
+{
+  DEBUG_ASSERTION((this->tables_.size() > t),
+                  "Lounge::table(t)\n"
+                  "   t = " << t << " >= "
+                  << this->tables_.size() << " =  this->tables.size()");
+  if (this->tables_.size() <= t)
+    return dummy_table;
+  return this->tables_[t];
+} // Lounge::Table const& Lounge::table(unsigned const t) const
 
 /**
  ** the game has logged in at DokoLounge
@@ -367,6 +433,88 @@ Lounge::set_table_list(vector<Lounge::Table> const& tables)
   ::ui->lounge_tables_changed(this->tables());
   return;
 } // void Lounge::set_table_list(vector<Lounge::Table> tables)
+
+/**
+ ** sets the number of tables
+ ** new tables are set to type DDV
+ **
+ ** @param     table_num 
+ **
+ ** @return    -
+ ** 
+ ** @author    Diether Knof
+ **
+ ** @version   0.7.13
+ **/
+void
+Lounge::set_table_number(unsigned const table_number)
+{
+  if (this->tables().size() == table_number)
+    return ;
+  this->tables_.resize(table_number, Table("DDV"));
+  ::ui->lounge_tables_changed(this->tables());
+  return;
+} // void Lounge::set_table_number(unsigned table_number)
+
+/**
+ ** sets the table type
+ **
+ ** @param     table   number of table to set
+ ** @param     type    type to set to
+ **
+ ** @return    -
+ ** 
+ ** @author    Diether Knof
+ **
+ ** @version   0.7.13
+ **/
+void
+Lounge::set_table_type(unsigned const table, string const& type)
+{
+  DEBUG_ASSERTION((this->tables_.size() > table),
+                  "Lounge::set_table_type(table, type)\n"
+                  "   table = " << table
+                  << " >= " << this->tables_.size() << " =  this->tables.size()");
+  if (this->tables().size() <= table) {
+    return ;
+  }
+  this->tables_[table].type = type;
+  ::ui->lounge_tables_changed(this->tables());
+  return;
+} // void Lounge::set_table_type(unsigned table, string type)
+
+/**
+ ** sets the table players
+ **
+ ** @param     table     number of table to set
+ ** @param     players   players to set
+ **
+ ** @return    -
+ ** 
+ ** @author    Diether Knof
+ **
+ ** @version   0.7.13
+ **/
+void
+Lounge::set_table_players(unsigned const table, vector<string> const& players)
+{
+  DEBUG_ASSERTION((this->tables_.size() > table),
+                  "Lounge::set_table_players(table, players)\n"
+                  "   table = " << table
+                  << " >= " << this->tables_.size() << " =  this->tables.size()");
+  if (this->tables_.size() <= table)
+    return ;
+  DEBUG_ASSERTION((players.size() == 4),
+                  "Lounge::set_table_players(table, players)\n"
+                  "   players.size() = " << players.size() << " != 4");
+  if (players.size() != 4)
+    return ;
+
+  CLOG << table << ": " << players.size() << endl;
+  this->tables_[table].players = players;
+  ::ui->lounge_tables_changed(this->tables());
+  return;
+} // void Lounge::set_table_players(unsigned table, vector<string> players)
 
 /**
  ** the name of the type
