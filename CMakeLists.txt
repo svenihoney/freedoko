@@ -4,15 +4,21 @@ cmake_policy(SET CMP0011 OLD)
 
 project(FreeDoko)
 
+option(USE_SOUND "Use sound" ON)
+option(USE_DOKOLOUNGE "Use DokoLounge network library (experimental)")
+option(USE_THREADS "Use thread library (experimental)")
 
 #pkg_check_modules(GTKMM gtkmm-2.4)
-find_package(GTK2 2.4 REQUIRED gtkmm)
-add_definitions(-DUSE_UI_GTKMM)
+#find_package(GTK2 2.4 REQUIRED gtkmm)
 if(NOT CMAKE_CROSSCOMPILING)
   find_package(PkgConfig)
   pkg_check_modules(GTKMM gtkmm-2.4)
   pkg_check_modules(GNET gnet-2.0)
 endif(NOT CMAKE_CROSSCOMPILING)
+
+if(GTKMM)
+  add_definitions(-DUSE_UI_GTKMM)
+endif(GTKMM)
 
 if(USE_SOUND)
   pkg_check_modules(ALUT freealut)

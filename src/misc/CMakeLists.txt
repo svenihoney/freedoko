@@ -1,10 +1,11 @@
 set(LOCAL_SOURCES
-  translation.cpp
-  translator.cpp
+  bug_report.cpp
+  lounge.cpp
+  references_check.cpp
+  setting.cardsorder.cpp
   setting.cpp
   setting.theme.cpp
-  setting.cardsorder.cpp
-  bug_report.cpp
-  references_check.cpp
+  translation.cpp
+  translator.cpp
 )
 toglobalsources(${LOCAL_SOURCES})
